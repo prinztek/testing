@@ -9,8 +9,10 @@ public class EnemyHealthBar : MonoBehaviour
 
     [Header("References")]
     public EnemyStatsNew enemyStats; // Reference to the EnemyStatsNew script
-    private RectTransform rectTransform;
-    public EnemyStateMachine enemyStateMachine; // Reference to the EnemyStateMachine script
+
+    // We don't need RectTransform or EnemyStateMachine directly here for flipping
+    // because the health bar's visual orientation should be independent.
+
     private void Start()
     {
         if (enemyStats == null)
@@ -25,24 +27,20 @@ public class EnemyHealthBar : MonoBehaviour
 
         // Subscribe to the health change event using Action
         enemyStats.OnHealthChanged += SetHealth; // Using delegate for health change
+
     }
 
+    // OnEnable and OnDisable for subscription management are good practice
     private void OnEnable()
     {
-        // Subscribe to health changes
         if (enemyStats != null)
         {
             enemyStats.OnHealthChanged += SetHealth;
         }
-    }
 
-    private void OnDisable()
-    {
-        // Unsubscribe to prevent memory leaks
-        if (enemyStats != null)
-        {
-            enemyStats.OnHealthChanged -= SetHealth;
-        }
+        // SetMaxHealth(enemyStats.maxHealth);
+        // SetHealth(enemyStats.CurrentHealth);
+        // enemyStats.OnHealthChanged += SetHealth;
     }
 
     private void Update()
@@ -51,23 +49,13 @@ public class EnemyHealthBar : MonoBehaviour
         {
             // Continuously update the health bar when health changes
             SetHealth(enemyStats.CurrentHealth);
-            rectTransform = GetComponent<RectTransform>();
-            // Prevent health bar from flipping
-
-            // Update the RectTransform to match the enemy's position
-            rectTransform = GetComponent<RectTransform>();
-
-            // Prevent health bar from flipping
-            if (enemyStateMachine.isFacingRight)
-            {
-                // Don't flip the health bar at all, keep it facing the same direction (1f, 1f)
-                rectTransform.localScale = new Vector2(1f, 1f);  // Always face right (no flip)
-            }
-            else
-            {
-                // Flip the health bar when the enemy is facing left (-1f, 1f)
-                rectTransform.localScale = new Vector2(-1f, 1f); // Flip to face left
-            }
+        }
+    }
+    private void OnDisable()
+    {
+        if (enemyStats != null)
+        {
+            enemyStats.OnHealthChanged -= SetHealth;
         }
     }
 

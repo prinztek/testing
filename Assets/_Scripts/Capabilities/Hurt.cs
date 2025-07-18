@@ -4,9 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Hurt : MonoBehaviour
 {
-    // [Header("Knockback Settings")]
-    // [SerializeField] private float knockbackForce = 10f;
-    // [SerializeField] private float verticalForce = 4f;
+    // Knockback force values
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackForce = 3f;
+    [SerializeField] private float verticalForce = 2f;
+    private float verticalDamping = 0.1f; // Rate of vertical force decay
+    [HideInInspector] public Vector2 lastHitDirection;
+
     private CharacterStats stats;
 
     [Header("Hurt Settings")]
@@ -44,36 +48,41 @@ public class Hurt : MonoBehaviour
 
     public void TriggerHurt(Vector2 attackerPosition)
     {
-        if (stats.IsDead()) return;
+        if (stats.IsDead() || isInvincible) return;
 
         if (attack != null)
-        {
             attack.CancelAttack();
-        }
-
-        if (isInvincible) return;
 
         isHurt = true;
         isInvincible = true;
         hurtTimer = hurtDuration;
 
-        // Optional knockback (comment out if not needed)
-        // Vector2 knockbackDir = (Vector2.left * Mathf.Sign(transform.position.x - attackerPosition.x));
-        // knockbackDir.y = 1f;
+        // 🧱 Reset movement before applying knockback
+        rb.linearVelocity = Vector2.zero;
 
-        // rb.linearVelocity = Vector2.zero;
-        // rb.AddForce(knockbackDir.normalized * knockbackForce + Vector2.up * verticalForce, ForceMode2D.Impulse);
+        // Determine direction from attacker to this object
+        lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
 
-        // Trigger hurt animation
+        // Add a small upward component
+        Vector2 knockbackDir = (lastHitDirection + Vector2.up * 0.2f).normalized;
+
+        // Use constant verticalForce for each knockback
+        float appliedVerticalForce = verticalForce; // Do not change the field!
+        Vector2 force = new Vector2(knockbackDir.x * knockbackForce, appliedVerticalForce);
+
+        rb.AddForce(force, ForceMode2D.Impulse);
+
+        // Play hurt animation
         if (animationHandler != null)
         {
             float length = animationHandler.GetHurtAnimationLength();
             animationHandler.PlayHurtAnimation(length);
         }
 
-        // Start flicker & invincibility
+        // Start flicker and invincibility coroutine
         StartCoroutine(FlickerAndInvincibility());
     }
+
 
     private IEnumerator FlickerAndInvincibility()
     {

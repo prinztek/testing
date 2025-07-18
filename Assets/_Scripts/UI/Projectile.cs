@@ -3,6 +3,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private Vector2 velocity;
+
+    // private CharacterStats playerStats;
     public int damage = 10;               // Damage dealt by the projectile
     public float lifetime = 3f;           // How long before the arrow self-destructs
     private float timer = 0f;
@@ -42,8 +44,9 @@ public class Projectile : MonoBehaviour
             EnemyStatsNew enemy = other.GetComponentInParent<EnemyStatsNew>();
             if (enemy != null)
             {
+                // int damage = playerStats.GetDamage();
                 enemy.TakeDamage(damage, transform.position, doScreenShake: true);
-                Debug.Log($"Dealt {damage} damage to {enemy.name}");
+                // Debug.Log($"Dealt {damage} damage to {enemy.name}");
             }
         }
 

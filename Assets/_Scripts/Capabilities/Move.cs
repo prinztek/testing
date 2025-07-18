@@ -28,18 +28,18 @@ public class Move : MonoBehaviour
 
     private void Update()
     {
-
         if (stats.IsDead())
         {
-            StopImmediately(); // ✅ stop movement when dead
+            StopImmediately();
             return;
         }
 
         _direction.x = input.RetrieveMoveInput();
 
+        // ⛔ Prevent input movement while attacking
         if (attack != null && attack.IsAttacking())
         {
-            _desiredVelocity = Vector2.zero; // Zero out input velocity during attack
+            _desiredVelocity = Vector2.zero;
             return;
         }
 
@@ -50,16 +50,18 @@ public class Move : MonoBehaviour
     {
         if (stats.IsDead())
         {
-            StopImmediately(); // ✅ stop movement when dead
+            StopImmediately();
             return;
         }
 
         _onGround = _ground.OnGround;
         _velocity = _body.linearVelocity;
 
-        if (attack != null && (attack.IsAttacking() || attack.IsInRecovery()))
+        // ✅ Let attack nudge stay, but optionally slow it down
+        if (attack != null && attack.IsAttacking())
         {
-            _velocity.x = 0; // Lock horizontal movement during attack or recovery
+            // Optional: smooth slide stop
+            _velocity.x = Mathf.MoveTowards(_velocity.x, 0f, 20f * Time.deltaTime);
             _body.linearVelocity = _velocity;
             return;
         }

@@ -11,6 +11,7 @@ public class EnemyStatsNew : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     private CinemachineImpulseSource impulseSource;
     [SerializeField] private AudioClip hurtSoundClip;
+    [SerializeField] private GameObject hitImpactPrefab;
 
     [Header("Enemy Stats")]
     public int maxHealth = 50;
@@ -29,7 +30,7 @@ public class EnemyStatsNew : MonoBehaviour
     public bool canChase;
     public bool canComboAttack = false;
     public int maxComboPhase = 3;
-
+    public int damage = 5;
     private bool isInvincible = false;
     private bool isDead = false;
 
@@ -61,11 +62,20 @@ public class EnemyStatsNew : MonoBehaviour
         // Notify health bar of health change using the Action delegate
         OnHealthChanged?.Invoke(currentHealth);
 
+        // VFX hit impact animations
+        if (hitImpactPrefab != null)
+        {
+            GameObject impact = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity, transform);
+            Destroy(impact, 0.417f); // clean up after
+        }
+
+        // Screenshake direction
         if (doScreenShake && impulseSource != null)
         {
             Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
             ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
         }
+
 
         SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 1f);
 

@@ -20,13 +20,12 @@ public class AttackHitbox : MonoBehaviour
         // Check if we hit something tagged as "Hurtbox"
         if (other.CompareTag("Hurtbox") && playerStats != null)
         {
-            Debug.Log("Hit a Hurtbox: " + other.name);
+            // Debug.Log("Hit a Hurtbox: " + other.name);
             // Access enemy stats through Hurtbox (assuming it's a child of enemy object)
             EnemyStatsNew enemyDummy = other.GetComponentInParent<EnemyStatsNew>();
             if (enemyDummy != null)
             {
-
-
+                // Debug.Log("Player Transform:" + transform.root.position);
                 int damage = playerStats.GetDamage();
                 enemyDummy.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
 

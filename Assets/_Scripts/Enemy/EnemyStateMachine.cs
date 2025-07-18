@@ -9,6 +9,7 @@ public class EnemyStateMachine : MonoBehaviour
 
     // Public states
     public EnemyPatrolState patrolState = new EnemyPatrolState();
+    public EnemyIdleState idleState = new EnemyIdleState();
     public EnemyChaseState chaseState = new EnemyChaseState();
     public EnemyAttackState attackState = new EnemyAttackState();
     public EnemyHurtState hurtState = new EnemyHurtState();
@@ -16,15 +17,19 @@ public class EnemyStateMachine : MonoBehaviour
 
     private EnemyBaseState currentState;
     public EnemyBaseState LastState { get; private set; }
-
+    [HideInInspector] public bool movingRight = true;
     [HideInInspector] public bool isFacingRight = true;
     [HideInInspector] public Vector2 lastHitDirection;
+    // Inside EnemyStateMachine.cs
+    [SerializeField] public float knockbackForce = 3f;
+    [SerializeField] public float verticalForce = 2f;
     [SerializeField] private GameObject attackCollider;
-
     // Gizmo settings
     [Header("Gizmo Visualizations")]
     [SerializeField] private bool showChaseRange = true;
     [SerializeField] private bool showAttackRange = true;
+
+    [HideInInspector] public EnemyEnvironmentSensor sensor;
 
     void Awake()
     {
@@ -32,11 +37,14 @@ public class EnemyStateMachine : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        sensor = GetComponent<EnemyEnvironmentSensor>();  // Add this line
     }
+
 
     void Start()
     {
-        TransitionToState(patrolState);
+        // Start with idle
+        TransitionToState(idleState);
     }
 
     void Update()

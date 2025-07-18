@@ -7,6 +7,8 @@ public class Attack : MonoBehaviour
     [SerializeField] private AnimationHandler animationHandler;
     [SerializeField] private Hurt hurt;
     private CharacterStats stats;
+    private Rigidbody2D rb;
+    private Move move; // To get direction / facing
 
     [Header("Weapon Combo Windows")]
     [SerializeField] private float fistComboWindow = 0.2f;
@@ -21,6 +23,7 @@ public class Attack : MonoBehaviour
 
     [Header("Attack Base Damage")]
     [SerializeField] private int baseAttack = 1;
+    [SerializeField] private float nudgeForce = 5f; // Tune this for desired push
 
     private int attackPhase = 0;
     private float lockedUntil = 0f;
@@ -33,6 +36,9 @@ public class Attack : MonoBehaviour
     {
         stats = GetComponent<CharacterStats>();
         _ground = GetComponent<Ground>();
+        rb = GetComponent<Rigidbody2D>();
+        move = GetComponent<Move>();
+
     }
 
     private void Start()
@@ -96,19 +102,27 @@ public class Attack : MonoBehaviour
         lockedUntil = Time.time + duration;
         isInPostCooldown = true;
         Invoke(nameof(ResetPostCooldown), duration + postComboCooldown);
-        Debug.Log("🏹 Performed ranged attack");
+        // Debug.Log("🏹 Performed ranged attack");
     }
 
     private void StartAttack(int phase)
     {
         if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
-
         attackPhase = phase;
 
         string animWeapon = GetWeaponAnimType(); // "Fist" or "Sword"
         float duration = animationHandler.GetAttackAnimationLength(phase, animWeapon);
         animationHandler.PlayAttackAnimation(phase, animWeapon);
 
+        if (animWeapon == "Fist")
+        {
+            nudgeForce = 2;
+        }
+        else if (animWeapon == "Sword")
+        {
+            nudgeForce = 5;
+        }
+        ApplyAttackNudge(nudgeForce);
         lockedUntil = Time.time + duration;
 
         if (phase == GetMaxComboPhase())
@@ -162,6 +176,18 @@ public class Attack : MonoBehaviour
     {
         lastBufferedInputTime = -1f;
         ResetCombo();
+    }
+    private void ApplyAttackNudge(float nudgeForce)
+    {
+        int direction = move.FacingRight ? 1 : -1;
+
+        // // Optional: zero out vertical velocity to avoid weird jumps
+        rb.linearVelocity = new Vector2(0, 0);
+        Vector2 newVelocity = rb.linearVelocity;
+        newVelocity.y = rb.linearVelocity.y;
+        newVelocity.x = direction * nudgeForce;
+
+        rb.linearVelocity = newVelocity;
     }
 
     // 🧠 Infer melee animation weapon type

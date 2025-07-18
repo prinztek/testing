@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -12,7 +13,7 @@ public class CharacterStats : MonoBehaviour
     public BuffUIManager buffUIManager;
 
     [Header("Health")]
-    public int maxHealth = 100;
+    public int maxHealth = 25;
     public int maxMana = 100; // for future use
     public int maxStamina = 100; // for future use
     [SerializeField] private int currentHealth;
@@ -35,10 +36,8 @@ public class CharacterStats : MonoBehaviour
     public int gold = 0; // Player's gold for crafting
     private Buff activeBuff = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
-
     public delegate void AttackEvent(GameObject enemy);
     public event AttackEvent OnAttackHit;
-
     private bool isDead = false;
 
     private void Awake()
@@ -180,7 +179,7 @@ public class CharacterStats : MonoBehaviour
         guaranteedCrits = 0;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector2 attackerPosition)
     {
         if (isDead) return;
 
@@ -192,7 +191,7 @@ public class CharacterStats : MonoBehaviour
         }
 
         currentHealth -= damage;
-        Debug.Log($"{gameObject.name} took {damage} damage! Remaining HP: {currentHealth}");
+        // Debug.Log($"{gameObject.name} took {damage} damage! Remaining HP: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -200,9 +199,11 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            animationHandler.PlayHurtAnimation(animationHandler.GetHurtAnimationLength());
+            // attackerPostion = enemies position
+            GetComponent<Hurt>().TriggerHurt(attackerPosition); // call player to get hurt
         }
     }
+
 
     private void Die()
     {

@@ -8,9 +8,8 @@ public class EnemyHurtState : EnemyBaseState
 
     // Knockback force values
     private float knockbackForce = 3f; // how far the enemy is knocked back
-
     private float verticalForce = 2f; // Vertical force to give a slight upward knockback effect
-
+    private float verticalDamping = 0.1f; // Rate of vertical force decay
 
     public override void EnterState(EnemyStateMachine enemy)
     {
@@ -22,12 +21,19 @@ public class EnemyHurtState : EnemyBaseState
 
         // Apply knockback using last hit direction  (where the enemy was hit from)
         Vector2 knockbackDir = (enemy.lastHitDirection + Vector2.up * 0.2f).normalized;
-        Vector2 force = new Vector2(knockbackDir.x * knockbackForce, verticalForce);
+        Vector2 force = new Vector2(knockbackDir.x * enemy.knockbackForce, enemy.verticalForce);
         enemy.rb.AddForce(force, ForceMode2D.Impulse);
+
+        // Apply vertical damping over time to avoid continuous upward force
+        verticalForce -= verticalDamping * Time.deltaTime;
+
+        if (verticalForce <= 0)
+            verticalForce = 0;
+
 
         enemy.animator.CrossFade("enemyhurt", 0.1f, 0, 0f);
 
-        Debug.Log("Entered Enemy Hurt State with knockback");
+        // Debug.Log("Entered Enemy Hurt State with knockback");
     }
 
     public override void UpdateState(EnemyStateMachine enemy)
@@ -45,6 +51,6 @@ public class EnemyHurtState : EnemyBaseState
 
     public override void ExitState(EnemyStateMachine enemy)
     {
-        Debug.Log("Exiting Enemy Hurt State");
+        // Debug.Log("Exiting Enemy Hurt State");
     }
 }

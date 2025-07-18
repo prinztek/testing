@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class EnemyAttackHitbox : MonoBehaviour
 {
-    [SerializeField] private int damage = 10;
-    private Transform enemyTransform;
-
+    private EnemyStatsNew enemyStats;
     private void Awake()
     {
-        enemyTransform = transform.parent?.parent;
+        enemyStats = transform.root.GetComponent<EnemyStatsNew>(); // 'transform.root' gives the top-most parent (Player)
     }
 
+    // Enemy attacking the player
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Hurtbox"))
@@ -17,10 +16,11 @@ public class EnemyAttackHitbox : MonoBehaviour
             CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
             if (playerStats != null)
             {
-                Debug.Log($"Attacked by SLIME === {other.name} for {damage} damage");
-                playerStats.TakeDamage(damage);
+                // Debug.Log("Enemy Transform:" + transform.root.position);
+                // Apply knockback by sending enemy’s position
+                playerStats.TakeDamage(enemyStats.damage, transform.root.position);
 
-                // Optional: enemy-specific on-hit logic (e.g., apply status)
+                // Optional: enemy-specific effects (e.g., poison, fire, etc.)
             }
         }
     }

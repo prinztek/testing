@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
 
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
-        Debug.Log($"Total enemies in level: {totalEnemies}");
+        // Debug.Log($"Total enemies in level: {totalEnemies}");
         if (playerStats == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -54,7 +54,7 @@ public class LevelManager : MonoBehaviour
         defeatedEnemies++;
         if (defeatedEnemies >= totalEnemies)
         {
-            Debug.Log("✅ All enemies defeated!");
+            // Debug.Log("✅ All enemies defeated!");
             UnlockExit();
         }
     }
