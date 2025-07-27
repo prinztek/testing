@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -14,10 +13,8 @@ public class CharacterStats : MonoBehaviour
 
     [Header("Health")]
     public int maxHealth = 25;
-    public int maxMana = 100; // for future use
-    public int maxStamina = 100; // for future use
     [SerializeField] private int currentHealth;
-    public int CurrentHealth => currentHealth;
+    public int CurrentHealth => currentHealth; // This should be the only version of the CurrentHealth property
 
     [Header("Base Stats")]
     public int baseDamage = 1;
@@ -33,13 +30,21 @@ public class CharacterStats : MonoBehaviour
     public GameItem equippedMeleeWeapon = null;  // null = Fist
     public GameItem equippedRangedWeapon = null; // null = no ranged
 
+    [Header("Crafting Related")]
     public int gold = 0; // Player's gold for crafting
     private Buff activeBuff = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
-    public delegate void AttackEvent(GameObject enemy);
+    public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
     public event AttackEvent OnAttackHit;
     private bool isDead = false;
 
+    // Delegate and event for health changes
+    public delegate void HealthChanged(int currentHealth);
+    public event HealthChanged OnHealthChanged; // This event will be triggered whenever the character’s health changes.
+
+    // Delegate and event for player gold changes
+    public delegate void GoldChanged(int gold);
+    public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -71,7 +76,6 @@ public class CharacterStats : MonoBehaviour
         {
             TryToggleAttackMode();
         }
-
     }
 
     private void TryToggleAttackMode()
@@ -88,11 +92,25 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
+    // called when the player crafts items/calc/hint
+    public void DeductGold(int amount)
+    {
+        gold -= amount;
+        if (gold < 0) gold = 0;
+        OnGoldChanged?.Invoke(gold);
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+        OnGoldChanged?.Invoke(gold);
+    }
 
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         Debug.Log($"❤️ Healed for {amount}, current HP: {currentHealth}");
+        OnHealthChanged?.Invoke(currentHealth); // Trigger health change event after healing
     }
 
     public void EquipMeleeWeapon(GameItem weapon)
@@ -191,7 +209,7 @@ public class CharacterStats : MonoBehaviour
         }
 
         currentHealth -= damage;
-        // Debug.Log($"{gameObject.name} took {damage} damage! Remaining HP: {currentHealth}");
+        OnHealthChanged?.Invoke(currentHealth); // Trigger health change event
 
         if (currentHealth <= 0)
         {
@@ -199,11 +217,10 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            // attackerPostion = enemies position
+            // attackerPosition = enemies position
             GetComponent<Hurt>().TriggerHurt(attackerPosition); // call player to get hurt
         }
     }
-
 
     private void Die()
     {

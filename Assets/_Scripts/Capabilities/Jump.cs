@@ -94,38 +94,29 @@ public class Jump : MonoBehaviour
     }
     private void JumpAction()
     {
-        bool isGroundJump = _coyoteCounter > 0f;
+        bool isGroundJump = _onGround || (_coyoteCounter > 0f && _jumpPhase == 0);
 
-        if (_coyoteCounter > 0f || _jumpPhase < _maxAirJumps)
+        // Only allow air jumps if maxAirJumps > 0
+        if (isGroundJump || (_maxAirJumps > 0 && _jumpPhase < _maxAirJumps + 1))
         {
-
             if (attack != null && attack.IsAttacking())
-            {
-                return; // Skip jumping while attacking
-            }
+                return; // Prevent jump during attack
 
-            _jumpPhase += 1;
+            _jumpPhase = Mathf.Max(_jumpPhase + 1, 1);
             _jumpBufferCounter = 0;
-            _coyoteCounter = 0; // reset coyote time after jump
+            _coyoteCounter = 0;
 
             _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * _jumpHeight);
 
             if (_velocity.y > 0f)
-            {
                 _jumpSpeed = Mathf.Max(_jumpSpeed - _velocity.y, 0f);
-            }
             else if (_velocity.y < 0f)
-            {
                 _jumpSpeed += Mathf.Abs(_body.linearVelocity.y);
-            }
 
             _velocity.y += _jumpSpeed;
 
-            // ✅ Play jump particles only if jumping from ground
             if (isGroundJump)
-            {
                 jumpParticles?.Play();
-            }
         }
     }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
+using System.Collections.Generic;
 
 public class EnemyStatsNew : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class EnemyStatsNew : MonoBehaviour
     public float AttackRange => attackRange;
     public Animator Animator => animator;
 
+    [Header("Drop Item")]
+    [SerializeField] public List<DropItem> dropTable;
+    [SerializeField] public GameObject pickupPrefab;
     void Start()
     {
         currentHealth = maxHealth;  // Set initial health to max health
@@ -61,6 +65,19 @@ public class EnemyStatsNew : MonoBehaviour
 
         // Notify health bar of health change using the Action delegate
         OnHealthChanged?.Invoke(currentHealth);
+
+        // Show floating damage
+        if (DamageTextSpawner.Instance != null)
+        {
+            if (!doScreenShake)
+            {
+                DamageTextSpawner.Instance.ShowDamage(transform.position, amount, Color.red);
+            }
+            else
+            {
+                DamageTextSpawner.Instance.ShowDamage(transform.position, amount, Color.white);
+            }
+        }
 
         // VFX hit impact animations
         if (hitImpactPrefab != null)
@@ -142,6 +159,7 @@ public class EnemyStatsNew : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < duration && !isDead)
         {
+            // no screenshake
             TakeDamage(damagePerTick, transform.position, false);
             yield return new WaitForSeconds(interval);
             elapsed += interval;
@@ -161,7 +179,12 @@ public class EnemyStatsNew : MonoBehaviour
 
         if (animator != null)
             animator.CrossFade("enemydead", 0.1f);
-
+        // Spawn Drop Item
+        Debug.Log("Spawn Drop Item");
+        foreach (DropItem dropItem in dropTable)
+        {
+            InstantiateLoot(dropItem);
+        }
         StartCoroutine(DestroyAfterDelay(1f));
     }
 
@@ -170,4 +193,34 @@ public class EnemyStatsNew : MonoBehaviour
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }
+
+    void InstantiateLoot(DropItem dropItem)
+    {
+        if (Random.value <= dropItem.dropChance)
+        {
+            GameObject drop = Instantiate(pickupPrefab, transform.position, Quaternion.identity);
+
+            PickupItem pickupItem = drop.GetComponent<PickupItem>();
+            if (pickupItem != null)
+            {
+                pickupItem.itemData = dropItem.itemData;
+
+                // Assign the icon to the child "PickupItemIcon"
+                Transform iconChild = drop.transform.Find("PickupItemIcon");
+                if (iconChild != null)
+                {
+                    SpriteRenderer iconRenderer = iconChild.GetComponent<SpriteRenderer>();
+                    if (iconRenderer != null)
+                    {
+                        iconRenderer.sprite = dropItem.itemData.icon;
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PickupItem script not found on instantiated loot.");
+            }
+        }
+    }
+
 }

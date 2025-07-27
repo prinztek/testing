@@ -18,10 +18,10 @@ public class FireInfuseBuff : Buff
 
     public override void OnAttackHit(GameObject enemy)
     {
-        if (enemy.TryGetComponent(out EnemyDummy dummy))
+        if (enemy.TryGetComponent(out EnemyStatsNew anyEnemy))
         {
             // ✅ Apply DoT
-            dummy.ApplyDot(damagePerTick: 3, duration: 2f, interval: 0.5f, attackerPosition: Vector2.zero);
+            anyEnemy.ApplyDot(damagePerTick: 3, duration: 5f, interval: 0.5f);
         }
 
         hitsRemaining--;

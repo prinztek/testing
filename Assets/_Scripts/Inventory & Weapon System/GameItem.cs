@@ -4,7 +4,8 @@ public enum ItemType
     MeleeWeapon,
     RangedWeapon,
     Consumable,
-    KeyItem
+    KeyItem,
+    Gold
 }
 
 
@@ -14,12 +15,17 @@ public class GameItem : ScriptableObject
     public string itemName;
     public Sprite icon;
     public ItemType itemType;
+    public string description;
 
     // Weapon Stats (only used if itemType is Melee/Ranged)
     public int baseDamage;
     public float attackSpeed;
+
+    // Consumable
     public int healAmount; // for potions
-    public string description;
+
+    // Gold
+    public int goldAmount;
 }
 
-
+// item drop would use this scriptable object of GameItem

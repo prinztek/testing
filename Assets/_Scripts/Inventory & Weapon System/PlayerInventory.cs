@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public List<GameItem> ownedItems = new List<GameItem>();
+    public List<GameItem> ownedItems = new List<GameItem>(); // will take a list of GameItem Objects
     [SerializeField] private CharacterStats characterStats;
+    public event System.Action OnInventoryChanged; // use to refresh inventory ui
 
+    // Equip item based on its item type melee or range weapon
     public void Equip(GameItem item)
     {
         if (item.itemType == ItemType.MeleeWeapon)
@@ -32,12 +34,20 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    // use for consumable items (health potions)
     public void UseItem(GameItem item)
     {
         if (item.itemType == ItemType.Consumable)
         {
             characterStats.Heal(item.healAmount);
             ownedItems.Remove(item);
+            OnInventoryChanged?.Invoke(); // Notify listeners
         }
+    }
+
+    public void AddItem(GameItem item)
+    {
+        ownedItems.Add(item);
+        OnInventoryChanged?.Invoke(); // Notify listeners
     }
 }

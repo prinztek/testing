@@ -9,11 +9,11 @@ public class EnemyDeathState : EnemyBaseState
     {
         stateStartTime = Time.time;
 
-        // Stop all movement
+        // Stop movement and disable physics interaction
         enemy.rb.linearVelocity = Vector2.zero;
         enemy.rb.bodyType = RigidbodyType2D.Kinematic;
 
-        // Disable attack collider if it exists
+        // Disable attack collider
         if (enemy.stats.attackCollider != null)
             enemy.stats.attackCollider.SetActive(false);
 
@@ -21,20 +21,39 @@ public class EnemyDeathState : EnemyBaseState
         if (enemy.animator != null)
             enemy.animator.Play("enemydead");
 
-        // ✅ Inform LevelManager to count this enemy as defeated
-        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+        // Notify LevelManager
+        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an even call?
 
-        // Optionally disable enemy collider
+        // Disable main collider to prevent interaction
         Collider2D col = enemy.GetComponent<Collider2D>();
         if (col != null)
             col.enabled = false;
+
+        // Disable hurtbox for enemies with hurt on touch (crawlid like enemies in hollow kngiht)
+        Transform hurtbox = enemy.transform.Find("Visual/HurtBox");
+        if (hurtbox != null)
+        {
+            hurtbox.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Hurtbox not found in Visual/Hurtbox path.");
+        }
+
+        // Handle item drops
+        if (enemy.stats != null)
+        {
+            foreach (var dropItem in enemy.stats.dropTable)
+            {
+                TrySpawnDrop(dropItem, enemy.stats.pickupPrefab, enemy.transform.position);
+            }
+        }
 
         Debug.Log("Entered EnemyDeathState.");
     }
 
     public override void UpdateState(EnemyStateMachine enemy)
     {
-        // Wait and destroy after deathDelay
         if (Time.time >= stateStartTime + deathDelay)
         {
             GameObject.Destroy(enemy.gameObject);
@@ -43,6 +62,47 @@ public class EnemyDeathState : EnemyBaseState
 
     public override void ExitState(EnemyStateMachine enemy)
     {
-        // Normally won't exit from death, but clean up here if needed
+        // No transition expected from death, but method is required
+    }
+
+    private void TrySpawnDrop(DropItem dropItem, GameObject pickupPrefab, Vector3 spawnPosition)
+    {
+        if (dropItem == null || pickupPrefab == null) return;
+
+        if (Random.value <= dropItem.dropChance)
+        {
+            GameObject drop = GameObject.Instantiate(pickupPrefab, spawnPosition, Quaternion.identity);
+
+            var pickup = drop.GetComponent<PickupItem>();
+            if (pickup != null)
+            {
+                pickup.itemData = dropItem.itemData;
+
+                // Assign icon to child sprite renderer
+                Transform iconChild = drop.transform.Find("PickupItemIcon");
+                if (iconChild != null)
+                {
+                    var iconRenderer = iconChild.GetComponent<SpriteRenderer>();
+                    if (iconRenderer != null)
+                    {
+                        iconRenderer.sprite = dropItem.itemData.icon;
+                        Debug.Log($"[Drop] Assigned icon: {iconRenderer.sprite?.name ?? "null"} to {drop.name}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("SpriteRenderer missing on PickupItemIcon.");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("PickupItemIcon child not found on drop prefab.");
+                }
+
+            }
+            else
+            {
+                Debug.LogWarning("PickupItem component missing on pickup prefab.");
+            }
+        }
     }
 }

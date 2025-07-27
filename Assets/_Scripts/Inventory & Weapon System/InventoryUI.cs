@@ -18,6 +18,7 @@ public class InventoryUI : MonoBehaviour
 
     void OnEnable()
     {
+        playerInventory.OnInventoryChanged += RefreshUI;
         RefreshUI();
     }
 
@@ -70,5 +71,11 @@ public class InventoryUI : MonoBehaviour
 
         equippedRangedText.text = "Ranged: " +
             (characterStats.equippedRangedWeapon ? characterStats.equippedRangedWeapon.itemName : "None");
+    }
+
+
+    void OnDisable()
+    {
+        playerInventory.OnInventoryChanged -= RefreshUI;
     }
 }

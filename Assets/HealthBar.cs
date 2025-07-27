@@ -22,17 +22,9 @@ public class HealthBar : MonoBehaviour
         SetMaxHealth(characterStats.maxHealth); // Set max health
         SetHealth(characterStats.CurrentHealth); // Set the current health
 
-        // Optionally, subscribe to health changes if you need to update dynamically
+        // Subscribe to health change events
+        characterStats.OnHealthChanged += UpdateHealthBar;
         characterStats.OnDeath += HandleDeath; // When character dies, hide the health bar
-    }
-
-    private void OnEnable()
-    {
-        // Subscribe to health changes (Optional: for dynamic updates if required)
-        if (characterStats != null)
-        {
-            characterStats.OnDeath += HandleDeath;
-        }
     }
 
     private void OnDisable()
@@ -40,17 +32,14 @@ public class HealthBar : MonoBehaviour
         // Unsubscribe to prevent memory leaks
         if (characterStats != null)
         {
+            characterStats.OnHealthChanged -= UpdateHealthBar;
             characterStats.OnDeath -= HandleDeath;
         }
     }
 
-    private void Update()
+    private void UpdateHealthBar(int currentHealth)
     {
-        if (characterStats != null)
-        {
-            // Continuously update the health bar when health changes
-            SetHealth(characterStats.CurrentHealth);
-        }
+        SetHealth(currentHealth); // Update health bar when health changes
     }
 
     // Set the max value for the health bar (called during initialization)
@@ -66,7 +55,7 @@ public class HealthBar : MonoBehaviour
         slider.value = health; // Set the slider value to current health
     }
 
-    // Optional: Handle the death event
+    // Handle death event: Hide the health bar
     private void HandleDeath()
     {
         Debug.Log("Character has died, hiding the health bar.");
