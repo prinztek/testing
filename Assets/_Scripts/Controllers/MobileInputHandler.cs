@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MobileInputUIHandler : MonoBehaviour
 {
     CharacterStats characterStats; // assign in inspector
-    public MobileController mobileController;
+    public MobileInputController mobileController;
     public Joystick joystick; // use any floating/fixed joystick from asset store or custom
     public Button jumpButton;
     public Button attackButton;

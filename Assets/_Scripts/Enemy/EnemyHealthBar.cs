@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +28,14 @@ public class EnemyHealthBar : MonoBehaviour
 
         // Subscribe to the health change event using Action
         enemyStats.OnHealthChanged += SetHealth; // Using delegate for health change
+        enemyStats.OnDeath += HandleDeath; // Subscribe to death
 
+    }
+
+    private void HandleDeath()
+    {
+        // Optionally: Add a fade-out animation before destroying
+        Destroy(gameObject);
     }
 
     // OnEnable and OnDisable for subscription management are good practice
@@ -48,9 +56,24 @@ public class EnemyHealthBar : MonoBehaviour
         if (enemyStats != null)
         {
             // Continuously update the health bar when health changes
+            // Convert these later into an event for performance
             SetHealth(enemyStats.CurrentHealth);
         }
     }
+    public Transform target; // Reference to enemy's transform
+    public Vector3 offset = new Vector3(0, 1.5f, 0); // Offset above the enemy's head
+
+    void LateUpdate()
+    {
+        if (target != null)
+        {
+            transform.position = target.position + offset;
+        }
+
+        // Optional: make the health bar always face camera
+        transform.rotation = Quaternion.identity; // keeps it upright in 2D
+    }
+
     private void OnDisable()
     {
         if (enemyStats != null)
@@ -70,12 +93,5 @@ public class EnemyHealthBar : MonoBehaviour
     public void SetHealth(int health)
     {
         slider.value = health; // Set the slider value to current health
-    }
-
-    // Optional: Handle the death event
-    private void HandleDeath()
-    {
-        Debug.Log("Enemy has died, hiding the health bar.");
-        gameObject.SetActive(false); // Optionally hide the health bar on death
     }
 }

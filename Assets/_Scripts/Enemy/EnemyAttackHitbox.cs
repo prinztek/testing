@@ -3,24 +3,34 @@ using UnityEngine;
 public class EnemyAttackHitbox : MonoBehaviour
 {
     private EnemyStatsNew enemyStats;
+
     private void Awake()
     {
-        enemyStats = transform.root.GetComponent<EnemyStatsNew>(); // 'transform.root' gives the top-most parent (Player)
+        // Change to GetComponentInParent to look for EnemyStatsNew on any parent, not just root
+        enemyStats = transform.GetComponentInParent<EnemyStatsNew>();
+
+        // Check if enemyStats was assigned correctly
+        if (enemyStats == null)
+        {
+            Debug.LogError("EnemyStatsNew component not found on parent objects!");
+        }
     }
 
-    // Enemy attacking the player
+
+    // Called when the enemy hitbox triggers a collision
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if the collider belongs to a "Hurtbox" (likely the player or another enemy)
         if (other.CompareTag("Hurtbox"))
         {
+            // Try to get the CharacterStats component from the parent of the other object
             CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
-            if (playerStats != null)
-            {
-                // Debug.Log("Enemy Transform:" + transform.root.position);
-                // Apply knockback by sending enemy’s position
-                playerStats.TakeDamage(enemyStats.damage, transform.root.position);
 
-                // Optional: enemy-specific effects (e.g., poison, fire, etc.)
+            if (playerStats != null && enemyStats != null)
+            {
+                // Apply damage to the player
+                playerStats.TakeDamage(enemyStats.damage, transform.root.position);
+                // Optional: Apply additional effects like knockback or status effects
             }
         }
     }

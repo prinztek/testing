@@ -109,7 +109,10 @@ public class EnemyStatsNew : MonoBehaviour
         {
             isDead = true;
             if (fsm != null)
+            {
                 fsm.SwitchState(fsm.deathState);
+                OnDeath?.Invoke();
+            }
             else
                 Die(); // fallback if FSM is missing
         }

@@ -52,10 +52,11 @@ public class Jump : MonoBehaviour
         _onGround = _ground.OnGround;
         _velocity = _body.linearVelocity;
 
-        if (_onGround)
+        if (_onGround && Mathf.Abs(_body.linearVelocity.y) < 0.01f)
         {
             _jumpPhase = 0;
             _coyoteCounter = _coyoteTime; // reset timer while on ground
+            _isJumping = false;
         }
         else
         {
@@ -85,7 +86,7 @@ public class Jump : MonoBehaviour
         {
             _body.gravityScale = _downwardMovementMultiplier;
         }
-        else if (_body.linearVelocity.y == 0)
+        else
         {
             _body.gravityScale = _defaultGravityScale;
         }
@@ -94,19 +95,22 @@ public class Jump : MonoBehaviour
     }
     private void JumpAction()
     {
-        bool isGroundJump = _onGround || (_coyoteCounter > 0f && _jumpPhase == 0);
+        if (attack != null && attack.IsAttacking()) return; // Prevent jump during attack
 
-        // Only allow air jumps if maxAirJumps > 0
-        if (isGroundJump || (_maxAirJumps > 0 && _jumpPhase < _maxAirJumps + 1))
+        bool isGroundJump = _onGround || (_coyoteCounter > 0f && _jumpPhase < _maxAirJumps);
+
+        if (_coyoteCounter > 0f || (_jumpPhase < _maxAirJumps && _isJumping))
         {
-            if (attack != null && attack.IsAttacking())
-                return; // Prevent jump during attack
 
-            _jumpPhase = Mathf.Max(_jumpPhase + 1, 1);
+            if (_isJumping)
+            {
+                _jumpPhase += 1;
+            }
+
             _jumpBufferCounter = 0;
             _coyoteCounter = 0;
-
             _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * _jumpHeight);
+            _isJumping = true;
 
             if (_velocity.y > 0f)
                 _jumpSpeed = Mathf.Max(_jumpSpeed - _velocity.y, 0f);
@@ -115,10 +119,8 @@ public class Jump : MonoBehaviour
 
             _velocity.y += _jumpSpeed;
 
-            if (isGroundJump)
-                jumpParticles?.Play();
+            jumpParticles?.Play();
         }
     }
-
 }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MobileController", menuName = "InputController/MobileController")]
-public class MobileController : InputController
+public class MobileInputController : InputController
 {
     [HideInInspector] public float mobileMoveInput = 0f;
     [HideInInspector] public bool mobileJumpInput = false;

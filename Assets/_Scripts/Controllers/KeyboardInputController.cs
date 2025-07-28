@@ -1,16 +1,15 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerController", menuName = "InputController/PlayerController")]
-public class PlayerController : InputController
+public class KeyboardInputController : InputController
 {
-    public override bool RetrieveJumpInput()
-    {
-        return Input.GetButtonDown("Jump");
-    }
-
     public override float RetrieveMoveInput()
     {
         return Input.GetAxisRaw("Horizontal");
+    }
+    public override bool RetrieveJumpInput()
+    {
+        return Input.GetButtonDown("Jump");
     }
 
     public override bool RetrieveJumpHoldInput()
@@ -20,7 +19,6 @@ public class PlayerController : InputController
 
     public override bool RetrieveAttackInput()
     {
-        // Debug.Log("Attack input triggered at start!");
         return Input.GetButtonDown("Fire1");
     }
 

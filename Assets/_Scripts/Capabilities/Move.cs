@@ -97,8 +97,7 @@ public class Move : MonoBehaviour
             // Play dust trail particle effect
             if (dustTrailParticles != null && !dustTrailParticles.isPlaying)
             {
-                dustTrailParticles.Play();
-                // Debug.Log("💨 Direction changed with movement! Dust played.");
+                dustTrailParticles.Play(); // Direction changed with movement! Dust played
             }
         }
 
