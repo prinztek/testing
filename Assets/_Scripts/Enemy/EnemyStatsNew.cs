@@ -18,7 +18,7 @@ public class EnemyStatsNew : MonoBehaviour
     public int maxHealth = 50;
     private int currentHealth;
     public float moveSpeed = 2f;
-    public int touchDamage = 5;
+    public int touchDamage = 10;
 
     [Header("Combat & AI Settings")]
     public float attackRange = 1.5f;

@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class ChapterSelectUI : MonoBehaviour
 {
+    // this is assigned to button onclick with value of 1, 2, 3
     public void LoadChapter(int chapterNumber)
     {
-        SceneManager.LoadScene($"LevelSelect_Chapter{chapterNumber}");
+        GameData.CurrentChapter = chapterNumber;
+        SceneManager.LoadScene("LevelSelect");
     }
 
     public void BackToMainMenu()
@@ -13,3 +15,5 @@ public class ChapterSelectUI : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 }
+
+

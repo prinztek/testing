@@ -45,9 +45,38 @@ public class CharacterStats : MonoBehaviour
     // Delegate and event for player gold changes
     public delegate void GoldChanged(int gold);
     public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
+
+    // ====================================================================================================================
+    public enum SkillType
+    {
+        FireBlast,
+        IceShield,
+        LightningDash
+    }
+
+    private HashSet<SkillType> unlockedSkills = new HashSet<SkillType>();
+
+    public void UnlockSkill(SkillType skill)
+    {
+        if (!unlockedSkills.Contains(skill))
+        {
+            unlockedSkills.Add(skill);
+            Debug.Log($"Unlocked Skill: {skill}");
+        }
+    }
+
+    public bool HasSkill(SkillType skill)
+    {
+        return unlockedSkills.Contains(skill);
+    }
+
+    // ====================================================================================================================
     private void Awake()
     {
         currentHealth = maxHealth;
+        UnlockSkill(SkillType.FireBlast);
+        UnlockSkill(SkillType.IceShield);
+        UnlockSkill(SkillType.LightningDash);
     }
 
     private void Update()
@@ -75,6 +104,30 @@ public class CharacterStats : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)) // toggle attack mode for testing
         {
             TryToggleAttackMode();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z)) // toggle acquired skill 1
+        {
+            if (HasSkill(SkillType.FireBlast))
+            {
+                Debug.Log("allow player to use FireBlast");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.X)) // toggle acquired skill 2
+        {
+            if (HasSkill(SkillType.IceShield))
+            {
+                Debug.Log("allow player to use IceShield");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C)) // toggle acquired skill 3
+        {
+            if (HasSkill(SkillType.LightningDash))
+            {
+                Debug.Log("allow player to use LightningDash");
+            }
         }
     }
 

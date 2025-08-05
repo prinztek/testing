@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject levelFailedUIPanel;   // Assign in inspector
     public GameObject GrimoireUIPanel;   // Assign in inspector
     public GameObject endpoint;             // Exit object
-    [SerializeField] private GameObject soundMenuUI; // Sound menu UI
+    [SerializeField] private GameObject pauseMenuUI; // Pause menu UI
     [SerializeField] private CharacterStats playerStats;
     public GameObject MathUICanvas; // Assign this in the Inspector
 
@@ -100,7 +100,7 @@ public class LevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ToggleSoundMenu();
+            TogglePauseMenu();
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -131,10 +131,10 @@ public class LevelManager : MonoBehaviour
     /// Toggles the sound menu UI and pauses/resumes the game.
     /// If the sound menu is active, it pauses the game; otherwise, it resumes.
     /// </summary>
-    private void ToggleSoundMenu()
+    private void TogglePauseMenu()
     {
-        bool isActive = !soundMenuUI.activeSelf;
-        soundMenuUI.SetActive(isActive);
+        bool isActive = !pauseMenuUI.activeSelf;
+        pauseMenuUI.SetActive(isActive);
 
         if (isActive)
             PauseGame();
