@@ -107,31 +107,31 @@ public class MathQuestionManager : MonoBehaviour
             // 🔹 Apply buff to player stats
             // can you randomize the buff i have the HastBuff, FireInfuseBuff, PowerSurgeBuff, ShieldBloomBuff, PrecisionStrikeBuff
             // and i want to apply one of them randomly
-            // if (playerStats != null)
-            // {
-            //     System.Random random = new System.Random();
-            //     int buffIndex = random.Next(0, 5); // Random index between 0 and 4
+            if (playerStats != null)
+            {
+                System.Random random = new System.Random();
+                int buffIndex = random.Next(0, 5); // Random index between 0 and 4
 
-            //     switch (buffIndex)
-            //     {
-            //         case 0:
-            //             playerStats.AddBuff(new HasteBuff(8f, 3));
-            //             break;
-            //         case 1:
-            //             playerStats.AddBuff(new FireInfuseBuff(8f, 3));
-            //             break;
-            //         case 2:
-            //             playerStats.AddBuff(new PowerSurgeBuff(8f, 3));
-            //             break;
-            //         case 3:
-            //             playerStats.AddBuff(new ShieldBloomBuff(8f, 3));
-            //             break;
-            //         case 4:
-            //             playerStats.AddBuff(new PrecisionStrikeBuff(8f, 3));
-            //             break;
-            //     }
-            // }
-            playerStats.AddBuff(new FireInfuseBuff(8f, 3));
+                switch (buffIndex)
+                {
+                    case 0:
+                        playerStats.AddBuff(new HasteBuff(8f, 3));
+                        break;
+                    case 1:
+                        playerStats.AddBuff(new FireInfuseBuff(8f, 3));
+                        break;
+                    case 2:
+                        playerStats.AddBuff(new PowerSurgeBuff(8f, 3));
+                        break;
+                    case 3:
+                        playerStats.AddBuff(new ShieldBloomBuff(8f, 3));
+                        break;
+                    case 4:
+                        playerStats.AddBuff(new PrecisionStrikeBuff(8f, 3));
+                        break;
+                }
+            }
+            // playerStats.AddBuff(new FireInfuseBuff(8f, 3));
             currentIndex++;
             LoadCurrentQuestion();
             Grimoire.SetActive(false);

@@ -3,51 +3,91 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public List<GameItem> ownedItems = new List<GameItem>(); // will take a list of GameItem Objects
+    [Header("Crafting Related")]
+    public int gold = 0;
+    public List<InventorySlot> ownedItems = new List<InventorySlot>(); // now holds slots
     [SerializeField] private CharacterStats characterStats;
-    public event System.Action OnInventoryChanged; // use to refresh inventory ui
+    public event System.Action OnInventoryChanged;
 
-    // Equip item based on its item type melee or range weapon
+    // Delegate + event for player gold changes
+    public delegate void GoldChanged(int gold);
+    public event GoldChanged OnGoldChanged;
+
+    // === EQUIP LOGIC (unchanged) ===
     public void Equip(GameItem item)
     {
         if (item.itemType == ItemType.MeleeWeapon)
         {
             if (characterStats.equippedMeleeWeapon == item)
-            {
                 characterStats.UnequipMeleeWeapon();
-            }
             else
-            {
                 characterStats.EquipMeleeWeapon(item);
-            }
         }
         else if (item.itemType == ItemType.RangedWeapon)
         {
             if (characterStats.equippedRangedWeapon == item)
-            {
                 characterStats.UnequipRangedWeapon();
+            else
+                characterStats.EquipRangedWeapon(item);
+        }
+    }
+
+    // === USE ITEMS ===
+    public void UseItem(GameItem item)
+    {
+        InventorySlot slot = ownedItems.Find(s => s.item == item);
+        if (slot != null && slot.quantity > 0)
+        {
+            if (item.itemType == ItemType.Consumable)
+            {
+                characterStats.Heal(item.healAmount);
+
+                slot.quantity--;
+
+                if (slot.quantity <= 0)
+                    ownedItems.Remove(slot);
+
+                OnInventoryChanged?.Invoke();
+            }
+        }
+    }
+
+    // === ADD ITEMS ===
+    public void AddItem(GameItem item, int amount = 1)
+    {
+        // If stackable, add to existing slot
+        if (item.isStackable)
+        {
+            InventorySlot slot = ownedItems.Find(s => s.item == item);
+            if (slot != null)
+            {
+                slot.quantity += amount;
             }
             else
             {
-                characterStats.EquipRangedWeapon(item);
+                ownedItems.Add(new InventorySlot(item, amount));
             }
         }
-    }
-
-    // use for consumable items (health potions)
-    public void UseItem(GameItem item)
-    {
-        if (item.itemType == ItemType.Consumable)
+        else
         {
-            characterStats.Heal(item.healAmount);
-            ownedItems.Remove(item);
-            OnInventoryChanged?.Invoke(); // Notify listeners
+            // Non-stackable (like weapons), always add new entry
+            ownedItems.Add(new InventorySlot(item, 1));
         }
+
+        OnInventoryChanged?.Invoke();
     }
 
-    public void AddItem(GameItem item)
+    // === GOLD ===
+    public void DeductGold(int amount)
     {
-        ownedItems.Add(item);
-        OnInventoryChanged?.Invoke(); // Notify listeners
+        gold -= amount;
+        if (gold < 0) gold = 0;
+        OnGoldChanged?.Invoke(gold);
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+        OnGoldChanged?.Invoke(gold);
     }
 }

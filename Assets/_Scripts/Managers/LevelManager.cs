@@ -28,10 +28,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (mathQuestionManager != null)
-        {
-            mathQuestionManager.OnQuestionBatchCompleted += OnLevelCompleted;
-        }
+
 
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;

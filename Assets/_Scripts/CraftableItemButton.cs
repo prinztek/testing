@@ -5,8 +5,7 @@ using TMPro;
 public class CraftingItemButton : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI costText;
+
 
     private CraftableItem item;
 
@@ -17,8 +16,7 @@ public class CraftingItemButton : MonoBehaviour
         if (item != null && item.itemData != null)
         {
             iconImage.sprite = item.itemData.icon;
-            nameText.text = item.itemData.itemName;
-            costText.text = item.costInGold + " Gold";
+
         }
     }
 

@@ -5203,7 +5203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 58e05dd6cb742c14c823f69d8dfa84d4, type: 2}
-  _jumpHeight: 5
+  _jumpHeight: 4.8
   _maxAirJumps: 0
   _downwardMovementMultiplier: 4.75
   _upwardMovementMultiplier: 1.65
@@ -5269,11 +5269,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: feb8a922bd6231248992f82dde5f4a8b, type: 2}
   - {fileID: 11400000, guid: 5e5a4de1af9868c4788311b0ebe25735, type: 2}
   - {fileID: 11400000, guid: 77eb47fdcfad85847a326efd2966d6ef, type: 2}
-  - {fileID: 11400000, guid: 3623c4b2b474a684b9301bea7a6f8f71, type: 2}
-  - {fileID: 11400000, guid: 5e5a4de1af9868c4788311b0ebe25735, type: 2}
-  - {fileID: 11400000, guid: 1f63bac5b30e187439d253e53353f4ee, type: 2}
-  - {fileID: 11400000, guid: 1f63bac5b30e187439d253e53353f4ee, type: 2}
-  - {fileID: 11400000, guid: 1f63bac5b30e187439d253e53353f4ee, type: 2}
   characterStats: {fileID: 6371793577150972004}
 --- !u!114 &6371793577150972004
 MonoBehaviour:
@@ -5291,8 +5286,6 @@ MonoBehaviour:
   animationHandler: {fileID: 8431338681835252906}
   buffUIManager: {fileID: 0}
   maxHealth: 100
-  maxMana: 100
-  maxStamina: 100
   currentHealth: 0
   baseDamage: 1
   tempDamageMultiplier: 1
@@ -5300,9 +5293,9 @@ MonoBehaviour:
   moveSpeedMultiplier: 1
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
-  equippedMeleeWeapon: {fileID: 11400000, guid: 77eb47fdcfad85847a326efd2966d6ef, type: 2}
-  equippedRangedWeapon: {fileID: 11400000, guid: feb8a922bd6231248992f82dde5f4a8b, type: 2}
-  gold: 10000
+  equippedMeleeWeapon: {fileID: 0}
+  equippedRangedWeapon: {fileID: 0}
+  gold: 0
 --- !u!1 &2251666837817185490
 GameObject:
   m_ObjectHideFlags: 0

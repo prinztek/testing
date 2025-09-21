@@ -16,56 +16,60 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI equippedMeleeText;
     public TextMeshProUGUI equippedRangedText;
 
-    void OnEnable()
+    [Header("Right Panel UI")]
+    public TextMeshProUGUI descriptionText;
+    public Button useInventoryItemButton;
+
+    private GameItem selectedItem;
+
+    private void OnEnable()
     {
         playerInventory.OnInventoryChanged += RefreshUI;
         RefreshUI();
+        ClearDetails();
+    }
+
+    private void OnDisable()
+    {
+        playerInventory.OnInventoryChanged -= RefreshUI;
     }
 
     public void RefreshUI()
     {
         // Clear previous buttons
         foreach (Transform child in itemListParent)
-        {
             Destroy(child.gameObject);
-        }
 
-        // Generate a button for each item
-        foreach (GameItem item in playerInventory.ownedItems)
+        // Create a button for each owned slot
+        foreach (InventorySlot slot in playerInventory.ownedItems)
         {
             GameObject btnGO = Instantiate(itemButtonPrefab, itemListParent);
 
-            // Explicitly find the icon and label in the prefab
+            // --- Icon ---
             Transform iconTransform = btnGO.transform.Find("Icon");
             if (iconTransform != null)
             {
                 Image iconImage = iconTransform.GetComponent<Image>();
-                if (iconImage != null)
-                    iconImage.sprite = item.icon;
+                if (iconImage != null) iconImage.sprite = slot.item.icon;
             }
 
-            Transform labelTransform = btnGO.transform.Find("Label");
-            if (labelTransform != null)
+            // --- Quantity Text ---
+            Transform quantityTransform = btnGO.transform.Find("Quantity");
+            if (quantityTransform != null)
             {
-                TextMeshProUGUI labelText = labelTransform.GetComponent<TextMeshProUGUI>();
-                if (labelText != null)
-                    labelText.text = item.itemName;
+                TextMeshProUGUI quantityText = quantityTransform.GetComponent<TextMeshProUGUI>();
+                if (quantityText != null)
+                {
+                    quantityText.text = slot.item.isStackable ? slot.quantity.ToString() : "";
+                }
             }
 
-            // Add button click listener
+            // --- Button Click (show details) ---
             Button btn = btnGO.GetComponent<Button>();
-            btn.onClick.AddListener(() =>
-            {
-                if (item.itemType == ItemType.Consumable)
-                    playerInventory.UseItem(item);
-                else
-                    playerInventory.Equip(item);
-
-                RefreshUI();
-            });
+            btn.onClick.AddListener(() => ShowInventoryItemDetails(slot.item));
         }
 
-        // Show equipped weapons
+        // Update equipped weapon display
         equippedMeleeText.text = "Melee: " +
             (characterStats.equippedMeleeWeapon ? characterStats.equippedMeleeWeapon.itemName : "Fist");
 
@@ -73,9 +77,60 @@ public class InventoryUI : MonoBehaviour
             (characterStats.equippedRangedWeapon ? characterStats.equippedRangedWeapon.itemName : "None");
     }
 
-
-    void OnDisable()
+    private void ShowInventoryItemDetails(GameItem item)
     {
-        playerInventory.OnInventoryChanged -= RefreshUI;
+        selectedItem = item;
+
+        if (item != null && (item.itemType == ItemType.MeleeWeapon || item.itemType == ItemType.RangedWeapon))
+        {
+            descriptionText.text =
+                $"{item.itemName}\n" +
+                $"{item.description}\n" +
+                $"Damage: {item.baseDamage}";
+            SetButtonLabel("Equip");
+        }
+        else if (item.itemType == ItemType.Consumable)
+        {
+            descriptionText.text =
+                $"{item.itemName}\n" +
+                $"{item.description}\n" +
+                $"Heal Amount: {item.healAmount}";
+            SetButtonLabel("Use");
+        }
+        else
+        {
+            descriptionText.text = $"{item.itemName}\n{item.description}";
+            SetButtonLabel("Use");
+        }
+
+        useInventoryItemButton.interactable = true;
+        useInventoryItemButton.onClick.RemoveAllListeners();
+        useInventoryItemButton.onClick.AddListener(() => UseSelectedItem());
+    }
+
+    private void SetButtonLabel(string text)
+    {
+        TextMeshProUGUI buttonLabel = useInventoryItemButton.GetComponentInChildren<TextMeshProUGUI>();
+        if (buttonLabel != null) buttonLabel.text = text;
+    }
+
+    private void UseSelectedItem()
+    {
+        if (selectedItem == null) return;
+
+        if (selectedItem.itemType == ItemType.Consumable)
+            playerInventory.UseItem(selectedItem);
+        else
+            playerInventory.Equip(selectedItem);
+
+        RefreshUI();
+        ClearDetails();
+    }
+
+    private void ClearDetails()
+    {
+        descriptionText.text = "Select an item to see details";
+        useInventoryItemButton.interactable = false;
+        useInventoryItemButton.onClick.RemoveAllListeners();
     }
 }

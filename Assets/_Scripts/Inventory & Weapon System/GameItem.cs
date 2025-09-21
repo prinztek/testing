@@ -17,6 +17,8 @@ public class GameItem : ScriptableObject
     public ItemType itemType;
     public string description;
 
+    public bool isStackable; // true for consumables like potions || false for weapons
+
     // Weapon Stats (only used if itemType is Melee/Ranged)
     public int baseDamage;
     public float attackSpeed;

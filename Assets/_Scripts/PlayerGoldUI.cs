@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class PlayerGoldUI : MonoBehaviour
 {
-    public CharacterStats characterStats;
+    public PlayerInventory playerInventory;
     public TMP_Text goldCounterText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        if (characterStats == null)
+        if (playerInventory == null)
         {
-            Debug.LogError("CharacterStats not assigned to HealthBar!");
+            Debug.LogError("playerInventory not assigned to PlayerGoldUI!");
             return;
         }
 
-        goldCounterText.text = characterStats.gold.ToString();
-        characterStats.OnGoldChanged += UpdateGoldCount;
+        goldCounterText.text = playerInventory.gold.ToString();
+        playerInventory.OnGoldChanged += UpdateGoldCount;
     }
 
 

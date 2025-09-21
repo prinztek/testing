@@ -91,10 +91,10 @@ public class PickupItem : MonoBehaviour
         {
             if (itemData.itemType == ItemType.Gold)
             {
-                CharacterStats characterStats = player.GetComponent<CharacterStats>();
-                if (characterStats != null)
+                PlayerInventory playerInventory = player.GetComponent<PlayerInventory>();
+                if (playerInventory != null)
                 {
-                    characterStats.AddGold(itemData.goldAmount);
+                    playerInventory.AddGold(itemData.goldAmount);
                     Debug.Log($"Picked up {itemData.goldAmount} gold.");
                 }
             }
