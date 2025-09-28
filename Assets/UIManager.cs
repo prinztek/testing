@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
     public GameObject settingsAndControlPanel;
     public GameObject settingsPanel;
     public GameObject controlsPanel;
-    public GameObject lessonsPanel;
     public GameObject creditsPanel;
 
     void Start()
@@ -28,7 +27,6 @@ public class UIManager : MonoBehaviour
         settingsAndControlPanel.SetActive(false);
         settingsPanel.SetActive(false);
         controlsPanel.SetActive(false);
-        lessonsPanel.SetActive(false);
         creditsPanel.SetActive(false);
 
         // Activate the selected panel

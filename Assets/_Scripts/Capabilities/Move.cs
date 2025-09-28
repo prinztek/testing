@@ -42,8 +42,9 @@ public class Move : MonoBehaviour
             _desiredVelocity = Vector2.zero;
             return;
         }
+        float effectiveMaxSpeed = _maxSpeed * stats.moveSpeedMultiplier;
+        _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(effectiveMaxSpeed - _ground.Friction, 0f);
 
-        _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(_maxSpeed - _ground.Friction, 0f);
     }
 
     private void FixedUpdate()
