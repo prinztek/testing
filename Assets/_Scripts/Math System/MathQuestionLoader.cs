@@ -7,10 +7,10 @@ public static class MathQuestionLoader
         List<MathQuestion> questions = new();
         questions.AddRange(MathQuestionDatabase.GetHardcodedQuestions(topic, difficulty));
 
-        while (questions.Count < total)
-        {
-            questions.Add(MathQuestionGenerator.Generate(topic, difficulty));
-        }
+        // while (questions.Count < total)
+        // {
+        //     questions.Add(MathQuestionGenerator.Generate(topic, difficulty));
+        // }
 
         return questions;
     }

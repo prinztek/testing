@@ -6,10 +6,8 @@ using System.Collections.Generic;
 
 public class MathQuestionManager : MonoBehaviour
 {
-    private int pauseRequestCount = 0;
-
     [Header("UI References")]
-    public GameObject questionPanel; // 🔹 Entire panel (header + expand area)
+    public GameObject questionPanel;
     public GameObject Grimoire;
 
     [Header("Header Button")]
@@ -22,7 +20,9 @@ public class MathQuestionManager : MonoBehaviour
     public Button submitButton;
 
     [Header("Gameplay")]
-    public CharacterStats playerStats;
+
+    // 🔹 Reference to CharacterStats for applying buffs
+    public CharacterStats characterStats;
 
     [Header("Question Settings")]
     public MathTopic topic = MathTopic.Permutation;
@@ -35,12 +35,31 @@ public class MathQuestionManager : MonoBehaviour
     private int currentIndex = 0;
     private MathQuestion currentQuestion;
     private bool answeredCorrectly = false;
+    private SaveData saveData; // 🔹 keep track of answered IDs
+
+    [Header("Buff Related")]
+
+    // 🔹 Reference to the PrecisionStrikeBuff ScriptableObject
+    public PrecisionStrikeBuffSO precisionStrikeBuff;
+
 
     void Start()
     {
         headerButton.onClick.AddListener(TogglePanel);
         submitButton.onClick.AddListener(CheckAnswer);
+        saveData = SaveSystem.Load(); // 🔹 load saved data
         GenerateNewQuestions();
+    }
+
+    void Update()
+    {
+        // 🔹 Example: Press R to reset progress
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SaveSystem.ResetProgress();
+            saveData = new SaveData(); // reset in memory too
+            Debug.Log("🔄 Progress reset, you can replay questions now.");
+        }
     }
 
     void TogglePanel()
@@ -48,28 +67,20 @@ public class MathQuestionManager : MonoBehaviour
         bool isGrimoireActive = Grimoire.activeSelf;
         Grimoire.SetActive(!isGrimoireActive);
 
-        // Hide the question panel if the Grimoire is active
         if (!isGrimoireActive && questionPanel != null)
-        {
-            questionPanel.SetActive(false); // Hide the question panel if the Grimoire is shown
-        }
-
-        // If Grimoire is now inactive, make sure to show the question panel again
+            questionPanel.SetActive(false);
         if (isGrimoireActive && questionPanel != null)
-        {
-            questionPanel.SetActive(true); // Show the question panel if the Grimoire is hidden
-        }
+            questionPanel.SetActive(true);
 
-        // Reset the input field and answered state
         answerInput.text = "";
         if (!isGrimoireActive && answeredCorrectly)
             answeredCorrectly = false;
     }
 
-
     public void GenerateNewQuestions()
     {
-        questionQueue = MathQuestionLoader.Load(topic, difficulty, numberOfQuestions);
+        // 🔹 Pass in saveData.answeredQuestionIds so used ones are skipped
+        questionQueue = MathQuestionLoaderJSON.Load(topic, difficulty, numberOfQuestions, new HashSet<int>(saveData.answeredQuestionIds));
         currentIndex = 0;
         LoadCurrentQuestion();
     }
@@ -79,7 +90,6 @@ public class MathQuestionManager : MonoBehaviour
         if (currentIndex < questionQueue.Count)
         {
             currentQuestion = questionQueue[currentIndex];
-
             headerQuestionText.text = currentQuestion.prompt;
             expandedQuestionText.text = currentQuestion.prompt;
             answerInput.text = "";
@@ -87,11 +97,8 @@ public class MathQuestionManager : MonoBehaviour
         else
         {
             Debug.Log("✅ All questions completed!");
-
-            // 🔹 Hide entire dropdown panel
             if (questionPanel != null)
                 questionPanel.SetActive(false);
-
             OnQuestionBatchCompleted?.Invoke();
         }
     }
@@ -104,34 +111,36 @@ public class MathQuestionManager : MonoBehaviour
         {
             Debug.Log("✅ Correct! Answer: " + currentQuestion.answer);
             answeredCorrectly = true;
-            // 🔹 Apply buff to player stats
-            // can you randomize the buff i have the HastBuff, FireInfuseBuff, PowerSurgeBuff, ShieldBloomBuff, PrecisionStrikeBuff
-            // and i want to apply one of them randomly
-            if (playerStats != null)
-            {
-                System.Random random = new System.Random();
-                int buffIndex = random.Next(0, 5); // Random index between 0 and 4
 
-                switch (buffIndex)
-                {
-                    case 0:
-                        playerStats.AddBuff(new HasteBuff(8f, 3));
-                        break;
-                    case 1:
-                        playerStats.AddBuff(new FireInfuseBuff(8f, 3));
-                        break;
-                    case 2:
-                        playerStats.AddBuff(new PowerSurgeBuff(8f, 3));
-                        break;
-                    case 3:
-                        playerStats.AddBuff(new ShieldBloomBuff(8f, 3));
-                        break;
-                    case 4:
-                        playerStats.AddBuff(new PrecisionStrikeBuff(8f, 3));
-                        break;
-                }
+            // 🔹 Mark this question as used
+            if (!saveData.answeredQuestionIds.Contains(currentQuestion.id))
+            {
+                saveData.answeredQuestionIds.Add(currentQuestion.id);
+                SaveSystem.Save(saveData); // persist immediately
             }
-            // playerStats.AddBuff(new FireInfuseBuff(8f, 3));
+
+            // 🔹 Apply a random buff
+            if (characterStats != null)
+            {
+                // 🔹 Apply a random buff PrecisionStrikeBuff for testing
+                // characterStats.ApplyScriptableBuff(precisionStrikeBuff);
+
+                characterStats.AddBuff(new FireInfuseBuff(8f, 3));
+
+
+                // System.Random random = new System.Random();
+                // int buffIndex = random.Next(0, 5);
+
+                // switch (buffIndex)
+                // {
+                //     case 0: characterStats.AddBuff(new HasteBuff(8f, 3)); break;
+                //     case 1: characterStats.AddBuff(new FireInfuseBuff(8f, 3)); break;
+                //     case 2: characterStats.AddBuff(new PowerSurgeBuff(8f, 5)); break;
+                //     case 3: characterStats.AddBuff(new ShieldBloomBuff(8f, 20)); break; // 20 hits before the shield breaks
+                //     case 4: characterStats.AddBuff(new PrecisionStrikeBuff(8f, 50, 3)); break; // *50 multiplier, 3 guaranteed crits
+                // }
+            }
+
             currentIndex++;
             LoadCurrentQuestion();
             Grimoire.SetActive(false);
@@ -142,6 +151,4 @@ public class MathQuestionManager : MonoBehaviour
             answeredCorrectly = false;
         }
     }
-
-
 }
