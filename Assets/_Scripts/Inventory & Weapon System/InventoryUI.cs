@@ -118,13 +118,29 @@ public class InventoryUI : MonoBehaviour
     {
         if (selectedItem == null) return;
 
+        bool wasStackable = selectedItem.isStackable;
+        GameItem previouslySelected = selectedItem;
+
         if (selectedItem.itemType == ItemType.Consumable)
+        {
             playerInventory.UseItem(selectedItem);
+        }
         else
+        {
             playerInventory.Equip(selectedItem);
+        }
 
         RefreshUI();
-        ClearDetails();
+
+        // Re-select the item if it's stackable and still exists
+        if (wasStackable && playerInventory.HasItem(previouslySelected))
+        {
+            ShowInventoryItemDetails(previouslySelected);
+        }
+        else
+        {
+            ClearDetails();
+        }
     }
 
     private void ClearDetails()

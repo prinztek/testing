@@ -77,6 +77,16 @@ public class PlayerInventory : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    public bool HasItem(GameItem item)
+    {
+        foreach (var slot in ownedItems)
+        {
+            if (slot.item == item && slot.quantity > 0)
+                return true;
+        }
+        return false;
+    }
+
     // === GOLD ===
     public void DeductGold(int amount)
     {
