@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
 
         if (playerStats != null)
         {
-            playerStats.OnDeath += OnLevelFailed;
+            playerStats.OnDeathFinished += OnLevelFailed;
         }
     }
 
@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         if (playerStats != null)
-            playerStats.OnDeath -= OnLevelFailed;
+            playerStats.OnDeathFinished -= OnLevelFailed;
 
         if (mathQuestionManager != null)
             mathQuestionManager.OnQuestionBatchCompleted -= OnLevelCompleted;

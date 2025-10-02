@@ -26,7 +26,7 @@ public class HealthBar : MonoBehaviour
 
         // Subscribe to health change events
         characterStats.OnHealthChanged += UpdateHealthBar;
-        characterStats.OnDeath += HandleDeath; // When character dies, hide the health bar
+        characterStats.OnDeathStarted += HandleDeath; // When character dies, hide the health bar
     }
 
     private void OnDisable()
@@ -35,7 +35,7 @@ public class HealthBar : MonoBehaviour
         if (characterStats != null)
         {
             characterStats.OnHealthChanged -= UpdateHealthBar;
-            characterStats.OnDeath -= HandleDeath;
+            characterStats.OnDeathStarted -= HandleDeath;
         }
     }
 

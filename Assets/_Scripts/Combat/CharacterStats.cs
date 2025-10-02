@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    public System.Action OnDeath;
+
     public enum AttackMode { Melee, Ranged }
     public AttackMode currentAttackMode = AttackMode.Melee;
 
@@ -33,7 +34,9 @@ public class CharacterStats : MonoBehaviour
     [Header("Crafting Related")]
     public int gold = 0; // Player's gold for crafting
     private Buff activeBuff = null;
+    private BuffInstance activeBuffInstance = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
+    private Queue<ScriptableObjectBuff> buffQueueInstance = new Queue<ScriptableObjectBuff>();
     public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
     public event AttackEvent OnAttackHit;
     private bool isDead = false;
@@ -97,6 +100,25 @@ public class CharacterStats : MonoBehaviour
                 if (buffQueue.Count > 0)
                 {
                     ApplyBuff(buffQueue.Dequeue());
+                }
+            }
+        }
+
+        if (activeBuffInstance != null)
+        {
+            activeBuffInstance.Update(Time.deltaTime);
+            buffUIManager?.UpdateBuffSlot(activeBuffInstance);
+
+            if (activeBuffInstance.isExpired)
+            {
+                activeBuffInstance.OnExpire();
+                buffUIManager?.RemoveBuffUI(activeBuffInstance);
+                ResetTemporaryModifiers();
+                activeBuffInstance = null;
+
+                if (buffQueueInstance.Count > 0)
+                {
+                    ApplyScriptableBuff(buffQueueInstance.Dequeue());
                 }
             }
         }
@@ -202,10 +224,6 @@ public class CharacterStats : MonoBehaviour
     {
         int weaponBaseDamage = (equippedMeleeWeapon != null) ? equippedMeleeWeapon.baseDamage : 1;
         int finalDamage = Mathf.RoundToInt(weaponBaseDamage * tempDamageMultiplier);
-
-        if (guaranteedCrits > 0)
-            finalDamage *= 50;
-
         return finalDamage;
     }
 
@@ -232,6 +250,7 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
+
     private void ApplyBuff(Buff buff)
     {
         ResetTemporaryModifiers();
@@ -239,6 +258,21 @@ public class CharacterStats : MonoBehaviour
         buff.Assign(this);
         buffUIManager?.AddBuffUI(buff);
         Debug.Log($"✨ Applied buff: {buff.GetType().Name}");
+    }
+
+    public void ApplyScriptableBuff(ScriptableObjectBuff buffSO)
+    {
+        ResetTemporaryModifiers();
+
+        // Create runtime instance and assign
+        BuffInstance instance = buffSO.CreateInstance(this);
+        activeBuffInstance = instance;
+        instance.OnApply();
+
+        // Optional: UI hookup
+        buffUIManager?.AddBuffUI(instance);
+
+        Debug.Log($"✨ Applied Scriptable Buff: {buffSO.name}");
     }
 
     public void ResetTemporaryModifiers()
@@ -275,22 +309,38 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    private void Die()
+    // ******************************** Death Handling ********************************
+    public System.Action OnDeathStarted; // → fires immediately (e.g., disable input, play anim).
+    public System.Action OnDeathFinished; // fires after death animation (UI + game over logic).
+    public void Die()
     {
         if (isDead) return;
         isDead = true;
 
         animationHandler.PlayDeadAnimation(animationHandler.GetDeathAnimationLength());
         Debug.Log("💀 Character died.");
-        OnDeath?.Invoke();
-        StartCoroutine(AnimationCoroutine(0.833f));
+
+        OnDeathStarted?.Invoke();
+
+        // Wait until animation finishes, THEN call OnDeath
+        StartCoroutine(DeathAnimationCoroutine(animationHandler.GetDeathAnimationLength()));
     }
 
-    private IEnumerator AnimationCoroutine(float delay)
+    private IEnumerator DeathAnimationCoroutine(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        // Trigger the OnDeathFinished event for listeners (UI, etc.)
+        OnDeathFinished?.Invoke();
+
+        // Destroy the player game object
         Destroy(gameObject);
     }
 
     public bool IsDead() => isDead;
+
+    internal void ApplyScriptableBuff(PrecisionStrikeBuff precisionStrikeBuff)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,22 +1,18 @@
 using UnityEngine;
 
-public class PrecisionStrikeBuff : Buff
+public class PrecisionStrikeBuffInstance : BuffInstance
 {
-    private int guaranteedCrits;
-    private float multiplier;
     private int remainingCrits;
 
-    public PrecisionStrikeBuff(float duration, float multiplier = 10, int crits = 2) : base("Precision Strike", duration)
+    public PrecisionStrikeBuffInstance(PrecisionStrikeBuffSO data, CharacterStats target)
+        : base(data, target)
     {
-        this.multiplier = multiplier;
-        guaranteedCrits = crits;
-        remainingCrits = crits;
+        remainingCrits = data.guaranteedCrits;
     }
 
     public override void OnApply()
     {
-        Debug.Log($"🎯 Precision Strike applied! {guaranteedCrits} guaranteed crits ready.");
-        target.tempDamageMultiplier *= multiplier;
+        Debug.Log($"🎯 Precision Strike applied! {remainingCrits} guaranteed crits ready.");
         target.guaranteedCrits = remainingCrits;
     }
 
@@ -30,7 +26,7 @@ public class PrecisionStrikeBuff : Buff
 
             if (remainingCrits <= 0)
             {
-                remainingTime = 0f;
+                remainingTime = 0f; // Expire the buff early
             }
         }
     }
@@ -39,5 +35,10 @@ public class PrecisionStrikeBuff : Buff
     {
         target.guaranteedCrits = 0;
         Debug.Log("🎯 Precision Strike expired.");
+    }
+
+    public override string GetUIDisplay()
+    {
+        return $"🎯 Precision Strike - {remainingCrits} crits";
     }
 }

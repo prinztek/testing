@@ -3,6 +3,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public GameObject newPlayerMainMenuPanel;
+    public GameObject createNewGamePanel;
     public GameObject returningPlayerMainMenuPanel;
     public GameObject chapterSelectionPanel;
     public GameObject levelSelectionPanel;
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour
     {
         // Deactivate all panels
         newPlayerMainMenuPanel.SetActive(false);
+        createNewGamePanel.SetActive(false);
         returningPlayerMainMenuPanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
         levelSelectionPanel.SetActive(false);

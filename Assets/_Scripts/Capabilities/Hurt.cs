@@ -8,7 +8,7 @@ public class Hurt : MonoBehaviour
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackForce = 3f;
     [SerializeField] private float verticalForce = 2f;
-    private float verticalDamping = 0.1f; // Rate of vertical force decay
+    // private float verticalDamping = 0.1f; // Rate of vertical force decay
     [HideInInspector] public Vector2 lastHitDirection;
 
     private CharacterStats stats;

@@ -60,6 +60,7 @@ public class EnemyStatsNew : MonoBehaviour
     public void TakeDamage(int amount, Vector2 attackerPosition, bool doScreenShake = true)
     {
         if (isDead || isInvincible) return;
+        Debug.Log($"TakeDamage called with: {amount}");
 
         currentHealth -= amount;  // Decrease health by the damage amount
 
