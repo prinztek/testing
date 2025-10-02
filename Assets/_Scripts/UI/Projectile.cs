@@ -3,11 +3,10 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private Vector2 velocity;
-
-    // private CharacterStats playerStats;
-    public int damage = 10;               // Damage dealt by the projectile
+    public int damage = 3;               // Damage dealt by the projectile
     public float lifetime = 3f;           // How long before the arrow self-destructs
     private float timer = 0f;
+    private GameObject source;       // Optional: Reference to the shooter (e.g., player)
 
     // Launch the projectile with a given velocity
     public void Launch(Vector2 velocity)
@@ -15,6 +14,13 @@ public class Projectile : MonoBehaviour
         this.velocity = velocity;
         timer = 0f; // reset lifetime timer on launch
         Debug.Log($"Projectile launched with velocity: {velocity}");
+    }
+
+    // Set the damage and source of the projectile
+    public void SetDamage(int damage, GameObject source)
+    {
+        this.damage = damage;
+        this.source = source;
     }
 
     void Update()
@@ -44,9 +50,18 @@ public class Projectile : MonoBehaviour
             EnemyStatsNew enemy = other.GetComponentInParent<EnemyStatsNew>();
             if (enemy != null)
             {
-                // int damage = playerStats.GetDamage();
                 enemy.TakeDamage(damage, transform.position, doScreenShake: true);
                 // Debug.Log($"Dealt {damage} damage to {enemy.name}");
+
+                // Optional: trigger on-hit effects (e.g., lifesteal, debuffs) from shooter
+                if (source != null)
+                {
+                    CharacterStats stats = source.GetComponent<CharacterStats>();
+                    if (stats != null)
+                    {
+                        stats.TriggerAttackHit(enemy.gameObject);
+                    }
+                }
             }
         }
 

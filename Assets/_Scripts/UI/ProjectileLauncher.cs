@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class ProjectileLauncher : MonoBehaviour
 {
+    public CharacterStats characterStats; // Reference to CharacterStats for damage calculation
     public GameObject projectilePrefab;    // Prefab of the projectile to be launched
     public float launchSpeed = 12f;        // Speed of the projectile
     public Transform launchPoint;          // Position to launch from
@@ -34,6 +36,8 @@ public class ProjectileLauncher : MonoBehaviour
             Projectile proj = projectile.GetComponent<Projectile>();
             if (proj != null)
             {
+                int damage = characterStats.GetDamage();
+                proj.SetDamage(damage, characterStats.gameObject); // Set damage from character stats
                 proj.Launch(direction * launchSpeed);
             }
         }
