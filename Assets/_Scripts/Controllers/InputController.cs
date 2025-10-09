@@ -7,5 +7,6 @@ public abstract class InputController : ScriptableObject
     public abstract bool RetrieveJumpHoldInput();
     public abstract bool RetrieveAttackInput();
 
-    // public override bool RetrieveAttackHoldInput();
+    // public abstract bool RetrieveRangedAttackInput();
+    // public abstract bool RetrieveAttackHoldInput();
 }

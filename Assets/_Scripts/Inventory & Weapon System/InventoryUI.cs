@@ -83,11 +83,24 @@ public class InventoryUI : MonoBehaviour
 
         if (item != null && (item.itemType == ItemType.MeleeWeapon || item.itemType == ItemType.RangedWeapon))
         {
-            descriptionText.text =
-                $"{item.itemName}\n" +
-                $"{item.description}\n" +
-                $"Damage: {item.baseDamage}";
-            SetButtonLabel("Equip");
+            if (item.itemType == ItemType.MeleeWeapon && characterStats.equippedMeleeWeapon == item)
+            {
+                descriptionText.text = $"{item.itemName}\n{item.description}\n(Equipped)";
+                SetButtonLabel("Unequip");
+            }
+            else if (item.itemType == ItemType.RangedWeapon && characterStats.equippedRangedWeapon == item)
+            {
+                descriptionText.text = $"{item.itemName}\n{item.description}\n(Equipped)";
+                SetButtonLabel("Unequip");
+            }
+            else
+            {
+                descriptionText.text =
+                    $"{item.itemName}\n" +
+                    $"{item.description}\n" +
+                    $"Damage: {item.baseDamage}";
+                SetButtonLabel("Equip");
+            }
         }
         else if (item.itemType == ItemType.Consumable)
         {

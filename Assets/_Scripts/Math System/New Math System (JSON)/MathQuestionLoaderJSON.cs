@@ -38,7 +38,7 @@ public static class MathQuestionLoaderJSON
         filtered = filtered.OrderBy(q => rng.Next()).ToList();
 
         return filtered.Take(count)
-            .Select(q => new MathQuestion(q.id, topic, difficulty, q.questionString, q.answer))
+            .Select(q => new MathQuestion(q.id, topic, difficulty, q.questionString, q.answer, q.hints))
             .ToList();
     }
 }

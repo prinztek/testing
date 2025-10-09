@@ -2,151 +2,206 @@
   "questions": [
     {
       "id": 1,
-      "questionString": "How many ways can 5 books be arranged on a shelf",
-      "type": "Permutation",
+      "questionString": "How many ways can 6 different books be arranged on a shelf?",
+      "type": "Factorials",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Arrange 5 books on a shelf",
+      "simplifiedQuestionString": "Arrange 6 books",
       "formulaNeeded": "n!",
-      "hints": ["Think about ordering", "Use factorial", "5! = 120"],
-      "answer": 120
+      "hints": ["Use factorial", "6! = 720"],
+      "answer": 720
     },
     {
       "id": 2,
-      "questionString": "How many ways can you choose 2 students out of 10",
-      "type": "Combination",
+      "questionString": "How many ways can you arrange 5 out of 7 students in a line?",
+      "type": "Permutation_Formula",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Choose 2 students from 10",
-      "formulaNeeded": "nCr",
-      "hints": ["Order doesn’t matter", "Use combination formula", "10C2 = 45"],
-      "answer": 45
+      "simplifiedQuestionString": "Arrange 5 of 7 students",
+      "formulaNeeded": "nPr",
+      "hints": ["Use permutation formula", "7P5 = 2520"],
+      "answer": 2520
     },
     {
       "id": 3,
-      "questionString": "How many different ways can 3 people be seated in a row of 5 chairs?",
-      "type": "Permutation",
+      "questionString": "How many ways can you arrange the letters in the word 'LEVEL'?",
+      "type": "Distinguishable_Permutation",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Arrange 3 people in 5 chairs",
-      "formulaNeeded": "nPr",
-      "hints": [
-        "Think about available positions",
-        "Use permutation formula",
-        "5P3 = 60"
-      ],
-      "answer": 60
+      "simplifiedQuestionString": "Arrange letters in 'LEVEL'",
+      "formulaNeeded": "n! / (p1! * p2!)",
+      "hints": ["Count repeated letters", "'L' and 'E' repeat"],
+      "answer": 30
     },
     {
       "id": 4,
-      "questionString": "In how many ways can you form a team of 4 from a group of 8 people?",
-      "type": "Combination",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Choose 4 people from 8",
-      "formulaNeeded": "nCr",
-      "hints": ["Order doesn’t matter", "Use combination formula", "8C4 = 70"],
-      "answer": 70
+      "questionString": "How many ways can 5 people sit around a circular table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 5 people in a circle",
+      "formulaNeeded": "(n-1)!",
+      "hints": ["Fix one person", "Arrange the rest", "4! = 24"],
+      "answer": 24
     },
     {
       "id": 5,
-      "questionString": "How many different ways can 7 books be arranged in a row?",
-      "type": "Permutation",
+      "questionString": "How many three-letter arrangements of the word 'EAR' can be made if the first letter is E?",
+      "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Arrange 7 books",
-      "formulaNeeded": "n!",
-      "hints": ["Think about the order", "Use factorial", "7! = 5040"],
-      "answer": 5040
+      "simplifiedQuestionString": "How many ways can you arrange 'EAR' if E is first?",
+      "formulaNeeded": "P(n, r) with restrictions",
+      "hints": [
+        "You're told the first letter is E, so start by placing E at the beginning.",
+        "How many ways can you arrange A and R?"
+      ],
+      "answer": 2
     },
     {
       "id": 6,
-      "questionString": "How many ways can you choose 3 students from a group of 5?",
-      "type": "Combination",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Choose 3 students from 5",
-      "formulaNeeded": "nCr",
-      "hints": ["Order doesn’t matter", "Use combination formula", "5C3 = 10"],
-      "answer": 10
+      "questionString": "A password consists of 3 different letters selected from A, B, C, D, E. How many such passwords can be made?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Make 3-letter password from 5 letters",
+      "formulaNeeded": "nPr",
+      "hints": ["Order matters", "5P3 = 60"],
+      "answer": 60
     },
     {
       "id": 7,
-      "questionString": "How many ways can you arrange the letters in the word 'BOOK'?",
-      "type": "Permutation",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Arrange letters in 'BOOK'",
-      "formulaNeeded": "n! / p!",
-      "hints": [
-        "Consider repeated letters",
-        "Use formula for repeated permutations",
-        "'BOOK' has 2 'O's"
-      ],
-      "answer": 12
+      "questionString": "How many ways can 3 people be seated on 8 chairs?",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Place 3 people in 8 chairs",
+      "formulaNeeded": "nPr",
+      "hints": ["8P3 = 336"],
+      "answer": 336
     },
     {
       "id": 8,
-      "questionString": "How many different 4-letter passwords can be made from the letters A, B, C, D, E, if repetition is allowed?",
-      "type": "Permutation",
+      "questionString": "How many distinct arrangements of the word 'BALLOON' are possible?",
+      "type": "Distinguishable_Permutation",
       "difficulty": "Hard",
-      "simplifiedQuestionString": "Make a 4-letter password from 5 letters",
-      "formulaNeeded": "n^r",
-      "hints": [
-        "Repetition is allowed",
-        "Use permutation with repetition",
-        "5^4 = 625"
-      ],
-      "answer": 625
+      "simplifiedQuestionString": "Arrange letters in 'BALLOON'",
+      "formulaNeeded": "n! / (p1! * p2! * ...)",
+      "hints": ["Repeated letters: L, O", "7! / (2!2!)"],
+      "answer": 1260
     },
     {
       "id": 9,
-      "questionString": "In how many ways can a committee of 3 people be selected from a group of 12 people?",
-      "type": "Combination",
+      "questionString": "How many ways can 6 friends sit in a circle if clockwise and counterclockwise are considered the same?",
+      "type": "Circular_Permutation",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Choose 3 people from 12",
-      "formulaNeeded": "nCr",
-      "hints": [
-        "Order doesn’t matter",
-        "Use combination formula",
-        "12C3 = 220"
-      ],
-      "answer": 220
+      "simplifiedQuestionString": "Arrange 6 people in a circle",
+      "formulaNeeded": "(n-1)!",
+      "hints": ["(6-1)! = 120"],
+      "answer": 120
     },
     {
       "id": 10,
-      "questionString": "How many ways can you arrange the digits in the number '112'?",
-      "type": "Permutation",
+      "questionString": "In how many ways can the digits 1, 2, 3, 4 be arranged without repeating any digit?",
+      "type": "Factorials",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Arrange digits in '112'",
-      "formulaNeeded": "n! / p!",
-      "hints": [
-        "Account for repeated digits",
-        "Use the repeated permutation formula",
-        "3! / 2! = 3"
-      ],
-      "answer": 3
+      "simplifiedQuestionString": "Arrange 4 unique digits",
+      "formulaNeeded": "n!",
+      "hints": ["4! = 24"],
+      "answer": 24
     },
     {
       "id": 11,
-      "questionString": "How many ways can you choose 5 marbles from a set of 15 marbles?",
-      "type": "Combination",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Choose 5 marbles from 15",
-      "formulaNeeded": "nCr",
-      "hints": [
-        "Order doesn’t matter",
-        "Use combination formula",
-        "15C5 = 3003"
-      ],
-      "answer": 3003
+      "questionString": "How many different ways can 3 identical balls and 2 different balls be arranged in a row?",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange balls with identicals",
+      "formulaNeeded": "n! / p!",
+      "hints": ["Use distinguishable permutation logic"],
+      "answer": 60
     },
     {
       "id": 12,
-      "questionString": "How many ways can 5 different books be arranged on a shelf if there must be at least one empty spot between any two books?",
-      "type": "Permutation",
+      "questionString": "A team of 4 must be selected from 10 people to take unique roles. How many ways can the roles be assigned?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Assign 4 unique roles to 10 people",
+      "formulaNeeded": "nPr",
+      "hints": ["10P4 = 5040"],
+      "answer": 5040
+    },
+    {
+      "id": 13,
+      "questionString": "How many ways can you arrange the letters in the word 'MISSISSIPPI'?",
+      "type": "Distinguishable_Permutation",
       "difficulty": "Hard",
-      "simplifiedQuestionString": "Arrange 5 books with gaps",
-      "formulaNeeded": "P(n, r) - (gaps constraint)",
-      "hints": [
-        "Consider gaps between books",
-        "Think about the available spots",
-        "Answer involves placement restrictions"
-      ],
+      "simplifiedQuestionString": "Arrange letters in 'MISSISSIPPI'",
+      "formulaNeeded": "n! / (p1! * p2! * ...)",
+      "hints": ["Repeated letters: S, I, P", "11! / (4!4!2!)"],
+      "answer": 34650
+    },
+    {
+      "id": 14,
+      "questionString": "How many circular arrangements are possible for 7 people around a table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Arrange 7 in circle",
+      "formulaNeeded": "(n-1)!",
+      "hints": ["Fix one seat", "Arrange others", "6! = 720"],
+      "answer": 720
+    },
+    {
+      "id": 15,
+      "questionString": "How many ways can you assign gold, silver, and bronze medals to 8 runners?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Assign top 3 ranks from 8 runners",
+      "formulaNeeded": "nPr",
+      "hints": ["8P3 = 336"],
+      "answer": 336
+    },
+    {
+      "id": 16,
+      "questionString": "How many 5-digit numbers can be formed using the digits 1, 2, 3, 4, 5 without repetition?",
+      "type": "Factorials",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Form 5-digit number from 5 digits",
+      "formulaNeeded": "n!",
+      "hints": ["5! = 120"],
       "answer": 120
+    },
+    {
+      "id": 17,
+      "questionString": "How many 3-digit numbers can be formed using digits 1–5 without repetition?",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Form 3-digit numbers from 1–5",
+      "formulaNeeded": "nPr",
+      "hints": ["5P3 = 60"],
+      "answer": 60
+    },
+    {
+      "id": 18,
+      "questionString": "How many ways can 4 people be seated such that two specific people must always sit together?",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 4 with 2 always together",
+      "formulaNeeded": "Group permutations",
+      "hints": ["Treat 2 people as a unit", "Then permute within unit"],
+      "answer": 12
+    },
+    {
+      "id": 19,
+      "questionString": "How many ways can you arrange the letters in 'STATISTICS'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "Arrange 'STATISTICS'",
+      "formulaNeeded": "n! / (p1! * ...)",
+      "hints": ["Repeated letters: S, T, I"],
+      "answer": 50400
+    },
+    {
+      "id": 20,
+      "questionString": "A manager wants to assign 3 different tasks to 5 employees. In how many ways can this be done?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Assign 3 tasks to 5 employees",
+      "formulaNeeded": "nPr",
+      "hints": ["5P3 = 60"],
+      "answer": 60
     }
   ]
 }

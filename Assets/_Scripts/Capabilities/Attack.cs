@@ -114,14 +114,14 @@ public class Attack : MonoBehaviour
         float duration = animationHandler.GetAttackAnimationLength(phase, animWeapon);
         animationHandler.PlayAttackAnimation(phase, animWeapon);
 
-        if (animWeapon == "Fist")
-        {
-            nudgeForce = 2;
-        }
-        else if (animWeapon == "Sword")
-        {
-            nudgeForce = 5;
-        }
+        // if (animWeapon == "Fist")
+        // {
+        //     nudgeForce = 2;
+        // }
+        // else if (animWeapon == "Sword")
+        // {
+        //     nudgeForce = 5;
+        // }
         ApplyAttackNudge(nudgeForce);
         lockedUntil = Time.time + duration;
 
@@ -185,7 +185,7 @@ public class Attack : MonoBehaviour
         rb.linearVelocity = new Vector2(0, 0);
         Vector2 newVelocity = rb.linearVelocity;
         newVelocity.y = rb.linearVelocity.y;
-        newVelocity.x = direction * nudgeForce;
+        newVelocity.x = direction * -nudgeForce;
 
         rb.linearVelocity = newVelocity;
     }

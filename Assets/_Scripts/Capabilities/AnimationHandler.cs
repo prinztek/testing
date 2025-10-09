@@ -12,17 +12,45 @@ public class AnimationHandler : MonoBehaviour
     private float hurtLockTimer = 0f;
     private float attackLockTimer = 0f;
 
+    // private void Update()
+    // {
+    //     if (attackLockTimer > 0f)
+    //     {
+    //         attackLockTimer -= Time.deltaTime;
+    //         return;
+    //     }
+
+    //     if (hurtLockTimer > 0f)
+    //     {
+    //         hurtLockTimer -= Time.deltaTime;
+    //         return;
+    //     }
+
+    //     if (hurt != null && hurt.IsHurt()) return;
+
+    //     HandleMovementAnimation();
+    // }
     private void Update()
     {
         if (attackLockTimer > 0f)
         {
             attackLockTimer -= Time.deltaTime;
+
+            // When attack lock ends this frame, immediately refresh animation
+            if (attackLockTimer <= 0f)
+                HandleMovementAnimation();
+
             return;
         }
 
         if (hurtLockTimer > 0f)
         {
             hurtLockTimer -= Time.deltaTime;
+
+            // When hurt lock ends this frame, immediately refresh animation
+            if (hurtLockTimer <= 0f)
+                HandleMovementAnimation();
+
             return;
         }
 

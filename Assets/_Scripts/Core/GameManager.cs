@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -5,7 +6,8 @@ public class GameManager : MonoBehaviour
     // Singleton instance
     // Ensures only one instance of GameManager exists in the scene
     private static GameManager instance;
-
+    public GameState State;
+    public static event Action<GameState> OnGameStateChanged;
     public static GameManager Instance
     {
         get
@@ -15,60 +17,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [Header("Input Controllers")]
-    public InputController playerController; // PC input
-    public InputController mobileController; // Mobile input
-
-    [Header("Player Object")]
-    public GameObject player; // Drag your player GameObject here
-
-    [Header("Onscreen Controls")]
-    public GameObject onScreenControlsUI; // Drag your player Onscreen Controls UI here
-    void Start()
+    public void updateGameState(GameState newState)
     {
-        // Runtime platform check is more reliable for your use case
-        if (Application.isMobilePlatform)
+        State = newState;
+        switch (newState)
         {
-            onScreenControlsUI.SetActive(true); // Activate onscreen controls
-            AssignInput(mobileController);
+            case GameState.Playing:
+                // Implement pause logic here
+                break;
+            case GameState.Paused:
+                // Implement pause logic here
+                break;
+            case GameState.Victory:
+                // Implement victory logic here
+                break;
+            case GameState.Lose:
+                // Implement game over logic here
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-        else
-        {
-            AssignInput(playerController);
-        }
+        // Implement state change logic here (e.g., pause game, show UI, etc.)
+        // notify other systems of state change if necessary
+        OnGameStateChanged?.Invoke(newState);
     }
 
+    // HANDLE GAME STATES (PAUSE, GAME OVER, ETC.) HERE
 
-    void AssignInput(InputController controller)
+    public enum GameState
     {
-        // Debug.Log("Assigning input controller: " + controller?.name);
-
-        if (player == null)
-        {
-            // Debug.LogWarning("Player not assigned in GameManager.");
-            return;
-        }
-
-        foreach (var comp in player.GetComponents<MonoBehaviour>())
-        {
-            // Debug.Log("Checking component: " + comp.GetType());
-
-            if (comp is Move move)
-            {
-                move.input = controller;
-                // Debug.Log("Assigned to Move");
-            }
-            if (comp is Jump jump)
-            {
-                jump.input = controller;
-                // Debug.Log("Assigned to Jump");
-            }
-            if (comp is Attack attack)
-            {
-                attack.input = controller;
-                // Debug.Log("Assigned to Attack");
-            }
-        }
+        Playing,
+        Paused,
+        Victory,
+        Lose
     }
-
 }

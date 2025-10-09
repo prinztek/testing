@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject levelCompleteUIPanel; // Assign in inspector
     public GameObject levelFailedUIPanel;   // Assign in inspector
-    public GameObject GrimoireUIPanel;   // Assign in inspector
+    public GameObject grimoirePanel;   // Assign in inspector
     public GameObject endpoint;             // Exit object
     [SerializeField] private GameObject pauseMenuUI; // Pause menu UI
     [SerializeField] private CharacterStats playerStats;
@@ -97,26 +97,30 @@ public class LevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            OpenOrCloseGrimoire();
+        }
+    }
+
+    public void OpenOrCloseGrimoire()
+    {
+        bool isOpen = grimoirePanel.activeSelf;
+        if (!isOpen) // Only toggle pause menu if Grimoire is not open
+        {
             TogglePauseMenu();
         }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
+        else if (grimoirePanel.activeSelf) // If Grimoire is open, close it
         {
             ToggleGrimoire();
         }
     }
-
     private void ToggleGrimoire()
     {
-        if (GrimoireUIPanel != null)
+        if (grimoirePanel != null)
         {
-            bool isOpening = !GrimoireUIPanel.activeSelf;
-            GrimoireUIPanel.SetActive(isOpening);
+            bool isOpen = !grimoirePanel.activeSelf;
+            grimoirePanel.SetActive(isOpen);
 
-            if (MathUICanvas != null)
-                MathUICanvas.SetActive(!isOpening); // Hide math UI when Grimoire opens
-
-            if (isOpening)
+            if (isOpen)
                 PauseGame();
             else
                 ResumeGame();
