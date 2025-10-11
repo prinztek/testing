@@ -3,13 +3,41 @@ using UnityEngine.UI;
 
 public class MobileInputUIHandler : MonoBehaviour
 {
-    CharacterStats characterStats; // assign in inspector
+    public CharacterStats characterStats; // assign in inspector
     public MobileInputController mobileController;
     public Joystick joystick; // use any floating/fixed joystick from asset store or custom
     public Button jumpButton;
     public Button attackButton;
     public Button swapWeaponButton; // ← single weapon swap button
+    public Sprite meleeSprite; // assign in inspector
+    public Sprite rangedSprite; // assign in inspector
+    private Image attackButtonImage;
 
+    void Awake()
+    {
+        // Ensure attackButton is assigned and has an Image component
+        if (attackButton != null)
+        {
+            attackButtonImage = attackButton.GetComponent<Image>();
+            if (attackButtonImage == null)
+            {
+                Debug.LogError("Attack Button does not have an Image component attached. Please add one.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Attack Button is not assigned in the Inspector.");
+        }
+    }
+
+    void Start()
+    {
+        // You can also add an additional check here in case of any issues in the Inspector
+        if (attackButtonImage == null)
+        {
+            Debug.LogError("Attack Button Image component is still null at Start. Make sure it's assigned.");
+        }
+    }
     void Update()
     {
         if (mobileController == null) return;
@@ -39,26 +67,33 @@ public class MobileInputUIHandler : MonoBehaviour
         mobileController.mobileAttackInput = true;
     }
 
-    // public void OnSwapWeaponPressed()
-    // {
-    //     if (characterStats == null) return;
+    public void OnSwapWeaponPressed()
+    {
+        // Swap attack mode (melee/ranged)
+        characterStats.TryToggleAttackMode();
 
-    //     var current = characterStats.currentWeapon;
-    //     CharacterStats.WeaponType nextWeapon;
+        // Update attack button sprite based on the new attack mode
+        UpdateAttackButtonSprite();
+    }
 
-    //     switch (current)
-    //     {
-    //         case CharacterStats.WeaponType.Fist:
-    //             nextWeapon = CharacterStats.WeaponType.Sword;
-    //             break;
-    //         case CharacterStats.WeaponType.Sword:
-    //             nextWeapon = CharacterStats.WeaponType.Bow;
-    //             break;
-    //         default:
-    //             nextWeapon = CharacterStats.WeaponType.Fist;
-    //             break;
-    //     }
+    public void onGrimoirePressed()
+    {
+        // Open the grimoire UI
+        // Implement your grimoire opening logic here
+    }
 
-    //     characterStats.ChangeWeapon(nextWeapon);
-    // }
+    private void UpdateAttackButtonSprite()
+    {
+        if (characterStats == null || attackButtonImage == null) return;
+
+        switch (characterStats.currentAttackMode)
+        {
+            case CharacterStats.AttackMode.Melee:
+                attackButtonImage.sprite = meleeSprite;
+                break;
+            case CharacterStats.AttackMode.Ranged:
+                attackButtonImage.sprite = rangedSprite;
+                break;
+        }
+    }
 }

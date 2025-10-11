@@ -15,6 +15,7 @@ public class Jump : MonoBehaviour
     private CharacterStats stats;
 
     public ParticleSystem jumpParticles;
+    public ParticleSystem landParticles;
 
     // private Controller _controller;
     private Rigidbody2D _body;

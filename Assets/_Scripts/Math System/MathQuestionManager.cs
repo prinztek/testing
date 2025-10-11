@@ -193,7 +193,6 @@ public class MathQuestionManager : MonoBehaviour
             hintButton.interactable = true;
             hintText.text = "Hints:";
             hintUsedCounter = 0;
-            Grimoire.SetActive(false);
         }
         else
         {

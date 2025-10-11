@@ -99,6 +99,11 @@ public class LevelManager : MonoBehaviour
         {
             OpenOrCloseGrimoire();
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleGrimoire();
+        }
     }
 
     public void OpenOrCloseGrimoire()

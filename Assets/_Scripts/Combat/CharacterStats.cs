@@ -153,7 +153,7 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    private void TryToggleAttackMode()
+    public void TryToggleAttackMode()
     {
         if (currentAttackMode == AttackMode.Melee && equippedRangedWeapon != null)
         {

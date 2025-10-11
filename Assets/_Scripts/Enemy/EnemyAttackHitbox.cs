@@ -3,6 +3,8 @@ using UnityEngine;
 public class EnemyAttackHitbox : MonoBehaviour
 {
     private EnemyStatsNew enemyStats;
+    // Refactor this later
+
 
     private void Awake()
     {
@@ -14,6 +16,8 @@ public class EnemyAttackHitbox : MonoBehaviour
         {
             Debug.LogError("EnemyStatsNew component not found on parent objects!");
         }
+
+
     }
 
 
@@ -32,6 +36,7 @@ public class EnemyAttackHitbox : MonoBehaviour
                 playerStats.TakeDamage(enemyStats.damage, transform.root.position);
                 // Optional: Apply additional effects like knockback or status effects
             }
+
         }
     }
 }
