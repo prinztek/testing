@@ -34,9 +34,7 @@ public class CharacterStats : MonoBehaviour
     [Header("Crafting Related")]
     public int gold = 0; // Player's gold for crafting
     private Buff activeBuff = null;
-    private BuffInstance activeBuffInstance = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
-    private Queue<ScriptableObjectBuff> buffQueueInstance = new Queue<ScriptableObjectBuff>();
     public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
     public event AttackEvent OnAttackHit;
     private bool isDead = false;
@@ -81,12 +79,20 @@ public class CharacterStats : MonoBehaviour
         UnlockSkill(SkillType.IceShield);
         UnlockSkill(SkillType.LightningDash);
     }
+    public TrailRenderer trail;
 
     private void Update()
     {
         // Buff system
         if (activeBuff != null)
         {
+            if (activeBuff.buffName == "Haste")
+            {
+                // Debug.Log($"Current Move Speed Multiplier: {moveSpeedMultiplier}, Attack Speed Multiplier: {attackSpeedMultiplier}");
+                // animationHandler.SetAnimationSpeed(2);  // speed buff on
+                trail.enabled = true; // enable trail effect
+            }
+
             activeBuff.Update(Time.deltaTime);
             buffUIManager?.UpdateBuffSlot(activeBuff);
 
@@ -96,29 +102,10 @@ public class CharacterStats : MonoBehaviour
                 buffUIManager?.RemoveBuffUI(activeBuff);
                 ResetTemporaryModifiers();
                 activeBuff = null;
-
+                trail.enabled = false;
                 if (buffQueue.Count > 0)
                 {
                     ApplyBuff(buffQueue.Dequeue());
-                }
-            }
-        }
-
-        if (activeBuffInstance != null)
-        {
-            activeBuffInstance.Update(Time.deltaTime);
-            buffUIManager?.UpdateBuffSlot(activeBuffInstance);
-
-            if (activeBuffInstance.isExpired)
-            {
-                activeBuffInstance.OnExpire();
-                buffUIManager?.RemoveBuffUI(activeBuffInstance);
-                ResetTemporaryModifiers();
-                activeBuffInstance = null;
-
-                if (buffQueueInstance.Count > 0)
-                {
-                    ApplyScriptableBuff(buffQueueInstance.Dequeue());
                 }
             }
         }
@@ -260,20 +247,6 @@ public class CharacterStats : MonoBehaviour
         Debug.Log($"✨ Applied buff: {buff.GetType().Name}");
     }
 
-    public void ApplyScriptableBuff(ScriptableObjectBuff buffSO)
-    {
-        ResetTemporaryModifiers();
-
-        // Create runtime instance and assign
-        BuffInstance instance = buffSO.CreateInstance(this);
-        activeBuffInstance = instance;
-        instance.OnApply();
-
-        // Optional: UI hookup
-        buffUIManager?.AddBuffUI(instance);
-
-        Debug.Log($"✨ Applied Scriptable Buff: {buffSO.name}");
-    }
 
     public void ResetTemporaryModifiers()
     {
@@ -282,6 +255,7 @@ public class CharacterStats : MonoBehaviour
         moveSpeedMultiplier = 1f;
         attackSpeedMultiplier = 1f;
         guaranteedCrits = 0;
+        animationHandler.SetAnimationSpeed(1f);
     }
 
     public void TakeDamage(int damage, Vector2 attackerPosition)

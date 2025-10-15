@@ -14,11 +14,11 @@ public static class MathQuestionLoaderJSON
         if (jsonFile != null)
         {
             database = JsonUtility.FromJson<MathQuestionDatabaseJSON>(jsonFile.text);
-            Debug.Log("📘 Loaded " + database.questions.Length + " math questions.");
+            // Debug.Log("📘 Loaded " + database.questions.Length + " math questions.");
         }
         else
         {
-            Debug.LogError("❌ MathQuestions.json not found in Resources!");
+            // Debug.LogError("❌ MathQuestions.json not found in Resources!");
             database = new MathQuestionDatabaseJSON { questions = new MathQuestionJSON[0] };
         }
     }

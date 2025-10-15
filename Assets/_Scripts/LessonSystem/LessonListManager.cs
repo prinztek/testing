@@ -55,7 +55,7 @@ public class LessonListManager : MonoBehaviour
 
     void OnLessonButtonClicked(string moduleId)
     {
-        Debug.Log($"📘 Selected: {moduleId}");
+        // Debug.Log($"📘 Selected: {moduleId}");
         lessonManager.LoadLesson(moduleId);
     }
 }

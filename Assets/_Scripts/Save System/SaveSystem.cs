@@ -9,7 +9,7 @@ public static class SaveSystem
         string json = JsonUtility.ToJson(data);
         PlayerPrefs.SetString(SaveKey, json);
         PlayerPrefs.Save();
-        Debug.Log("💾 Saved game data: " + json);
+        // Debug.Log("💾 Saved game data: " + json);
     }
 
     public static SaveData Load()
@@ -18,11 +18,11 @@ public static class SaveSystem
         {
             string json = PlayerPrefs.GetString(SaveKey);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
-            Debug.Log("📂 Loaded game data: " + json);
+            // Debug.Log("📂 Loaded game data: " + json);
             return data;
         }
 
-        Debug.Log("⚠️ No save found, creating new SaveData.");
+        // Debug.Log("⚠️ No save found, creating new SaveData.");
         return new SaveData();
     }
 

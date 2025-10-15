@@ -57,53 +57,6 @@ public class BuffUIManager : MonoBehaviour
         }
     }
 
-    // ===== NEW SCRIPTABLE BUFF SUPPORT =====
-    public void AddBuffUI(BuffInstance buffInstance)
-    {
-        if (buffSlots.ContainsKey(buffInstance)) return;
-
-        GameObject slot = Instantiate(buffSlotPrefab, buffPanel);
-        buffSlots[buffInstance] = slot;
-
-        UpdateBuffSlot(buffInstance);
-    }
-
-    public void RemoveBuffUI(BuffInstance buffInstance)
-    {
-        if (buffSlots.TryGetValue(buffInstance, out GameObject slot))
-        {
-            Destroy(slot);
-            buffSlots.Remove(buffInstance);
-        }
-    }
-
-    public void UpdateBuffSlot(BuffInstance buffInstance)
-    {
-        if (!buffSlots.ContainsKey(buffInstance)) return;
-
-        GameObject slot = buffSlots[buffInstance];
-
-        TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
-        if (text != null)
-        {
-            text.text = buffInstance.GetUIDisplay();
-        }
-
-        Image icon = slot.transform.Find("Icon")?.GetComponent<Image>();
-        if (icon != null)
-        {
-            icon.sprite = buffInstance.GetIcon();
-        }
-    }
-
-    public void UpdateAll(List<BuffInstance> activeBuffInstances)
-    {
-        foreach (var buffInstance in activeBuffInstances)
-        {
-            UpdateBuffSlot(buffInstance);
-        }
-    }
-
     // ===== Utility to Clear All UI =====
     public void ClearAll()
     {

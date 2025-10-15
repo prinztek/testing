@@ -60,7 +60,7 @@ public class EnemyStatsNew : MonoBehaviour
     public void TakeDamage(int amount, Vector2 attackerPosition, bool doScreenShake = true)
     {
         if (isDead || isInvincible) return;
-        Debug.Log($"TakeDamage called with: {amount}");
+        // Debug.Log($"TakeDamage called with: {amount}");
 
         currentHealth -= amount;  // Decrease health by the damage amount
 
@@ -184,7 +184,7 @@ public class EnemyStatsNew : MonoBehaviour
         if (animator != null)
             animator.CrossFade("enemydead", 0.1f);
         // Spawn Drop Item
-        Debug.Log("Spawn Drop Item");
+        // Debug.Log("Spawn Drop Item");
         foreach (DropItem dropItem in dropTable)
         {
             InstantiateLoot(dropItem);

@@ -16,13 +16,13 @@ public class HasteBuff : Buff
     {
         target.moveSpeedMultiplier *= moveSpeedBoost;
         target.attackSpeedMultiplier *= attackSpeedBoost;
-        Debug.Log($"⚡ Haste applied! Speed x{moveSpeedBoost}, Attack Speed x{attackSpeedBoost}");
+        // Debug.Log($"⚡ Haste applied! Speed x{moveSpeedBoost}, Attack Speed x{attackSpeedBoost}");
     }
 
     public override void OnExpire()
     {
         target.moveSpeedMultiplier /= moveSpeedBoost;
         target.attackSpeedMultiplier /= attackSpeedBoost;
-        Debug.Log("⚡ Haste expired.");
+        // Debug.Log("⚡ Haste expired.");
     }
 }

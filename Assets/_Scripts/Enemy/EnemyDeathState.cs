@@ -49,7 +49,7 @@ public class EnemyDeathState : EnemyBaseState
             }
         }
 
-        Debug.Log("Entered EnemyDeathState.");
+        // Debug.Log("Entered EnemyDeathState.");
     }
 
     public override void UpdateState(EnemyStateMachine enemy)

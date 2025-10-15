@@ -13,6 +13,7 @@ public class Attack : MonoBehaviour
     [Header("Weapon Combo Windows")]
     [SerializeField] private float fistComboWindow = 0.2f;
     [SerializeField] private float swordComboWindow = 0.35f;
+    [SerializeField] private float airSwordComboWindow = 0.35f;
 
     [Header("Input Buffering")]
     [SerializeField, Range(0f, 0.5f)] private float inputBufferDuration = 0.2f;
@@ -31,6 +32,10 @@ public class Attack : MonoBehaviour
     private bool inputReady = false;
     private bool isInPostCooldown = false;
     private Ground _ground;
+    private bool hasAirAttacked = false;
+    private bool isAirAttacking = false;
+
+    private bool wasGrounded = true;
 
     private void Awake()
     {
@@ -56,7 +61,8 @@ public class Attack : MonoBehaviour
         if (stats.IsDead()) return;
         if (!inputReady || input == null || isInPostCooldown) return;
         if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
-        if (!_ground.OnGround) return;
+
+        // if (!_ground.OnGround) return; // Only allow attacks on ground for now
 
         if (input.RetrieveAttackInput())
         {
@@ -67,11 +73,13 @@ public class Attack : MonoBehaviour
 
         bool hasBufferedInput = Time.time - lastBufferedInputTime <= inputBufferDuration;
 
+        if (!hasBufferedInput) return;
+
         if (stats.currentAttackMode == CharacterStats.AttackMode.Ranged)
         {
-            if (hasBufferedInput && stats.HasRangedWeaponEquipped())
+            if (stats.HasRangedWeaponEquipped())
             {
-                PerformRangedAttack(); // One-shot action
+                PerformRangedAttack();
                 lastBufferedInputTime = -1f;
             }
         }
@@ -92,18 +100,32 @@ public class Attack : MonoBehaviour
                 StartAttack(3);
                 lastBufferedInputTime = -1f;
             }
+
+            if (!_ground.OnGround && !hasAirAttacked && !isAirAttacking && IsSwordEquipped() && CharacterStats.AttackMode.Melee == stats.currentAttackMode && hasBufferedInput)
+            {
+                StartAirAttack();
+                lastBufferedInputTime = -1f;
+            }
+
+
+
         }
     }
 
-    private void PerformRangedAttack()
+
+    private void LateUpdate()
     {
-        float duration = animationHandler.GetAttackAnimationLength(1, "bow");
-        animationHandler.PlayAttackAnimation(1, "bow");
-        lockedUntil = Time.time + duration;
-        isInPostCooldown = true;
-        Invoke(nameof(ResetPostCooldown), duration + postComboCooldown);
-        // Debug.Log("🏹 Performed ranged attack");
+        if (!wasGrounded && _ground.OnGround)
+        {
+            hasAirAttacked = false;
+        }
+
+        wasGrounded = _ground.OnGround;
     }
+
+
+
+
 
     private void StartAttack(int phase)
     {
@@ -112,16 +134,8 @@ public class Attack : MonoBehaviour
 
         string animWeapon = GetWeaponAnimType(); // "Fist" or "Sword"
         float duration = animationHandler.GetAttackAnimationLength(phase, animWeapon);
-        animationHandler.PlayAttackAnimation(phase, animWeapon);
+        animationHandler.PlayAttackAnimation(phase, animWeapon, !_ground.OnGround); // handles only the animation
 
-        // if (animWeapon == "Fist")
-        // {
-        //     nudgeForce = 2;
-        // }
-        // else if (animWeapon == "Sword")
-        // {
-        //     nudgeForce = 5;
-        // }
         ApplyAttackNudge(nudgeForce);
         lockedUntil = Time.time + duration;
 
@@ -137,7 +151,38 @@ public class Attack : MonoBehaviour
             canCombo = true;
         }
     }
+    private void StartAirAttack()
+    {
+        hasAirAttacked = true;
+        isAirAttacking = true;
 
+        string animWeapon = GetWeaponAnimType();
+        float duration = 0.333f; // Or get from animationHandler if needed
+
+        animationHandler.PlayAttackAnimation(1, animWeapon, true);
+
+        ApplyAttackNudge(nudgeForce);
+
+        lockedUntil = Time.time + duration;
+        isInPostCooldown = true;
+
+        Invoke(nameof(EndAirAttack), duration + postComboCooldown);
+    }
+
+    private void EndAirAttack()
+    {
+        isAirAttacking = false;
+        isInPostCooldown = false;
+        ResetCombo();
+    }
+    private void PerformRangedAttack()
+    {
+        float duration = animationHandler.GetAttackAnimationLength(1, "bow");
+        animationHandler.PlayAttackAnimation(1, "bow");
+        lockedUntil = Time.time + duration;
+        isInPostCooldown = true;
+        Invoke(nameof(ResetPostCooldown), duration + postComboCooldown);
+    }
     private void ResetPostCooldown()
     {
         isInPostCooldown = false;
@@ -167,6 +212,8 @@ public class Attack : MonoBehaviour
     // Called by animation event
     public void EnableCombo()
     {
+        if (!_ground.OnGround) return; // No combo enabling in air
+
         canCombo = true;
         CancelInvoke(nameof(ClearBufferedInput));
         Invoke(nameof(ClearBufferedInput), GetCurrentComboWindow());
@@ -185,7 +232,7 @@ public class Attack : MonoBehaviour
         rb.linearVelocity = new Vector2(0, 0);
         Vector2 newVelocity = rb.linearVelocity;
         newVelocity.y = rb.linearVelocity.y;
-        newVelocity.x = direction * -nudgeForce;
+        newVelocity.x = direction * nudgeForce;
 
         rb.linearVelocity = newVelocity;
     }
@@ -203,11 +250,11 @@ public class Attack : MonoBehaviour
 
     private int GetMaxComboPhase()
     {
-        return IsSwordEquipped() ? 3 : 2;
+        return IsSwordEquipped() ? _ground.OnGround ? 3 : 1 : 2;
     }
 
     private float GetCurrentComboWindow()
     {
-        return IsSwordEquipped() ? swordComboWindow : fistComboWindow;
+        return IsSwordEquipped() ? (_ground.OnGround ? swordComboWindow : airSwordComboWindow) : fistComboWindow;
     }
 }

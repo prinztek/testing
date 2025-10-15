@@ -12,24 +12,6 @@ public class AnimationHandler : MonoBehaviour
     private float hurtLockTimer = 0f;
     private float attackLockTimer = 0f;
 
-    // private void Update()
-    // {
-    //     if (attackLockTimer > 0f)
-    //     {
-    //         attackLockTimer -= Time.deltaTime;
-    //         return;
-    //     }
-
-    //     if (hurtLockTimer > 0f)
-    //     {
-    //         hurtLockTimer -= Time.deltaTime;
-    //         return;
-    //     }
-
-    //     if (hurt != null && hurt.IsHurt()) return;
-
-    //     HandleMovementAnimation();
-    // }
     private void Update()
     {
         if (attackLockTimer > 0f)
@@ -58,12 +40,37 @@ public class AnimationHandler : MonoBehaviour
 
         HandleMovementAnimation();
     }
+    // *********************************************************************************
+
+    private float normalAnimatorSpeed = 1f;
+
+    // Call this to change animation playback speed, e.g. when buff applied
+    public void SetAnimationSpeed(float speed)
+    {
+        animator.speed = speed;
+    }
+
+    // Optional: Reset speed to normal
+    public void ResetAnimationSpeed()
+    {
+        animator.speed = normalAnimatorSpeed;
+    }
+    // *********************************************************************************
 
     private void HandleMovementAnimation()
     {
         bool onGround = ground.OnGround;
-        float horizontal = Mathf.Abs(rb.linearVelocity.x);
-        float vertical = rb.linearVelocity.y;
+        // Get world velocity first
+        Vector2 velocity = rb.linearVelocity;
+
+        // If standing on a moving platform, subtract its motion
+        if (ground.CurrentPlatform != null)
+        {
+            velocity.x -= ground.CurrentPlatform.Velocity.x;
+        }
+
+        float horizontal = Mathf.Abs(velocity.x);
+        float vertical = velocity.y;
 
         if (!onGround)
         {
@@ -74,6 +81,7 @@ public class AnimationHandler : MonoBehaviour
             ChangeAnimation(horizontal > 0.1f ? "running" : "idle");
         }
     }
+
 
     public void PlayDeadAnimation(float animationLength = 0.33f)
     {
@@ -86,12 +94,12 @@ public class AnimationHandler : MonoBehaviour
     }
 
     // ✅ Now takes string for weapon type ("fist", "sword", etc.)
-    public void PlayAttackAnimation(int phase, string weaponType)
+    public void PlayAttackAnimation(int phase, string weaponType, bool isAirAttack = false)
     {
         string animName = weaponType.ToLower() switch
         {
-            "sword" => $"sword_attack{phase}",
-            "bow" => $"bow_attack{phase}",
+            "sword" => isAirAttack ? $"air_sword_attack{phase}" : $"sword_attack{phase}",
+            "bow" => isAirAttack ? $"air_bow_attack{phase}" : $"bow_attack{phase}", // currently unused - no air bow attack
             _ => $"attack{phase}" // default is fist
         };
 
@@ -108,7 +116,6 @@ public class AnimationHandler : MonoBehaviour
 
     public float GetHurtAnimationLength() => GetAnimationLength("hurt");
     public float GetDeathAnimationLength() => GetAnimationLength("dead");
-
     public float GetAttackAnimationLength(int phase, string weaponType)
     {
         string animName = weaponType.ToLower() switch
@@ -119,7 +126,6 @@ public class AnimationHandler : MonoBehaviour
         };
         return GetAnimationLength(animName);
     }
-
     private float GetAnimationLength(string name)
     {
         foreach (var clip in animator.runtimeAnimatorController.animationClips)

@@ -18,12 +18,14 @@ public class Move : MonoBehaviour
     private float _lastDirectionX = 0f;
     private bool _onGround;
 
+    private Rigidbody2D _platformRb;  // Track the platform's Rigidbody2D
+    private Vector2 _lastPlatformPosition;
+
     private void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
         _ground = GetComponent<Ground>();
         stats = GetComponent<CharacterStats>();
-
     }
 
     private void Update()
@@ -36,17 +38,19 @@ public class Move : MonoBehaviour
 
         _direction.x = input.RetrieveMoveInput();
 
-        // ⛔ Prevent input movement while attacking
+        // Prevent input movement while attacking
         if (attack != null && attack.IsAttacking())
         {
             _desiredVelocity = Vector2.zero;
             return;
         }
+
         float effectiveMaxSpeed = _maxSpeed * stats.moveSpeedMultiplier;
         _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(effectiveMaxSpeed - _ground.Friction, 0f);
-
     }
 
+    private Vector2 _lastPlatformVelocity;
+    [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
     private void FixedUpdate()
     {
         if (stats.IsDead())
@@ -55,23 +59,83 @@ public class Move : MonoBehaviour
             return;
         }
 
+
         _onGround = _ground.OnGround;
         _velocity = _body.linearVelocity;
 
-        // ✅ Let attack nudge stay, but optionally slow it down
+        Vector2 platformVelocity = Vector2.zero;
+
+        if (_ground.CurrentPlatform != null)
+        {
+            platformVelocity = (Vector2)_ground.CurrentPlatform.Velocity; // access platform velocity            
+            // Only horizontal movement affects player
+            platformVelocity.y = 0f;
+            Debug.Log("On platform, using velocity: " + platformVelocity);
+        }
+
+
+        // Attack sliding logic
         if (attack != null && attack.IsAttacking())
         {
-            // Optional: smooth slide stop
             _velocity.x = Mathf.MoveTowards(_velocity.x, 0f, 20f * Time.deltaTime);
             _body.linearVelocity = _velocity;
             return;
         }
 
-        _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration;
-        _maxSpeedChange = _acceleration * Time.deltaTime;
+        // is there a significant change in platform velocity?
+        if (platformVelocity != _lastPlatformVelocity)
+        {
+            Vector2 deltaVelocity = platformVelocity - _lastPlatformVelocity;
+            if (Mathf.Abs(deltaVelocity.x) > platformVelocityThreshold)
+            {
+                // Apply the change in platform velocity to the player
+                _velocity += deltaVelocity;
+                _body.linearVelocity = _velocity;
+                Debug.Log("Platform velocity changed significantly, applying delta: " + deltaVelocity);
+            }
+            _lastPlatformVelocity = platformVelocity;
+        }
 
-        _velocity.x = Mathf.MoveTowards(_velocity.x, _desiredVelocity.x, _maxSpeedChange);
+        _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration; // sets the acceleration based on whether the player is on the ground or in the air
+        _maxSpeedChange = _acceleration * Time.deltaTime; // calculates the maximum change in speed allowed this frame
+
+        // Compute the player’s intended velocity relative to platform motion
+        float targetVelocityX = _desiredVelocity.x + platformVelocity.x;
+
+        // Smoothly adjust the player’s velocity towards the target velocity
+        _velocity.x = Mathf.MoveTowards(_velocity.x, targetVelocityX, _maxSpeedChange);
         _body.linearVelocity = _velocity;
+
+    }
+
+    // This method tracks the platform's movement and calculates the relative velocity
+    private void HandlePlatformMovement()
+    {
+        if (_onGround && _ground.CurrentPlatform != null)
+        {
+            // Get the platform's Rigidbody2D (moving platform)
+            var platformRb = _ground.CurrentPlatform.GetComponent<Rigidbody2D>();
+
+            if (platformRb != null)
+            {
+                // If this is the first time touching this platform, initialize the position
+                if (platformRb != _platformRb)
+                {
+                    _platformRb = platformRb;
+                    _lastPlatformPosition = _platformRb.position;
+                }
+
+                // Calculate the movement of the platform since the last frame
+                Vector2 platformMovement = _platformRb.position - _lastPlatformPosition;
+                Vector2 platformVelocity = platformMovement / Time.fixedDeltaTime;
+
+                // Adjust the player's velocity based on the platform's velocity
+                _velocity.x += platformVelocity.x;
+
+                // Update the last platform position
+                _lastPlatformPosition = _platformRb.position;
+            }
+        }
     }
 
     private void LateUpdate()
@@ -115,5 +179,4 @@ public class Move : MonoBehaviour
         if (_body != null)
             _body.linearVelocity = Vector2.zero;
     }
-
 }

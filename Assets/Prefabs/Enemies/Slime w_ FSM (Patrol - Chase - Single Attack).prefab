@@ -128,6 +128,7 @@ MonoBehaviour:
   animator: {fileID: 2035313614260534448}
   spriteRenderer: {fileID: 262182917609090022}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
+  hitImpactPrefab: {fileID: 0}
   maxHealth: 50
   moveSpeed: 2
   touchDamage: 5
@@ -141,6 +142,9 @@ MonoBehaviour:
   canChase: 1
   canComboAttack: 0
   maxComboPhase: 3
+  damage: 5
+  dropTable: []
+  pickupPrefab: {fileID: 0}
 --- !u!114 &4540356103894473220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,10 +180,15 @@ MonoBehaviour:
   rb: {fileID: 0}
   animator: {fileID: 0}
   player: {fileID: 0}
+  movingRight: 1
   isFacingRight: 1
+  lastHitDirection: {x: 0, y: 0}
+  knockbackForce: 1
+  verticalForce: 0
   attackCollider: {fileID: 4654284280013425099}
   showChaseRange: 1
   showAttackRange: 1
+  sensor: {fileID: 0}
 --- !u!114 &1152192345208515348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,7 +314,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1284768831970893267}
   - component: {fileID: 277070765844613171}
-  - component: {fileID: 1001244158620276459}
   m_Layer: 7
   m_Name: HurtBox
   m_TagString: Hurtbox
@@ -374,19 +382,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.95, y: 0.6}
   m_EdgeRadius: 0
---- !u!114 &1001244158620276459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3339051258588755594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c2ac006e53eb9942ae938309360238e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown: 0.5
 --- !u!1 &4654284280013425099
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfdbdb478747c0d4bb031073de74f321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
 --- !u!1 &8640840043433167712
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +528,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -555,6 +551,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

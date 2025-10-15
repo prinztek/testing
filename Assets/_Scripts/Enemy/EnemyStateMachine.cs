@@ -106,4 +106,24 @@ public class EnemyStateMachine : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, stats.AttackRange);
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (stats == null) return;
+
+        Gizmos.color = Color.violet;
+
+        // Draw the actual horizontal attack range
+        Gizmos.DrawWireSphere(transform.position, stats.AttackRange);
+
+        // ALSO draw the "vertical window" for attack
+        Vector3 top = transform.position + Vector3.up * 3f;
+        Vector3 bottom = transform.position + Vector3.down * 3f;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, top + Vector3.right * stats.AttackRange);
+        Gizmos.DrawLine(bottom + Vector3.left * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
+        Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, bottom + Vector3.left * stats.AttackRange);
+        Gizmos.DrawLine(top + Vector3.right * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
+    }
+
 }

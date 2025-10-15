@@ -11,7 +11,7 @@ public class EnemyAttackState : EnemyBaseState
         lastAttackTime = Time.time - enemy.stats.attackCooldown; // Allow immediate attack
         enemy.rb.linearVelocity = Vector2.zero;
 
-        Debug.Log("Entered Attack State");
+        // Debug.Log("Entered Attack State");
     }
 
     public override void UpdateState(EnemyStateMachine enemy)
@@ -19,10 +19,11 @@ public class EnemyAttackState : EnemyBaseState
         if (enemy.stats == null || enemy.player == null || enemy.stats.IsDead) return;
 
         float distance = Vector2.Distance(enemy.transform.position, enemy.player.position);
-        float verticalDiff = Mathf.Abs(enemy.transform.position.y - enemy.player.position.y);
+        // REMOVED: verticalDiff calculation
 
         // If player moved out of attack range, go back to chase
-        if ((distance > enemy.stats.AttackRange || verticalDiff > 1f) && !isAttacking)
+        // REMOVED: verticalDiff check
+        if (distance > enemy.stats.AttackRange && !isAttacking)
         {
             enemy.TransitionToState(enemy.chaseState);
             return;
@@ -51,11 +52,12 @@ public class EnemyAttackState : EnemyBaseState
         isAttacking = false;
 
         float distance = Vector2.Distance(enemy.transform.position, enemy.player.position);
-        float verticalDiff = Mathf.Abs(enemy.transform.position.y - enemy.player.position.y);
+        // REMOVED: verticalDiff calculation
 
         if (enemy.stats.IsDead || enemy.player == null) yield break;
 
-        if (enemy.stats.canChase && distance <= enemy.stats.DetectionRange && verticalDiff <= 1f)
+        // REMOVED: verticalDiff check
+        if (enemy.stats.canChase && distance <= enemy.stats.DetectionRange)
         {
             // Still within range → chase again
             enemy.TransitionToState(enemy.chaseState);
