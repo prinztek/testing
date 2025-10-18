@@ -7,6 +7,7 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Attack attack;
     [SerializeField] private Hurt hurt;
+    [SerializeField] private AudioClip jumpSoundClip;
 
     private string currentAnimation;
     private float hurtLockTimer = 0f;
@@ -56,21 +57,29 @@ public class AnimationHandler : MonoBehaviour
         animator.speed = normalAnimatorSpeed;
     }
     // *********************************************************************************
+    private bool wasOnGround;
 
     private void HandleMovementAnimation()
     {
         bool onGround = ground.OnGround;
-        // Get world velocity first
         Vector2 velocity = rb.linearVelocity;
 
-        // If standing on a moving platform, subtract its motion
         if (ground.CurrentPlatform != null)
-        {
             velocity.x -= ground.CurrentPlatform.Velocity.x;
-        }
 
         float horizontal = Mathf.Abs(velocity.x);
         float vertical = velocity.y;
+
+        // 🚀 Detect jump start
+        if (wasOnGround && !onGround && vertical > 0.1f)
+        {
+            // Debug.Log("Jump detected");
+
+            if (jumpSoundClip != null)
+            {
+                SoundFXManager.Instance.playOneShotSoundFXClilp(jumpSoundClip, transform, 0.5f);
+            }
+        }
 
         if (!onGround)
         {
@@ -80,7 +89,11 @@ public class AnimationHandler : MonoBehaviour
         {
             ChangeAnimation(horizontal > 0.1f ? "running" : "idle");
         }
+
+        // ✅ Don't forget to update this!
+        wasOnGround = onGround;
     }
+
 
 
     public void PlayDeadAnimation(float animationLength = 0.33f)

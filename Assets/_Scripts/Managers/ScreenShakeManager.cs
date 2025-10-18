@@ -39,6 +39,17 @@ public class ScreenShakeManager : MonoBehaviour
 
     }
 
+    public void TriggerEarthquakeShake(CinemachineImpulseSource impulseSource)
+    {
+        if (impulseSource == null)
+        {
+            Debug.LogWarning("Impulse source is null. Cannot trigger screen shake.");
+            return;
+        }
+
+        impulseSource.GenerateImpulse();
+    }
+
 
 
 }

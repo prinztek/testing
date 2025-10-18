@@ -47,6 +47,7 @@ public class MathQuestionManager : MonoBehaviour
     public int currentHintCost = 10; // Cost for each subsequent hint
 
 
+
     void Start()
     {
         headerButton.onClick.AddListener(TogglePanel);

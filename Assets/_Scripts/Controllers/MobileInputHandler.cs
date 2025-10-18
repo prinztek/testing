@@ -12,6 +12,7 @@ public class MobileInputUIHandler : MonoBehaviour
     public Sprite meleeSprite; // assign in inspector
     public Sprite rangedSprite; // assign in inspector
     private Image attackButtonImage;
+    public Canvas grimoireCanvas;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class MobileInputUIHandler : MonoBehaviour
         float raw = joystick.Horizontal;
 
         // Dead zone threshold
-        if (Mathf.Abs(raw) < 0.2f)
+        if (Mathf.Abs(raw) < joystick.DeadZone)
             mobileController.mobileMoveInput = 0f;
         else
             mobileController.mobileMoveInput = Mathf.Sign(raw); // Snap to -1 or 1
@@ -67,6 +68,17 @@ public class MobileInputUIHandler : MonoBehaviour
         mobileController.mobileAttackInput = true;
     }
 
+
+    public void onGrimoirePressed()
+    {
+        // Open the grimoire UI
+        // Implement your grimoire opening logic here
+        // GrimoireManager.Instance.ToggleGrimoire();
+        grimoireCanvas.enabled = true;
+
+    }
+
+
     public void OnSwapWeaponPressed()
     {
         // Swap attack mode (melee/ranged)
@@ -74,12 +86,6 @@ public class MobileInputUIHandler : MonoBehaviour
 
         // Update attack button sprite based on the new attack mode
         UpdateAttackButtonSprite();
-    }
-
-    public void onGrimoirePressed()
-    {
-        // Open the grimoire UI
-        // Implement your grimoire opening logic here
     }
 
     private void UpdateAttackButtonSprite()

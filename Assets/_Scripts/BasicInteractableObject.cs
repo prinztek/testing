@@ -5,6 +5,8 @@ public class BasicInteractableObject : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public bool isInRange = false;
     public GameObject uiCanvas; // Reference to your UI canvas - assign in inspector - the window that pops up when interacting
+    public GameObject stoneWallObject; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
+    public bool isAnswered = false; // To track if the interaction has been completed
     void Start()
     {
 
@@ -20,6 +22,9 @@ public class BasicInteractableObject : MonoBehaviour
                 uiCanvas.SetActive(true); // Show your interaction canvas
                 Debug.Log("Interacting with object.");
             }
+
+            // stoneWallObject.GetComponent<StoneWall>().Lift();
+            // isAnswered = true;
         }
     }
 

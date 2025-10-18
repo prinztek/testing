@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Move : MonoBehaviour
@@ -8,18 +9,28 @@ public class Move : MonoBehaviour
     [SerializeField, Range(0f, 100f)] private float _maxAirAcceleration = 20f;
     [SerializeField] private Attack attack;
     public ParticleSystem dustTrailParticles;
+
     private CharacterStats stats;
 
     private Vector2 _direction, _desiredVelocity, _velocity;
     private Rigidbody2D _body;
     private Ground _ground;
-    public bool FacingRight => transform.localScale.x > 0f;
+
+    // Updated FacingRight using Y-axis rotation
+    public bool FacingRight { get; private set; }
+
     private float _maxSpeedChange, _acceleration;
-    private float _lastDirectionX = 0f;
     private bool _onGround;
 
-    private Rigidbody2D _platformRb;  // Track the platform's Rigidbody2D
+    private Rigidbody2D _platformRb;
     private Vector2 _lastPlatformPosition;
+    private Vector2 _lastPlatformVelocity;
+
+    [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
+
+    [Header("Camera Stuff")]
+    [SerializeField] private GameObject cameraFollowGo;
+    private CameraFolllowObject cameraFollowObject;
 
     private void Awake()
     {
@@ -28,6 +39,13 @@ public class Move : MonoBehaviour
         stats = GetComponent<CharacterStats>();
     }
 
+    private void Start()
+    {
+        // Start Direction Check
+        StartDirectionCheck();
+
+        cameraFollowObject = cameraFollowGo.GetComponent<CameraFolllowObject>();
+    }
     private void Update()
     {
         if (stats.IsDead())
@@ -38,7 +56,6 @@ public class Move : MonoBehaviour
 
         _direction.x = input.RetrieveMoveInput();
 
-        // Prevent input movement while attacking
         if (attack != null && attack.IsAttacking())
         {
             _desiredVelocity = Vector2.zero;
@@ -49,8 +66,6 @@ public class Move : MonoBehaviour
         _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(effectiveMaxSpeed - _ground.Friction, 0f);
     }
 
-    private Vector2 _lastPlatformVelocity;
-    [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
     private void FixedUpdate()
     {
         if (stats.IsDead())
@@ -59,7 +74,6 @@ public class Move : MonoBehaviour
             return;
         }
 
-
         _onGround = _ground.OnGround;
         _velocity = _body.linearVelocity;
 
@@ -67,14 +81,10 @@ public class Move : MonoBehaviour
 
         if (_ground.CurrentPlatform != null)
         {
-            platformVelocity = (Vector2)_ground.CurrentPlatform.Velocity; // access platform velocity            
-            // Only horizontal movement affects player
+            platformVelocity = (Vector2)_ground.CurrentPlatform.Velocity;
             platformVelocity.y = 0f;
-            Debug.Log("On platform, using velocity: " + platformVelocity);
         }
 
-
-        // Attack sliding logic
         if (attack != null && attack.IsAttacking())
         {
             _velocity.x = Mathf.MoveTowards(_velocity.x, 0f, 20f * Time.deltaTime);
@@ -82,59 +92,30 @@ public class Move : MonoBehaviour
             return;
         }
 
-        // is there a significant change in platform velocity?
         if (platformVelocity != _lastPlatformVelocity)
         {
             Vector2 deltaVelocity = platformVelocity - _lastPlatformVelocity;
             if (Mathf.Abs(deltaVelocity.x) > platformVelocityThreshold)
             {
-                // Apply the change in platform velocity to the player
                 _velocity += deltaVelocity;
                 _body.linearVelocity = _velocity;
-                Debug.Log("Platform velocity changed significantly, applying delta: " + deltaVelocity);
             }
             _lastPlatformVelocity = platformVelocity;
         }
 
-        _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration; // sets the acceleration based on whether the player is on the ground or in the air
-        _maxSpeedChange = _acceleration * Time.deltaTime; // calculates the maximum change in speed allowed this frame
+        _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration;
+        _maxSpeedChange = _acceleration * Time.deltaTime;
 
-        // Compute the player’s intended velocity relative to platform motion
         float targetVelocityX = _desiredVelocity.x + platformVelocity.x;
 
-        // Smoothly adjust the player’s velocity towards the target velocity
         _velocity.x = Mathf.MoveTowards(_velocity.x, targetVelocityX, _maxSpeedChange);
         _body.linearVelocity = _velocity;
 
-    }
+        float currentDirX = _direction.x;
 
-    // This method tracks the platform's movement and calculates the relative velocity
-    private void HandlePlatformMovement()
-    {
-        if (_onGround && _ground.CurrentPlatform != null)
+        if (currentDirX != 0)
         {
-            // Get the platform's Rigidbody2D (moving platform)
-            var platformRb = _ground.CurrentPlatform.GetComponent<Rigidbody2D>();
-
-            if (platformRb != null)
-            {
-                // If this is the first time touching this platform, initialize the position
-                if (platformRb != _platformRb)
-                {
-                    _platformRb = platformRb;
-                    _lastPlatformPosition = _platformRb.position;
-                }
-
-                // Calculate the movement of the platform since the last frame
-                Vector2 platformMovement = _platformRb.position - _lastPlatformPosition;
-                Vector2 platformVelocity = platformMovement / Time.fixedDeltaTime;
-
-                // Adjust the player's velocity based on the platform's velocity
-                _velocity.x += platformVelocity.x;
-
-                // Update the last platform position
-                _lastPlatformPosition = _platformRb.position;
-            }
+            TurnCheck();
         }
     }
 
@@ -144,30 +125,71 @@ public class Move : MonoBehaviour
 
         if (currentDirX != 0)
         {
-            // Call flip function to handle sprite flip and particle effect
-            Flip(currentDirX);
+            TurnCheck();
         }
     }
 
-    private void Flip(float currentDirX)
+    private void TurnCheck()
     {
-        // Flip player sprite
-        Vector3 scale = transform.localScale;
-        scale.x = Mathf.Sign(currentDirX) * Mathf.Abs(scale.x);
-        transform.localScale = scale;
-
-        // Detect direction flip with movement
-        if (Mathf.Sign(currentDirX) != Mathf.Sign(_lastDirectionX) && _lastDirectionX != 0 && Mathf.Abs(_velocity.x) > 0.1f && _onGround)
+        if (_direction.x > 0f && !FacingRight)
         {
-            // Play dust trail particle effect
-            if (dustTrailParticles != null && !dustTrailParticles.isPlaying)
-            {
-                dustTrailParticles.Play(); // Direction changed with movement! Dust played
-            }
+            Turn();
+        }
+        else if (_direction.x < 0f && FacingRight)
+        {
+            Turn();
         }
 
-        // Update last direction
-        _lastDirectionX = currentDirX;
+    }
+
+
+    private void Turn()
+    {
+        if (FacingRight)
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            FacingRight = !FacingRight;
+
+            // turn the camera follow object
+            // cameraFollowObject.CallTurn();
+        }
+        else
+        {
+            Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
+            transform.rotation = Quaternion.Euler(rotator);
+            FacingRight = !FacingRight;
+
+            // turn the camera follow object
+            // cameraFollowObject.CallTurn();
+
+        }
+        // Play dust trail effect if grounded and moving
+        PlayDustTrail();
+    }
+
+    private void HandlePlatformMovement()
+    {
+        if (_onGround && _ground.CurrentPlatform != null)
+        {
+            var platformRb = _ground.CurrentPlatform.GetComponent<Rigidbody2D>();
+
+            if (platformRb != null)
+            {
+                if (platformRb != _platformRb)
+                {
+                    _platformRb = platformRb;
+                    _lastPlatformPosition = _platformRb.position;
+                }
+
+                Vector2 platformMovement = _platformRb.position - _lastPlatformPosition;
+                Vector2 platformVelocity = platformMovement / Time.fixedDeltaTime;
+
+                _velocity.x += platformVelocity.x;
+
+                _lastPlatformPosition = _platformRb.position;
+            }
+        }
     }
 
     public void StopImmediately()
@@ -178,5 +200,21 @@ public class Move : MonoBehaviour
 
         if (_body != null)
             _body.linearVelocity = Vector2.zero;
+    }
+
+    private void StartDirectionCheck()
+    {
+        // Set FacingRight based on the Y rotation at start
+        FacingRight = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, 0f)) < 90f;
+    }
+    public void PlayDustTrail()
+    {
+        if (dustTrailParticles != null && !dustTrailParticles.isPlaying)
+        {
+            if (_onGround && Mathf.Abs(_velocity.x) > 0.1f)
+            {
+                dustTrailParticles.Play();
+            }
+        }
     }
 }

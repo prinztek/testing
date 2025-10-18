@@ -7,8 +7,22 @@ public class BuffUIManager : MonoBehaviour
 {
     public GameObject buffSlotPrefab;
     public Transform buffPanel;
+    public GameObject canvas; // Reference to the canvas or panel holding the buff UI
 
     private Dictionary<object, GameObject> buffSlots = new Dictionary<object, GameObject>();
+
+    // This function shows or hides the canvas based on the active buffs
+    private void ToggleCanvasVisibility()
+    {
+        if (buffSlots.Count > 0)  // If there are buffs, show the canvas
+        {
+            canvas.SetActive(true);
+        }
+        else  // No buffs, hide the canvas
+        {
+            canvas.SetActive(false);
+        }
+    }
 
     // ===== LEGACY BUFF SUPPORT =====
     public void AddBuffUI(Buff buff)
@@ -19,6 +33,9 @@ public class BuffUIManager : MonoBehaviour
         buffSlots[buff] = slot;
 
         UpdateBuffSlot(buff);
+
+        // Ensure the canvas is visible when a buff is added
+        ToggleCanvasVisibility();
     }
 
     public void RemoveBuffUI(Buff buff)
@@ -28,6 +45,9 @@ public class BuffUIManager : MonoBehaviour
             Destroy(slot);
             buffSlots.Remove(buff);
         }
+
+        // Ensure the canvas is updated when a buff is removed
+        ToggleCanvasVisibility();
     }
 
     public void UpdateBuffSlot(Buff buff)
@@ -55,6 +75,9 @@ public class BuffUIManager : MonoBehaviour
         {
             UpdateBuffSlot(buff);
         }
+
+        // Ensure the canvas is visible or hidden based on active buffs
+        ToggleCanvasVisibility();
     }
 
     // ===== Utility to Clear All UI =====
@@ -66,5 +89,8 @@ public class BuffUIManager : MonoBehaviour
         }
 
         buffSlots.Clear();
+
+        // Hide canvas if no buffs are left
+        ToggleCanvasVisibility();
     }
 }

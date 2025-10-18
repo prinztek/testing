@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public Canvas pauseMenu;
+    public Canvas gameOverMenu;
+    public Canvas victoryMenu;
+
     // Singleton instance
     // Ensures only one instance of GameManager exists in the scene
     private static GameManager instance;

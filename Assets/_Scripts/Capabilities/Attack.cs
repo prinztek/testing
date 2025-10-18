@@ -123,10 +123,6 @@ public class Attack : MonoBehaviour
         wasGrounded = _ground.OnGround;
     }
 
-
-
-
-
     private void StartAttack(int phase)
     {
         if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
@@ -151,6 +147,8 @@ public class Attack : MonoBehaviour
             canCombo = true;
         }
     }
+
+    // only allow the character to air attack after a certain time after leaving the ground
     private void StartAirAttack()
     {
         hasAirAttacked = true;

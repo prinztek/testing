@@ -17,6 +17,21 @@ public class SoundFXManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void playOneShotSoundFXClilp(AudioClip clip, Transform spawnTransform, float volume)
+    {
+        // spawn game object
+        AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
+        // random pitch between 0.95 and 1.05 (adjust as needed)
+        audioSource.pitch = Random.Range(0.95f, 1.05f);
+        // assign volume
+        audioSource.volume = volume;
+
+        // play sound with PlayOneShot (no delay, no need to assign clip)
+        audioSource.PlayOneShot(clip);
+
+        // destroy game object after clip length
+        Destroy(audioSource.gameObject, clip.length);
+    }
 
     public void playSoundFXClilp(AudioClip clip, Transform spawnTransform, float volume)
     {

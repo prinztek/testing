@@ -26,24 +26,6 @@ public class TabGroup : MonoBehaviour
         tabButtons.Add(button);
     }
 
-    // When a tab button is hovered over (mouse enters the button)
-    public void OnTabEntered(TabGroupButton button)
-    {
-        if (selectedTab != button)
-        {
-            button.OnTabEntered();
-        }
-    }
-
-    // When the mouse exits the tab button
-    public void OnTabExited(TabGroupButton button)
-    {
-        if (selectedTab != button)
-        {
-            button.OnTabExited();
-        }
-    }
-
     // When a tab button is selected, show the corresponding page and hide others
     public void OnTabSelected(TabGroupButton button)
     {

@@ -95,7 +95,6 @@ public class CharacterStats : MonoBehaviour
 
             activeBuff.Update(Time.deltaTime);
             buffUIManager?.UpdateBuffSlot(activeBuff);
-
             if (activeBuff.isExpired)
             {
                 activeBuff.OnExpire();
@@ -103,10 +102,11 @@ public class CharacterStats : MonoBehaviour
                 ResetTemporaryModifiers();
                 activeBuff = null;
                 trail.enabled = false;
-                if (buffQueue.Count > 0)
+                if (buffQueue.Count > 0) // apply next buff in queue
                 {
                     ApplyBuff(buffQueue.Dequeue());
                 }
+
             }
         }
 
@@ -317,4 +317,5 @@ public class CharacterStats : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+
 }
