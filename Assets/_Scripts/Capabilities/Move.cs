@@ -28,24 +28,22 @@ public class Move : MonoBehaviour
 
     [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
 
-    [Header("Camera Stuff")]
-    [SerializeField] private GameObject cameraFollowGo;
-    private CameraFolllowObject cameraFollowObject;
 
     private void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
         _ground = GetComponent<Ground>();
         stats = GetComponent<CharacterStats>();
+
+
     }
 
     private void Start()
     {
         // Start Direction Check
         StartDirectionCheck();
-
-        cameraFollowObject = cameraFollowGo.GetComponent<CameraFolllowObject>();
     }
+
     private void Update()
     {
         if (stats.IsDead())
@@ -64,6 +62,8 @@ public class Move : MonoBehaviour
 
         float effectiveMaxSpeed = _maxSpeed * stats.moveSpeedMultiplier;
         _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(effectiveMaxSpeed - _ground.Friction, 0f);
+
+
     }
 
     private void FixedUpdate()
@@ -150,19 +150,12 @@ public class Move : MonoBehaviour
             Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
             FacingRight = !FacingRight;
-
-            // turn the camera follow object
-            // cameraFollowObject.CallTurn();
         }
         else
         {
             Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
             FacingRight = !FacingRight;
-
-            // turn the camera follow object
-            // cameraFollowObject.CallTurn();
-
         }
         // Play dust trail effect if grounded and moving
         PlayDustTrail();

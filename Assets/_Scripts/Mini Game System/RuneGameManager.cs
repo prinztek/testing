@@ -69,8 +69,8 @@ public class RuneGameManager : MonoBehaviour
         }
 
         // Debug print
-        foreach (var seq in correctSequences)
-            Debug.Log("Correct sequence: " + seq);
+        // foreach (var seq in correctSequences)
+        //     Debug.Log("Correct sequence: " + seq);
     }
 
 

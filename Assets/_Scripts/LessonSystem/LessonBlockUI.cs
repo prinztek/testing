@@ -8,6 +8,29 @@ public class LessonBlockUI : MonoBehaviour
 
     public void Setup(LessonBlock data)
     {
+        // if (!string.IsNullOrWhiteSpace(data.headingText))
+        // {
+        //     headingText.text = data.headingText;
+        // }
+        // else
+        // {
+        //     headingText.gameObject.SetActive(false);
+        // }
+
+        // if (!string.IsNullOrWhiteSpace(data.bodyText))
+        // {
+        //     bodyText.text = data.bodyText;
+        // }
+        // else
+        // {
+        //     bodyText.gameObject.SetActive(false);
+        // }
+
+        if (data.heading == "")
+        {
+            Debug.Log("Empty");
+        }
+
         headingText.text = data.heading;
         bodyText.text = data.text;
 
@@ -15,7 +38,7 @@ public class LessonBlockUI : MonoBehaviour
         {
             string bulletList = "";
             foreach (string bullet in data.bullets)
-                bulletList += "• " + bullet + "\n";
+                bulletList += "\t• " + bullet + "\n";
 
             bodyText.text = bulletList;
         }

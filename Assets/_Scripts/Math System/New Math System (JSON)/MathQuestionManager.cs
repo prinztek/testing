@@ -195,4 +195,10 @@ public class MathQuestionManager : MonoBehaviour
             answeredCorrectly = false;
         }
     }
+
+    // Helper to get a human-readable version of the topic (replaces underscores with spaces)
+    public string GetNormalizedTopicName()
+    {
+        return topic.ToString().Replace('_', ' ');
+    }
 }

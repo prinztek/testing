@@ -6,11 +6,11 @@ using System.Linq;
 public class LessonListManager : MonoBehaviour
 {
     [Header("UI References")]
-    public Transform buttonContainer;        // Parent object for buttons
-    public GameObject lessonButtonPrefab;    // Button prefab
-    public LessonManager lessonManager;      // Reference to right-page LessonManager
+    public Transform buttonContainer;
+    public GameObject lessonButtonPrefab;
+    public LessonManager lessonManager;
+    public MathQuestionManager mathQuestionManager;
 
-    // default lessonButton selected
     private Button defaultLessonButton;
 
     void Start()
@@ -23,11 +23,10 @@ public class LessonListManager : MonoBehaviour
         TextAsset[] lessonFiles = Resources.LoadAll<TextAsset>("Modules");
         lessonFiles = lessonFiles.OrderBy(f => f.name).ToArray();
 
-        bool isFirst = true; // Flag for first module
+        bool isFirst = true;
 
         foreach (TextAsset file in lessonFiles)
         {
-            // Parse title from JSON
             LessonData data = JsonUtility.FromJson<LessonData>(file.text);
 
             GameObject newButton = Instantiate(lessonButtonPrefab, buttonContainer);
@@ -35,27 +34,50 @@ public class LessonListManager : MonoBehaviour
             label.text = data.title;
 
             string moduleId = data.id;
-
             Button buttonComponent = newButton.GetComponent<Button>();
+
             buttonComponent.onClick.AddListener(() =>
             {
                 OnLessonButtonClicked(moduleId);
             });
 
-            // Automatically select the first lesson
+            // Add a colorful border to the button that matches the current MathTopic
+            AddBorderIfMatchesTopic(data.title, newButton);
+
             if (isFirst)
             {
                 isFirst = false;
-                defaultLessonButton = buttonComponent; // Store the reference if needed later
-                OnLessonButtonClicked(moduleId);       // Load the first lesson by default
+                defaultLessonButton = buttonComponent;
             }
         }
     }
 
-
     void OnLessonButtonClicked(string moduleId)
     {
-        // Debug.Log($"📘 Selected: {moduleId}");
         lessonManager.LoadLesson(moduleId);
+    }
+
+    void AddBorderIfMatchesTopic(string lessonTitle, GameObject buttonObj)
+    {
+        // Normalize topic name (replace underscores with spaces)
+        string normalizedTopic = mathQuestionManager.GetNormalizedTopicName();
+
+        if (lessonTitle.Equals(normalizedTopic, System.StringComparison.OrdinalIgnoreCase))
+        {
+            Outline border = buttonObj.GetComponent<Outline>();
+            if (border == null)
+                border = buttonObj.AddComponent<Outline>();
+
+            // Set base color (green)
+            border.effectColor = new Color(0.3f, 0.9f, 0.3f);
+            border.effectDistance = new Vector2(0.5f, 0.5f);
+
+            // Add a pulsing effect
+            PulsatingOutline pulser = buttonObj.GetComponent<PulsatingOutline>();
+            if (pulser == null)
+                pulser = buttonObj.AddComponent<PulsatingOutline>();
+
+            pulser.targetOutline = border;
+        }
     }
 }

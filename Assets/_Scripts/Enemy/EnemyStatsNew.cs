@@ -95,7 +95,7 @@ public class EnemyStatsNew : MonoBehaviour
         }
 
 
-        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 1f);
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.3f);
 
         var fsm = GetComponent<EnemyStateMachine>();
         fsm.lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;

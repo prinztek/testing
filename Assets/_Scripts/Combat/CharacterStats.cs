@@ -62,7 +62,7 @@ public class CharacterStats : MonoBehaviour
         if (!unlockedSkills.Contains(skill))
         {
             unlockedSkills.Add(skill);
-            Debug.Log($"Unlocked Skill: {skill}");
+            // Debug.Log($"Unlocked Skill: {skill}");
         }
     }
 
@@ -86,13 +86,6 @@ public class CharacterStats : MonoBehaviour
         // Buff system
         if (activeBuff != null)
         {
-            if (activeBuff.buffName == "Haste")
-            {
-                // Debug.Log($"Current Move Speed Multiplier: {moveSpeedMultiplier}, Attack Speed Multiplier: {attackSpeedMultiplier}");
-                // animationHandler.SetAnimationSpeed(2);  // speed buff on
-                trail.enabled = true; // enable trail effect
-            }
-
             activeBuff.Update(Time.deltaTime);
             buffUIManager?.UpdateBuffSlot(activeBuff);
             if (activeBuff.isExpired)

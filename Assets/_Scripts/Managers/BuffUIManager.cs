@@ -9,6 +9,8 @@ public class BuffUIManager : MonoBehaviour
     public Transform buffPanel;
     public GameObject canvas; // Reference to the canvas or panel holding the buff UI
 
+    public StatusEffectManager statusEffectManager;
+
     private Dictionary<object, GameObject> buffSlots = new Dictionary<object, GameObject>();
 
     // This function shows or hides the canvas based on the active buffs
@@ -36,6 +38,7 @@ public class BuffUIManager : MonoBehaviour
 
         // Ensure the canvas is visible when a buff is added
         ToggleCanvasVisibility();
+        statusEffectManager.ShowBuffIcon(buff);
     }
 
     public void RemoveBuffUI(Buff buff)
@@ -48,6 +51,8 @@ public class BuffUIManager : MonoBehaviour
 
         // Ensure the canvas is updated when a buff is removed
         ToggleCanvasVisibility();
+
+        statusEffectManager.HideBuffIcon();
     }
 
     public void UpdateBuffSlot(Buff buff)
