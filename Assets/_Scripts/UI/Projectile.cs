@@ -63,6 +63,17 @@ public class Projectile : MonoBehaviour
                     }
                 }
             }
+
+            Boss2 boss = other.GetComponentInParent<Boss2>();
+            if (boss != null)
+            {
+                // Debug.Log("Player Transform:" + transform.root.position);
+                boss.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
+
+                // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
+                // playerStats.TriggerAttackHit(enemyDummy.gameObject);
+
+            }
         }
 
         // Optionally: play impact effect here before destroying

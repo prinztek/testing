@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -62,6 +63,16 @@ public class LevelManager : MonoBehaviour
         if (levelCompleteUIPanel != null)
         {
             levelCompleteUIPanel.SetActive(true);
+            // Get the current scene name
+            string sceneName = SceneManager.GetActiveScene().name; // e.g., "Level1_1"
+
+            // Extract chapter and level indices
+            string[] parts = sceneName.Replace("Level", "").Split('_');
+            int chapterIndex = int.Parse(parts[0]) - 1; // subtract 1 for 0-index
+            int levelIndex = int.Parse(parts[1]) - 1;   // subtract 1 for 0-index
+
+            // Tell GameManager the level is complete
+            GameManager.Instance.CompleteLevel(chapterIndex, levelIndex, 0);
             PauseGame();
         }
     }

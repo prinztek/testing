@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.Rendering.Universal;
 
 public class CameraManager : MonoBehaviour
 {
@@ -89,5 +90,42 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
         IsLerpingYDamping = false;
+    }
+
+
+    // SWAP CAMERA
+    public void SwapCamera(CinemachineCamera cameraFromLeft, CinemachineCamera cameraFromRight, Vector2 triggerExitDirection)
+    {
+        // if the current camera is the camera on the left and our trigger exit direction was on the right
+        if (_currentCamera == cameraFromLeft && triggerExitDirection.x > 0f)
+        {
+            // activate the new camera
+            cameraFromRight.enabled = true;
+
+            // deactivate the old camera
+            cameraFromLeft.enabled = false;
+
+            // set the new camera as the current camera
+            _currentCamera = cameraFromRight;
+
+            // update our composer value
+            _positionComposer = _currentCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
+
+        }
+        else if (_currentCamera == cameraFromRight && triggerExitDirection.x < 0f)
+        {
+            // activate the new camera
+            cameraFromLeft.enabled = true;
+
+            // deactivate the old camera
+            cameraFromRight.enabled = false;
+
+            // set the new camera as the current camera
+            _currentCamera = cameraFromLeft;
+
+            // update our composer value
+            _positionComposer = _currentCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
+
+        }
     }
 }

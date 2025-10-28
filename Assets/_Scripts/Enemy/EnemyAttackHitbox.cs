@@ -16,8 +16,6 @@ public class EnemyAttackHitbox : MonoBehaviour
         {
             Debug.LogError("EnemyStatsNew component not found on parent objects!");
         }
-
-
     }
 
 
@@ -40,3 +38,22 @@ public class EnemyAttackHitbox : MonoBehaviour
         }
     }
 }
+
+
+// private HashSet<CharacterStats> alreadyHit = new HashSet<CharacterStats>();
+
+// private void OnTriggerEnter2D(Collider2D other)
+// {
+//     if (other.CompareTag("Hurtbox"))
+//     {
+//         CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
+
+//         if (playerStats != null && enemyStats != null && !alreadyHit.Contains(playerStats))
+//         {
+//             playerStats.TakeDamage(enemyStats.damage, transform.root.position);
+//             alreadyHit.Add(playerStats);
+//         }
+//     }
+// }
+
+// public void ResetHits() => alreadyHit.Clear();

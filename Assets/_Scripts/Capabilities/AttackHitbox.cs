@@ -23,6 +23,8 @@ public class AttackHitbox : MonoBehaviour
             // Debug.Log("Hit a Hurtbox: " + other.name);
             // Access enemy stats through Hurtbox (assuming it's a child of enemy object)
             EnemyStatsNew enemyDummy = other.GetComponentInParent<EnemyStatsNew>();
+            Boss2 boss = other.GetComponentInParent<Boss2>();
+
             if (enemyDummy != null)
             {
                 // Debug.Log("Player Transform:" + transform.root.position);
@@ -31,6 +33,17 @@ public class AttackHitbox : MonoBehaviour
 
                 // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
                 playerStats.TriggerAttackHit(enemyDummy.gameObject);
+
+            }
+
+            if (boss != null)
+            {
+                // Debug.Log("Player Transform:" + transform.root.position);
+                int damage = playerStats.GetDamage();
+                boss.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
+
+                // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
+                // playerStats.TriggerAttackHit(enemyDummy.gameObject);
 
             }
         }

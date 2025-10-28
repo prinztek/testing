@@ -45,7 +45,7 @@ public class RuneGameManager : MonoBehaviour
                 runes.Add(runeComp.runeID);
         }
 
-        Debug.Log($"Found {runes.Count} runes from the panel.");
+        // Debug.Log($"Found {runes.Count} runes from the panel.");
 
         // Clear previous data
         correctSequences.Clear();

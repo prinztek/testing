@@ -1,9 +1,16 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Boss2 : MonoBehaviour
 {
-    public enum BossState { Idle, Chase, AttackWindup, AttackSwing, Death }
+    [Header("Boss Stats")]
+    public int maxHealth = 200;
+    public int currentHealth;
+    [Header("References")]
+    public BossAttackHitbox bossAttackHitbox;
+
+    public enum BossState { Idle, Chase, AttackWindup, AttackSwing, Taunt, Death }
     private BossState _state = BossState.Idle;
 
     [Header("Boss Settings")]
@@ -11,31 +18,56 @@ public class Boss2 : MonoBehaviour
     public float attackRange = 2.5f;
     public float detectionRange = 8f;
     public float windupTime = 0.333f;
-    public float swingTime = 0.667f;
+    public float swingTime = 0.3335f; // 0.667f;
+    public float swingTime2 = 0.667f;
     public float attackCooldown = 3f;
-    public float attackDamage = 20f;
+    public int attackDamage = 20;
+
+    [Header("Personality")]
+    [Range(0f, 1f)] public float aggression = 0.6f; // how often it attacks early
+    [Range(0f, 1f)] public float patience = 0.4f;  // how long it waits before taunting
+    [Range(0f, 1f)] public float curiosity = 0.3f; // how often it "investigates" when bored
+
+    private float _idleTimer;
+    private float _nextBoredTime;
+    private bool _isAttacking;
+    private bool _facingRight = true;
+    private float _lastAttackTime;
+    private int _currentAnimState;
 
     [Header("References")]
     [SerializeField] private Animator _anim;
     [SerializeField] private SpriteRenderer _renderer;
     public Transform player;
 
-    private bool _isAttacking;
-    private bool _facingRight = true;
-    private float _lastAttackTime;
-
-    // --- Animator States (match your animation clip names)
+    // Animator hashes
     private static readonly int Idle = Animator.StringToHash("idle");
     private static readonly int Walk = Animator.StringToHash("running");
     private static readonly int Windup = Animator.StringToHash("charge");
     private static readonly int Attack = Animator.StringToHash("attack1");
+    private static readonly int Attack2 = Animator.StringToHash("attack2");
+    private static readonly int Attack3 = Animator.StringToHash("attack3");
     private static readonly int Death = Animator.StringToHash("dead");
-    private int _currentAnimState;
 
+    void Start()
+    {
+        currentHealth = maxHealth;  // Set initial health to max health
+    }
     private void Awake()
     {
         if (_anim == null) _anim = GetComponentInChildren<Animator>();
         if (_renderer == null) _renderer = GetComponentInChildren<SpriteRenderer>();
+
+        // Give each boss instance slightly unique personality
+        aggression += UnityEngine.Random.Range(-0.15f, 0.15f);
+        patience += UnityEngine.Random.Range(-0.15f, 0.15f);
+        curiosity += UnityEngine.Random.Range(-0.15f, 0.15f);
+
+        aggression = Mathf.Clamp01(aggression);
+        patience = Mathf.Clamp01(patience);
+        curiosity = Mathf.Clamp01(curiosity);
+
+        _nextBoredTime = UnityEngine.Random.Range(3f, 6f) * (1f + patience);
     }
 
     private void Update()
@@ -47,57 +79,67 @@ public class Boss2 : MonoBehaviour
         switch (_state)
         {
             case BossState.Idle:
-                PlayAnimation(Idle);
-                if (distance < detectionRange)
-                {
-                    ChangeState(BossState.Chase);
-                }
+                HandleIdle(distance);
                 break;
-
             case BossState.Chase:
-                ChasePlayer(distance);
+                HandleChase(distance);
                 break;
-
             case BossState.AttackWindup:
             case BossState.AttackSwing:
-                // waiting for timers to finish in AttackRoutine
+                break;
+            case BossState.Taunt:
+                // Taunt coroutine handles behavior
                 break;
         }
 
-        // Flip to face player
-        if (player != null)
-        {
-            bool shouldFaceRight = player.position.x > transform.position.x;
-            if (shouldFaceRight != _facingRight)
-            {
-                _facingRight = shouldFaceRight;
-                Vector3 scale = transform.localScale;
-                scale.x = Mathf.Abs(scale.x) * (_facingRight ? 1 : -1);
-                transform.localScale = scale;
-            }
-        }
-
-
+        FacePlayer();
     }
 
+    private void HandleIdle(float distance)
+    {
+        PlayAnimation(Idle);
+        _idleTimer += Time.deltaTime;
 
+        // Spot player
+        if (distance < detectionRange)
+        {
+            ChangeState(BossState.Chase);
+            _idleTimer = 0;
+            return;
+        }
 
+        // UnityEngine.Random chance to start pacing if bored
+        if (_idleTimer > _nextBoredTime && UnityEngine.Random.value < curiosity)
+        {
+            StartCoroutine(TauntRoutine("bored"));
+            _idleTimer = 0;
+            _nextBoredTime = UnityEngine.Random.Range(4f, 8f) * (1f + patience);
+        }
+    }
 
-    private void ChasePlayer(float distance)
+    private void HandleChase(float distance)
     {
         if (_isAttacking) return;
 
         Vector2 dir = (player.position - transform.position).normalized;
+        float stopDistance = attackRange * (0.7f + aggression * 0.3f); // aggressive bosses stop closer
 
-        // Stop at attack range before attacking
-        float stopDistance = attackRange * 0.8f;
-
+        // Attack decision
         if (distance <= stopDistance && Time.time > _lastAttackTime + attackCooldown)
         {
-            StartCoroutine(AttackRoutine());
+            // Small chance the boss fakes an attack (taunt instead)
+            if (UnityEngine.Random.value < (1f - aggression) * 0.2f)
+            {
+                StartCoroutine(TauntRoutine("fake"));
+            }
+            else
+            {
+                StartCoroutine(AttackRoutine());
+            }
             return;
         }
 
+        // Move or idle
         if (distance > stopDistance)
         {
             transform.position += (Vector3)(dir * moveSpeed * Time.deltaTime);
@@ -105,30 +147,91 @@ public class Boss2 : MonoBehaviour
         }
         else
         {
-            // Stop moving and idle until attack triggers
             PlayAnimation(Idle);
         }
     }
 
     private IEnumerator AttackRoutine()
     {
+        bossAttackHitbox.ResetHits();
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
-        // --- WINDUP ---
         ChangeState(BossState.AttackWindup);
         PlayAnimation(Windup);
         yield return new WaitForSeconds(windupTime);
 
-        // --- SWING ---
-        ChangeState(BossState.AttackSwing);
-        PlayAnimation(Attack);
-        yield return new WaitForSeconds(swingTime);
 
-        // --- RETURN TO CHASE ---
-        ChangeState(BossState.Chase);
+        ChangeState(BossState.AttackSwing);
+        int rand = UnityEngine.Random.Range(0, 3);
+
+        if (rand == 0)
+        {
+            PlayAnimation(Attack);
+            yield return new WaitForSeconds(swingTime);
+        }
+        else if (rand == 1)
+        {
+            PlayAnimation(Attack2);
+            yield return new WaitForSeconds(swingTime);
+        }
+        else
+        {
+            PlayAnimation(Attack3);
+            yield return new WaitForSeconds(swingTime2);
+        }
+
+
+        int rand2 = UnityEngine.Random.Range(0, 2);
+        if (rand2 == 0)
+        {
+            ChangeState(BossState.Chase);
+        }
+        else
+        {
+            ChangeState(BossState.Idle);
+        }
         _isAttacking = false;
     }
+
+    private IEnumerator TauntRoutine(string type)
+    {
+        ChangeState(BossState.Taunt);
+        PlayAnimation(Walk);
+
+        // Configurable pacing behavior
+        float moveDuration = 1.5f;   // how long it walks each direction
+        int cycles = 2;              // how many times it goes back and forth
+        float dir = UnityEngine.Random.value < 0.5f ? -1f : 1f; // start randomly left or right
+
+        // Save starting position to ensure it doesn’t drift
+        Vector3 origin = transform.position;
+
+        for (int i = 0; i < cycles; i++)
+        {
+            float timer = 0f;
+
+            while (timer < moveDuration)
+            {
+                transform.position += Vector3.right * dir * moveSpeed * 0.5f * Time.deltaTime;
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            // Flip direction visually and logically
+            dir *= -1f;
+            Flip();
+        }
+
+        // Snap back close to original position (prevents drifting)
+        transform.position = new Vector3(origin.x, transform.position.y, transform.position.z);
+
+        // Return to idle after taunting
+        ChangeState(BossState.Idle);
+        PlayAnimation(Idle);
+        _idleTimer = 0;
+    }
+
 
     public void Die()
     {
@@ -138,19 +241,39 @@ public class Boss2 : MonoBehaviour
         this.enabled = false;
     }
 
-    // -----------------------------
-    // HELPERS
-    // -----------------------------
-    private void ChangeState(BossState newState)
+    private void FacePlayer()
     {
-        _state = newState;
+        if (player == null || _state == BossState.Taunt) return;
+
+        bool shouldFaceRight = player.position.x > transform.position.x;
+        if (shouldFaceRight != _facingRight)
+        {
+            Flip();
+        }
     }
+
+    private void Flip()
+    {
+        _facingRight = !_facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+
+    private void ChangeState(BossState newState) => _state = newState;
 
     private void PlayAnimation(int state)
     {
         if (_currentAnimState == state) return;
         _anim.CrossFade(state, 0, 0);
         _currentAnimState = state;
+    }
+
+    public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
+    {
+        currentHealth -= damageAmount;  // Decrease health by the damage amount
+        Debug.Log($"Boss took {damageAmount} damage. Health now: {currentHealth}");
+
     }
 
     private void OnDrawGizmosSelected()
