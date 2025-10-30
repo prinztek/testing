@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RuneGameManager : MonoBehaviour
@@ -154,6 +155,11 @@ public class RuneGameManager : MonoBehaviour
     // Public methods to be called by UI buttons or other scripts
     public void OnSubmit()
     {
+        if (!userSequences.Any())
+        {
+            return;
+        }
+
         bool isCorrect = CheckSequence();
         if (isCorrect)
         {

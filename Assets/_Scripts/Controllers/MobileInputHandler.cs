@@ -78,7 +78,6 @@ public class MobileInputUIHandler : MonoBehaviour
 
     }
 
-
     public void OnSwapWeaponPressed()
     {
         // Swap attack mode (melee/ranged)
@@ -101,5 +100,14 @@ public class MobileInputUIHandler : MonoBehaviour
                 attackButtonImage.sprite = rangedSprite;
                 break;
         }
+    }
+
+    public void OnInteractHandPressed()
+    {
+        // Swap attack mode (melee/ranged)
+        characterStats.TryToggleAttackMode();
+
+        // Update attack button sprite based on the new attack mode
+        UpdateAttackButtonSprite();
     }
 }

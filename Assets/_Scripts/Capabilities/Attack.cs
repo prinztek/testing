@@ -61,7 +61,7 @@ public class Attack : MonoBehaviour
         if (!inputReady || input == null || isInPostCooldown) return;
         if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
 
-        // if (!_ground.OnGround) return; // Only allow attacks on ground for now
+        if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for now
 
         if (input.RetrieveAttackInput())
         {

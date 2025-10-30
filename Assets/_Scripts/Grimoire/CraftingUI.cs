@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CraftingUI : MonoBehaviour
 {
-    public CharacterStats characterStats;
+    public PlayerInventory playerInventory;
 
     [Header("Crafting Items")]
     public Transform itemListParent;
@@ -34,11 +34,11 @@ public class CraftingUI : MonoBehaviour
             GameObject btnGO = Instantiate(craftingItemButtonPrefab, itemListParent);
             CraftingItemButton btn = btnGO.GetComponent<CraftingItemButton>();
             btn.Setup(craftable);
-            btn.SetOnClick(() => ShowCraftableDetails(craftable));
+            btn.SetOnClick(() => ShowCraftableItemDetails(craftable));
         }
     }
 
-    private void ShowCraftableDetails(CraftableItem item)
+    private void ShowCraftableItemDetails(CraftableItem item)
     {
         selectedItem = item;
 
@@ -62,7 +62,8 @@ public class CraftingUI : MonoBehaviour
         if (selectedItem == null) return;
         Debug.Log($"✅ Crafted: {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold.");
         // Add logic here to deduct gold and give the item
-        characterStats.DeductGold(selectedItem.costInGold);
+        playerInventory.DeductGold(selectedItem.costInGold);
+        playerInventory.AddItem(selectedItem.itemData);
     }
 
     private void ClearDetails()

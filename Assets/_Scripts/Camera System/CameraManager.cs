@@ -7,16 +7,6 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
     [SerializeField] private CinemachineCamera[] _allCinemachineVirtualCamera;
-
-    [Header("Controls for lerping and Y Damping during player jump/fall")]
-    [SerializeField] public float _fallPanAmount = 0.25f;
-    [SerializeField] public float _fallPanTime = 0.35f;
-    [SerializeField] public float _fallSpeedYDampingChangeThreshold = -15f;
-
-    public bool IsLerpingYDamping { get; private set; }
-    public bool LerpedFromPlayerFalling { get; set; }
-
-    private Coroutine _lerpYPanCoroutine;
     private CinemachineCamera _currentCamera;
     private CinemachinePositionComposer _positionComposer;
     private float _normYPanAmount;
@@ -56,42 +46,6 @@ public class CameraManager : MonoBehaviour
         _normYPanAmount = _positionComposer.Damping.y;
 
     }
-    public void LerpYDamping(bool isPlayerFalling)
-    {
-        _lerpYPanCoroutine = StartCoroutine(LerpYAction(isPlayerFalling));
-    }
-
-    private IEnumerator LerpYAction(bool isPlayerFalling)
-    {
-        IsLerpingYDamping = true;
-
-        // grab the starting damping amount
-        float startDampAmount = _positionComposer.Damping.y;
-        float endDampAmount = 0f;
-
-        // determine the end damping amount 
-        if (isPlayerFalling)
-        {
-            endDampAmount = _fallPanAmount;
-            LerpedFromPlayerFalling = true;
-        }
-        else
-        {
-            endDampAmount = _normYPanAmount;
-        }
-
-        // lerp the pan amount
-        float elapsedTime = 0f;
-        while (elapsedTime < _fallPanTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float lerpedPanAmount = Mathf.Lerp(startDampAmount, endDampAmount, elapsedTime / _fallPanTime);
-            _positionComposer.Damping.y = lerpedPanAmount;
-            yield return null;
-        }
-        IsLerpingYDamping = false;
-    }
-
 
     // SWAP CAMERA
     public void SwapCamera(CinemachineCamera cameraFromLeft, CinemachineCamera cameraFromRight, Vector2 triggerExitDirection)
