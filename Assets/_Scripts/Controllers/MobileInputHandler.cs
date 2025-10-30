@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class MobileInputUIHandler : MonoBehaviour
 {
     public CharacterStats characterStats; // assign in inspector
+    public InteractionTrigger playerInteraction;
     public MobileInputController mobileController;
     public Joystick joystick; // use any floating/fixed joystick from asset store or custom
     public Button jumpButton;
@@ -12,7 +13,7 @@ public class MobileInputUIHandler : MonoBehaviour
     public Sprite meleeSprite; // assign in inspector
     public Sprite rangedSprite; // assign in inspector
     private Image attackButtonImage;
-    public Canvas grimoireCanvas;
+    public GameObject grimoireCanvas;
 
     void Awake()
     {
@@ -69,14 +70,11 @@ public class MobileInputUIHandler : MonoBehaviour
     }
 
 
-    public void onGrimoirePressed()
+    public void OnGrimoirePressed()
     {
-        // Open the grimoire UI
-        // Implement your grimoire opening logic here
-        // GrimoireManager.Instance.ToggleGrimoire();
-        grimoireCanvas.enabled = true;
-
+        grimoireCanvas.SetActive(true);
     }
+
 
     public void OnSwapWeaponPressed()
     {
@@ -104,10 +102,6 @@ public class MobileInputUIHandler : MonoBehaviour
 
     public void OnInteractHandPressed()
     {
-        // Swap attack mode (melee/ranged)
-        characterStats.TryToggleAttackMode();
-
-        // Update attack button sprite based on the new attack mode
-        UpdateAttackButtonSprite();
+        playerInteraction.TryInteract();
     }
 }

@@ -13,7 +13,7 @@ public class InteractionTrigger : MonoBehaviour
         }
     }
 
-    void TryInteract()
+    public void TryInteract()
     {
         if (currentInteractable != null)
         {
