@@ -3,7 +3,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{
+{// HANDLE GAME STATES (PAUSE, GAME OVER, ETC.) HERE
+    public enum GameState
+    {
+        Playing,
+        Paused, // or any Canvas is Displayed,
+        Victory,
+        Lose
+    }
     // Singleton instance
     // Ensures only one instance of GameManager exists in the scene
     private static GameManager instance;
@@ -39,6 +46,12 @@ public class GameManager : MonoBehaviour
         LoadGame(); // Load saved progress on startup
     }
 
+    private void Start()
+    {
+        if (UIManager.Instance != null)
+            UIManager.Instance.OnModalToggled += HandleModalToggled;
+    }
+
     // Update the current game state and notify listeners
     public void updateGameState(GameState newState)
     {
@@ -61,7 +74,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Lose:
-                // Implement game over logic here
+                FailLevel();
                 break;
 
             default:
@@ -90,15 +103,6 @@ public class GameManager : MonoBehaviour
             currentData = new JSONSaveData();
             SaveGame();
         }
-
-        // --- DEBUG: Check which levels are unlocked ---
-        // for (int c = 0; c < currentData.chapters.Length; c++)
-        // {
-        //     for (int l = 0; l < currentData.chapters[c].levels.Length; l++)
-        //     {
-        //         Debug.Log($"Chapter {c + 1} Level {l + 1} unlocked: {currentData.chapters[c].levels[l].isUnlocked}");
-        //     }
-        // }
     }
 
     // Example helper function to complete a level and save progress
@@ -120,7 +124,6 @@ public class GameManager : MonoBehaviour
         SaveGame();
     }
 
-    // <<< ADD THIS METHOD >>>
     public void LoadLevel(int chapterIndex, int levelIndex)
     {
         // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
@@ -143,12 +146,21 @@ public class GameManager : MonoBehaviour
         currentData = new JSONSaveData();
         SaveGame();
     }
-    // HANDLE GAME STATES (PAUSE, GAME OVER, ETC.) HERE
-    public enum GameState
+
+    private void HandleModalToggled(bool isOpen)
     {
-        Playing,
-        Paused,
-        Victory,
-        Lose
+        Time.timeScale = isOpen ? 0 : 1;
+        // Optionally disable player input here
+    }
+
+    // Example: call these when level ends
+    public void CompleteLevel()
+    {
+        UIManager.Instance.ShowLevelComplete();
+    }
+
+    public void FailLevel()
+    {
+        UIManager.Instance.ShowLevelFailed();
     }
 }

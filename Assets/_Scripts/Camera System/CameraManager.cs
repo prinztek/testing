@@ -43,7 +43,7 @@ public class CameraManager : MonoBehaviour
         }
 
         // set the YDamping amount so it's based on the inspector value
-        _normYPanAmount = _positionComposer.Damping.y;
+        // _normYPanAmount = _positionComposer.Damping.y;
 
     }
 

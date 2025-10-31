@@ -9,7 +9,7 @@ public class CharacterStats : MonoBehaviour
     public enum AttackMode { Melee, Ranged }
     public AttackMode currentAttackMode = AttackMode.Melee;
 
-    [SerializeField] private AnimationHandler animationHandler;
+    [SerializeField] public AnimationHandler animationHandler;
     public BuffUIManager buffUIManager;
 
     [Header("Health")]

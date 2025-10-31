@@ -6,6 +6,7 @@ public class RuneGameManager : MonoBehaviour
 {
     public List<string> correctSequences = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
     public List<RuneSlot> runeSlots; // Assign in Inspector
+    public List<string> allowedSequences = new List<string>();
 
     // This will hold either a single sequence or multiple sequences
     public List<string> userSequences = new List<string>(); // { "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" }
@@ -53,25 +54,23 @@ public class RuneGameManager : MonoBehaviour
         userSequences.Clear();
 
         // Generate correct sequences based on settings
-        if (useMultipleAnswers)
+        if (allowedSequences != null && allowedSequences.Count > 0)
         {
-            if (isDistinct)
-            {
-                correctSequences = GenerateDistinctPermutations(runes);
-            }
-            else
-            {
-                correctSequences = GeneratePermutations(runes);
-            }
+            correctSequences = new List<string>(allowedSequences);
         }
-        else
+        else if (useMultipleAnswers)
+        {
+            correctSequences = isDistinct ? GenerateDistinctPermutations(runes) : GeneratePermutations(runes);
+        }
+        else if (!string.IsNullOrEmpty(singleCorrectSequence))
         {
             correctSequences.Add(singleCorrectSequence);
         }
+        else
+        {
+            Debug.LogError("No correct sequence is set!");
+        }
 
-        // Debug print
-        // foreach (var seq in correctSequences)
-        //     Debug.Log("Correct sequence: " + seq);
     }
 
 

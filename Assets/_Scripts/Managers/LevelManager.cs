@@ -4,21 +4,16 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private MathQuestionManager mathQuestionManager;
+    [SerializeField] private CharacterStats playerStats;
+
     private int totalEnemies;
     private int defeatedEnemies;
 
-    public GameObject levelCompleteUIPanel; // Assign in inspector
-    public GameObject levelFailedUIPanel;   // Assign in inspector
-    public GameObject grimoirePanel;   // Assign in inspector
-    public GameObject endpoint;             // Exit object
-    [SerializeField] private GameObject pauseMenuUI; // Pause menu UI
-    [SerializeField] private CharacterStats playerStats;
-    public GameObject MathUICanvas; // Assign this in the Inspector
-
-    private int pauseRequestCount = 0;
+    public GameObject endpoint; // Exit object
 
     private void Awake()
     {
+        // Singleton-like behavior to prevent duplicates
         if (FindObjectsByType<LevelManager>(FindObjectsSortMode.None).Length > 1)
         {
             Destroy(gameObject);
@@ -29,11 +24,10 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-
-
+        // Count total enemies in the level
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
-        // Debug.Log($"Total enemies in level: {totalEnemies}");
+
         if (playerStats == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -42,57 +36,50 @@ public class LevelManager : MonoBehaviour
         }
 
         if (playerStats != null)
-        {
             playerStats.OnDeathFinished += OnLevelFailed;
-        }
+
     }
 
+    // Call this when an enemy dies
     public void OnEnemyDefeated()
     {
         defeatedEnemies++;
         if (defeatedEnemies >= totalEnemies)
         {
-            // Debug.Log("✅ All enemies defeated!");
             UnlockExit();
         }
     }
 
-    public void OnLevelCompleted()
-    {
-        Debug.Log("✅ Level completed!");
-        if (levelCompleteUIPanel != null)
-        {
-            levelCompleteUIPanel.SetActive(true);
-            // Get the current scene name
-            string sceneName = SceneManager.GetActiveScene().name; // e.g., "Level1_1"
-
-            // Extract chapter and level indices
-            string[] parts = sceneName.Replace("Level", "").Split('_');
-            int chapterIndex = int.Parse(parts[0]) - 1; // subtract 1 for 0-index
-            int levelIndex = int.Parse(parts[1]) - 1;   // subtract 1 for 0-index
-
-            // Tell GameManager the level is complete
-            GameManager.Instance.CompleteLevel(chapterIndex, levelIndex, 0);
-            PauseGame();
-        }
-    }
-
-    public void OnLevelFailed()
-    {
-        Debug.Log("❌ Level failed!");
-        if (levelFailedUIPanel != null)
-        {
-            levelFailedUIPanel.SetActive(true);
-            PauseGame();
-        }
-    }
-
-    // unlock the exit when all enemies are defeated
-    // this could be a door, portal, or any other object that signifies level completion
     private void UnlockExit()
     {
         if (endpoint != null)
             endpoint.SetActive(true);
+    }
+
+    // Level complete logic
+    public void OnLevelCompleted()
+    {
+        Debug.Log("✅ Level completed!");
+
+        // Notify GameManager (handles progression, saving, etc.)
+        string sceneName = SceneManager.GetActiveScene().name; // e.g., "Level1_1"
+        string[] parts = sceneName.Replace("Level", "").Split('_');
+        int chapterIndex = int.Parse(parts[0]) - 1;
+        int levelIndex = int.Parse(parts[1]) - 1;
+
+        GameManager.Instance.CompleteLevel(chapterIndex, levelIndex, 0);
+
+        // Let UIManager handle the modal + pause
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowLevelComplete();
+    }
+
+    // Level failed logic
+    public void OnLevelFailed()
+    {
+        Debug.Log("❌ Level failed!");
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowLevelFailed();
     }
 
     private void OnDestroy()
@@ -104,75 +91,19 @@ public class LevelManager : MonoBehaviour
             mathQuestionManager.OnQuestionBatchCompleted -= OnLevelCompleted;
     }
 
+    // Optional input handling for book/pause
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab)) // Open/close book
         {
-            OpenOrCloseGrimoire();
+            if (UIManager.Instance != null)
+                UIManager.Instance.ToggleBook(!UIManager.Instance.grimoirePanel.activeSelf);
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Escape)) // Pause menu
         {
-            ToggleGrimoire();
+            if (UIManager.Instance != null)
+                UIManager.Instance.ShowPauseMenu(!UIManager.Instance.pauseMenu.activeSelf);
         }
-    }
-
-    public void OpenOrCloseGrimoire()
-    {
-        bool isOpen = grimoirePanel.activeSelf;
-        if (!isOpen) // Only toggle pause menu if Grimoire is not open
-        {
-            TogglePauseMenu();
-        }
-        else if (grimoirePanel.activeSelf) // If Grimoire is open, close it
-        {
-            ToggleGrimoire();
-        }
-    }
-    private void ToggleGrimoire()
-    {
-        if (grimoirePanel != null)
-        {
-            bool isOpen = !grimoirePanel.activeSelf;
-            grimoirePanel.SetActive(isOpen);
-
-            if (isOpen)
-                PauseGame();
-            else
-                ResumeGame();
-        }
-    }
-
-
-    /// <summary>
-    /// Toggles the sound menu UI and pauses/resumes the game.
-    /// If the sound menu is active, it pauses the game; otherwise, it resumes.
-    /// </summary>
-    private void TogglePauseMenu()
-    {
-        bool isActive = !pauseMenuUI.activeSelf;
-        pauseMenuUI.SetActive(isActive);
-
-        if (isActive)
-            PauseGame();
-        else
-            ResumeGame();
-    }
-
-    /// <summary>
-    ///  For Pause Menu
-    /// </summary>
-    // General pause/resume control
-    private void PauseGame()
-    {
-        pauseRequestCount++;
-        Time.timeScale = 0f;
-    }
-
-    private void ResumeGame()
-    {
-        pauseRequestCount = Mathf.Max(0, pauseRequestCount - 1);
-        if (pauseRequestCount == 0)
-            Time.timeScale = 1f;
     }
 }

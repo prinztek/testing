@@ -30,8 +30,6 @@ public class Jump : MonoBehaviour
     // for camera system
     private float _fallSpeedYDampingChangeThreshold;
 
-
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -146,5 +144,6 @@ public class Jump : MonoBehaviour
             jumpParticles?.Play();
         }
     }
+
 }
 
