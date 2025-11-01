@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Lose:
-                FailLevel();
+                // Implement lose logic here
                 break;
 
             default:
@@ -151,16 +151,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = isOpen ? 0 : 1;
         // Optionally disable player input here
+
     }
 
-    // Example: call these when level ends
-    public void CompleteLevel()
-    {
-        UIManager.Instance.ShowLevelComplete();
-    }
 
-    public void FailLevel()
-    {
-        UIManager.Instance.ShowLevelFailed();
-    }
 }

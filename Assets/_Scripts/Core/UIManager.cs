@@ -6,12 +6,16 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("Main Panels")]
-    public GameObject grimoirePanel;        // inventory/shop/quest book
+    public GameObject grimoirePanel;     // Book => Inventory/Crafting/Math Question 
+    public GameObject buffChoicePanel;     // Book => Inventory/Crafting/Math Question 
     public GameObject pauseMenu;
     public GameObject levelCompletePanel;
     public GameObject levelFailedPanel;
 
-    // Event to notify GameManager when a modal opens/closes
+    // Tracks the currently active modal (null if none open)
+    private GameObject activePanel;
+
+    // Event to notify GameManager or other systems when a modal opens/closes
     public event Action<bool> OnModalToggled;
 
     private void Awake()
@@ -25,29 +29,59 @@ public class UIManager : MonoBehaviour
         HideAllModals();
     }
 
-    // === Book UI ===
+    // === BOOK / GRIMOIRE ===
     public void ToggleBook(bool show)
     {
         if (grimoirePanel == null) return;
-        grimoirePanel.SetActive(show);
-        OnModalToggled?.Invoke(show);
+
+        if (show)
+        {
+            ShowModal(grimoirePanel);
+        }
+        else
+        {
+            ClosePanel(grimoirePanel);
+        }
     }
 
-    // === Pause Menu ===
+    // === BUFF CHOICE / SELECTION OF BUFF TO CHOOSE FROM ===
+    public void ShowBuffChoicePanel(bool show)
+    {
+        if (buffChoicePanel == null) return;
+
+        if (show)
+        {
+            ShowModal(buffChoicePanel);
+        }
+        else
+        {
+            ClosePanel(buffChoicePanel);
+        }
+    }
+
+    // === PAUSE MENU ===
     public void ShowPauseMenu(bool show)
     {
         if (pauseMenu == null) return;
-        pauseMenu.SetActive(show);
-        OnModalToggled?.Invoke(show);
+
+        if (show)
+        {
+            ShowModal(pauseMenu);
+        }
+        else
+        {
+            ClosePanel(pauseMenu);
+        }
     }
 
-    // === Level Complete / Failed ===
+    // === LEVEL COMPLETE / FAILED ===
     public void ShowLevelComplete()
     {
         HideAllModals();
         if (levelCompletePanel != null)
         {
             levelCompletePanel.SetActive(true);
+            activePanel = levelCompletePanel; // ✅ Track active
             OnModalToggled?.Invoke(true);
         }
     }
@@ -58,18 +92,22 @@ public class UIManager : MonoBehaviour
         if (levelFailedPanel != null)
         {
             levelFailedPanel.SetActive(true);
+            activePanel = levelFailedPanel; // ✅ Track active
             OnModalToggled?.Invoke(true);
         }
     }
 
-    // === Utility (for level specific puzzle canvas) ===
-    public void HideAllModals()
+    // === GENERIC MODAL HANDLING ===
+    public void ShowModal(GameObject panelToShow)
     {
-        if (grimoirePanel != null) grimoirePanel.SetActive(false);
-        if (pauseMenu != null) pauseMenu.SetActive(false);
-        if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
-        if (levelFailedPanel != null) levelFailedPanel.SetActive(false);
-        OnModalToggled?.Invoke(false);
+        HideAllModals(); // Hide any open panels first
+
+        if (panelToShow != null)
+        {
+            panelToShow.SetActive(true);
+            activePanel = panelToShow; // ✅ Set as active
+            OnModalToggled?.Invoke(true);
+        }
     }
 
     public void ClosePanel(GameObject panel)
@@ -77,6 +115,42 @@ public class UIManager : MonoBehaviour
         if (panel == null) return;
 
         panel.SetActive(false);
-        OnModalToggled?.Invoke(false); // notify that a modal closed
+
+        if (panel == activePanel)
+            activePanel = null; // ✅ Clear if it was the active one
+
+        OnModalToggled?.Invoke(false);
+    }
+
+    public void HideAllModals()
+    {
+        if (grimoirePanel != null) grimoirePanel.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
+        if (levelFailedPanel != null) levelFailedPanel.SetActive(false);
+
+        activePanel = null; // ✅ No active modal
+        OnModalToggled?.Invoke(false);
+    }
+
+    // === NEW FEATURE ===
+    /// <summary>
+    /// Closes whichever panel is currently active (if any).
+    /// Useful for other managers like MathQuestionManager or SkillUnlockManager.
+    /// </summary>
+    public void CloseActivePanel()
+    {
+        if (activePanel != null)
+        {
+            activePanel.SetActive(false);
+            OnModalToggled?.Invoke(false);
+            activePanel = null;
+        }
+    }
+
+    // Optional getter if you ever need to check which panel is currently open
+    public GameObject GetActivePanel()
+    {
+        return activePanel;
     }
 }

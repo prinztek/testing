@@ -165,21 +165,36 @@ public class MathQuestionManager : MonoBehaviour
             }
 
             // 🔹 Apply a random buff
+            // if (characterStats != null)
+            // {
+            //     // characterStats.AddBuff(new HasteBuff(8f, 2f)); // Example: Haste buff for 8 seconds with 3x speed
+            //     UIManager.Instance.CloseActivePanel(); // hide the girmoire panel
+
+            //     System.Random random = new System.Random();
+            //     int buffIndex = random.Next(0, 5);
+
+            //     switch (buffIndex)
+            //     {
+            //         case 0: characterStats.AddBuff(new HasteBuff(8f, 3)); break;
+            //         case 1: characterStats.AddBuff(new FireInfuseBuff(8f, 3)); break;
+            //         case 2: characterStats.AddBuff(new PowerSurgeBuff(8f, 5)); break;
+            //         case 3: characterStats.AddBuff(new ShieldBloomBuff(8f, 20)); break; // 20 hits before the shield breaks
+            //         case 4: characterStats.AddBuff(new PrecisionStrikeBuff(8f, 50, 3)); break; // *50 multiplier, 3 guaranteed crits
+            //     }
+            // }
+
+            // Apply a chosen buff
             if (characterStats != null)
             {
-                // characterStats.AddBuff(new HasteBuff(8f, 2f)); // Example: Haste buff for 8 seconds with 3x speed
+                UIManager.Instance.CloseActivePanel();
 
-                System.Random random = new System.Random();
-                int buffIndex = random.Next(0, 5);
+                var chosen = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
 
-                switch (buffIndex)
+                BuffChoiceManager.Instance.ShowChoices(chosen, (selectedBuff) =>
                 {
-                    case 0: characterStats.AddBuff(new HasteBuff(8f, 3)); break;
-                    case 1: characterStats.AddBuff(new FireInfuseBuff(8f, 3)); break;
-                    case 2: characterStats.AddBuff(new PowerSurgeBuff(8f, 5)); break;
-                    case 3: characterStats.AddBuff(new ShieldBloomBuff(8f, 20)); break; // 20 hits before the shield breaks
-                    case 4: characterStats.AddBuff(new PrecisionStrikeBuff(8f, 50, 3)); break; // *50 multiplier, 3 guaranteed crits
-                }
+                    characterStats.AddBuff(selectedBuff);
+                    Debug.Log($"🪄 Player chose buff: {selectedBuff.buffName}");
+                });
             }
 
             currentIndex++;

@@ -16,6 +16,7 @@ public class RuneGameManager : MonoBehaviour
     public bool useMultipleAnswers = false; // Toggle this to switch between a single or multiple answers
 
     public bool isDistinct = false; // If true, only distinct sequences are considered correct
+    public bool isSolved = false; // Add this at the top of RuneGameManager
 
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
@@ -154,6 +155,9 @@ public class RuneGameManager : MonoBehaviour
     // Public methods to be called by UI buttons or other scripts
     public void OnSubmit()
     {
+        if (isSolved)
+            return; // Puzzle already solved, do nothing
+
         if (!userSequences.Any())
         {
             return;
@@ -165,6 +169,8 @@ public class RuneGameManager : MonoBehaviour
             Debug.Log("Correct sequence!");
             runeGameCanvas.enabled = false; // Hide the rune game canvas
             stoneWall.Lift(); // Lift the stone wall
+
+            isSolved = true; // Mark puzzle as solved
             return;
         }
 
@@ -172,6 +178,8 @@ public class RuneGameManager : MonoBehaviour
     }
     public void OnAddRuneSet()
     {
+        if (isSolved)
+            return; // Don't allow adding new sequences
         // Capture the current sequence
         string currentSequence = GetCurrentSequence();
         // Add the currentSequence to userSequences
