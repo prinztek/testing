@@ -25,19 +25,19 @@ public class BuffChoiceManager : MonoBehaviour
         allBuffs = new List<BuffOption>()
         {
             new BuffOption("Haste", "Move faster and attack quicker for 8s",
-                Resources.Load<Sprite>("Icons/HasteBuff"), () => new HasteBuff(8f, 3)),
+                Resources.Load<Sprite>("Icons/Haste"), () => new HasteBuff(8f, 3)),
 
             new BuffOption("Fire Infuse", "Attacks deal fire damage for 8s",
-                Resources.Load<Sprite>("Icons/FireInfuseBuff"), () => new FireInfuseBuff(8f, 3)),
+                Resources.Load<Sprite>("Icons/Fire Infuse"), () => new FireInfuseBuff(8f, 3)),
 
             new BuffOption("Power Surge", "Massive damage boost for 8s",
-                Resources.Load<Sprite>("Icons/PowerSurgeBuff"), () => new PowerSurgeBuff(8f, 5)),
+                Resources.Load<Sprite>("Icons/Power Surge"), () => new PowerSurgeBuff(8f, 5)),
 
             new BuffOption("Shield Bloom", "Gain a shield for 20 hits",
-                Resources.Load<Sprite>("Icons/ShieldBloomBuff"), () => new ShieldBloomBuff(8f, 20)),
+                Resources.Load<Sprite>("Icons/Shield Bloom"), () => new ShieldBloomBuff(8f, 20)),
 
             new BuffOption("Precision Strike", "Critical hits guaranteed 3 times",
-                Resources.Load<Sprite>("Icons/PrecisionStrikeBuff"), () => new PrecisionStrikeBuff(8f, 50, 3)),
+                Resources.Load<Sprite>("Icons/Precision Strike"), () => new PrecisionStrikeBuff(8f, 50, 3)),
         };
     }
 
