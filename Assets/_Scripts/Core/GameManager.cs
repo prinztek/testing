@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
 
+    public JSONPlayerData playerData;
+
     private void Awake()
     {
         // Singleton pattern setup

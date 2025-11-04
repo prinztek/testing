@@ -76,6 +76,7 @@ public class Jump : MonoBehaviour
 
         if (_onGround && Mathf.Abs(_body.linearVelocity.y) < 0.01f)
         {
+            if (_isJumping) landParticles?.Play();
             _jumpPhase = 0;
             _coyoteCounter = _coyoteTime; // reset timer while on ground
             _isJumping = false;

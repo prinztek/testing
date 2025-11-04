@@ -48,12 +48,14 @@ public class CharacterStats : MonoBehaviour
     public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
 
     // ====================================================================================================================
-    public enum SkillType
+    public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
     {
         FireBlast,
         IceShield,
         LightningDash
     }
+    // this is supposed to be something that is related to help players solve math questions easier
+    // e.g., FireBlast can eliminate one wrong choice, IceShield can give a hint, LightningDash can skip question with small gold penalty
 
     private HashSet<SkillType> unlockedSkills = new HashSet<SkillType>();
 

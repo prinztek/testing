@@ -58,11 +58,6 @@ public class TabGroupButton : MonoBehaviour
     public void Select()
     {
         buttonImage.color = selectedColor;  // Change color of the selected tab
-        Text buttonText = button.GetComponentInChildren<Text>();
-        if (buttonText != null)
-        {
-            buttonText.fontStyle = FontStyle.Bold;
-        }
     }
 
     // When the tab button is deselected

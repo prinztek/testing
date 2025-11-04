@@ -1,16 +1,12 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-public class JSONPlayerData : MonoBehaviour
+[Serializable]
+public class JSONPlayerData
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int gold; // currently in player inventory
+    public List<string> ownedItemIds = new(); // Item IDs = their name // currently in player inventory
+    public List<string> unlockedSkills = new(); // currently in character stats
+    public string equippedMeleeWeaponId = ""; // currently in character stats
+    public string equippedRangedWeaponId = ""; // currently in character stats
 }

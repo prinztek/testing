@@ -1,14 +1,37 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 using System;
-
 public class Boss2 : MonoBehaviour
 {
-    [Header("Boss Stats")]
+    public GameObject BossHUD;
+
+    [Header("Boss Health")]
     public int maxHealth = 200;
-    public int currentHealth;
+    [SerializeField] private int currentHealth;
+    public int CurrentHealth => currentHealth; // This should be the only version of the CurrentHealth property
+    // Delegate and event for health changes
+    public delegate void HealthChanged(int currentHealth);
+    public event HealthChanged OnHealthChanged; // This event will be triggered whenever the boss’s health changes.
+
+    // Delegate and event for death start
+    public delegate void DeathStarted();
+    public event DeathStarted OnDeathStarted; // This event will be triggered when the boss starts
+
     [Header("References")]
     public BossAttackHitbox bossAttackHitbox;
+    private CinemachineImpulseSource impulseSource;
+
+    [Header("Hit Feedback")]
+    [SerializeField] private Transform spriteTransform; // assign in Inspector (child object with SpriteRenderer)
+    [SerializeField] private float shakeDuration = 0.1f;
+    [SerializeField] private float shakeIntensity = 0.05f;
+    [SerializeField] private Color flashColor = Color.red;
+    [SerializeField] private float flashDuration = 0.1f;
+
+    private Coroutine shakeCoroutine;
+    private Coroutine flashCoroutine;
+
 
     public enum BossState { Idle, Chase, AttackWindup, AttackSwing, Taunt, Death }
     private BossState _state = BossState.Idle;
@@ -49,12 +72,11 @@ public class Boss2 : MonoBehaviour
     private static readonly int Attack3 = Animator.StringToHash("attack3");
     private static readonly int Death = Animator.StringToHash("dead");
 
-    void Start()
-    {
-        currentHealth = maxHealth;  // Set initial health to max health
-    }
     private void Awake()
     {
+        currentHealth = maxHealth;  // Set initial health to max health
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+
         if (_anim == null) _anim = GetComponentInChildren<Animator>();
         if (_renderer == null) _renderer = GetComponentInChildren<SpriteRenderer>();
 
@@ -235,9 +257,11 @@ public class Boss2 : MonoBehaviour
 
     public void Die()
     {
+        BossHUD.SetActive(false);
+        OnDeathStarted?.Invoke();
         ChangeState(BossState.Death);
         PlayAnimation(Death);
-        GetComponent<Collider2D>().enabled = false;
+        // GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
     }
 
@@ -271,10 +295,76 @@ public class Boss2 : MonoBehaviour
 
     public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
     {
-        currentHealth -= damageAmount;  // Decrease health by the damage amount
-        Debug.Log($"Boss took {damageAmount} damage. Health now: {currentHealth}");
+        // Shake sprite and flash on hit
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeSprite());
 
+        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+        flashCoroutine = StartCoroutine(FlashSprite());
+
+        // Show HUD when first hit
+        if (BossHUD != null && !BossHUD.activeSelf)
+            BossHUD.SetActive(true);
+
+        currentHealth -= damageAmount;
+        OnHealthChanged?.Invoke(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+
+        // Floating damage text
+        if (DamageTextSpawner.Instance != null)
+        {
+            if (!doScreenShake)
+                DamageTextSpawner.Instance.ShowDamage(transform.position, damageAmount, Color.red);
+            else
+                DamageTextSpawner.Instance.ShowDamage(transform.position, damageAmount, Color.white);
+        }
+
+        // Screen shake
+        if (doScreenShake && impulseSource != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
+            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+            Debug.Log("Boss2 Screen Shake");
+        }
     }
+
+
+    #region Hit Feedback Coroutines
+    private IEnumerator ShakeSprite()
+    {
+        if (spriteTransform == null) yield break;
+        Vector3 originalPos = spriteTransform.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
+            float y = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
+            spriteTransform.localPosition = originalPos + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        spriteTransform.localPosition = originalPos;
+    }
+
+    private IEnumerator FlashSprite()
+    {
+        if (_renderer == null) yield break;
+        Color originalColor = _renderer.color;
+        _renderer.color = flashColor;
+        yield return new WaitForSeconds(flashDuration);
+        _renderer.color = originalColor;
+    }
+
+    #endregion
+
+    #region Gizmos
 
     private void OnDrawGizmosSelected()
     {
@@ -290,4 +380,6 @@ public class Boss2 : MonoBehaviour
         UnityEditor.Handles.Label(transform.position + Vector3.up * 2f, $"State: {_state}", style);
 #endif
     }
+
+    #endregion
 }
