@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,9 +33,11 @@ public class GameManager : MonoBehaviour
 
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
-
     public JSONPlayerData playerData;
 
+    [Header("Player Management")]
+    public GameObject playerPrefab;
+    private GameObject currentPlayerInstance;
     private void Awake()
     {
         // Singleton pattern setup
@@ -46,6 +50,13 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes
         LoadGame(); // Load saved progress on startup
+
+        // ✅ Ensure playerData exists too
+        if (playerData == null)
+        {
+            Debug.Log("No player data found — creating new JSONPlayerData.");
+            playerData = new JSONPlayerData();
+        }
     }
 
     private void Start()
@@ -92,20 +103,27 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         JSONSaveSystem.SaveGame(currentData);
+        JSONSaveSystem.SavePlayer(playerData);
     }
 
     public void LoadGame()
     {
         currentData = JSONSaveSystem.LoadGame();
+        playerData = JSONSaveSystem.LoadPlayer();
 
-        // Optionally initialize a new SaveData if none exists
         if (currentData == null)
         {
-            Debug.Log("No save file found — creating new SaveData.");
             currentData = new JSONSaveData();
-            SaveGame();
         }
+
+        if (playerData == null)
+        {
+            playerData = new JSONPlayerData();
+        }
+
+        SaveGame();
     }
+
 
     // Example helper function to complete a level and save progress
     public void CompleteLevel(int chapterIndex, int levelIndex, float time)
@@ -130,10 +148,44 @@ public class GameManager : MonoBehaviour
     {
         // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
         string sceneName = $"Level{chapterIndex + 1}_{levelIndex + 1}";
-        Debug.Log(sceneName);
-        SceneManager.LoadScene(sceneName);
+        StartCoroutine(LoadLevelAsync(sceneName));
     }
 
+    private IEnumerator LoadLevelAsync(string sceneName)
+    {
+        // Optional: show loading screen here
+        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+        yield return new WaitUntil(() => load.isDone);
+
+        // Spawn player once scene is loaded
+        SpawnPlayer();
+    }
+
+    private void SpawnPlayer()
+    {
+        // Find spawn point (place an empty GameObject tagged "PlayerSpawn" in each level)
+        var spawn = GameObject.FindWithTag("PlayerSpawn");
+        Vector3 spawnPos = spawn != null ? spawn.transform.position : Vector3.zero;
+
+        // Instantiate player prefab
+        currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+
+        // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
+        Debug.Log("✅ Player spawned and loaded.");
+    }
+
+    public void SaveCurrentPlayerState()
+    {
+        if (currentPlayerInstance == null) return;
+
+        var handler = currentPlayerInstance.GetComponent<PlayerDataHandler>();
+        if (handler != null)
+        {
+            handler.SavePlayerToData(playerData);
+            SaveGame(); // write JSON to file
+            Debug.Log("💾 Player state saved.");
+        }
+    }
 
     void Update()
     {
@@ -141,6 +193,13 @@ public class GameManager : MonoBehaviour
         {
             ResetSave();
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+            SaveCurrentPlayerState();
+
+        if (Input.GetKeyDown(KeyCode.P))
+            Debug.Log(JsonUtility.ToJson(playerData, true));
+
     }
 
     public void ResetSave()

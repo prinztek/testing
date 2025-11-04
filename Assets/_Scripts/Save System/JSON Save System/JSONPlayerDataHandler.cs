@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerDataHandler : MonoBehaviour
 {
-    public CharacterStats stats;
+    public CharacterStats characterStats;
     public PlayerInventory inventory;
 
     void Start()
@@ -12,24 +12,65 @@ public class PlayerDataHandler : MonoBehaviour
 
     public void LoadPlayerFromData(JSONPlayerData data)
     {
-        stats.gold = data.gold;
+        characterStats.gold = data.gold;
+        inventory.gold = data.gold;
 
+        // Clear and rebuild inventory
         inventory.ownedItems.Clear();
-        foreach (var itemName in data.ownedItemIds)
+        foreach (var id in data.ownedItemIds)
         {
-            GameItem item = ItemDatabase.GetItemById(itemName);
-            inventory.ownedItems.Add(new InventorySlot(item, 1));
+            var item = ItemDatabase.GetItemById(id);
+            if (item != null)
+                inventory.ownedItems.Add(new InventorySlot(item, 1));
         }
+
+        // Equipped weapons
+        if (!string.IsNullOrEmpty(data.equippedMeleeWeaponId))
+        {
+            var melee = ItemDatabase.GetItemById(data.equippedMeleeWeaponId);
+            if (melee != null)
+                characterStats.EquipMeleeWeapon(melee);
+        }
+
+        if (!string.IsNullOrEmpty(data.equippedRangedWeaponId))
+        {
+            var ranged = ItemDatabase.GetItemById(data.equippedRangedWeaponId);
+            if (ranged != null)
+                characterStats.EquipRangedWeapon(ranged);
+        }
+
+        // Skills
+        foreach (var skillName in data.unlockedSkills)
+        {
+            if (System.Enum.TryParse(skillName, out CharacterStats.SkillType skill))
+                characterStats.UnlockSkill(skill);
+        }
+
+        Debug.Log("✅ Player loaded from data.");
     }
 
     public void SavePlayerToData(JSONPlayerData data)
     {
-        data.gold = stats.gold;
-
+        data.gold = characterStats.gold;
         data.ownedItemIds.Clear();
+
         foreach (var slot in inventory.ownedItems)
-        {
             data.ownedItemIds.Add(slot.item.itemName);
+
+        data.equippedMeleeWeaponId = characterStats.equippedMeleeWeapon != null ?
+            characterStats.equippedMeleeWeapon.itemName : "";
+
+        data.equippedRangedWeaponId = characterStats.equippedRangedWeapon != null ?
+            characterStats.equippedRangedWeapon.itemName : "";
+
+        data.unlockedSkills.Clear();
+        foreach (CharacterStats.SkillType skill in System.Enum.GetValues(typeof(CharacterStats.SkillType)))
+        {
+            if (characterStats.HasSkill(skill))
+                data.unlockedSkills.Add(skill.ToString());
         }
+
+        Debug.Log("💾 Player saved to data.");
     }
+
 }

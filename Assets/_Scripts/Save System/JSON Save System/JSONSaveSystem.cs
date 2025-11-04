@@ -25,4 +25,23 @@ public static class JSONSaveSystem
             return new JSONSaveData();
         }
     }
+
+    public static void SavePlayer(JSONPlayerData data)
+    {
+        string path = Path.Combine(Application.persistentDataPath, "player_save.json");
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(path, json);
+    }
+
+    public static JSONPlayerData LoadPlayer()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "player_save.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            return JsonUtility.FromJson<JSONPlayerData>(json);
+        }
+        return null;
+    }
+
 }
