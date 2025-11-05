@@ -1,34 +1,27 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraFolllowObject : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
-    [SerializeField] private Vector2 offsetRight = new Vector2(1f, 0f);
-    [SerializeField] private Vector2 offsetLeft = new Vector2(-1f, 0f);
-    [SerializeField] private float smoothTime = 0.2f;
+    [SerializeField] private Transform playerTransform; // Reference to the player's transform
+    [SerializeField] private CinemachineCamera cinemachineCamera; // Reference to the Cinemachine camera
 
-    private Vector3 velocity = Vector3.zero;
-    private Move playerMoveScript;
-
-    private void Start()
+    private void OnEnable()
     {
-        playerMoveScript = playerTransform.GetComponent<Move>();
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
     }
 
-    private void LateUpdate()
+    private void OnDisable()
     {
-        Vector2 desiredOffset = playerMoveScript.FacingRight ? offsetRight : offsetLeft;
-
-        // Only offset the X axis; keep Y exactly player's Y position
-        Vector3 targetPosition = new Vector3(
-            playerTransform.position.x + desiredOffset.x,
-            playerTransform.position.y,
-            transform.position.z // keep current camera Z (depth)
-        );
-
-        // Smoothly move to the target position
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
     }
+
+    private void HandlePlayerSpawned(GameObject player)
+    {
+        cinemachineCamera.Follow = player.transform;
+    }
+
+
 
 }
 

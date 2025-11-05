@@ -30,10 +30,13 @@ public class GameManager : MonoBehaviour
     // GAME STATE MANAGEMENT
     public GameState State;
     public static event Action<GameState> OnGameStateChanged;
+    public static event Action<GameObject> OnPlayerSpawned;
+
 
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
+    public PlayerDataHandler playerDataHandler;
 
     [Header("Player Management")]
     public GameObject playerPrefab;
@@ -50,13 +53,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes
         LoadGame(); // Load saved progress on startup
-
-        // ✅ Ensure playerData exists too
-        if (playerData == null)
-        {
-            Debug.Log("No player data found — creating new JSONPlayerData.");
-            playerData = new JSONPlayerData();
-        }
     }
 
     private void Start()
@@ -131,10 +127,6 @@ public class GameManager : MonoBehaviour
         var level = currentData.chapters[chapterIndex].levels[levelIndex];
         level.isCompleted = true;
 
-        // Store best time
-        if (level.bestTime == 0 || time < level.bestTime)
-            level.bestTime = time;
-
         // Unlock next level
         if (levelIndex < 7) // if not last in chapter
             currentData.chapters[chapterIndex].levels[levelIndex + 1].isUnlocked = true;
@@ -169,6 +161,7 @@ public class GameManager : MonoBehaviour
 
         // Instantiate player prefab
         currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+        OnPlayerSpawned?.Invoke(currentPlayerInstance);
 
         // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
         Debug.Log("✅ Player spawned and loaded.");
@@ -212,7 +205,6 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = isOpen ? 0 : 1;
         // Optionally disable player input here
-
     }
 
 

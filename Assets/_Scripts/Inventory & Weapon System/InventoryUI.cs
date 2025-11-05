@@ -24,14 +24,26 @@ public class InventoryUI : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInventory.OnInventoryChanged += RefreshUI;
-        RefreshUI();
-        ClearDetails();
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
     }
 
     private void OnDisable()
     {
-        playerInventory.OnInventoryChanged -= RefreshUI;
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        // Unsubscribe to prevent memory leaks
+        if (playerInventory != null)
+        {
+            playerInventory.OnInventoryChanged -= RefreshUI;
+        }
+    }
+
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        playerInventory = playerObj.GetComponent<PlayerInventory>();
+        characterStats = playerObj.GetComponent<CharacterStats>();
+        playerInventory.OnInventoryChanged += RefreshUI;
+        RefreshUI();
+        ClearDetails();
     }
 
     public void RefreshUI()

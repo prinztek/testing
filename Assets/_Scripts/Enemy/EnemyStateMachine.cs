@@ -36,8 +36,21 @@ public class EnemyStateMachine : MonoBehaviour
         stats = GetComponent<EnemyStatsNew>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        // player = GameObject.FindGameObjectWithTag("Player")?.transform;
         sensor = GetComponent<EnemyEnvironmentSensor>();  // Add this line
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        player = playerObj.transform;
     }
 
 

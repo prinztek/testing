@@ -7,10 +7,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject createNewGamePanel;
     public GameObject returningPlayerMainMenuPanel;
     public GameObject chapterSelectionPanel;
-    public GameObject settingsAndControlPanel;
-    public GameObject settingsPanel;
-    public GameObject controlsPanel;
-    public GameObject creditsPanel;
+
 
     void Start()
     {
@@ -25,11 +22,6 @@ public class MainMenuUIManager : MonoBehaviour
         createNewGamePanel.SetActive(false);
         returningPlayerMainMenuPanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
-        // levelSelectionPanel.SetActive(false);
-        settingsAndControlPanel.SetActive(false);
-        settingsPanel.SetActive(false);
-        controlsPanel.SetActive(false);
-        creditsPanel.SetActive(false);
 
         // Activate the selected panel
         panelToShow.SetActive(true);
@@ -51,6 +43,8 @@ public class MainMenuUIManager : MonoBehaviour
     {
         // this is for a returning player
         // Load the next level the player has completed
+        // Find the last current Chapter Level and last level completed
+        //GameManager.Instance.LoadGame();
     }
 
     public void QuitGame()

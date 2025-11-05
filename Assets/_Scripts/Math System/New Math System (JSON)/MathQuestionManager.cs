@@ -143,7 +143,7 @@ public class MathQuestionManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("✅ All questions completed!");
+            // Debug.Log("✅ All questions completed!");
             OnQuestionBatchCompleted?.Invoke();
         }
     }

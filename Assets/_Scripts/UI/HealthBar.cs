@@ -12,8 +12,26 @@ public class HealthBar : MonoBehaviour
     [Header("References")]
     public CharacterStats characterStats; // Reference to the CharacterStats script
 
-    private void Start()
+    private void OnEnable()
     {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        // Unsubscribe to prevent memory leaks
+        if (characterStats != null)
+        {
+            characterStats.OnHealthChanged -= UpdateHealthBar;
+            characterStats.OnDeathStarted -= HandleDeath;
+        }
+    }
+
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        characterStats = playerObj.GetComponent<CharacterStats>();
         if (characterStats == null)
         {
             Debug.LogError("CharacterStats not assigned to HealthBar!");
@@ -29,15 +47,6 @@ public class HealthBar : MonoBehaviour
         characterStats.OnDeathStarted += HandleDeath; // When character dies, hide the health bar
     }
 
-    private void OnDisable()
-    {
-        // Unsubscribe to prevent memory leaks
-        if (characterStats != null)
-        {
-            characterStats.OnHealthChanged -= UpdateHealthBar;
-            characterStats.OnDeathStarted -= HandleDeath;
-        }
-    }
 
     private void UpdateHealthBar(int currentHealth)
     {

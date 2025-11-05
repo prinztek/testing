@@ -15,7 +15,8 @@ public class UIManager : MonoBehaviour
     // Tracks the currently active modal (null if none open)
     private GameObject activePanel;
 
-    // Event to notify GameManager or other systems when a modal opens/closes
+    // Event to notify GameManager or other systems when a modal opens/closes 
+    // for the GameManager to pause/unpause the game accordingly
     public event Action<bool> OnModalToggled;
 
     private void Awake()

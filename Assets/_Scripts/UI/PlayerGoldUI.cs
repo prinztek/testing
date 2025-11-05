@@ -6,18 +6,29 @@ public class PlayerGoldUI : MonoBehaviour
     public PlayerInventory playerInventory;
     public TMP_Text goldCounterText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+
+    private void OnEnable()
     {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        playerInventory = playerObj.GetComponent<PlayerInventory>();
         if (playerInventory == null)
         {
-            Debug.LogError("playerInventory not assigned to PlayerGoldUI!");
+            Debug.LogError("PlayerInventory not assigned to PlayerGoldUI!");
             return;
         }
 
         goldCounterText.text = playerInventory.gold.ToString();
         playerInventory.OnGoldChanged += UpdateGoldCount;
     }
-
 
     private void UpdateGoldCount(int currentGold)
     {
