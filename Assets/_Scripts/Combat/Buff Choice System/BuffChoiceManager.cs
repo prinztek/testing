@@ -60,7 +60,6 @@ public class BuffChoiceManager : MonoBehaviour
     public void ShowChoices(List<BuffOption> options, System.Action<Buff> onChosen)
     {
         onBuffChosen = onChosen;
-        choicePanel.SetActive(true);
         UIManager.Instance.ShowModal(choicePanel);
 
         // Clear old buttons

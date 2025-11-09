@@ -16,6 +16,21 @@ public class StatusEffectManager : MonoBehaviour
     private GameObject activeIcon;
     private Tween floatTween;
 
+    void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    void HandlePlayerSpawned(GameObject player)
+    {
+        target = player.transform;
+    }
+
     public void ShowBuffIcon(Buff buff)
     {
         if (target == null || buffIconPrefab == null)

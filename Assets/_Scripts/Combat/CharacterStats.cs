@@ -80,6 +80,8 @@ public class CharacterStats : MonoBehaviour
         UnlockSkill(SkillType.FireBlast);
         UnlockSkill(SkillType.IceShield);
         UnlockSkill(SkillType.LightningDash);
+
+        buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
     }
     public TrailRenderer trail;
 
@@ -96,7 +98,6 @@ public class CharacterStats : MonoBehaviour
                 buffUIManager?.RemoveBuffUI(activeBuff);
                 ResetTemporaryModifiers();
                 activeBuff = null;
-                trail.enabled = false;
                 if (buffQueue.Count > 0) // apply next buff in queue
                 {
                     ApplyBuff(buffQueue.Dequeue());

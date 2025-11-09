@@ -205,6 +205,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = isOpen ? 0 : 1;
         // Optionally disable player input here
+        Debug.Log($"GameManager received modal toggle: isOpen = {isOpen}");
     }
 
 

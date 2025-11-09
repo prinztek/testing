@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 public class MathQuestionManager : MonoBehaviour
 {
@@ -44,9 +45,23 @@ public class MathQuestionManager : MonoBehaviour
     public int hintUsedCounter = 0;
     public int maxHints;  // max hints from the question
     public int baseHintCost = 25; // Cost for the first hint
-    public int currentHintCost = 10; // Cost for each subsequent hint
+    public int currentHintCost = 10; // Cost for each subsequent hint    
 
+    void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
 
+    void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    void HandlePlayerSpawned(GameObject player)
+    {
+        characterStats = player.GetComponent<CharacterStats>();
+        playerInventory = player.GetComponent<PlayerInventory>();
+    }
 
     void Start()
     {
@@ -177,7 +192,11 @@ public class MathQuestionManager : MonoBehaviour
                     Debug.Log($"🪄 Player chose buff: {selectedBuff.buffName}");
                 });
 
-                UIManager.Instance.ShowBuffChoicePanel(true);
+                UIManager.Instance.ShowBuffChoiceCanvas(true);
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ CharacterStats reference not set in MathQuestionManager. Cannot apply buff.");
             }
 
             currentIndex++;

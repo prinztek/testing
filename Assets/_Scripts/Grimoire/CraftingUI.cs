@@ -17,9 +17,23 @@ public class CraftingUI : MonoBehaviour
     public TextMeshProUGUI craftButtonPriceText;
 
     private CraftableItem selectedItem;
-
     private void OnEnable()
     {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        if (playerInventory != null)
+        {
+            playerInventory.OnInventoryChanged -= RefreshCraftingList;
+        }
+    }
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        playerInventory = playerObj.GetComponent<PlayerInventory>();
+        playerInventory.OnInventoryChanged += RefreshCraftingList;
         RefreshCraftingList();
         ClearDetails();
     }

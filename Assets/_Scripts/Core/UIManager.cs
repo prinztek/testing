@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Main Panels")]
     public GameObject grimoirePanel;     // Book => Inventory/Crafting/Math Question 
-    public GameObject buffChoicePanel;     // Book => Inventory/Crafting/Math Question 
+    public GameObject buffChoicePanel;
     public GameObject pauseMenu;
     public GameObject levelCompletePanel;
     public GameObject levelFailedPanel;
@@ -21,8 +21,15 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // ✅ Keep across scenes
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -46,7 +53,7 @@ public class UIManager : MonoBehaviour
     }
 
     // === BUFF CHOICE / SELECTION OF BUFF TO CHOOSE FROM ===
-    public void ShowBuffChoicePanel(bool show)
+    public void ShowBuffChoiceCanvas(bool show)
     {
         if (buffChoicePanel == null) return;
 

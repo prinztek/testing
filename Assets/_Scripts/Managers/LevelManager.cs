@@ -221,12 +221,6 @@ public class LevelManager : MonoBehaviour
             playerStats.OnDeathFinished += OnLevelFailed;
         }
 
-        if (mathQuestionManager != null)
-        {
-            mathQuestionManager.OnQuestionBatchCompleted -= OnLevelCompleted;
-            mathQuestionManager.OnQuestionBatchCompleted += OnLevelCompleted;
-        }
-
         // --- Hide endpoint until level cleared ---
         if (exitPoint != null)
             exitPoint.SetActive(false);
