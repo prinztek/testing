@@ -26,7 +26,7 @@ public class PlayerGoldUI : MonoBehaviour
             return;
         }
 
-        goldCounterText.text = playerInventory.gold.ToString();
+        goldCounterText.text = playerInventory.Gold.ToString();
         playerInventory.OnGoldChanged += UpdateGoldCount;
     }
 

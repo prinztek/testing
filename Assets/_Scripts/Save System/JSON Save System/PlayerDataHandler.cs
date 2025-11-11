@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDataHandler : MonoBehaviour
@@ -10,50 +11,87 @@ public class PlayerDataHandler : MonoBehaviour
         LoadPlayerFromData(GameManager.Instance.playerData);
     }
 
+    // public void LoadPlayerFromData(JSONPlayerData data)
+    // {
+    //     inventory.gold = data.gold;
+
+    //     // Clear and rebuild inventory
+    //     inventory.ownedItems.Clear();
+    //     foreach (var id in data.ownedItemIds)
+    //     {
+    //         var item = GameManager.Instance.itemDatabase.GetItemById(id);
+    //         if (item != null)
+    //             inventory.ownedItems.Add(new InventorySlot(item, 1));
+    //     }
+
+    //     // Equipped weapons
+    //     if (!string.IsNullOrEmpty(data.equippedMeleeWeaponId))
+    //     {
+    //         var melee = GameManager.Instance.itemDatabase.GetItemById(data.equippedMeleeWeaponId);
+    //         if (melee != null)
+    //             characterStats.EquipMeleeWeapon(melee);
+    //     }
+
+    //     if (!string.IsNullOrEmpty(data.equippedRangedWeaponId))
+    //     {
+    //         var ranged = GameManager.Instance.itemDatabase.GetItemById(data.equippedRangedWeaponId);
+    //         if (ranged != null)
+    //             characterStats.EquipRangedWeapon(ranged);
+    //     }
+
+    //     // Skills
+    //     foreach (var skillName in data.unlockedSkills)
+    //     {
+    //         if (System.Enum.TryParse(skillName, out CharacterStats.SkillType skill))
+    //             characterStats.UnlockSkill(skill);
+    //     }
+
+    //     Debug.Log("✅ Player loaded from data.");
+    // }
+
     public void LoadPlayerFromData(JSONPlayerData data)
     {
-        inventory.gold = data.gold;
+        // Set gold via property -> triggers OnGoldChanged
+        inventory.Gold = data.gold;
 
-        // Clear and rebuild inventory
-        inventory.ownedItems.Clear();
+        // Build inventory via property -> triggers OnInventoryChanged
+        var loadedItems = new List<InventorySlot>();
         foreach (var id in data.ownedItemIds)
         {
             var item = GameManager.Instance.itemDatabase.GetItemById(id);
-            if (item != null)
-                inventory.ownedItems.Add(new InventorySlot(item, 1));
+            if (item != null) loadedItems.Add(new InventorySlot(item, 1));
         }
+        inventory.OwnedItems = loadedItems;
 
-        // Equipped weapons
+        // Equip weapons
         if (!string.IsNullOrEmpty(data.equippedMeleeWeaponId))
         {
             var melee = GameManager.Instance.itemDatabase.GetItemById(data.equippedMeleeWeaponId);
-            if (melee != null)
-                characterStats.EquipMeleeWeapon(melee);
+            if (melee != null) characterStats.EquipMeleeWeapon(melee);
         }
 
         if (!string.IsNullOrEmpty(data.equippedRangedWeaponId))
         {
             var ranged = GameManager.Instance.itemDatabase.GetItemById(data.equippedRangedWeaponId);
-            if (ranged != null)
-                characterStats.EquipRangedWeapon(ranged);
+            if (ranged != null) characterStats.EquipRangedWeapon(ranged);
         }
 
-        // Skills
+        // Unlock skills
         foreach (var skillName in data.unlockedSkills)
         {
             if (System.Enum.TryParse(skillName, out CharacterStats.SkillType skill))
                 characterStats.UnlockSkill(skill);
         }
 
-        Debug.Log("✅ Player loaded from data.");
+        Debug.Log("✅ Player loaded from data. UI events automatically fired.");
     }
 
     public void SavePlayerToData(JSONPlayerData data)
     {
-        data.gold = inventory.gold;
+        data.gold = inventory.Gold;
         data.ownedItemIds.Clear();
 
-        foreach (var slot in inventory.ownedItems)
+        foreach (var slot in inventory.OwnedItems)
             data.ownedItemIds.Add(slot.item.itemName);
 
         data.equippedMeleeWeaponId = characterStats.equippedMeleeWeapon != null ?

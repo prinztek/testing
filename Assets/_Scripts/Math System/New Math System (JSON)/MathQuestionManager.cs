@@ -103,9 +103,9 @@ public class MathQuestionManager : MonoBehaviour
         // 🔹 Check if player has enough gold
         int currentHintCost = GetCurrentHintCost();
 
-        if (playerInventory.gold < currentHintCost)
+        if (playerInventory.Gold < currentHintCost)
         {
-            Debug.Log("❌ Not enough gold for a hint. Current Gold: " + playerInventory.gold + ", Hint Cost: " + currentHintCost);
+            Debug.Log("❌ Not enough gold for a hint. Current Gold: " + playerInventory.Gold + ", Hint Cost: " + currentHintCost);
             return;
         }
 

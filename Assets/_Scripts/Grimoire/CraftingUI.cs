@@ -76,7 +76,7 @@ public class CraftingUI : MonoBehaviour
         if (selectedItem == null) return;
         Debug.Log($"✅ Crafted: {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold.");
         // Add logic here to deduct gold and give the item
-        if (playerInventory.gold < selectedItem.costInGold)
+        if (playerInventory.Gold < selectedItem.costInGold)
         {
             Debug.LogWarning("⚠️ Not enough gold to craft this item.");
             return;
