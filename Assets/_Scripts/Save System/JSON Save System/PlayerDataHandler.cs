@@ -12,14 +12,13 @@ public class PlayerDataHandler : MonoBehaviour
 
     public void LoadPlayerFromData(JSONPlayerData data)
     {
-        characterStats.gold = data.gold;
         inventory.gold = data.gold;
 
         // Clear and rebuild inventory
         inventory.ownedItems.Clear();
         foreach (var id in data.ownedItemIds)
         {
-            var item = ItemDatabase.GetItemById(id);
+            var item = GameManager.Instance.itemDatabase.GetItemById(id);
             if (item != null)
                 inventory.ownedItems.Add(new InventorySlot(item, 1));
         }
@@ -27,14 +26,14 @@ public class PlayerDataHandler : MonoBehaviour
         // Equipped weapons
         if (!string.IsNullOrEmpty(data.equippedMeleeWeaponId))
         {
-            var melee = ItemDatabase.GetItemById(data.equippedMeleeWeaponId);
+            var melee = GameManager.Instance.itemDatabase.GetItemById(data.equippedMeleeWeaponId);
             if (melee != null)
                 characterStats.EquipMeleeWeapon(melee);
         }
 
         if (!string.IsNullOrEmpty(data.equippedRangedWeaponId))
         {
-            var ranged = ItemDatabase.GetItemById(data.equippedRangedWeaponId);
+            var ranged = GameManager.Instance.itemDatabase.GetItemById(data.equippedRangedWeaponId);
             if (ranged != null)
                 characterStats.EquipRangedWeapon(ranged);
         }
@@ -51,7 +50,7 @@ public class PlayerDataHandler : MonoBehaviour
 
     public void SavePlayerToData(JSONPlayerData data)
     {
-        data.gold = characterStats.gold;
+        data.gold = inventory.gold;
         data.ownedItemIds.Clear();
 
         foreach (var slot in inventory.ownedItems)

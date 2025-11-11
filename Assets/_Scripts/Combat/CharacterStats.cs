@@ -31,8 +31,8 @@ public class CharacterStats : MonoBehaviour
     public GameItem equippedMeleeWeapon = null;  // null = Fist
     public GameItem equippedRangedWeapon = null; // null = no ranged
 
-    [Header("Crafting Related")]
-    public int gold = 0; // Player's gold for crafting
+    // [Header("Crafting Related")]
+    // public int gold = 0; // Player's gold for crafting
     private Buff activeBuff = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
     public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
@@ -44,8 +44,8 @@ public class CharacterStats : MonoBehaviour
     public event HealthChanged OnHealthChanged; // This event will be triggered whenever the character’s health changes.
 
     // Delegate and event for player gold changes
-    public delegate void GoldChanged(int gold);
-    public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
+    // public delegate void GoldChanged(int gold);
+    // public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
 
     // ====================================================================================================================
     public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
@@ -150,19 +150,19 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    // called when the player crafts items/calc/hint
-    public void DeductGold(int amount)
-    {
-        gold -= amount;
-        if (gold < 0) gold = 0;
-        OnGoldChanged?.Invoke(gold);
-    }
+    // // called when the player crafts items/calc/hint
+    // public void DeductGold(int amount)
+    // {
+    //     gold -= amount;
+    //     if (gold < 0) gold = 0;
+    //     OnGoldChanged?.Invoke(gold);
+    // }
 
-    public void AddGold(int amount)
-    {
-        gold += amount;
-        OnGoldChanged?.Invoke(gold);
-    }
+    // public void AddGold(int amount)
+    // {
+    //     gold += amount;
+    //     OnGoldChanged?.Invoke(gold);
+    // }
 
     public void Heal(int amount)
     {

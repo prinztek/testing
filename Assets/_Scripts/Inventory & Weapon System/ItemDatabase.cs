@@ -11,9 +11,14 @@ public class ItemDatabase : ScriptableObject
     public List<GameItem> allItems = new List<GameItem>();
     private static ItemDatabase instance;
 
-    public static GameItem GetItemById(string id)
+    // public static GameItem GetItemById(string id)
+    // {
+    //     if (instance == null) instance = Resources.Load<ItemDatabase>("GameItemDatabase");
+    //     return instance.allItems.Find(i => i.itemName == id);
+    // }
+
+    public GameItem GetItemById(string id)
     {
-        if (instance == null) instance = Resources.Load<ItemDatabase>("GameItemDatabase");
-        return instance.allItems.Find(i => i.itemName == id);
+        return allItems.Find(i => i.itemName == id);
     }
 }

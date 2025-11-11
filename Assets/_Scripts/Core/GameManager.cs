@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
     public PlayerDataHandler playerDataHandler;
+    public ItemDatabase itemDatabase;
 
     [Header("Player Management")]
     public GameObject playerPrefab;
