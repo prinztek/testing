@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         JSONSaveSystem.SaveGame(currentData);
-        JSONSaveSystem.SavePlayer(playerData);
+        SaveCurrentPlayerState(); // Save player-specific data
     }
 
     public void LoadGame()
@@ -162,7 +162,6 @@ public class GameManager : MonoBehaviour
         // Instantiate player prefab
         currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
         OnPlayerSpawned?.Invoke(currentPlayerInstance);
-
         // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
         Debug.Log("✅ Player spawned and loaded.");
     }
@@ -174,9 +173,14 @@ public class GameManager : MonoBehaviour
         var handler = currentPlayerInstance.GetComponent<PlayerDataHandler>();
         if (handler != null)
         {
+            Debug.Log(playerData);
             handler.SavePlayerToData(playerData);
-            SaveGame(); // write JSON to file
+            JSONSaveSystem.SavePlayer(playerData);// write JSON to file
             Debug.Log("💾 Player state saved.");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
         }
     }
 

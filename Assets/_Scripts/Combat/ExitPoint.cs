@@ -13,7 +13,7 @@ public class ExitPoint : MonoBehaviour
             Debug.Log("Level Complete!");
             // Notify LevelManager
 
-            FindFirstObjectByType<LevelManager>()?.OnLevelCompleted();
+            LevelManager.Instance.OnLevelCompleted();
 
             canExit = false; // prevent multiple triggers
         }

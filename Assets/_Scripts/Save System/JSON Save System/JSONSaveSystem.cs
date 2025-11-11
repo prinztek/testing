@@ -31,6 +31,8 @@ public static class JSONSaveSystem
         string path = Path.Combine(Application.persistentDataPath, "player_save.json");
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
+        Debug.Log($"Game saved to: {path}");
+
     }
 
     public static JSONPlayerData LoadPlayer()

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using TexDrawLib;
 
 public class MathQuestionManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class MathQuestionManager : MonoBehaviour
     public TMP_Text headerQuestionText;
 
     [Header("Expanded Panel Elements")]
-    public TMP_Text expandedQuestionText;
+    public TEXDraw expandedQuestionText; // for now lets try this with TEXDraw
     public TMP_InputField answerInput;
     public Button submitButton;
 
