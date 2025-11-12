@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,15 +22,43 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // ✅ Keep across scenes
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        HideAllModals();
+
+        // Subscribe if GameManager already exists
+        if (GameManager.Instance != null)
+            RegisterToGameManager();
+    }
+
+    private void OnEnable()
+    {
+        // In case GameManager was created after UIManager
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (GameManager.Instance != null)
+            RegisterToGameManager();
+    }
+
+    private void RegisterToGameManager()
+    {
+        // Tell GameManager we're here
+        GameManager.Instance.RegisterUIManager(this);
     }
 
     private void Start()

@@ -9,7 +9,7 @@ public static class JSONSaveSystem
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-        Debug.Log($"Game saved to: {savePath}");
+        // Debug.Log($"Game saved to: {savePath}");
     }
 
     public static JSONSaveData LoadGame()
@@ -21,7 +21,7 @@ public static class JSONSaveSystem
         }
         else
         {
-            Debug.Log("No save found, creating new save data.");
+            // Debug.Log("No save found, creating new save data.");
             return new JSONSaveData();
         }
     }
@@ -31,7 +31,7 @@ public static class JSONSaveSystem
         string path = Path.Combine(Application.persistentDataPath, "player_save.json");
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
-        Debug.Log($"Game saved to: {path}");
+        // Debug.Log($"Game saved to: {path}");
 
     }
 

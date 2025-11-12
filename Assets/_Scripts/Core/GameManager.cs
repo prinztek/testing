@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
     private GameObject currentPlayerInstance;
     private void Awake()
     {
-        // Singleton pattern setup
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -52,14 +51,36 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject); // Persist across scenes
-        LoadGame(); // Load saved progress on startup
+        DontDestroyOnLoad(gameObject);
+        Application.targetFrameRate = 60;
+
+        LoadGame();
     }
 
     private void Start()
     {
+        // Try to register to existing UIManager
         if (UIManager.Instance != null)
-            UIManager.Instance.OnModalToggled += HandleModalToggled;
+            RegisterUIManager(UIManager.Instance);
+    }
+
+    // Called by UIManager once it exists
+    public void RegisterUIManager(UIManager ui)
+    {
+        // Prevent multiple event bindings
+        ui.OnModalToggled -= HandleModalToggled;
+        ui.OnModalToggled += HandleModalToggled;
+        Debug.Log("✅ GameManager linked with UIManager modal toggle event");
+    }
+
+    private void HandleModalToggled(bool isOpen)
+    {
+        if (isOpen)
+            updateGameState(GameState.Paused);
+        else
+            updateGameState(GameState.Playing);
+
+        Debug.Log($"GameManager received modal toggle: isOpen = {isOpen}");
     }
 
     // Update the current game state and notify listeners
@@ -205,13 +226,5 @@ public class GameManager : MonoBehaviour
         currentData = new JSONSaveData();
         SaveGame();
     }
-
-    private void HandleModalToggled(bool isOpen)
-    {
-        Time.timeScale = isOpen ? 0 : 1;
-        // Optionally disable player input here
-        Debug.Log($"GameManager received modal toggle: isOpen = {isOpen}");
-    }
-
 
 }

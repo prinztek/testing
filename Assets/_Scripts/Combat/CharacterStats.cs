@@ -176,14 +176,14 @@ public class CharacterStats : MonoBehaviour
         if (weapon != null && weapon.itemType == ItemType.MeleeWeapon)
         {
             equippedMeleeWeapon = weapon;
-            Debug.Log($"Equipped Melee: {weapon.itemName}");
+            // Debug.Log($"Equipped Melee: {weapon.itemName}");
         }
     }
 
     public void UnequipMeleeWeapon()
     {
         equippedMeleeWeapon = null;
-        Debug.Log("Unequipped Melee Weapon (back to Fist)");
+        // Debug.Log("Unequipped Melee Weapon (back to Fist)");
     }
 
     public void EquipRangedWeapon(GameItem weapon)
@@ -191,14 +191,14 @@ public class CharacterStats : MonoBehaviour
         if (weapon != null && weapon.itemType == ItemType.RangedWeapon)
         {
             equippedRangedWeapon = weapon;
-            Debug.Log($"Equipped Ranged: {weapon.itemName}");
+            // Debug.Log($"Equipped Ranged: {weapon.itemName}");
         }
     }
 
     public void UnequipRangedWeapon()
     {
         equippedRangedWeapon = null;
-        Debug.Log("Unequipped Ranged Weapon");
+        // Debug.Log("Unequipped Ranged Weapon");
     }
 
     public bool HasRangedWeaponEquipped() => equippedRangedWeapon != null;
