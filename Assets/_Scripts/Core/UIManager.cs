@@ -69,7 +69,12 @@ public class UIManager : MonoBehaviour
     // === BOOK / GRIMOIRE ===
     public void ToggleBook(bool show)
     {
-        if (grimoirePanel == null) return;
+        Debug.Log("Toggling Grimoire: " + show);
+        if (grimoirePanel == null)
+        {
+            Debug.LogWarning("⚠️ Grimoire Panel is not assigned in UIManager.");
+            return;
+        }
 
         if (show)
         {

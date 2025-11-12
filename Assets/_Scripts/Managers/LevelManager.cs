@@ -133,12 +133,13 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         if (UIManager.Instance == null)
+        {
+            Debug.LogWarning("⚠️ UIManager.Instance is null in LevelManager Update.");
+        }
+        else
+        {
             return;
-
-        // Toggle book
-        if (Input.GetKeyDown(KeyCode.Tab))
-            UIManager.Instance.ToggleBook(!UIManager.Instance.grimoirePanel.activeSelf);
-
+        }
         // Pause menu
         if (Input.GetKeyDown(KeyCode.Escape))
             UIManager.Instance.ShowPauseMenu(!UIManager.Instance.pauseMenu.activeSelf);

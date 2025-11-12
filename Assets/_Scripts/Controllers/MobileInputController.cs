@@ -7,6 +7,8 @@ public class MobileInputController : InputController
     [HideInInspector] public bool mobileJumpInput = false;
     [HideInInspector] public bool mobileJumpHoldInput = false;
     [HideInInspector] public bool mobileAttackInput = false;
+    [HideInInspector] public bool mobileToggleGrimoireInput = false;
+
 
     public override float RetrieveMoveInput()
     {
@@ -30,5 +32,12 @@ public class MobileInputController : InputController
         bool attack = mobileAttackInput;
         mobileAttackInput = false; // reset after read
         return attack;
+    }
+
+    public override bool RetrieveToggleGrimoireInput()
+    {
+        bool toggle = mobileToggleGrimoireInput;
+        mobileToggleGrimoireInput = false; // reset after being read
+        return toggle;
     }
 }

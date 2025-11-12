@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
+    [SerializeField] private InputController input;
 
     public enum AttackMode { Melee, Ranged }
     public AttackMode currentAttackMode = AttackMode.Melee;
@@ -87,6 +88,18 @@ public class CharacterStats : MonoBehaviour
 
     private void Update()
     {
+        if (input.RetrieveToggleGrimoireInput())
+        {
+            if (UIManager.Instance != null)
+            {
+                bool isBookOpen = UIManager.Instance.grimoirePanel.activeSelf;
+                UIManager.Instance.ToggleBook(!isBookOpen);
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ UIManager.Instance not found — cannot toggle grimoire.");
+            }
+        }
         // Buff system
         if (activeBuff != null)
         {

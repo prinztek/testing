@@ -76,11 +76,16 @@ public class GameManager : MonoBehaviour
     private void HandleModalToggled(bool isOpen)
     {
         if (isOpen)
+        {
             updateGameState(GameState.Paused);
+            Debug.Log("Paused");
+        }
         else
+        {
             updateGameState(GameState.Playing);
+            Debug.Log("Resumed");
+        }
 
-        Debug.Log($"GameManager received modal toggle: isOpen = {isOpen}");
     }
 
     // Update the current game state and notify listeners

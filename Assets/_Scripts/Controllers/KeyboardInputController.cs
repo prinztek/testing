@@ -26,4 +26,9 @@ public class KeyboardInputController : InputController
     // {
     //     return Input.GetButton("Fire1");
     // }
+
+    public override bool RetrieveToggleGrimoireInput()
+    {
+        return Input.GetKeyDown(KeyCode.Tab);
+    }
 }
