@@ -25,6 +25,12 @@ public class InventoryUI : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+        // 🔹 If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
     }
 
     private void OnDisable()
@@ -40,38 +46,42 @@ public class InventoryUI : MonoBehaviour
 
     private void HandlePlayerSpawned(GameObject playerObj)
     {
-        // Assign inventory and character stats
+        if (playerObj == null)
+        {
+            Debug.LogWarning("[InventoryUI] Player spawn event received, but player is null!");
+            return;
+        }
+
         playerInventory = playerObj.GetComponent<PlayerInventory>();
         characterStats = playerObj.GetComponent<CharacterStats>();
 
-        if (playerInventory != null)
+        if (playerInventory == null || characterStats == null)
         {
-            playerInventory.OnInventoryChanged += RefreshUI;
-            playerInventory.OnGoldChanged += UpdateGoldUI;
+            Debug.LogWarning("[InventoryUI] Player components missing.");
+            return;
         }
+
+        playerInventory.OnInventoryChanged += RefreshUI;
+        playerInventory.OnGoldChanged += UpdateGoldUI;
 
         ClearDetails();
         RefreshUI();
-        UpdateGoldUI(playerInventory?.Gold ?? 0);
+        UpdateGoldUI(playerInventory.Gold);
+
+        Debug.Log("✅ InventoryUI connected to player inventory.");
     }
 
-    /// <summary>
-    /// Update the entire inventory UI
-    /// </summary>
     public void RefreshUI()
     {
-        if (playerInventory == null) return;
+        if (playerInventory == null || characterStats == null) return;
 
-        // Clear previous buttons
         foreach (Transform child in itemListParent)
             Destroy(child.gameObject);
 
-        // Create a button for each owned item
         foreach (InventorySlot slot in playerInventory.OwnedItems)
         {
             GameObject btnGO = Instantiate(itemButtonPrefab, itemListParent);
 
-            // --- Icon ---
             Transform iconTransform = btnGO.transform.Find("Icon");
             if (iconTransform != null)
             {
@@ -79,7 +89,6 @@ public class InventoryUI : MonoBehaviour
                 if (iconImage != null) iconImage.sprite = slot.item.icon;
             }
 
-            // --- Quantity Text ---
             Transform quantityTransform = btnGO.transform.Find("Quantity");
             if (quantityTransform != null)
             {
@@ -88,13 +97,11 @@ public class InventoryUI : MonoBehaviour
                     quantityText.text = slot.item.isStackable ? slot.quantity.ToString() : "";
             }
 
-            // --- Button Click (show details) ---
             Button btn = btnGO.GetComponent<Button>();
-            InventorySlot capturedSlot = slot; // prevent closure issues
+            InventorySlot capturedSlot = slot;
             btn.onClick.AddListener(() => ShowInventoryItemDetails(capturedSlot.item));
         }
 
-        // Update equipped weapon display
         equippedMeleeText.text = "Melee: " +
             (characterStats.equippedMeleeWeapon ? characterStats.equippedMeleeWeapon.itemName : "Fist");
 
@@ -102,13 +109,9 @@ public class InventoryUI : MonoBehaviour
             (characterStats.equippedRangedWeapon ? characterStats.equippedRangedWeapon.itemName : "None");
     }
 
-    /// <summary>
-    /// Show details of the selected inventory item
-    /// </summary>
     private void ShowInventoryItemDetails(GameItem item)
     {
         selectedItem = item;
-
         if (item == null) return;
 
         string details = $"{item.itemName}\n{item.description}";
@@ -156,8 +159,8 @@ public class InventoryUI : MonoBehaviour
 
     private void SetButtonLabel(string text)
     {
-        TextMeshProUGUI buttonLabel = useInventoryItemButton.GetComponentInChildren<TextMeshProUGUI>();
-        if (buttonLabel != null) buttonLabel.text = text;
+        TextMeshProUGUI label = useInventoryItemButton.GetComponentInChildren<TextMeshProUGUI>();
+        if (label != null) label.text = text;
     }
 
     private void UseSelectedItem(string action)
@@ -168,17 +171,12 @@ public class InventoryUI : MonoBehaviour
         bool wasStackable = selectedItem.isStackable;
 
         if (selectedItem.itemType == ItemType.Consumable)
-        {
             playerInventory.UseItem(selectedItem);
-        }
         else
-        {
             playerInventory.Equip(selectedItem);
-        }
 
         RefreshUI();
 
-        // Re-select the item if it still exists
         if (wasStackable && playerInventory.HasItem(previouslySelected))
             ShowInventoryItemDetails(previouslySelected);
         else
@@ -192,12 +190,9 @@ public class InventoryUI : MonoBehaviour
         useInventoryItemButton.onClick.RemoveAllListeners();
     }
 
-    /// <summary>
-    /// Updates gold UI. You can expand this if you have a gold text field.
-    /// </summary>
     private void UpdateGoldUI(int gold)
     {
-        // Example: update a gold text UI if you have one
-        // goldText.text = gold.ToString();
+        // Optional: add gold text update here if needed
+        Debug.Log($"💰 Gold updated: {gold}");
     }
 }

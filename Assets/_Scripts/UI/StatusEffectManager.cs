@@ -3,6 +3,8 @@ using DG.Tweening;
 
 public class StatusEffectManager : MonoBehaviour
 {
+    public static StatusEffectManager Instance;
+
     [Header("Target Settings")]
     public Transform target; // Character or enemy to follow
     public Vector3 offset = new Vector3(0, 2f, 0);
@@ -15,10 +17,25 @@ public class StatusEffectManager : MonoBehaviour
 
     private GameObject activeIcon;
     private Tween floatTween;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        // 🔹 If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
     }
 
     void OnDisable()

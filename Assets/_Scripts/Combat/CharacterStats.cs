@@ -92,8 +92,7 @@ public class CharacterStats : MonoBehaviour
         {
             if (UIManager.Instance != null)
             {
-                bool isBookOpen = UIManager.Instance.grimoirePanel.activeSelf;
-                UIManager.Instance.ToggleBook(!isBookOpen);
+                UIManager.Instance.ToggleBook(true); // show
             }
             else
             {

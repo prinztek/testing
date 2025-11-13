@@ -6,7 +6,6 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private MathQuestionManager mathQuestionManager;
     [SerializeField] private CharacterStats playerStats;
     [SerializeField] private GameObject exitPoint; // Exit object
 
@@ -136,13 +135,9 @@ public class LevelManager : MonoBehaviour
         {
             Debug.LogWarning("⚠️ UIManager.Instance is null in LevelManager Update.");
         }
-        else
-        {
-            return;
-        }
         // Pause menu
         if (Input.GetKeyDown(KeyCode.Escape))
-            UIManager.Instance.ShowPauseMenu(!UIManager.Instance.pauseMenu.activeSelf);
+            UIManager.Instance.ShowPauseMenu(true);
     }
 
     // Helper to parse "Level1_2" -> (0, 1)

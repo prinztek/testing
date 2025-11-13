@@ -13,8 +13,6 @@ public class MobileInputUIHandler : MonoBehaviour
     public Sprite meleeSprite; // assign in inspector
     public Sprite rangedSprite; // assign in inspector
     private Image attackButtonImage;
-    public GameObject grimoireCanvas;
-
     void Awake()
     {
         // Ensure attackButton is assigned and has an Image component
@@ -31,6 +29,40 @@ public class MobileInputUIHandler : MonoBehaviour
             Debug.LogError("Attack Button is not assigned in the Inspector.");
         }
     }
+    private void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+        // 🔹 If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        if (playerObj == null)
+        {
+            Debug.LogWarning("[InventoryUI] Player spawn event received, but player is null!");
+            return;
+        }
+
+        characterStats = playerObj.GetComponent<CharacterStats>();
+
+        if (characterStats == null)
+        {
+            Debug.LogWarning("[InventoryUI] Player components missing.");
+            return;
+        }
+
+    }
+
 
     void Start()
     {
@@ -78,9 +110,22 @@ public class MobileInputUIHandler : MonoBehaviour
 
     public void OnSwapWeaponPressed()
     {
-        characterStats.TryToggleAttackMode(); // Swap attack mode (melee/ranged)
-        UpdateAttackButtonSprite(); // Update attack button sprite based on the new attack mode
+        if (characterStats == null)
+        {
+            if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+                characterStats = GameManager.Instance.CurrentPlayer.GetComponent<CharacterStats>();
+
+            if (characterStats == null)
+            {
+                Debug.LogWarning("SwapWeaponPressed called but CharacterStats is null. Player not ready yet.");
+                return;
+            }
+        }
+
+        characterStats.TryToggleAttackMode();
+        UpdateAttackButtonSprite();
     }
+
 
     private void UpdateAttackButtonSprite()
     {
@@ -100,5 +145,10 @@ public class MobileInputUIHandler : MonoBehaviour
     public void OnInteractHandPressed()
     {
         playerInteraction.TryInteract();
+    }
+
+    public void OnMenuPressed()
+    {
+        UIManager.Instance.ShowPauseMenu(true);
     }
 }

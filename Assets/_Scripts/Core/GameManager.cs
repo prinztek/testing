@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
     [Header("Player Management")]
     public GameObject playerPrefab;
     private GameObject currentPlayerInstance;
+    public GameObject CurrentPlayer => currentPlayerInstance;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -182,12 +184,18 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPlayer()
     {
+        if (playerPrefab == null)
+        {
+            Debug.LogWarning("No playerPrefab assigned!");
+            return;
+        }
         // Find spawn point (place an empty GameObject tagged "PlayerSpawn" in each level)
         var spawn = GameObject.FindWithTag("PlayerSpawn");
         Vector3 spawnPos = spawn != null ? spawn.transform.position : Vector3.zero;
 
         // Instantiate player prefab
         currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+        currentPlayerInstance.name = "Player";
         OnPlayerSpawned?.Invoke(currentPlayerInstance);
         // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
         Debug.Log("✅ Player spawned and loaded.");

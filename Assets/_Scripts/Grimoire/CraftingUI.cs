@@ -20,6 +20,11 @@ public class CraftingUI : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        // 🔹 If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
     }
 
     private void OnDisable()

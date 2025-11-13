@@ -5,7 +5,6 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     public InputController playerController;
     public InputController mobileController;
-    public GameObject onScreenControlsUI;
     public GameObject player;
 
     void Awake()
@@ -21,16 +20,31 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    void HandlePlayerSpawned(GameObject newPlayer)
+    {
+        player = newPlayer;
+        AssignInput(Application.isMobilePlatform ? mobileController : playerController);
+    }
+
+
     void Start()
     {
         if (Application.isMobilePlatform)
         {
-            onScreenControlsUI.SetActive(true);
             AssignInput(mobileController);
         }
         else
         {
-            onScreenControlsUI.SetActive(false);
             AssignInput(playerController);
         }
     }

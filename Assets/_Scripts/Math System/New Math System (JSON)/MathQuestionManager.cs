@@ -3,145 +3,130 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using TexDrawLib;
 
 public class MathQuestionManager : MonoBehaviour
 {
-    [Header("UI References")]
-    public GameObject Grimoire;
+    [Header("UI References (Assign in Inspector)")]
+    [SerializeField] private GameObject grimoirePanel;      // Optional if you want to toggle panel
+    [SerializeField] private TEXDraw expandedQuestionText;
+    [SerializeField] private TMP_InputField answerInput;
+    [SerializeField] private Button submitButton;
+    [SerializeField] private TMP_Text hintText;
+    [SerializeField] private Button hintButton;
 
-    [Header("Header Button")]
-    public Button headerButton;
-    public TMP_Text headerQuestionText;
-
-    [Header("Expanded Panel Elements")]
-    public TEXDraw expandedQuestionText; // for now lets try this with TEXDraw
-    public TMP_InputField answerInput;
-    public Button submitButton;
-
-    [Header("Gameplay")]
-
-    // 🔹 Reference to CharacterStats for applying buffs
-    public CharacterStats characterStats;
-
-    public PlayerInventory playerInventory;
+    [Header("Gameplay References")]
+    [SerializeField] private CharacterStats characterStats;
+    [SerializeField] private PlayerInventory playerInventory;
 
     [Header("Question Settings")]
     public MathTopic topic = MathTopic.Permutation_and_Its_Conditions;
     public QuestionDifficulty difficulty = QuestionDifficulty.Easy;
     public int numberOfQuestions = 3;
 
-    public Action OnQuestionBatchCompleted;
+    [Header("Hints Settings")]
+    public int baseHintCost = 25;
+    private int hintUsedCounter = 0;
+    private int maxHints = 0;
 
     private List<MathQuestion> questionQueue = new();
     private int currentIndex = 0;
     private MathQuestion currentQuestion;
     private bool answeredCorrectly = false;
-    private SaveData saveData; // 🔹 keep track of answered IDs
+    private SaveData saveData;
 
-    [Header("Hints Section")]
-    public TMP_Text hintText;
-    public Button hintButton;
-    public int hintUsedCounter = 0;
-    public int maxHints;  // max hints from the question
-    public int baseHintCost = 25; // Cost for the first hint
-    public int currentHintCost = 10; // Cost for each subsequent hint    
+    public Action OnQuestionBatchCompleted;
 
-    void OnEnable()
+    private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        // 🔹 If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
     }
 
-    void HandlePlayerSpawned(GameObject player)
+    private void HandlePlayerSpawned(GameObject player)
     {
         characterStats = player.GetComponent<CharacterStats>();
         playerInventory = player.GetComponent<PlayerInventory>();
     }
 
-    void Start()
+    private void Awake()
     {
-        submitButton.onClick.AddListener(CheckAnswer);
-        hintButton.onClick.AddListener(GenerateNewHint);
-        saveData = SaveSystem.Load(); // 🔹 load saved data
+        if (submitButton != null)
+            submitButton.onClick.AddListener(CheckAnswer);
+
+        if (hintButton != null)
+            hintButton.onClick.AddListener(GenerateNewHint);
+    }
+
+    private void Start()
+    {
+        saveData = SaveSystem.Load(); // Load saved progress
         GenerateNewQuestions();
+        ResetHintButtonText();
+    }
 
+    private void ResetHintButtonText()
+    {
         int currentHintCost = GetCurrentHintCost();
-        hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{currentHintCost}g)";
-
+        if (hintButton != null)
+            hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{currentHintCost}g)";
     }
 
-    void Update()
+    public void ToggleGrimoirePanel()
     {
-        // 🔹 Example: Press R to reset progress
-        if (Input.GetKeyDown(KeyCode.R))
+        if (grimoirePanel != null)
         {
-            SaveSystem.ResetProgress();
-            saveData = new SaveData(); // reset in memory too
-            Debug.Log("🔄 Progress reset, you can replay questions now.");
+            bool isActive = grimoirePanel.activeSelf;
+            grimoirePanel.SetActive(!isActive);
+
+            answerInput.text = "";
+            if (!isActive)
+                answeredCorrectly = false;
         }
-    }
-
-    void TogglePanel()
-    {
-        bool isGrimoireActive = Grimoire.activeSelf;
-        Grimoire.SetActive(!isGrimoireActive);
-
-        answerInput.text = "";
-        if (!isGrimoireActive && answeredCorrectly)
-            answeredCorrectly = false;
     }
 
     public void GenerateNewHint()
     {
-        // 🔹 Check if player has enough gold
-        int currentHintCost = GetCurrentHintCost();
+        if (playerInventory == null || currentQuestion == null) return;
 
+        int currentHintCost = GetCurrentHintCost();
         if (playerInventory.Gold < currentHintCost)
         {
-            Debug.Log("❌ Not enough gold for a hint. Current Gold: " + playerInventory.Gold + ", Hint Cost: " + currentHintCost);
+            Debug.Log($"❌ Not enough gold for a hint. Current Gold: {playerInventory.Gold}, Hint Cost: {currentHintCost}");
             return;
         }
-
 
         maxHints = currentQuestion.hints.Length;
         if (hintUsedCounter < maxHints)
         {
             hintText.text += $"\n💡 {currentQuestion.hints[hintUsedCounter]}";
             hintUsedCounter++;
-            Debug.Log("💡 Hint used. Hints remaining: " + (maxHints - hintUsedCounter));
 
-            // Deduct gold
             playerInventory.DeductGold(currentHintCost);
-            // Debug.Log("💰 Deducted " + currentHintCost + " gold for a hint. Remaining Gold: " + playerInventory.gold);
 
             if (hintUsedCounter >= maxHints)
-            {
                 hintButton.interactable = false;
-                Debug.Log("🔒 All hints used. Hint button disabled.");
-            }
             else
-            {
-                // Update the hint cost for the next hint
-                currentHintCost = GetCurrentHintCost();
-                hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{currentHintCost}g)";
-            }
+                ResetHintButtonText();
         }
     }
 
-    int GetCurrentHintCost()
+    private int GetCurrentHintCost()
     {
-        int costPerHintIncrease = baseHintCost;
-        return baseHintCost + (costPerHintIncrease * hintUsedCounter);
+        return baseHintCost + (baseHintCost * hintUsedCounter);
     }
+
     public void GenerateNewQuestions()
     {
-        // 🔹 Pass in saveData.answeredQuestionIds so used ones are skipped
         questionQueue = MathQuestionLoaderJSON.Load(topic, difficulty, numberOfQuestions, new HashSet<int>(saveData.answeredQuestionIds));
         currentIndex = 0;
         LoadCurrentQuestion();
@@ -152,40 +137,36 @@ public class MathQuestionManager : MonoBehaviour
         if (currentIndex < questionQueue.Count)
         {
             currentQuestion = questionQueue[currentIndex];
-            headerQuestionText.text = currentQuestion.prompt;
             expandedQuestionText.text = currentQuestion.prompt;
             answerInput.text = "";
         }
         else
         {
-            // Debug.Log("✅ All questions completed!");
             OnQuestionBatchCompleted?.Invoke();
         }
     }
 
-    void CheckAnswer()
+    public void CheckAnswer()
     {
         string input = answerInput.text.Trim();
+        if (currentQuestion == null) return;
 
         if (input == currentQuestion.answer)
         {
-            Debug.Log("✅ Correct! Answer: " + currentQuestion.answer);
+            Debug.Log($"✅ Correct! Answer: {currentQuestion.answer}");
             answeredCorrectly = true;
 
-            // 🔹 Mark this question as used
             if (!saveData.answeredQuestionIds.Contains(currentQuestion.id))
             {
                 saveData.answeredQuestionIds.Add(currentQuestion.id);
-                SaveSystem.Save(saveData); // persist immediately
+                SaveSystem.Save(saveData);
             }
 
-            // Apply a chosen buff
             if (characterStats != null)
             {
                 UIManager.Instance.CloseActivePanel();
 
                 var chosen = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
-
                 BuffChoiceManager.Instance.ShowChoices(chosen, (selectedBuff) =>
                 {
                     characterStats.AddBuff(selectedBuff);
@@ -194,26 +175,22 @@ public class MathQuestionManager : MonoBehaviour
 
                 UIManager.Instance.ShowBuffChoiceCanvas(true);
             }
-            else
-            {
-                Debug.LogWarning("⚠️ CharacterStats reference not set in MathQuestionManager. Cannot apply buff.");
-            }
 
             currentIndex++;
             LoadCurrentQuestion();
-            // Reset hints
+
             hintButton.interactable = true;
             hintText.text = "Hints:";
             hintUsedCounter = 0;
+            ResetHintButtonText();
         }
         else
         {
-            Debug.Log("❌ Wrong. Expected: " + currentQuestion.answer);
+            Debug.Log($"❌ Wrong. Expected: {currentQuestion.answer}");
             answeredCorrectly = false;
         }
     }
 
-    // Helper to get a human-readable version of the topic (replaces underscores with spaces)
     public string GetNormalizedTopicName()
     {
         return topic.ToString().Replace('_', ' ');
