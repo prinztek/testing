@@ -5,97 +5,72 @@ using UnityEngine.UI;
 
 public class BuffUIManager : MonoBehaviour
 {
-    public GameObject buffSlotPrefab;
-    public Transform buffPanel;
-    public GameObject canvas; // Reference to the canvas or panel holding the buff UI
+    [Header("References")]
+    [SerializeField] private GameObject buffSlotPrefab;
+    [SerializeField] private GameObject buffPanel;
+    [SerializeField] private StatusEffectManager statusEffectManager;
 
-    public StatusEffectManager statusEffectManager;
+    private readonly Dictionary<Buff, GameObject> buffSlots = new();
 
-    private Dictionary<object, GameObject> buffSlots = new Dictionary<object, GameObject>();
-
-    // This function shows or hides the canvas based on the active buffs
-    private void ToggleCanvasVisibility()
+    void Awake()
     {
-        if (buffSlots.Count > 0)  // If there are buffs, show the canvas
-        {
-            canvas.SetActive(true);
-        }
-        else  // No buffs, hide the canvas
-        {
-            canvas.SetActive(false);
-        }
+        if (buffPanel != null)
+            buffPanel.SetActive(false);
     }
 
-    // ===== LEGACY BUFF SUPPORT =====
     public void AddBuffUI(Buff buff)
     {
-        if (buffSlots.ContainsKey(buff)) return;
+        if (buff == null || buffSlots.ContainsKey(buff)) return;
 
-        GameObject slot = Instantiate(buffSlotPrefab, buffPanel);
+        GameObject slot = Instantiate(buffSlotPrefab, buffPanel.transform);
         buffSlots[buff] = slot;
-
+        buffPanel.SetActive(true);
         UpdateBuffSlot(buff);
 
-        // Ensure the canvas is visible when a buff is added
-        ToggleCanvasVisibility();
-        statusEffectManager.ShowBuffIcon(buff);
+        StatusEffectManager.Instance?.ShowBuffIcon(buff); // show fx on top of the character
     }
 
     public void RemoveBuffUI(Buff buff)
     {
+        if (buff == null) return;
+
         if (buffSlots.TryGetValue(buff, out GameObject slot))
         {
             Destroy(slot);
             buffSlots.Remove(buff);
         }
 
-        // Ensure the canvas is updated when a buff is removed
-        ToggleCanvasVisibility();
+        if (buffSlots.Count == 0)
+            buffPanel.SetActive(false);
 
-        statusEffectManager.HideBuffIcon();
+        StatusEffectManager.Instance?.HideBuffIcon(); // hide fx on top of the character
     }
 
     public void UpdateBuffSlot(Buff buff)
     {
-        if (!buffSlots.ContainsKey(buff)) return;
-
-        GameObject slot = buffSlots[buff];
+        if (!buffSlots.TryGetValue(buff, out GameObject slot)) return;
 
         TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
-        if (text != null)
-        {
-            text.text = buff.GetUIDisplay();
-        }
-
         Image icon = slot.transform.Find("Icon")?.GetComponent<Image>();
+
+        if (text != null)
+            text.text = buff.GetUIDisplay();
+
         if (icon != null)
-        {
             icon.sprite = buff.GetIcon();
-        }
     }
 
     public void UpdateAll(List<Buff> activeBuffs)
     {
         foreach (var buff in activeBuffs)
-        {
             UpdateBuffSlot(buff);
-        }
-
-        // Ensure the canvas is visible or hidden based on active buffs
-        ToggleCanvasVisibility();
     }
 
-    // ===== Utility to Clear All UI =====
     public void ClearAll()
     {
         foreach (var kvp in buffSlots)
-        {
             Destroy(kvp.Value);
-        }
 
         buffSlots.Clear();
-
-        // Hide canvas if no buffs are left
-        ToggleCanvasVisibility();
     }
 }

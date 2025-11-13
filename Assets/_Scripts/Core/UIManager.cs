@@ -1,24 +1,38 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [Header("Main Panels")]
+    [Header("Global UI Prefabs")]
+    public GameObject grimoirePrefab;
+    public GameObject buffChoicePrefab;
+    public GameObject pauseMenuPrefab;
+    public GameObject levelCompletePrefab;
+    public GameObject levelFailedPrefab;
+    public GameObject onScreenControlsPrefab;
 
-    public GameObject grimoirePanel;     // Book => Math Question/Inventory/Crafting/Calculator/Lessons
-    public GameObject pauseMenu;
-    public GameObject buffChoicePanel;
-    public GameObject levelCompletePanel;
-    public GameObject levelFailedPanel;
+    public GameObject playerHUD; // Reference to the player's HUD
 
-    // Tracks the currently active modal (null if none open)
+    // Instantiated global panels
+    private GameObject grimoirePanel;
+    private GameObject buffChoicePanel;
+    private GameObject pauseMenu;
+    private GameObject levelCompletePanel;
+    private GameObject levelFailedPanel;
+    private GameObject onScreenControlsInstance;
+    private GameObject playerHUDInstance;
+
+    // Scene-specific panels
+    private List<GameObject> scenePanels = new List<GameObject>();
+
+    // Currently active modal
     private GameObject activePanel;
 
-    // Event to notify GameManager or other systems when a modal opens/closes 
-    // for the GameManager to pause/unpause the game accordingly
+    // Event for GameManager to pause/unpause
     public event Action<bool> OnModalToggled;
 
     private void Awake()
@@ -32,125 +46,127 @@ public class UIManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // Instantiate global UI panels
+        if (grimoirePrefab != null)
+            grimoirePanel = Instantiate(grimoirePrefab, transform);
+        if (buffChoicePrefab != null)
+            buffChoicePanel = Instantiate(buffChoicePrefab, transform);
+        if (pauseMenuPrefab != null)
+            pauseMenu = Instantiate(pauseMenuPrefab, transform);
+        if (levelCompletePrefab != null)
+            levelCompletePanel = Instantiate(levelCompletePrefab, transform);
+        if (levelFailedPrefab != null)
+            levelFailedPanel = Instantiate(levelFailedPrefab, transform);
+        if (playerHUD != null)
+            playerHUDInstance = Instantiate(playerHUD, transform);
+        if (onScreenControlsPrefab != null && Application.isMobilePlatform)
+        {
+            onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
+            onScreenControlsInstance.SetActive(true);
+        }
         HideAllModals();
-
-        // Subscribe if GameManager already exists
-        if (GameManager.Instance != null)
-            RegisterToGameManager();
     }
 
     private void OnEnable()
     {
-        // In case GameManager was created after UIManager
         SceneManager.sceneLoaded += OnSceneLoaded;
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned; // ✅
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned; // ✅
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (GameManager.Instance != null)
-            RegisterToGameManager();
+        // Disable Player HUD for non-gameplay scenes
+        bool isGameplayScene = scene.name.StartsWith("Level");
+        if (playerHUDInstance != null)
+            playerHUDInstance.SetActive(isGameplayScene);
+        // Hide all scene panels when a new scene loads
+        foreach (var panel in scenePanels)
+            panel.SetActive(false);
     }
 
-    private void RegisterToGameManager()
+    private void HandlePlayerSpawned(GameObject player)
     {
-        // Tell GameManager we're here
-        GameManager.Instance.RegisterUIManager(this);
+        if (playerHUDInstance != null)
+        {
+            playerHUDInstance.SetActive(true);
+            Debug.Log("✅ Player HUD activated after player spawn.");
+        }
     }
 
-    private void Start()
-    {
-        HideAllModals();
-    }
-
-    // === BOOK / GRIMOIRE ===
+    // ===========================
+    // GLOBAL UI METHODS
+    // ===========================
+    // Toggle Grimoire Panel
     public void ToggleBook(bool show)
     {
-        Debug.Log("Toggling Grimoire: " + show);
-        if (grimoirePanel == null)
-        {
-            Debug.LogWarning("⚠️ Grimoire Panel is not assigned in UIManager.");
-            return;
-        }
-
-        if (show)
-        {
-            ShowModal(grimoirePanel);
-        }
-        else
-        {
-            ClosePanel(grimoirePanel);
-        }
+        if (grimoirePanel == null) return;
+        if (show) ShowModal(grimoirePanel);
+        else ClosePanel(grimoirePanel);
     }
 
-    // === BUFF CHOICE / SELECTION OF BUFF TO CHOOSE FROM ===
+    // name should be ShowBuffChoice
     public void ShowBuffChoiceCanvas(bool show)
     {
-        if (buffChoicePanel == null) return;
-
-        if (show)
-        {
-            ShowModal(buffChoicePanel);
-        }
-        else
-        {
-            ClosePanel(buffChoicePanel);
-        }
+        if (buffChoicePrefab == null) return;
+        if (show) ShowModal(buffChoicePanel);
+        else ClosePanel(buffChoicePanel);
     }
 
-    // === PAUSE MENU ===
     public void ShowPauseMenu(bool show)
     {
         if (pauseMenu == null) return;
-
-        if (show)
-        {
-            ShowModal(pauseMenu);
-        }
-        else
-        {
-            ClosePanel(pauseMenu);
-        }
+        if (show) ShowModal(pauseMenu);
+        else ClosePanel(pauseMenu);
     }
 
-    // === LEVEL COMPLETE / FAILED ===
     public void ShowLevelComplete()
     {
-        HideAllModals();
-        if (levelCompletePanel != null)
-        {
-            levelCompletePanel.SetActive(true);
-            activePanel = levelCompletePanel; // ✅ Track active
-            OnModalToggled?.Invoke(true);
-        }
+        if (levelCompletePanel == null) return;
+        ShowModal(levelCompletePanel);
     }
 
     public void ShowLevelFailed()
     {
-        HideAllModals();
-        if (levelFailedPanel != null)
-        {
-            levelFailedPanel.SetActive(true);
-            activePanel = levelFailedPanel; // ✅ Track active
-            OnModalToggled?.Invoke(true);
-        }
+        if (levelFailedPanel == null) return;
+        ShowModal(levelFailedPanel);
     }
 
-    // === GENERIC MODAL HANDLING ===
-    public void ShowModal(GameObject panelToShow)
+    // ===========================
+    // SCENE-SPECIFIC UI
+    // ===========================
+    public void RegisterScenePanel(GameObject panel)
     {
-        HideAllModals(); // Hide any open panels first
+        if (!scenePanels.Contains(panel))
+            scenePanels.Add(panel);
+    }
 
-        if (panelToShow != null)
-        {
-            panelToShow.SetActive(true);
-            activePanel = panelToShow; // ✅ Set as active
-            OnModalToggled?.Invoke(true);
-        }
+    public void ShowScenePanel(GameObject panel)
+    {
+        foreach (var p in scenePanels)
+            p.SetActive(false);
+
+        panel.SetActive(true);
+        activePanel = panel;
+        OnModalToggled?.Invoke(true);
+    }
+
+    // ===========================
+    // MODAL HANDLING
+    // ===========================
+    public void ShowModal(GameObject panel)
+    {
+        if (panel == null) return;
+
+        HideAllModals();
+        panel.SetActive(true);
+        activePanel = panel;
+        OnModalToggled?.Invoke(true); // pause game
     }
 
     public void ClosePanel(GameObject panel)
@@ -158,42 +174,38 @@ public class UIManager : MonoBehaviour
         if (panel == null) return;
 
         panel.SetActive(false);
-
         if (panel == activePanel)
-            activePanel = null; // ✅ Clear if it was the active one
+            activePanel = null;
 
-        OnModalToggled?.Invoke(false);
+        OnModalToggled?.Invoke(false); // resume game
     }
 
     public void HideAllModals()
     {
+        // Hide global panels
         if (grimoirePanel != null) grimoirePanel.SetActive(false);
         if (pauseMenu != null) pauseMenu.SetActive(false);
         if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
         if (levelFailedPanel != null) levelFailedPanel.SetActive(false);
+        if (buffChoicePanel != null) buffChoicePanel.SetActive(false);
+        // Hide scene panels
+        foreach (var panel in scenePanels)
+            panel.SetActive(false);
 
-        activePanel = null; // ✅ No active modal
+        activePanel = null;
         OnModalToggled?.Invoke(false);
     }
 
-    // === NEW FEATURE ===
-    /// <summary>
-    /// Closes whichever panel is currently active (if any).
-    /// Useful for other managers like MathQuestionManager or SkillUnlockManager.
-    /// </summary>
     public void CloseActivePanel()
     {
         if (activePanel != null)
         {
+            Debug.Log("Closing:" + activePanel.name);
             activePanel.SetActive(false);
-            OnModalToggled?.Invoke(false);
             activePanel = null;
+            OnModalToggled?.Invoke(false);
         }
     }
 
-    // Optional getter if you ever need to check which panel is currently open
-    public GameObject GetActivePanel()
-    {
-        return activePanel;
-    }
+    public GameObject GetActivePanel() => activePanel;
 }

@@ -357,7 +357,6 @@ MonoBehaviour:
   swapWeaponButton: {fileID: 5513612977209254954}
   meleeSprite: {fileID: 7664189643869089098, guid: 746644596680a4544a0c1ab6509e0f3f, type: 3}
   rangedSprite: {fileID: -1432179647, guid: c27d9b7bb5d438140a8ae63ebb7cc964, type: 3}
-  grimoireCanvas: {fileID: 0}
 --- !u!1 &3522125085542994904
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &567404530645004243
 RectTransform:
   m_ObjectHideFlags: 0
@@ -923,7 +922,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 7470064484499089408}
           m_TargetAssemblyTypeName: MobileInputUIHandler, Assembly-CSharp
-          m_MethodName: OnSwapWeaponPressed
+          m_MethodName: OnMenuPressed
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -931,7 +930,7 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
 --- !u!1 &8852904267399741980
 GameObject:
@@ -1221,7 +1220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773951, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: handleRange
-      value: 1.45
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2929252285020697096, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: m_SizeDelta.x
