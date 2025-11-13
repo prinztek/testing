@@ -7,9 +7,10 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("Main Panels")]
-    public GameObject grimoirePanel;     // Book => Inventory/Crafting/Math Question 
-    public GameObject buffChoicePanel;
+
+    public GameObject grimoirePanel;     // Book => Math Question/Inventory/Crafting/Calculator/Lessons
     public GameObject pauseMenu;
+    public GameObject buffChoicePanel;
     public GameObject levelCompletePanel;
     public GameObject levelFailedPanel;
 

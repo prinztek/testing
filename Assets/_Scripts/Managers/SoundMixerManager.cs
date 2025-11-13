@@ -3,6 +3,20 @@ using UnityEngine;
 using UnityEngine.Audio;
 public class SoundMixerManager : MonoBehaviour
 {
+    public static SoundMixerManager Instance;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [SerializeField] private AudioMixer AudioMixer;
 
     // setMasterVolume

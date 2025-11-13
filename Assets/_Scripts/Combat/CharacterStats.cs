@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    [SerializeField] private InputController input;
+    [SerializeField] internal InputController input;
 
     public enum AttackMode { Melee, Ranged }
     public AttackMode currentAttackMode = AttackMode.Melee;

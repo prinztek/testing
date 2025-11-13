@@ -92,6 +92,19 @@ public class Boss2 : MonoBehaviour
         _nextBoredTime = UnityEngine.Random.Range(3f, 6f) * (1f + patience);
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        player = playerObj.transform;
+    }
+
     private void Update()
     {
         if (player == null || _state == BossState.Death) return;
@@ -304,7 +317,10 @@ public class Boss2 : MonoBehaviour
 
         // Show HUD when first hit
         if (BossHUD != null && !BossHUD.activeSelf)
+        {
+            Debug.Log("BossHUD activated.");
             BossHUD.SetActive(true);
+        }
 
         currentHealth -= damageAmount;
         OnHealthChanged?.Invoke(currentHealth);

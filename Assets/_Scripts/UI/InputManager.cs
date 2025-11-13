@@ -2,10 +2,24 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
     public InputController playerController;
     public InputController mobileController;
     public GameObject onScreenControlsUI;
     public GameObject player;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -39,6 +53,12 @@ public class InputManager : MonoBehaviour
             {
                 attack.input = controller;
                 // Debug.Log("Assigned to Attack");
+            }
+
+            if (comp is CharacterStats charStats)
+            {
+                charStats.input = controller;
+                // Debug.Log("Assigned to CharacterStats");
             }
         }
     }

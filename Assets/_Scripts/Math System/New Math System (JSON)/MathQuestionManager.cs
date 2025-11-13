@@ -66,7 +66,6 @@ public class MathQuestionManager : MonoBehaviour
 
     void Start()
     {
-        headerButton.onClick.AddListener(TogglePanel);
         submitButton.onClick.AddListener(CheckAnswer);
         hintButton.onClick.AddListener(GenerateNewHint);
         saveData = SaveSystem.Load(); // 🔹 load saved data
