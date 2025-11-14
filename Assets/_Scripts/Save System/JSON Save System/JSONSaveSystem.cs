@@ -46,4 +46,22 @@ public static class JSONSaveSystem
         return null;
     }
 
+    // Math Question Used IDs Save/Load
+    public static void SaveUsedMathQuestions(JSONUsedMathQuestionData data)
+    {
+        string path = Path.Combine(Application.persistentDataPath, "used_math_questions.json");
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(path, json);
+    }
+    public static JSONUsedMathQuestionData LoadUsedMathQuestions()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "used_math_questions.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            return JsonUtility.FromJson<JSONUsedMathQuestionData>(json);
+        }
+        return new JSONUsedMathQuestionData();
+    }
+
 }

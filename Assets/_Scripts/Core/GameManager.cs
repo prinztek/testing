@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
+    public JSONUsedMathQuestionData usedMathQuestionData;
     public PlayerDataHandler playerDataHandler;
     public ItemDatabase itemDatabase;
 
@@ -129,12 +130,14 @@ public class GameManager : MonoBehaviour
     {
         JSONSaveSystem.SaveGame(currentData);
         SaveCurrentPlayerState(); // Save player-specific data
+        JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData); // Save used math question data
     }
 
     public void LoadGame()
     {
         currentData = JSONSaveSystem.LoadGame();
         playerData = JSONSaveSystem.LoadPlayer();
+        usedMathQuestionData = JSONSaveSystem.LoadUsedMathQuestions();
 
         if (currentData == null)
         {
@@ -144,6 +147,11 @@ public class GameManager : MonoBehaviour
         if (playerData == null)
         {
             playerData = new JSONPlayerData();
+        }
+
+        if (usedMathQuestionData == null)
+        {
+            usedMathQuestionData = new JSONUsedMathQuestionData();
         }
 
         SaveGame();
@@ -223,20 +231,15 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ResetSave();
+            ResetSave(); // Reset all saved data
         }
-
-        if (Input.GetKeyDown(KeyCode.K))
-            SaveCurrentPlayerState();
-
-        if (Input.GetKeyDown(KeyCode.P))
-            Debug.Log(JsonUtility.ToJson(playerData, true));
-
     }
 
     public void ResetSave()
     {
         currentData = new JSONSaveData();
+        playerData = new JSONPlayerData();
+        usedMathQuestionData = new JSONUsedMathQuestionData();
         SaveGame();
     }
 

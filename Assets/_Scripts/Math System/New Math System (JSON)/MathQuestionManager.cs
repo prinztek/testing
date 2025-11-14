@@ -33,8 +33,11 @@ public class MathQuestionManager : MonoBehaviour
     private int currentIndex = 0;
     private MathQuestion currentQuestion;
     private bool answeredCorrectly = false;
-    private SaveData saveData;
 
+    // in seconds - if the player answers incorrectly 3 times, they must wait this long before trying again
+    public int coolDownTimer = 5;
+    // private SaveData saveData;
+    private JSONUsedMathQuestionData usedMathQuestionData;
     public Action OnQuestionBatchCompleted;
 
     private void OnEnable()
@@ -69,7 +72,9 @@ public class MathQuestionManager : MonoBehaviour
 
     private void Start()
     {
-        saveData = SaveSystem.Load(); // Load saved progress
+        // saveData = SaveSystem.Load(); // Load saved progress using PlayerPrefs
+        usedMathQuestionData = GameManager.Instance.usedMathQuestionData; // Load saved progress using JSON Save System
+
         GenerateNewQuestions();
         ResetHintButtonText();
     }
@@ -127,7 +132,7 @@ public class MathQuestionManager : MonoBehaviour
 
     public void GenerateNewQuestions()
     {
-        questionQueue = MathQuestionLoaderJSON.Load(topic, difficulty, numberOfQuestions, new HashSet<int>(saveData.answeredQuestionIds));
+        questionQueue = MathQuestionLoaderJSON.Load(topic, difficulty, numberOfQuestions, new HashSet<int>(usedMathQuestionData.UsedMathQuestionIds));
         currentIndex = 0;
         LoadCurrentQuestion();
     }
@@ -156,10 +161,18 @@ public class MathQuestionManager : MonoBehaviour
             Debug.Log($"✅ Correct! Answer: {currentQuestion.answer}");
             answeredCorrectly = true;
 
-            if (!saveData.answeredQuestionIds.Contains(currentQuestion.id))
+            // old way of saving answered questions using player prefs
+            // if (!saveData.answeredQuestionIds.Contains(currentQuestion.id))
+            // {
+            //     saveData.answeredQuestionIds.Add(currentQuestion.id);
+            //     SaveSystem.Save(saveData);
+            // }
+
+            // new way of saving answered questions using JSON save system
+            if (!usedMathQuestionData.UsedMathQuestionIds.Contains(currentQuestion.id))
             {
-                saveData.answeredQuestionIds.Add(currentQuestion.id);
-                SaveSystem.Save(saveData);
+                usedMathQuestionData.UsedMathQuestionIds.Add(currentQuestion.id);
+                JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData);
             }
 
             if (characterStats != null)
@@ -170,7 +183,7 @@ public class MathQuestionManager : MonoBehaviour
                 BuffChoiceManager.Instance.ShowChoices(chosen, (selectedBuff) =>
                 {
                     characterStats.AddBuff(selectedBuff);
-                    Debug.Log($"🪄 Player chose buff: {selectedBuff.buffName}");
+                    // Debug.Log($"🪄 Player chose buff: {selectedBuff.buffName}");
                 });
 
                 UIManager.Instance.ShowBuffChoiceCanvas(true);

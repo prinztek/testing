@@ -2,15 +2,6 @@ using UnityEngine;
 
 public class JSONSettingsData : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // tracks Game Settings (SettingsData)
+    // Master Volume, Music Volume, SFX Volume, UI Volume, Screenshake On or Off
 }

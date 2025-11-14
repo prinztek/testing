@@ -44,10 +44,6 @@ public class CharacterStats : MonoBehaviour
     public delegate void HealthChanged(int currentHealth);
     public event HealthChanged OnHealthChanged; // This event will be triggered whenever the character’s health changes.
 
-    // Delegate and event for player gold changes
-    // public delegate void GoldChanged(int gold);
-    // public event GoldChanged OnGoldChanged; // This event will be triggered whenever the character’s gold changes.
-
     // ====================================================================================================================
     public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
     {
@@ -161,20 +157,6 @@ public class CharacterStats : MonoBehaviour
             Debug.Log("Switched to ✊ Melee mode");
         }
     }
-
-    // // called when the player crafts items/calc/hint
-    // public void DeductGold(int amount)
-    // {
-    //     gold -= amount;
-    //     if (gold < 0) gold = 0;
-    //     OnGoldChanged?.Invoke(gold);
-    // }
-
-    // public void AddGold(int amount)
-    // {
-    //     gold += amount;
-    //     OnGoldChanged?.Invoke(gold);
-    // }
 
     public void Heal(int amount)
     {
@@ -320,10 +302,4 @@ public class CharacterStats : MonoBehaviour
     }
 
     public bool IsDead() => isDead;
-
-    internal void ApplyScriptableBuff(PrecisionStrikeBuff precisionStrikeBuff)
-    {
-        throw new NotImplementedException();
-    }
-
 }
