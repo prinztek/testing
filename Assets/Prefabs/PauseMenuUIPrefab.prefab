@@ -4277,9 +4277,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6730124356112658821}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowPauseMenu
+      - m_Target: {fileID: 3146369344691940732}
+        m_TargetAssemblyTypeName: PauseMenuButtonHandler, Assembly-CSharp
+        m_MethodName: OnResumePressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5144,6 +5144,7 @@ GameObject:
   - component: {fileID: 6946186812765068213}
   - component: {fileID: 5117716208368686924}
   - component: {fileID: 4486385355752892660}
+  - component: {fileID: 3146369344691940732}
   m_Layer: 5
   m_Name: PauseMenuUIPrefab
   m_TagString: Untagged
@@ -5252,6 +5253,18 @@ MonoBehaviour:
   gameplaySettingsPanel: {fileID: 406497275731034465}
   soundSettingsPanel: {fileID: 6324523891477839394}
   controlsSettingsPanel: {fileID: 9109437269592513245}
+--- !u!114 &3146369344691940732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6730124356112658821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0457e95d6148594eb3026e255051a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &6785717067147164183
 GameObject:
   m_ObjectHideFlags: 0
@@ -6217,13 +6230,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6730124356112658821}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 3146369344691940732}
+        m_TargetAssemblyTypeName: PauseMenuButtonHandler, Assembly-CSharp
+        m_MethodName: OnBackToHomePressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
