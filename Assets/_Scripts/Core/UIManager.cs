@@ -125,16 +125,18 @@ public class UIManager : MonoBehaviour
         else ClosePanel(pauseMenu);
     }
 
-    public void ShowLevelComplete()
+    public void ShowLevelComplete(bool show)
     {
         if (levelCompletePanel == null) return;
-        ShowModal(levelCompletePanel);
+        if (show) ShowModal(levelCompletePanel);
+        else ClosePanel(levelCompletePanel);
     }
 
-    public void ShowLevelFailed()
+    public void ShowLevelFailed(bool show)
     {
         if (levelFailedPanel == null) return;
-        ShowModal(levelFailedPanel);
+        if (show) ShowModal(levelFailedPanel);
+        else ClosePanel(levelFailedPanel);
     }
 
     // ===========================

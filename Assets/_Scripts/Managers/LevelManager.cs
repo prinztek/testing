@@ -103,7 +103,7 @@ public class LevelManager : MonoBehaviour
         }
 
         if (UIManager.Instance != null)
-            UIManager.Instance.ShowLevelComplete();
+            UIManager.Instance.ShowLevelComplete(true);
         else
             Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level complete screen.");
     }
@@ -118,7 +118,7 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("⚠️ GameManager.Instance not found during level failure.");
 
         if (UIManager.Instance != null)
-            UIManager.Instance.ShowLevelFailed();
+            UIManager.Instance.ShowLevelFailed(true);
         else
             Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level failed screen.");
     }

@@ -241,6 +241,9 @@ public class GameManager : MonoBehaviour
         playerData = new JSONPlayerData();
         usedMathQuestionData = new JSONUsedMathQuestionData();
         SaveGame();
+
+        // this does not work because in SaveGame we overwrite the data again
+        // JSONSaveSystem.DeleteSaveFiles();
     }
 
 }
