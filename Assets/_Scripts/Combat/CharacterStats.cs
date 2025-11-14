@@ -199,9 +199,21 @@ public class CharacterStats : MonoBehaviour
 
     public int GetDamage()
     {
-        int weaponBaseDamage = (equippedMeleeWeapon != null) ? equippedMeleeWeapon.baseDamage : 1;
-        int finalDamage = Mathf.RoundToInt(weaponBaseDamage * tempDamageMultiplier);
-        return finalDamage;
+        // Did you attack with meelee or ranged?
+        if (currentAttackMode == AttackMode.Ranged)
+        {
+            int rangedWeaponBaseDamage = equippedRangedWeapon.baseDamage;
+            int finalRangedDamage = Mathf.RoundToInt(rangedWeaponBaseDamage * tempDamageMultiplier);
+            return finalRangedDamage;
+        }
+        else // Melee attack
+        {
+            // Fist base damage is 1 if no melee weapon is equipped
+            // Otherwise, use the equipped melee weapon's base damage
+            int weaponBaseDamage = (equippedMeleeWeapon != null) ? equippedMeleeWeapon.baseDamage : 1;
+            int finalDamage = Mathf.RoundToInt(weaponBaseDamage * tempDamageMultiplier);
+            return finalDamage;
+        }
     }
 
     public void TriggerAttackHit(GameObject enemy)
