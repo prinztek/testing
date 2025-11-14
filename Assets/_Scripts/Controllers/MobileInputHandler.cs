@@ -1,43 +1,45 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class MobileInputUIHandler : MonoBehaviour
 {
-    public CharacterStats characterStats; // assign in inspector
+    public CharacterStats characterStats;
     public InteractionTrigger playerInteraction;
     public MobileInputController mobileController;
-    public Joystick joystick; // use any floating/fixed joystick from asset store or custom
+    public Joystick joystick;
     public Button jumpButton;
     public Button attackButton;
-    public Button swapWeaponButton; // ← single weapon swap button
-    public Sprite meleeSprite; // assign in inspector
-    public Sprite rangedSprite; // assign in inspector
+    public Button swapWeaponButton;
+    public Sprite meleeSprite;
+    public Sprite rangedSprite;
+
     private Image attackButtonImage;
-    void Awake()
+
+    // ------------------------------------------------------
+    // INITIALIZATION
+    // ------------------------------------------------------
+
+    private void Awake()
     {
-        // Ensure attackButton is assigned and has an Image component
         if (attackButton != null)
         {
             attackButtonImage = attackButton.GetComponent<Image>();
             if (attackButtonImage == null)
-            {
-                Debug.LogError("Attack Button does not have an Image component attached. Please add one.");
-            }
+                Debug.LogError("Attack Button is missing an Image component.");
         }
         else
         {
-            Debug.LogError("Attack Button is not assigned in the Inspector.");
+            Debug.LogError("Attack Button reference is missing in Inspector.");
         }
     }
+
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
 
-        // 🔹 If player already exists when UI enables, connect immediately
-        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
-        {
-            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
-        }
+        // Try linking immediately if player already exists
+        TryAssignPlayer();
     }
 
     private void OnDisable()
@@ -45,11 +47,38 @@ public class MobileInputUIHandler : MonoBehaviour
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
     }
 
+    private IEnumerator Start()
+    {
+        // Fallback: wait until player exists
+        while (characterStats == null)
+        {
+            TryAssignPlayer();
+            yield return null;
+        }
+
+        // Ensure UI icon matches player
+        UpdateAttackButtonSprite();
+    }
+
+    // ------------------------------------------------------
+    // PLAYER ASSIGNMENT
+    // ------------------------------------------------------
+
+    private void TryAssignPlayer()
+    {
+        if (characterStats != null) return;
+
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
+    }
+
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         if (playerObj == null)
         {
-            Debug.LogWarning("[InventoryUI] Player spawn event received, but player is null!");
+            Debug.LogWarning("[MobileUI] Spawn event received but playerObj was NULL.");
             return;
         }
 
@@ -57,33 +86,32 @@ public class MobileInputUIHandler : MonoBehaviour
 
         if (characterStats == null)
         {
-            Debug.LogWarning("[InventoryUI] Player components missing.");
+            Debug.LogError("[MobileUI] Player is missing CharacterStats component.");
             return;
         }
 
+        UpdateAttackButtonSprite();
     }
 
+    // ------------------------------------------------------
+    // UPDATE LOOP
+    // ------------------------------------------------------
 
-    void Start()
-    {
-        // You can also add an additional check here in case of any issues in the Inspector
-        if (attackButtonImage == null)
-        {
-            Debug.LogError("Attack Button Image component is still null at Start. Make sure it's assigned.");
-        }
-    }
-    void Update()
+    private void Update()
     {
         if (mobileController == null) return;
 
         float raw = joystick.Horizontal;
 
-        // Dead zone threshold
         if (Mathf.Abs(raw) < joystick.DeadZone)
             mobileController.mobileMoveInput = 0f;
         else
-            mobileController.mobileMoveInput = Mathf.Sign(raw); // Snap to -1 or 1
+            mobileController.mobileMoveInput = Mathf.Sign(raw);
     }
+
+    // ------------------------------------------------------
+    // UI BUTTON EVENTS
+    // ------------------------------------------------------
 
     public void OnJumpPressed()
     {
@@ -101,35 +129,28 @@ public class MobileInputUIHandler : MonoBehaviour
         mobileController.mobileAttackInput = true;
     }
 
-
     public void OnGrimoirePressed()
     {
         mobileController.mobileToggleGrimoireInput = true;
     }
 
-
     public void OnSwapWeaponPressed()
     {
         if (characterStats == null)
         {
-            if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
-                characterStats = GameManager.Instance.CurrentPlayer.GetComponent<CharacterStats>();
-
-            if (characterStats == null)
-            {
-                Debug.LogWarning("SwapWeaponPressed called but CharacterStats is null. Player not ready yet.");
-                return;
-            }
+            Debug.LogWarning("[MobileUI] SwapWeapon pressed but characterStats is NULL.");
+            TryAssignPlayer();
+            return;
         }
 
         characterStats.TryToggleAttackMode();
         UpdateAttackButtonSprite();
     }
 
-
     private void UpdateAttackButtonSprite()
     {
-        if (characterStats == null || attackButtonImage == null) return;
+        if (characterStats == null || attackButtonImage == null)
+            return;
 
         switch (characterStats.currentAttackMode)
         {
@@ -144,7 +165,7 @@ public class MobileInputUIHandler : MonoBehaviour
 
     public void OnInteractHandPressed()
     {
-        playerInteraction.TryInteract();
+        playerInteraction?.TryInteract();
     }
 
     public void OnMenuPressed()
