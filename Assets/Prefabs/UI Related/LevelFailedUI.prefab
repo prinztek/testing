@@ -34,9 +34,9 @@ RectTransform:
   - {fileID: 9077115224811856695}
   m_Father: {fileID: 9055550948051249669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 70, y: -35}
   m_SizeDelta: {x: 50, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2763267445069318421
@@ -121,9 +121,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5127665987738213308}
-        m_TargetAssemblyTypeName: LevelFailedUI, Assembly-CSharp
-        m_MethodName: RetryLevel
+      - m_Target: {fileID: 5686499900860215664}
+        m_TargetAssemblyTypeName: LevelFailedButtonHandler, Assembly-CSharp
+        m_MethodName: OnRetryPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -380,9 +380,9 @@ RectTransform:
   - {fileID: 7735439659297640275}
   m_Father: {fileID: 9055550948051249669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -35}
   m_SizeDelta: {x: 50, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2920261521318686329
@@ -467,9 +467,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5127665987738213308}
-        m_TargetAssemblyTypeName: LevelFailedUI, Assembly-CSharp
-        m_MethodName: ReturnToMainMenu
+      - m_Target: {fileID: 5686499900860215664}
+        m_TargetAssemblyTypeName: LevelFailedButtonHandler, Assembly-CSharp
+        m_MethodName: OnBackToHomePressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 9087150567983156718}
   - component: {fileID: 6024301912720909369}
   - component: {fileID: 8734641095079723129}
-  - component: {fileID: 5127665987738213308}
+  - component: {fileID: 5686499900860215664}
   m_Layer: 5
   m_Name: LevelFailedUI
   m_TagString: Untagged
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 320, y: 180}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -686,7 +686,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5127665987738213308
+--- !u!114 &5686499900860215664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -695,10 +695,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7537246453365424644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4d112796a1d10046aaaff9be3c6eb2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 474882338b40e1741a3d91c75edc79ef, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 7537246453365424644}
+  m_EditorClassIdentifier: '::'
 --- !u!1 &7581700948488746256
 GameObject:
   m_ObjectHideFlags: 0
