@@ -5,6 +5,9 @@ public class SoundFXManager : MonoBehaviour
     public static SoundFXManager Instance;
     [SerializeField] private AudioSource soundFXObject;
 
+    // Global SFX volume (controlled by AudioSettingsManager)
+    private float globalVolume = 1f;
+
     void Awake()
     {
         if (Instance == null)
@@ -17,45 +20,38 @@ public class SoundFXManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    /// <summary>
+    /// Called by AudioSettingsManager when SFX volume changes
+    /// </summary>
+    public void SetGlobalVolume(float value)
+    {
+        globalVolume = Mathf.Clamp01(value);
+    }
+
     public void playOneShotSoundFXClilp(AudioClip clip, Transform spawnTransform, float volume)
     {
-        // spawn game object
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        // random pitch between 0.95 and 1.05 (adjust as needed)
         audioSource.pitch = Random.Range(0.95f, 1.05f);
-        // assign volume
-        audioSource.volume = volume;
-
-        // play sound with PlayOneShot (no delay, no need to assign clip)
+        audioSource.volume = volume * globalVolume; // apply global volume
         audioSource.PlayOneShot(clip);
-
-        // destroy game object after clip length
         Destroy(audioSource.gameObject, clip.length);
     }
 
     public void playSoundFXClilp(AudioClip clip, Transform spawnTransform, float volume)
     {
-        // spawn game object
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        // assign clip
         audioSource.clip = clip;
-        // assign volume
-        audioSource.volume = volume;
-        // play sound
+        audioSource.volume = volume * globalVolume; // apply global volume
         audioSource.Play();
-        // get length of clip
-        float clipLength = clip.length;
-        // destroy game object after clip length
-        Destroy(audioSource.gameObject, clipLength);
+        Destroy(audioSource.gameObject, clip.length);
     }
 
-    // play sound effect with different pitch
     public void playSoundFXClilpRandomPitch(AudioClip clip, Transform spawnTransform, float volume)
     {
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
         audioSource.clip = clip;
-        audioSource.volume = volume;
-        // randomize pitch
+        audioSource.volume = volume * globalVolume; // apply global volume
         audioSource.pitch = Random.Range(0.8f, 1.2f);
         audioSource.Play();
         Destroy(audioSource.gameObject, clip.length);

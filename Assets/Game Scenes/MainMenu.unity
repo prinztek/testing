@@ -3009,6 +3009,7 @@ GameObject:
   - component: {fileID: 335388769}
   - component: {fileID: 335388768}
   - component: {fileID: 335388767}
+  - component: {fileID: 335388770}
   m_Layer: 5
   m_Name: Level Selection Panel
   m_TagString: Untagged
@@ -3100,6 +3101,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335388765}
   m_CullTransparentMesh: 1
+--- !u!114 &335388770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335388765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0a91fc2d0aaf4547acfeaed2ac59737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelSelectUI
+  levelButtonPrefab: {fileID: 0}
+  levelButtonParent: {fileID: 0}
+  chapterNumberTitleText: {fileID: 0}
 --- !u!1 &337530514
 GameObject:
   m_ObjectHideFlags: 0
@@ -7823,8 +7839,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ChapterSelectUI, Assembly-CSharp
+      - m_Target: {fileID: 782456439}
+        m_TargetAssemblyTypeName: MainMenuUIManager, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:

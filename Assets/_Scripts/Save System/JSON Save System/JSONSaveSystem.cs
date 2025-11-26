@@ -64,4 +64,25 @@ public static class JSONSaveSystem
         return new JSONUsedMathQuestionData();
     }
 
+    public static JSONSettingsData LoadSettings()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            return JsonUtility.FromJson<JSONSettingsData>(json);
+        }
+        else
+        {
+            return new JSONSettingsData();
+        }
+    }
+
+    public static void SaveSettings(JSONSettingsData data)
+    {
+        string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(path, json);
+    }
+
 }
