@@ -16,7 +16,6 @@ public class MathQuestion
     public QuestionDifficulty difficulty;
     public string prompt;
     public string answer; // As string to allow fractions or words
-
     public string[] hints; // Array of hints for the question
     public bool isGenerated; // for random generated questions later
 
@@ -30,5 +29,4 @@ public class MathQuestion
         this.hints = hints;
         this.isGenerated = isGenerated;
     }
-
 }

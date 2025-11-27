@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
+    public JSONSettingsData settingsData;
     public JSONUsedMathQuestionData usedMathQuestionData;
     public PlayerDataHandler playerDataHandler;
     public ItemDatabase itemDatabase;
@@ -246,4 +247,24 @@ public class GameManager : MonoBehaviour
         // JSONSaveSystem.DeleteSaveFiles();
     }
 
+    // ------------------ Math Question Helper ------------------
+    public System.Collections.Generic.List<MathQuestion> GetUnusedQuestions(MathTopic topic, QuestionDifficulty difficulty)
+    {
+        return MathQuestionLoaderJSON.LoadByTopic(
+            topic,
+            new System.Collections.Generic.HashSet<int>(usedMathQuestionData.UsedMathQuestionIds)
+        );
+    }
+
+    public void MarkQuestionAsUsed(MathQuestion question)
+    {
+        if (!usedMathQuestionData.UsedMathQuestionIds.Contains(question.id))
+        {
+            usedMathQuestionData.UsedMathQuestionIds.Add(question.id);
+            JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData);
+        }
+    }
+
 }
+
+

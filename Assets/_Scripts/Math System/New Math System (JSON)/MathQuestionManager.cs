@@ -7,8 +7,8 @@ using TexDrawLib;
 
 public class MathQuestionManager : MonoBehaviour
 {
-    [Header("UI References (Assign in Inspector)")]
-    [SerializeField] private GameObject grimoirePanel;      // Optional if you want to toggle panel
+    [Header("UI References")]
+    [SerializeField] private GameObject grimoirePanel;
     [SerializeField] private TEXDraw expandedQuestionText;
     [SerializeField] private TMP_InputField answerInput;
     [SerializeField] private Button submitButton;
@@ -19,12 +19,11 @@ public class MathQuestionManager : MonoBehaviour
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private PlayerInventory playerInventory;
 
-    [Header("Question Settings")]
+    [Header("Math Settings")]
     public MathTopic topic = MathTopic.Permutation_and_Its_Conditions;
     public QuestionDifficulty difficulty = QuestionDifficulty.Easy;
-    public int numberOfQuestions = 3;
 
-    [Header("Hints Settings")]
+    [Header("Hint Settings")]
     public int baseHintCost = 25;
     private int hintUsedCounter = 0;
     private int maxHints = 0;
@@ -32,28 +31,23 @@ public class MathQuestionManager : MonoBehaviour
     private List<MathQuestion> questionQueue = new();
     private int currentIndex = 0;
     private MathQuestion currentQuestion;
-    private bool answeredCorrectly = false;
 
-    // in seconds - if the player answers incorrectly 3 times, they must wait this long before trying again
-    public int coolDownTimer = 5;
-    // private SaveData saveData;
-    private JSONUsedMathQuestionData usedMathQuestionData;
     public Action OnQuestionBatchCompleted;
+
+    private void Awake()
+    {
+        submitButton?.onClick.AddListener(CheckAnswer);
+        hintButton?.onClick.AddListener(GenerateNewHint);
+    }
 
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-        // 🔹 If player already exists when UI enables, connect immediately
-        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
-        {
+        if (GameManager.Instance.CurrentPlayer != null)
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
-        }
     }
 
-    private void OnDisable()
-    {
-        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
-    }
+    private void OnDisable() => GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
 
     private void HandlePlayerSpawned(GameObject player)
     {
@@ -61,146 +55,120 @@ public class MathQuestionManager : MonoBehaviour
         playerInventory = player.GetComponent<PlayerInventory>();
     }
 
-    private void Awake()
-    {
-        if (submitButton != null)
-            submitButton.onClick.AddListener(CheckAnswer);
-
-        if (hintButton != null)
-            hintButton.onClick.AddListener(GenerateNewHint);
-    }
-
     private void Start()
     {
-        // saveData = SaveSystem.Load(); // Load saved progress using PlayerPrefs
-        usedMathQuestionData = GameManager.Instance.usedMathQuestionData; // Load saved progress using JSON Save System
-
         GenerateNewQuestions();
         ResetHintButtonText();
     }
 
-    private void ResetHintButtonText()
+    public void SetTopic(MathTopic newTopic, QuestionDifficulty newDifficulty)
     {
-        int currentHintCost = GetCurrentHintCost();
-        if (hintButton != null)
-            hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{currentHintCost}g)";
-    }
+        topic = newTopic;
+        difficulty = newDifficulty;
 
-    public void ToggleGrimoirePanel()
-    {
-        if (grimoirePanel != null)
-        {
-            bool isActive = grimoirePanel.activeSelf;
-            grimoirePanel.SetActive(!isActive);
+        // Reset internal state
+        hintUsedCounter = 0;
+        currentIndex = 0;
 
-            answerInput.text = "";
-            if (!isActive)
-                answeredCorrectly = false;
-        }
-    }
-
-    public void GenerateNewHint()
-    {
-        if (playerInventory == null || currentQuestion == null) return;
-
-        int currentHintCost = GetCurrentHintCost();
-        if (playerInventory.Gold < currentHintCost)
-        {
-            Debug.Log($"❌ Not enough gold for a hint. Current Gold: {playerInventory.Gold}, Hint Cost: {currentHintCost}");
-            return;
-        }
-
-        maxHints = currentQuestion.hints.Length;
-        if (hintUsedCounter < maxHints)
-        {
-            hintText.text += $"\n💡 {currentQuestion.hints[hintUsedCounter]}";
-            hintUsedCounter++;
-
-            playerInventory.DeductGold(currentHintCost);
-
-            if (hintUsedCounter >= maxHints)
-                hintButton.interactable = false;
-            else
-                ResetHintButtonText();
-        }
-    }
-
-    private int GetCurrentHintCost()
-    {
-        return baseHintCost + (baseHintCost * hintUsedCounter);
+        // Use GameManager’s used math question IDs to avoid repeats
+        GenerateNewQuestions();
     }
 
     public void GenerateNewQuestions()
     {
-        questionQueue = MathQuestionLoaderJSON.Load(topic, difficulty, numberOfQuestions, new HashSet<int>(usedMathQuestionData.UsedMathQuestionIds));
+        questionQueue = MathQuestionLoaderJSON.LoadByTopic(
+            topic,
+            new HashSet<int>(GameManager.Instance.usedMathQuestionData.UsedMathQuestionIds)
+        );
+
         currentIndex = 0;
         LoadCurrentQuestion();
     }
 
     private void LoadCurrentQuestion()
     {
-        if (currentIndex < questionQueue.Count)
+        // Check if we've answered all questions
+        if (currentIndex >= questionQueue.Count)
         {
-            currentQuestion = questionQueue[currentIndex];
-            expandedQuestionText.text = currentQuestion.prompt;
+            // Disable question UI
+            currentQuestion = null;
+            expandedQuestionText.text = "All questions answered!";
             answerInput.text = "";
-        }
-        else
-        {
+            answerInput.interactable = false;
+            hintText.text = "Hints:";
+            hintButton.interactable = false;
+
+            // Notify any listeners that the batch is completed
             OnQuestionBatchCompleted?.Invoke();
+            return;
+        }
+
+        // Load the next question
+        currentQuestion = questionQueue[currentIndex];
+        expandedQuestionText.text = currentQuestion.prompt;
+        answerInput.text = "";
+        answerInput.interactable = true;
+        hintText.text = "Hints:";
+        hintUsedCounter = 0;
+        ResetHintButtonText();
+        hintButton.interactable = true;
+    }
+
+
+    private void ResetHintButtonText()
+    {
+        int cost = baseHintCost + (baseHintCost * hintUsedCounter);
+        if (hintButton != null)
+            hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{cost}g)";
+    }
+
+    public void GenerateNewHint()
+    {
+        if (playerInventory == null || currentQuestion == null) return;
+
+        int cost = baseHintCost + (baseHintCost * hintUsedCounter);
+        if (playerInventory.Gold < cost) return;
+
+        maxHints = currentQuestion.hints.Length;
+        if (hintUsedCounter < maxHints)
+        {
+            hintText.text += $"\n💡 {currentQuestion.hints[hintUsedCounter]}";
+            hintUsedCounter++;
+            playerInventory.DeductGold(cost);
+            ResetHintButtonText();
+            if (hintUsedCounter >= maxHints) hintButton.interactable = false;
         }
     }
 
     public void CheckAnswer()
     {
-        string input = answerInput.text.Trim();
         if (currentQuestion == null) return;
 
-        if (input == currentQuestion.answer)
+        if (answerInput.text.Trim() == currentQuestion.answer)
         {
-            Debug.Log($"✅ Correct! Answer: {currentQuestion.answer}");
-            answeredCorrectly = true;
+            // Debug.Log($"✅ Correct! {currentQuestion.answer}");
+            GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
 
-            // old way of saving answered questions using player prefs
-            // if (!saveData.answeredQuestionIds.Contains(currentQuestion.id))
-            // {
-            //     saveData.answeredQuestionIds.Add(currentQuestion.id);
-            //     SaveSystem.Save(saveData);
-            // }
-
-            // new way of saving answered questions using JSON save system
-            if (!usedMathQuestionData.UsedMathQuestionIds.Contains(currentQuestion.id))
-            {
-                usedMathQuestionData.UsedMathQuestionIds.Add(currentQuestion.id);
-                JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData);
-            }
-
+            // Give player a buff
             if (characterStats != null)
             {
-                UIManager.Instance.CloseActivePanel();
-
-                var chosen = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
-                BuffChoiceManager.Instance.ShowChoices(chosen, (selectedBuff) =>
+                UIManager.Instance.CloseActivePanel(); // close the grimoire
+                // generates the random buffs
+                var choices = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
+                BuffChoiceManager.Instance.ShowChoices(choices, selectedBuff =>
                 {
                     characterStats.AddBuff(selectedBuff);
-                    // Debug.Log($"🪄 Player chose buff: {selectedBuff.buffName}");
                 });
-
+                // displays the ui for choosing the generated random buffs
                 UIManager.Instance.ShowBuffChoiceCanvas(true);
             }
 
             currentIndex++;
             LoadCurrentQuestion();
-
-            hintButton.interactable = true;
-            hintText.text = "Hints:";
-            hintUsedCounter = 0;
-            ResetHintButtonText();
         }
         else
         {
             Debug.Log($"❌ Wrong. Expected: {currentQuestion.answer}");
-            answeredCorrectly = false;
         }
     }
 

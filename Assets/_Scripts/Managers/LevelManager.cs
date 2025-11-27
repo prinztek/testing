@@ -12,6 +12,11 @@ public class LevelManager : MonoBehaviour
     private int totalEnemies;
     private int defeatedEnemies;
 
+    [Header("Math Settings")]
+    private MathQuestionManager mqm;
+    public MathTopic levelTopic = MathTopic.Permutation_and_Its_Conditions;
+    public QuestionDifficulty levelDifficulty = QuestionDifficulty.Easy;
+
     private void Awake()
     {
         // Scene-local singleton (resets each level load)
@@ -47,6 +52,22 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+
+        if (UIManager.Instance != null)
+        {
+            mqm = UIManager.Instance.GetComponentInChildren<MathQuestionManager>(true);
+
+            if (mqm != null)
+            {
+                mqm.SetTopic(levelTopic, levelDifficulty);
+                Debug.Log("✅ MathQuestionManager found and initialized.");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ MathQuestionManager not found under UIManager.");
+            }
+        }
+
         // --- Count total enemies in the scene ---
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;

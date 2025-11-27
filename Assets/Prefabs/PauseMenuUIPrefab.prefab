@@ -1323,6 +1323,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490723954266849778}
     m_Modifications:
+    - target: {fileID: 34581324581813160, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_Color.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 34581324581813160, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 34581324581813160, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 34581324581813160, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 403017222242163345, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1489,7 +1505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4431068323547263293, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4431068323547263293, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1502,6 +1518,10 @@ PrefabInstance:
     - target: {fileID: 4431068323547263293, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SoundMixerManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431068323547263293, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4787452412135904253, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_Name
@@ -1617,19 +1637,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7705749000969398387, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7705749000969398387, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2176034165004462563, guid: b24ce705e8f2b85438c04cd75b5f656f, type: 3}
+      objectReference: {fileID: 138500177118107522, guid: b24ce705e8f2b85438c04cd75b5f656f, type: 3}
     - target: {fileID: 7705749000969398387, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: SetMusicVolume
       objectReference: {fileID: 0}
     - target: {fileID: 7705749000969398387, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SoundMixerManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7705749000969398387, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7751079304515211089, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1648,8 +1672,12 @@ PrefabInstance:
       value: -62.5
       objectReference: {fileID: 0}
     - target: {fileID: 7863807909841733044, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863807909841733044, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7863807909841733044, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1663,6 +1691,10 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SoundMixerManager, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 7863807909841733044, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8047523910071099376, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1670,6 +1702,10 @@ PrefabInstance:
     - target: {fileID: 8047523910071099376, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8047523910071099376, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 99.97
       objectReference: {fileID: 0}
     - target: {fileID: 8047523910071099376, guid: 8d0b3baa9c3878046b82e5565bf8ea13, type: 3}
       propertyPath: m_AnchoredPosition.x
