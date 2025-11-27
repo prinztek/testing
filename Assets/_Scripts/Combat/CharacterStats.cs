@@ -1,4 +1,4 @@
-using System;
+using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,9 +31,7 @@ public class CharacterStats : MonoBehaviour
     [Header("Equipped Weapons")]
     public GameItem equippedMeleeWeapon = null;  // null = Fist
     public GameItem equippedRangedWeapon = null; // null = no ranged
-
-    // [Header("Crafting Related")]
-    // public int gold = 0; // Player's gold for crafting
+    private CinemachineImpulseSource impulseSource;
     private Buff activeBuff = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
     public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
@@ -80,8 +78,11 @@ public class CharacterStats : MonoBehaviour
 
         buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
     }
-    public TrailRenderer trail;
+    private void Start()
+    {
+        impulseSource = GetComponent<CinemachineImpulseSource>();
 
+    }
     private void Update()
     {
         if (input.RetrieveToggleGrimoireInput())
@@ -119,29 +120,30 @@ public class CharacterStats : MonoBehaviour
             TryToggleAttackMode();
         }
 
-        if (Input.GetKeyDown(KeyCode.Z)) // toggle acquired skill 1
-        {
-            if (HasSkill(SkillType.FireBlast))
-            {
-                Debug.Log("allow player to use FireBlast");
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.Z)) // toggle acquired skill 1
+        // {
+        //     if (HasSkill(SkillType.FireBlast))
+        //     {
+        //         Debug.Log("allow player to use FireBlast");
+        //     }
+        // }
 
-        if (Input.GetKeyDown(KeyCode.X)) // toggle acquired skill 2
-        {
-            if (HasSkill(SkillType.IceShield))
-            {
-                Debug.Log("allow player to use IceShield");
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.X)) // toggle acquired skill 2
+        // {
+        //     if (HasSkill(SkillType.IceShield))
+        //     {
+        //         Debug.Log("allow player to use IceShield");
+        //     }
+        // }
 
-        if (Input.GetKeyDown(KeyCode.C)) // toggle acquired skill 3
-        {
-            if (HasSkill(SkillType.LightningDash))
-            {
-                Debug.Log("allow player to use LightningDash");
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.C)) // toggle acquired skill 3
+        // {
+        //     if (HasSkill(SkillType.LightningDash))
+        //     {
+        //         Debug.Log("allow player to use LightningDash");
+        //     }
+        // }
+
     }
 
     public void TryToggleAttackMode()
@@ -273,6 +275,17 @@ public class CharacterStats : MonoBehaviour
 
         currentHealth -= damage;
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event
+
+        // Screenshake direction
+        if (impulseSource != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
+            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+        }
+        else
+        {
+            Debug.Log("Impulse Source Missing");
+        }
 
         if (currentHealth <= 0)
         {

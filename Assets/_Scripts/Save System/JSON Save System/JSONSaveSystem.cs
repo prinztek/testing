@@ -1,15 +1,21 @@
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
+
 
 public static class JSONSaveSystem
 {
-    private static readonly string savePath = Application.persistentDataPath + "/save.json";
+    private static readonly string savePath = Path.Combine(Application.persistentDataPath, "save.json");
+
+    // ==============================
+    //           GAME SAVE
+    // ==============================
 
     public static void SaveGame(JSONSaveData data)
     {
-        string json = JsonUtility.ToJson(data, true);
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(savePath, json);
-        // Debug.Log($"Game saved to: {savePath}");
+        Debug.Log($"Game saved to: {savePath}");
     }
 
     public static JSONSaveData LoadGame()
@@ -17,72 +23,91 @@ public static class JSONSaveSystem
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
-            return JsonUtility.FromJson<JSONSaveData>(json);
+            return JsonConvert.DeserializeObject<JSONSaveData>(json);
         }
-        else
-        {
-            // Debug.Log("No save found, creating new save data.");
-            return new JSONSaveData();
-        }
+
+        Debug.Log("No main game save found, creating new save.");
+        return new JSONSaveData();
     }
+
+
+    // ==============================
+    //         PLAYER SAVE
+    // ==============================
 
     public static void SavePlayer(JSONPlayerData data)
     {
         string path = Path.Combine(Application.persistentDataPath, "player_save.json");
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(path, json);
-        // Debug.Log($"Game saved to: {path}");
 
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(path, json);
+
+        Debug.Log($"Player saved to: {path}");
     }
 
     public static JSONPlayerData LoadPlayer()
     {
         string path = Path.Combine(Application.persistentDataPath, "player_save.json");
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<JSONPlayerData>(json);
+            return JsonConvert.DeserializeObject<JSONPlayerData>(json);
         }
-        return null;
+
+        Debug.Log("No player save found. Returning empty player data.");
+        return new JSONPlayerData();
     }
 
-    // Math Question Used IDs Save/Load
+
+    // ==============================
+    //    USED MATH QUESTIONS
+    // ==============================
+
     public static void SaveUsedMathQuestions(JSONUsedMathQuestionData data)
     {
         string path = Path.Combine(Application.persistentDataPath, "used_math_questions.json");
-        string json = JsonUtility.ToJson(data, true);
+
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
     }
+
     public static JSONUsedMathQuestionData LoadUsedMathQuestions()
     {
         string path = Path.Combine(Application.persistentDataPath, "used_math_questions.json");
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<JSONUsedMathQuestionData>(json);
+            return JsonConvert.DeserializeObject<JSONUsedMathQuestionData>(json);
         }
+
         return new JSONUsedMathQuestionData();
     }
+
+
+    // ==============================
+    //          SETTINGS
+    // ==============================
 
     public static JSONSettingsData LoadSettings()
     {
         string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<JSONSettingsData>(json);
+            return JsonConvert.DeserializeObject<JSONSettingsData>(json);
         }
-        else
-        {
-            return new JSONSettingsData();
-        }
+
+        return new JSONSettingsData();
     }
 
     public static void SaveSettings(JSONSettingsData data)
     {
         string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
-        string json = JsonUtility.ToJson(data, true);
+
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
     }
-
 }

@@ -11,8 +11,11 @@ public class PlayerDataHandler : MonoBehaviour
         LoadPlayerFromData(GameManager.Instance.playerData);
     }
 
+    // From JSON file to Game
     public void LoadPlayerFromData(JSONPlayerData data)
     {
+        Debug.Log(data);
+
         // Set gold via property -> triggers OnGoldChanged
         inventory.Gold = data.gold;
 
@@ -21,6 +24,7 @@ public class PlayerDataHandler : MonoBehaviour
         foreach (var (key, value) in data.items)
         {
             var item = GameManager.Instance.itemDatabase.GetItemById(key);
+
             if (item != null) loadedItems.Add(new InventorySlot(item, value));
         }
         inventory.OwnedItems = loadedItems;
@@ -48,16 +52,20 @@ public class PlayerDataHandler : MonoBehaviour
         Debug.Log("✅ Player loaded from data. UI events automatically fired.");
     }
 
+    // From Game to JSON file
     public void SavePlayerToData(JSONPlayerData data)
     {
         data.gold = inventory.Gold;
-        // data.ownedItemIds.Clear();
+        // Clear JSON list, not Inventory
         data.items.Clear();
 
+        // Clear the items only AFTER adding them to data.items
         foreach (var slot in inventory.OwnedItems)
         {
-            data.items.Add(new KeyValuePair<string, int>(slot.item.itemName, slot.quantity));
+            data.items[slot.item.itemName] = slot.quantity;
         }
+
+        DebugPrintDict("AFTER SAVE: data.items", data.items);
 
         data.equippedMeleeWeaponId = characterStats.equippedMeleeWeapon != null ?
             characterStats.equippedMeleeWeapon.itemName : "";
@@ -74,5 +82,25 @@ public class PlayerDataHandler : MonoBehaviour
 
         Debug.Log("💾 Player saved to data.");
     }
+    private void DebugPrintDict(string title, Dictionary<string, int> dict)
+    {
+        Debug.Log($"----- {title} -----");
+
+        if (dict == null)
+        {
+            Debug.Log("Dictionary = NULL");
+            return;
+        }
+
+        if (dict.Count == 0)
+        {
+            Debug.Log("Dictionary EMPTY");
+            return;
+        }
+
+        foreach (var kv in dict)
+            Debug.Log($"JSON -> Key: {kv.Key} | Qty: {kv.Value}");
+    }
+
 
 }
