@@ -176,6 +176,9 @@ public class EnemyStatsNew : MonoBehaviour
     /// </summary>
     private void Die()
     {
+
+        StopAllCoroutines();   // stop any ongoing coroutines
+
         if (isDead) return;
 
         isDead = true;

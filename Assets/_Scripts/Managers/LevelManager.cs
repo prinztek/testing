@@ -36,6 +36,13 @@ public class LevelManager : MonoBehaviour
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         playerStats = playerObj.GetComponent<CharacterStats>();
+
+        if (playerStats != null)
+        {
+            playerStats.OnDeathFinished -= OnLevelFailed; // avoid duplicate
+            playerStats.OnDeathFinished += OnLevelFailed; // subscribe properly
+            Debug.Log("📌 LevelManager subscribed to player death event.");
+        }
     }
 
     private void Start()
@@ -44,13 +51,6 @@ public class LevelManager : MonoBehaviour
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
         Debug.Log($"🧠 LevelManager initialized. Found {totalEnemies} enemies.");
-
-        // --- Subscribe to events ---
-        if (playerStats != null)
-        {
-            playerStats.OnDeathFinished -= OnLevelFailed; // prevent duplicate subscriptions
-            playerStats.OnDeathFinished += OnLevelFailed;
-        }
 
         // --- Hide endpoint until level cleared ---
         if (exitPoint != null)

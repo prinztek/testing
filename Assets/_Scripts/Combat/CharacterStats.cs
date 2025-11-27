@@ -298,7 +298,7 @@ public class CharacterStats : MonoBehaviour
 
         OnDeathStarted?.Invoke();
 
-        // Wait until animation finishes, THEN call OnDeath
+        // Wait until animation finishes, then call OnDeath Finished to notify listeners
         StartCoroutine(DeathAnimationCoroutine(animationHandler.GetDeathAnimationLength()));
     }
 

@@ -4,7 +4,7 @@ public class LevelFailedButtonHandler : MonoBehaviour
 {
     public void OnRetryPressed()
     {
-        UIManager.Instance.ShowLevelComplete(false);
+        UIManager.Instance.ShowLevelFailed(false);
         Time.timeScale = 1f; // ensure game unfreezes
         string sceneName = SceneManager.GetActiveScene().name;
         if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
@@ -22,7 +22,7 @@ public class LevelFailedButtonHandler : MonoBehaviour
 
     public void OnBackToHomePressed()
     {
-        UIManager.Instance.ShowLevelComplete(false);
+        UIManager.Instance.ShowLevelFailed(false);
         Time.timeScale = 1f; // ensure game unfreezes
         SceneManager.LoadScene("MainMenu");
     }

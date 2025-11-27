@@ -49,28 +49,37 @@ public class EnemyAttackState : EnemyBaseState
     private System.Collections.IEnumerator CompleteAttack(EnemyStateMachine enemy, float delay)
     {
         yield return new WaitForSeconds(delay);
-        isAttacking = false;
 
+        // --- SAFETY CHECKS BEFORE USING ANY TRANSFORM ---
+        if (enemy == null)
+            yield break;
+
+        if (enemy.stats == null || enemy.stats.IsDead)
+            yield break;
+
+        if (enemy.player == null)
+            yield break;
+
+        // Now safe to use positions
         float distance = Vector2.Distance(enemy.transform.position, enemy.player.position);
-        // REMOVED: verticalDiff calculation
 
-        if (enemy.stats.IsDead || enemy.player == null) yield break;
-
-        // REMOVED: verticalDiff check
+        // Decide next state
         if (enemy.stats.canChase && distance <= enemy.stats.DetectionRange)
         {
-            // Still within range → chase again
             enemy.TransitionToState(enemy.chaseState);
         }
         else if (enemy.stats.canPatrol)
         {
-            enemy.TransitionToState(enemy.patrolState); // Lost the player
+            enemy.TransitionToState(enemy.patrolState);
         }
         else
         {
-            enemy.TransitionToState(enemy.idleState); // Fallback
+            enemy.TransitionToState(enemy.idleState);
         }
+
+        isAttacking = false;
     }
+
 
     public override void ExitState(EnemyStateMachine enemy)
     {
