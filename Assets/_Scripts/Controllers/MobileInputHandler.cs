@@ -67,6 +67,7 @@ public class MobileInputUIHandler : MonoBehaviour
     private void TryAssignPlayer()
     {
         if (characterStats != null) return;
+        if (playerInteraction != null) return;
 
         if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
         {
@@ -87,6 +88,14 @@ public class MobileInputUIHandler : MonoBehaviour
         if (characterStats == null)
         {
             Debug.LogError("[MobileUI] Player is missing CharacterStats component.");
+            return;
+        }
+
+        playerInteraction = playerObj.GetComponent<InteractionTrigger>();
+
+        if (playerInteraction == null)
+        {
+            Debug.LogError("[MobileUI] Player is missing playerInteraction component.");
             return;
         }
 
