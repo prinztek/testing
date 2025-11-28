@@ -10,13 +10,15 @@ public class BasicInteractableObject : MonoBehaviour
     {
         if (uiCanvas != null)
         {
-            uiCanvas.SetActive(true); // Show your interaction canvas
+            UIManager.Instance.ShowModal(uiCanvas);
+            // uiCanvas.SetActive(true); // Show your interaction canvas
             Debug.Log("Interacting with object.");
         }
     }
 
     public void CloseCanvas()
     {
-        uiCanvas.SetActive(false);
+        UIManager.Instance.ClosePanel(uiCanvas);
+        // uiCanvas.SetActive(false);
     }
 }
