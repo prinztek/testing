@@ -12,7 +12,10 @@ public class LevelCompleteButtonHandler : MonoBehaviour
         {
             if (GameManager.Instance != null)
             {
+
+
                 GameManager.Instance.LoadLevel(chapterIndex, levelIndex);
+
             }
         }
         else
@@ -37,7 +40,18 @@ public class LevelCompleteButtonHandler : MonoBehaviour
         {
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.LoadLevel(chapterIndex, levelIndex + 1);
+                Debug.Log(chapterIndex);
+                Debug.Log(levelIndex);
+                // if this is the last level in chapter
+                if (chapterIndex != 3 && levelIndex == 7)
+                {
+                    Debug.Log("Move to Next Chapter");
+                    GameManager.Instance.LoadLevel(chapterIndex + 1, 0);
+                }
+                else
+                {
+                    GameManager.Instance.LoadLevel(chapterIndex, levelIndex + 1);
+                }
             }
         }
         else

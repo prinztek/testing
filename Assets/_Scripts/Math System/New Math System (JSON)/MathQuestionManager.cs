@@ -150,7 +150,7 @@ public class MathQuestionManager : MonoBehaviour
 
         if (answerInput.text.Trim() == currentQuestion.answer)
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.5f);
+            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
 
             // Debug.Log($"✅ Correct! {currentQuestion.answer}");
             GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
@@ -175,7 +175,7 @@ public class MathQuestionManager : MonoBehaviour
         }
         else
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.5f);
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
             Debug.Log($"❌ Wrong. Expected: {currentQuestion.answer}");
         }
     }
