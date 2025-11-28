@@ -167,7 +167,8 @@ public class RuneGameManager : MonoBehaviour
         if (isCorrect)
         {
             Debug.Log("Correct sequence!");
-            runeGameCanvas.enabled = false; // Hide the rune game canvas
+            // runeGameCanvas.enabled = false; // Hide the rune game canvas
+            UIManager.Instance.CloseActivePanel(); // Hide the rune game canvas through the UIManager
             stoneWall.Lift(); // Lift the stone wall
 
             isSolved = true; // Mark puzzle as solved

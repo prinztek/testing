@@ -15,7 +15,7 @@ public static class JSONSaveSystem
     {
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(savePath, json);
-        Debug.Log($"Game saved to: {savePath}");
+        // Debug.Log($"Game saved to: {savePath}");
     }
 
     public static JSONSaveData LoadGame()

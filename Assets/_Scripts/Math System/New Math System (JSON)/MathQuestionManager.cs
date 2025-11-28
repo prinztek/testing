@@ -34,6 +34,10 @@ public class MathQuestionManager : MonoBehaviour
 
     public Action OnQuestionBatchCompleted;
 
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
+
     private void Awake()
     {
         submitButton?.onClick.AddListener(CheckAnswer);
@@ -146,6 +150,8 @@ public class MathQuestionManager : MonoBehaviour
 
         if (answerInput.text.Trim() == currentQuestion.answer)
         {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.5f);
+
             // Debug.Log($"✅ Correct! {currentQuestion.answer}");
             GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
 
@@ -155,6 +161,7 @@ public class MathQuestionManager : MonoBehaviour
                 UIManager.Instance.CloseActivePanel(); // close the grimoire
                 // generates the random buffs
                 var choices = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
+                // pass the choices to Choosing Buff Canvas
                 BuffChoiceManager.Instance.ShowChoices(choices, selectedBuff =>
                 {
                     characterStats.AddBuff(selectedBuff);
@@ -168,6 +175,7 @@ public class MathQuestionManager : MonoBehaviour
         }
         else
         {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.5f);
             Debug.Log($"❌ Wrong. Expected: {currentQuestion.answer}");
         }
     }

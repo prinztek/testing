@@ -18,7 +18,7 @@ public class BasicInteractableObject : MonoBehaviour
 
     public void CloseCanvas()
     {
-        UIManager.Instance.ClosePanel(uiCanvas);
+        UIManager.Instance.CloseActivePanel();
         // uiCanvas.SetActive(false);
     }
 }

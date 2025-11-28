@@ -7,6 +7,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject createNewGamePanel;
     public GameObject returningPlayerMainMenuPanel;
     public GameObject chapterSelectionPanel;
+    public GameObject gameSettingsPanel;
 
 
     void Start()
@@ -22,7 +23,7 @@ public class MainMenuUIManager : MonoBehaviour
         createNewGamePanel.SetActive(false);
         returningPlayerMainMenuPanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
-
+        gameSettingsPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
     }

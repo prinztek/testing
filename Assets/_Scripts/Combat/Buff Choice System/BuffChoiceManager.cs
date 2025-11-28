@@ -1,16 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuffChoiceManager : MonoBehaviour
 {
     public static BuffChoiceManager Instance;
-
     [SerializeField] private GameObject choicePanel; // UI panel prefab
     [SerializeField] private Transform choiceContainer; // parent of buttons
     [SerializeField] private GameObject buffButtonPrefab; // a button template
+    [SerializeField] private Button confirmBtn; // a button template
     private List<BuffOption> allBuffs = new List<BuffOption>();
     private System.Random random = new System.Random();
     private System.Action<Buff> onBuffChosen;
+    private BuffOption currentlySelectedBuff;
+
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip buffAcquireSoundClip;
 
     private void Awake()
     {
@@ -62,20 +67,49 @@ public class BuffChoiceManager : MonoBehaviour
         onBuffChosen = onChosen;
         UIManager.Instance.ShowModal(choicePanel);
 
-        // Clear old buttons
+        currentlySelectedBuff = null; // reset
+
         foreach (Transform child in choiceContainer)
             Destroy(child.gameObject);
 
-        // Create new buttons
         foreach (var opt in options)
         {
             var btnObj = Instantiate(buffButtonPrefab, choiceContainer);
-            var ui = btnObj.GetComponent<BuffChoiceButton>();
-            ui.Setup(opt, () =>
+            var buffButton = btnObj.GetComponent<BuffChoiceButton>();
+            // passing the actual buff instance to the button and what to do when selected
+            buffButton.Setup(opt, optionSelected =>
             {
-                UIManager.Instance.ClosePanel(choicePanel);
-                onBuffChosen?.Invoke(opt.CreateBuff());
+                currentlySelectedBuff = optionSelected;
+                HighlightSelected(btnObj); // highlight the selected buff
             });
         }
+
+        confirmBtn.onClick.RemoveAllListeners();
+        confirmBtn.onClick.AddListener(ConfirmChosenBuff);
     }
+
+    private void ConfirmChosenBuff()
+    {
+        if (currentlySelectedBuff == null)
+            return; // or disable button until selected
+
+        UIManager.Instance.ClosePanel(choicePanel);
+
+        onBuffChosen?.Invoke(currentlySelectedBuff.CreateBuff());
+
+        SoundFXManager.Instance.playOneShotSoundFXClilp(buffAcquireSoundClip, transform, 0.5f);
+    }
+
+    private GameObject lastHighlighted;
+
+    private void HighlightSelected(GameObject btn)
+    {
+        if (lastHighlighted != null)
+            lastHighlighted.GetComponent<Image>().color = Color.white;
+
+        lastHighlighted = btn;
+        lastHighlighted.GetComponent<Image>().color = new Color(0.8f, 0.8f, 1f);
+    }
+
+
 }

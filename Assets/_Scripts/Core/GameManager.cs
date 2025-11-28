@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         // Prevent multiple event bindings
         ui.OnModalToggled -= HandleModalToggled;
         ui.OnModalToggled += HandleModalToggled;
-        Debug.Log("✅ GameManager linked with UIManager modal toggle event");
+        // Debug.Log("✅ GameManager linked with UIManager modal toggle event");
     }
 
     private void HandleModalToggled(bool isOpen)
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerPrefab == null)
         {
-            Debug.LogWarning("No playerPrefab assigned!");
+            // Debug.LogWarning("No playerPrefab assigned!");
             return;
         }
         // Find spawn point (place an empty GameObject tagged "PlayerSpawn" in each level)
@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
         currentPlayerInstance.name = "Player";
         OnPlayerSpawned?.Invoke(currentPlayerInstance);
         // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
-        Debug.Log("✅ Player spawned and loaded.");
+        // Debug.Log("✅ Player spawned and loaded.");
     }
 
     public void SaveCurrentPlayerState()
@@ -217,14 +217,13 @@ public class GameManager : MonoBehaviour
         var handler = currentPlayerInstance.GetComponent<PlayerDataHandler>();
         if (handler != null)
         {
-            Debug.Log(playerData);
             handler.SavePlayerToData(playerData);
             JSONSaveSystem.SavePlayer(playerData);// write JSON to file
-            Debug.Log("💾 Player state saved.");
+            // Debug.Log("💾 Player state saved.");
         }
         else
         {
-            Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
+            // Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
         }
     }
 

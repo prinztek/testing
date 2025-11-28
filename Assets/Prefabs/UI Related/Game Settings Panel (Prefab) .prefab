@@ -538,8 +538,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenuUIManager, Assembly-CSharp
+      - m_Target: {fileID: 6612363844534920442}
+        m_TargetAssemblyTypeName: GameSettingsManager, Assembly-CSharp
         m_MethodName: ShowGameplaySettingsPanel
         m_Mode: 1
         m_Arguments:
@@ -1210,7 +1210,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 230, y: 110}
+  m_SizeDelta: {x: 230, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1145953859624746030
 CanvasRenderer:
@@ -1564,7 +1564,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 115, y: -47.5}
-  m_SizeDelta: {x: 230, y: 125}
+  m_SizeDelta: {x: 230, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6321629371109024583
 CanvasRenderer:
@@ -1955,7 +1955,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 230, y: 15}
+  m_SizeDelta: {x: 230, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5524370642255750427
 CanvasRenderer:
@@ -2056,7 +2056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 115, y: -62.5}
+  m_AnchoredPosition: {x: 115, y: -50}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1223722361786031149
@@ -2282,7 +2282,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 115, y: -47.5}
-  m_SizeDelta: {x: 230, y: 125}
+  m_SizeDelta: {x: 230, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4284130818895132429
 CanvasRenderer:
@@ -3039,7 +3039,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 115, y: -47.5}
-  m_SizeDelta: {x: 230, y: 125}
+  m_SizeDelta: {x: 230, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5884994122874707123
 CanvasRenderer:
@@ -3115,13 +3115,14 @@ GameObject:
   - component: {fileID: 4577195896944125214}
   - component: {fileID: 34581324581813160}
   - component: {fileID: 1618382903650052561}
+  - component: {fileID: 6612363844534920442}
   m_Layer: 5
   m_Name: 'Game Settings Panel (Prefab) '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9012130471507131417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3200,13 +3201,28 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 1
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &6612363844534920442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787452412135904253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d088cf383abf094fb7b231a236c976e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  gameplaySettingsPanel: {fileID: 2068200900054212388}
+  soundSettingsPanel: {fileID: 3066750725468737037}
+  controlsSettingsPanel: {fileID: 4674168743220880451}
 --- !u!1 &4929471514798761890
 GameObject:
   m_ObjectHideFlags: 0
@@ -4197,8 +4213,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenuUIManager, Assembly-CSharp
+      - m_Target: {fileID: 6612363844534920442}
+        m_TargetAssemblyTypeName: GameSettingsManager, Assembly-CSharp
         m_MethodName: ShowControlsSettingsPanel
         m_Mode: 1
         m_Arguments:
@@ -4466,8 +4482,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenuUIManager, Assembly-CSharp
+      - m_Target: {fileID: 6612363844534920442}
+        m_TargetAssemblyTypeName: GameSettingsManager, Assembly-CSharp
         m_MethodName: ShowSoundSettingsPanel
         m_Mode: 1
         m_Arguments:

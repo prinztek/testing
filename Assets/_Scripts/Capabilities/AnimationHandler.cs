@@ -6,6 +6,7 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private Ground ground;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Attack attack;
+    [SerializeField] private Move move;
     [SerializeField] private Hurt hurt;
     [SerializeField] private AudioClip jumpSoundClip;
 
@@ -64,8 +65,13 @@ public class AnimationHandler : MonoBehaviour
         bool onGround = ground.OnGround;
         Vector2 velocity = rb.linearVelocity;
 
-        if (ground.CurrentPlatform != null)
-            velocity.x -= ground.CurrentPlatform.Velocity.x;
+        if (move != null)
+        {
+            // If player is on a platform, subtract platform velocity
+            Vector2 platformVel = move.GetPlatformVelocity();
+            velocity.x -= platformVel.x;
+        }
+
 
         float horizontal = Mathf.Abs(velocity.x);
         float vertical = velocity.y;

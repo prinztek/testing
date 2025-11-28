@@ -83,6 +83,7 @@ public class UIManager : MonoBehaviour
     {
         // Disable Player HUD for non-gameplay scenes
         bool isGameplayScene = scene.name.StartsWith("Level");
+        Debug.Log("Is Gameplay Scene: " + isGameplayScene);
         if (playerHUDInstance != null)
             playerHUDInstance.SetActive(isGameplayScene);
         // Hide all scene panels when a new scene loads

@@ -27,7 +27,7 @@ public class Move : MonoBehaviour
     private Vector2 _lastPlatformVelocity;
 
     [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
-
+    private Rigidbody2D activePlatformRb;
 
     private void Awake()
     {
@@ -77,14 +77,13 @@ public class Move : MonoBehaviour
         _onGround = _ground.OnGround;
         _velocity = _body.linearVelocity;
 
+        // Get platform velocity (if on platform)
         Vector2 platformVelocity = Vector2.zero;
 
-        if (_ground.CurrentPlatform != null)
-        {
-            platformVelocity = (Vector2)_ground.CurrentPlatform.Velocity;
-            platformVelocity.y = 0f;
-        }
+        if (activePlatformRb != null)
+            platformVelocity = activePlatformRb.linearVelocity;
 
+        // Attack slowdown
         if (attack != null && attack.IsAttacking())
         {
             _velocity.x = Mathf.MoveTowards(_velocity.x, 0f, 20f * Time.deltaTime);
@@ -92,32 +91,23 @@ public class Move : MonoBehaviour
             return;
         }
 
-        if (platformVelocity != _lastPlatformVelocity)
-        {
-            Vector2 deltaVelocity = platformVelocity - _lastPlatformVelocity;
-            if (Mathf.Abs(deltaVelocity.x) > platformVelocityThreshold)
-            {
-                _velocity += deltaVelocity;
-                _body.linearVelocity = _velocity;
-            }
-            _lastPlatformVelocity = platformVelocity;
-        }
-
+        // Determine acceleration
         _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration;
         _maxSpeedChange = _acceleration * Time.deltaTime;
 
+        // Add platform velocity to target
         float targetVelocityX = _desiredVelocity.x + platformVelocity.x;
 
+        // Smooth acceleration toward target
         _velocity.x = Mathf.MoveTowards(_velocity.x, targetVelocityX, _maxSpeedChange);
+
         _body.linearVelocity = _velocity;
 
-        float currentDirX = _direction.x;
-
-        if (currentDirX != 0)
-        {
+        // Flip sprite
+        if (_direction.x != 0)
             TurnCheck();
-        }
     }
+
 
     private void LateUpdate()
     {
@@ -161,29 +151,25 @@ public class Move : MonoBehaviour
         PlayDustTrail();
     }
 
-    private void HandlePlatformMovement()
+    public void SetPlatform(Rigidbody2D platformRb)
     {
-        if (_onGround && _ground.CurrentPlatform != null)
-        {
-            var platformRb = _ground.CurrentPlatform.GetComponent<Rigidbody2D>();
-
-            if (platformRb != null)
-            {
-                if (platformRb != _platformRb)
-                {
-                    _platformRb = platformRb;
-                    _lastPlatformPosition = _platformRb.position;
-                }
-
-                Vector2 platformMovement = _platformRb.position - _lastPlatformPosition;
-                Vector2 platformVelocity = platformMovement / Time.fixedDeltaTime;
-
-                _velocity.x += platformVelocity.x;
-
-                _lastPlatformPosition = _platformRb.position;
-            }
-        }
+        activePlatformRb = platformRb;
     }
+
+    public void ClearPlatform(Rigidbody2D platformRb)
+    {
+        if (activePlatformRb == platformRb)
+            activePlatformRb = null;
+    }
+
+    public Vector2 GetPlatformVelocity()
+    {
+        if (activePlatformRb != null)
+            return activePlatformRb.linearVelocity;
+
+        return Vector2.zero;
+    }
+
 
     public void StopImmediately()
     {
@@ -211,3 +197,4 @@ public class Move : MonoBehaviour
         }
     }
 }
+
