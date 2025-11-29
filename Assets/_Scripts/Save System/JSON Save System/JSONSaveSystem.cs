@@ -2,7 +2,9 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-
+// FILE DATA HANDLER
+// SERIALIZE AND WRITE
+// READ AND DESERIALIZE
 public static class JSONSaveSystem
 {
     private static readonly string savePath = Path.Combine(Application.persistentDataPath, "save.json");
@@ -87,12 +89,12 @@ public static class JSONSaveSystem
 
 
     // ==============================
-    //          SETTINGS
+    //          GLOBA SETTINGS NON-SPECIFIC TO SAVE SLOTS
     // ==============================
 
-    public static JSONSettingsGlobalData LoadSettings()
+    public static JSONSettingsGlobalData LoadSettingsGlobal()
     {
-        string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
+        string path = Path.Combine(Application.persistentDataPath, "settings_global.json");
 
         if (File.Exists(path))
         {
@@ -103,11 +105,33 @@ public static class JSONSaveSystem
         return new JSONSettingsGlobalData();
     }
 
-    public static void SaveSettings(JSONSettingsGlobalData data)
+    public static void SaveSettingsGlobal(JSONSettingsGlobalData data)
     {
-        string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
+        string path = Path.Combine(Application.persistentDataPath, "settings_global.json");
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
     }
+
+
+    // Wrapper to combine all 3 into 1 file
+    private class SlotWrapper
+    {
+        public JSONSaveData save;
+        public JSONPlayerData player;
+        public JSONUsedMathQuestionData questions;
+    }
+
+    // public static void SaveSlot(int slot)
+    // {
+    //     SlotWrapper wrapper = new SlotWrapper
+    //     {
+    //         save = saveData,
+    //         player = playerData,
+    //         questions = questionData
+    //     };
+
+    //     string json = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
+    //     File.WriteAllText(SlotPath(slot), json);
+    // }
 }

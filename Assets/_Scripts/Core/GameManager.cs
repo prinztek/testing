@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
         // Try to register to existing UIManager
         if (UIManager.Instance != null)
             RegisterUIManager(UIManager.Instance);
+
+        ApplySavedAudioSettings();
     }
 
     // Called by UIManager once it exists
@@ -136,11 +138,17 @@ public class GameManager : MonoBehaviour
         JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData); // Save used math question data
     }
 
+    public void SaveSettingsGlobal()
+    {
+        JSONSaveSystem.SaveSettingsGlobal(settingsGlobalData);
+    }
+
     public void LoadGame()
     {
         currentData = JSONSaveSystem.LoadGame();
         playerData = JSONSaveSystem.LoadPlayer();
         usedMathQuestionData = JSONSaveSystem.LoadUsedMathQuestions();
+        settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
 
         if (currentData == null)
         {
@@ -177,8 +185,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(int chapterIndex, int levelIndex)
     {
-        // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
-        string sceneName = $"Level{chapterIndex + 1}_{levelIndex + 1}";
+        string sceneName = $"Level{chapterIndex + 1}_{levelIndex + 1}"; // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
         StartCoroutine(LoadLevelAsync(sceneName));
     }
 
@@ -196,10 +203,9 @@ public class GameManager : MonoBehaviour
     {
         if (playerPrefab == null)
         {
-            // Debug.LogWarning("No playerPrefab assigned!");
+            Debug.LogWarning("No playerPrefab assigned!");
             return;
         }
-        // Find spawn point (place an empty GameObject tagged "PlayerSpawn" in each level)
         var spawn = GameObject.FindWithTag("PlayerSpawn");
         Vector3 spawnPos = spawn != null ? spawn.transform.position : Vector3.zero;
 
@@ -207,8 +213,6 @@ public class GameManager : MonoBehaviour
         currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
         currentPlayerInstance.name = "Player";
         OnPlayerSpawned?.Invoke(currentPlayerInstance);
-        // PlayerDataHandler.Start() automatically loads data from GameManager.Instance.playerData
-        // Debug.Log("✅ Player spawned and loaded.");
     }
 
     public void SaveCurrentPlayerState()
@@ -263,6 +267,19 @@ public class GameManager : MonoBehaviour
             JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData);
         }
     }
+
+    // ----------------- Audio Related ----------------------------------
+    public void ApplySavedAudioSettings()
+    {
+        if (SoundMixerManager.Instance == null) return;
+
+        var settings = settingsGlobalData;
+
+        SoundMixerManager.Instance.SetMasterVolume(settings.masterVolume);
+        SoundMixerManager.Instance.SetMusicVolume(settings.musicVolume);
+        SoundMixerManager.Instance.SetSFXVolume(settings.sfxVolume);
+    }
+
 
 }
 
