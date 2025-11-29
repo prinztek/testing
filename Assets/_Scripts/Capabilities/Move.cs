@@ -26,7 +26,7 @@ public class Move : MonoBehaviour
     private Vector2 _lastPlatformPosition;
     private Vector2 _lastPlatformVelocity;
 
-    [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
+    // [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
     private Rigidbody2D activePlatformRb;
 
     private void Awake()

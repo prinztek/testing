@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject levelFailedPrefab;
     public GameObject onScreenControlsPrefab;
 
-    public GameObject playerHUD; // Reference to the player's HUD
+    public GameObject playerHUD;
 
     // Instantiated global panels
     private GameObject grimoirePanel;
@@ -49,61 +49,74 @@ public class UIManager : MonoBehaviour
         // Instantiate global UI panels
         if (grimoirePrefab != null)
             grimoirePanel = Instantiate(grimoirePrefab, transform);
+
         if (buffChoicePrefab != null)
             buffChoicePanel = Instantiate(buffChoicePrefab, transform);
+
         if (pauseMenuPrefab != null)
             pauseMenu = Instantiate(pauseMenuPrefab, transform);
+
         if (levelCompletePrefab != null)
             levelCompletePanel = Instantiate(levelCompletePrefab, transform);
+
         if (levelFailedPrefab != null)
             levelFailedPanel = Instantiate(levelFailedPrefab, transform);
+
         if (playerHUD != null)
+        {
             playerHUDInstance = Instantiate(playerHUD, transform);
+            playerHUDInstance.SetActive(false); // important
+        }
+
         if (onScreenControlsPrefab != null && Application.isMobilePlatform)
         {
             onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
-            onScreenControlsInstance.SetActive(true);
+            onScreenControlsInstance.SetActive(false); // important
         }
+
         HideAllModals();
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        GameManager.OnPlayerSpawned += HandlePlayerSpawned; // ✅
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        GameManager.OnPlayerSpawned -= HandlePlayerSpawned; // ✅
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Disable Player HUD for non-gameplay scenes
         bool isGameplayScene = scene.name.StartsWith("Level");
-        Debug.Log("Is Gameplay Scene: " + isGameplayScene);
+
+        // Enable HUD only in gameplay scenes
         if (playerHUDInstance != null)
             playerHUDInstance.SetActive(isGameplayScene);
-        // Hide all scene panels when a new scene loads
+
+        // Enable mobile controls only in gameplay scenes
+        if (onScreenControlsInstance != null)
+            onScreenControlsInstance.SetActive(isGameplayScene);
+
+        // Hide all scene-specific panels
         foreach (var panel in scenePanels)
             panel.SetActive(false);
     }
 
     private void HandlePlayerSpawned(GameObject player)
     {
+        bool isGameplayScene = SceneManager.GetActiveScene().name.StartsWith("Level");
+
         if (playerHUDInstance != null)
-        {
-            playerHUDInstance.SetActive(true);
-            Debug.Log("✅ Player HUD activated after player spawn.");
-        }
+            playerHUDInstance.SetActive(isGameplayScene);
     }
 
     // ===========================
     // GLOBAL UI METHODS
     // ===========================
-    // Toggle Grimoire Panel
     public void ToggleBook(bool show)
     {
         if (grimoirePanel == null) return;
@@ -111,10 +124,9 @@ public class UIManager : MonoBehaviour
         else ClosePanel(grimoirePanel);
     }
 
-    // name should be ShowBuffChoice
     public void ShowBuffChoiceCanvas(bool show)
     {
-        if (buffChoicePrefab == null) return;
+        if (buffChoicePanel == null) return;
         if (show) ShowModal(buffChoicePanel);
         else ClosePanel(buffChoicePanel);
     }
@@ -180,18 +192,17 @@ public class UIManager : MonoBehaviour
         if (panel == activePanel)
             activePanel = null;
 
-        OnModalToggled?.Invoke(false); // resume game
+        OnModalToggled?.Invoke(false);
     }
 
     public void HideAllModals()
     {
-        // Hide global panels
         if (grimoirePanel != null) grimoirePanel.SetActive(false);
         if (pauseMenu != null) pauseMenu.SetActive(false);
         if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
         if (levelFailedPanel != null) levelFailedPanel.SetActive(false);
         if (buffChoicePanel != null) buffChoicePanel.SetActive(false);
-        // Hide scene panels
+
         foreach (var panel in scenePanels)
             panel.SetActive(false);
 
@@ -203,7 +214,6 @@ public class UIManager : MonoBehaviour
     {
         if (activePanel != null)
         {
-            Debug.Log("Closing:" + activePanel.name);
             activePanel.SetActive(false);
             activePanel = null;
             OnModalToggled?.Invoke(false);

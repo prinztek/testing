@@ -90,20 +90,20 @@ public static class JSONSaveSystem
     //          SETTINGS
     // ==============================
 
-    public static JSONSettingsData LoadSettings()
+    public static JSONSettingsGlobalData LoadSettings()
     {
         string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
 
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<JSONSettingsData>(json);
+            return JsonConvert.DeserializeObject<JSONSettingsGlobalData>(json);
         }
 
-        return new JSONSettingsData();
+        return new JSONSettingsGlobalData();
     }
 
-    public static void SaveSettings(JSONSettingsData data)
+    public static void SaveSettings(JSONSettingsGlobalData data)
     {
         string path = Path.Combine(Application.persistentDataPath, "settings_save.json");
 

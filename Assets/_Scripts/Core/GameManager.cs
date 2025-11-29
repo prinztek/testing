@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
     // SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
-    public JSONSettingsData settingsData;
     public JSONUsedMathQuestionData usedMathQuestionData;
+    public JSONSettingsGlobalData settingsGlobalData; // saved separately non specific to save slot
     public PlayerDataHandler playerDataHandler;
     public ItemDatabase itemDatabase;
 

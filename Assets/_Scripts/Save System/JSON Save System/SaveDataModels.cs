@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class LevelData2
+public class LevelData
 {
     public bool isUnlocked;
     public bool isCompleted;
@@ -12,17 +12,17 @@ public class LevelData2
 }
 
 [Serializable]
-public class ChapterData2
+public class ChapterData
 {
     public LevelData[] levels = new LevelData[8];
 }
 
 [Serializable]
-public class JSONSaveData2
+public class JSONSaveData
 {
     public ChapterData[] chapters = new ChapterData[3];
 
-    public JSONSaveData2()
+    public JSONSaveData()
     {
         for (int i = 0; i < chapters.Length; i++)
         {
@@ -38,17 +38,18 @@ public class JSONSaveData2
 }
 
 [Serializable]
-public class JSONSettingsData2
+public class JSONSettingsGlobalData
 {
     public float masterVolume = 1.0f;
     public float musicVolume = 1.0f;
     public float sfxVolume = 1.0f;
     public float uiVolume = 1.0f;
     public bool screenShakeEnabled = true;
+    public int lastUsedSlot = -1; // this is for multiple save files
 
-    public JSONSettingsData2() { }
+    public JSONSettingsGlobalData() { }
 
-    public JSONSettingsData2(float master, float music, float sfx, float ui, bool shake)
+    public JSONSettingsGlobalData(float master, float music, float sfx, float ui, bool shake)
     {
         masterVolume = master;
         musicVolume = music;
@@ -59,7 +60,7 @@ public class JSONSettingsData2
 }
 
 [Serializable]
-public class JSONPlayerData2
+public class JSONPlayerData
 {
     public int gold = 0;
     public Dictionary<string, int> items = new Dictionary<string, int>();
@@ -69,14 +70,9 @@ public class JSONPlayerData2
 }
 
 [Serializable]
-public class JSONUsedMathQuestionData2
+public class JSONUsedMathQuestionData
 {
     public List<int> UsedMathQuestionIds = new List<int>();
 }
 
-[Serializable]
-public class JSONGlobalData
-{
-    public int lastUsedSlot = 1;
-    public JSONSettingsData2 settings = new JSONSettingsData2();
-}
+
