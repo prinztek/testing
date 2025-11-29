@@ -130,6 +130,8 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         JSONSaveSystem.SaveGame(currentData);
+        // playerDataHandler.SavePlayerToData(playerData);
+        // JSONSaveSystem.SavePlayer(playerData);// write JSON to file
         SaveCurrentPlayerState(); // Save player-specific data
         JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData); // Save used math question data
     }
@@ -213,7 +215,6 @@ public class GameManager : MonoBehaviour
     public void SaveCurrentPlayerState()
     {
         if (currentPlayerInstance == null) return;
-
         var handler = currentPlayerInstance.GetComponent<PlayerDataHandler>();
         if (handler != null)
         {

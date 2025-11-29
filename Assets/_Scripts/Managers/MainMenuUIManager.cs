@@ -37,7 +37,9 @@ public class MainMenuUIManager : MonoBehaviour
     public void PlayGame()
     {
         // this is for a new player
-        SceneManager.LoadScene("Level1_1"); // Update with your game scene name
+        // loads Level1_1
+        GameManager.Instance.LoadLevel(1, 1);
+        // SceneManager.LoadScene("Level1_1"); // Update with your game scene name
     }
 
     public void ContinueGame()
