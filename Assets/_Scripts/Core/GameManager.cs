@@ -160,7 +160,6 @@ public class GameManager : MonoBehaviour
         SaveGame();
     }
 
-
     // Example helper function to complete a level and save progress
     public void CompleteLevel(int chapterIndex, int levelIndex, float time)
     {
