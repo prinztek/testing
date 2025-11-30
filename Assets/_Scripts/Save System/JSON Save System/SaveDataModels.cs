@@ -75,4 +75,10 @@ public class JSONUsedMathQuestionData
     public List<int> UsedMathQuestionIds = new List<int>();
 }
 
-
+[Serializable]
+public class GameData
+{
+    public JSONSaveData save;
+    public JSONPlayerData player;
+    public JSONUsedMathQuestionData questions;
+}

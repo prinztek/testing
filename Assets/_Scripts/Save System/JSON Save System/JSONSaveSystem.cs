@@ -115,23 +115,38 @@ public static class JSONSaveSystem
 
 
     // Wrapper to combine all 3 into 1 file
-    private class SlotWrapper
+
+    public static void SaveSlot(string profileId)
     {
-        public JSONSaveData save;
-        public JSONPlayerData player;
-        public JSONUsedMathQuestionData questions;
+        // combines individual saves into a single one gameData
+        JSONSaveData save = LoadGame();
+        JSONPlayerData player = LoadPlayer();
+        JSONUsedMathQuestionData questions = LoadUsedMathQuestions();
+
+        GameData wrapper = new GameData
+        {
+            save = save,
+            player = player,
+            questions = questions
+        };
+        string path = Path.Combine(Application.persistentDataPath, $"game_data_{profileId}.json");
+
+        string json = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
+        File.WriteAllText(path, json);
     }
 
-    // public static void SaveSlot(int slot)
-    // {
-    //     SlotWrapper wrapper = new SlotWrapper
-    //     {
-    //         save = saveData,
-    //         player = playerData,
-    //         questions = questionData
-    //     };
+    public static GameData LoadSlot(string profileId)
+    {
+        string path = Path.Combine(Application.persistentDataPath, $"game_data_{profileId}.json");
 
-    //     string json = JsonConvert.SerializeObject(wrapper, Formatting.Indented);
-    //     File.WriteAllText(SlotPath(slot), json);
-    // }
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<GameData>(json);
+        }
+
+        Debug.LogWarning("Save slot not found: " + profileId);
+        return new GameData();
+    }
+
 }

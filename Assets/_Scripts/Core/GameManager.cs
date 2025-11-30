@@ -284,3 +284,7 @@ public class GameManager : MonoBehaviour
 }
 
 
+
+// Based on Shaped by Rain Studios - How to Implement Save Slots to Manage Multiple Saved Games in Unity | Tutorial
+// Since this GameManager handles saving - This acts as the DataPersistenceManager in the tutorial?
+// holds selectedProfileID
