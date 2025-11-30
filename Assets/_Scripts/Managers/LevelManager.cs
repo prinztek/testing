@@ -111,7 +111,7 @@ public class LevelManager : MonoBehaviour
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.CompleteLevel(chapterIndex, levelIndex, 0);
-                GameManager.Instance.updateGameState(GameManager.GameState.Victory);
+                GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);
             }
             else
             {
@@ -134,7 +134,7 @@ public class LevelManager : MonoBehaviour
         Debug.Log("❌ Level failed!");
 
         if (GameManager.Instance != null)
-            GameManager.Instance.updateGameState(GameManager.GameState.Lose);
+            GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
         else
             Debug.LogWarning("⚠️ GameManager.Instance not found during level failure.");
 

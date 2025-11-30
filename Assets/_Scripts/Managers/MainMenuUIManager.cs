@@ -1,17 +1,31 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuUIManager : MonoBehaviour
 {
     public GameObject newPlayerMainMenuPanel;
     public GameObject createNewGamePanel;
-    public GameObject returningPlayerMainMenuPanel;
+    public GameObject loadGameFilePanel;
     public GameObject chapterSelectionPanel;
     public GameObject gameSettingsPanel;
+    public Button continueButton;
 
 
     void Start()
     {
+        if (JSONSaveSystem.GetMostRecentlyUpdatedProfileId() == null)
+        {
+            // no save files yet
+            // hide continue button
+            continueButton.gameObject.SetActive(false);
+            // otherwise direct it to the latest level of the most recent slot
+        }
+        else
+        {
+            continueButton.gameObject.SetActive(true);
+        }
+
         // Ensure the New Player Main Menu Panel is active when the game starts
         ShowPanel(newPlayerMainMenuPanel);
     }
@@ -21,17 +35,11 @@ public class MainMenuUIManager : MonoBehaviour
         // Deactivate all panels
         newPlayerMainMenuPanel.SetActive(false);
         createNewGamePanel.SetActive(false);
-        returningPlayerMainMenuPanel.SetActive(false);
+        loadGameFilePanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
         gameSettingsPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
-    }
-
-    public void BackToMainMenu()
-    {
-        // Show returning player main menu when going back to the main menu
-        ShowPanel(returningPlayerMainMenuPanel);
     }
 
     public void PlayGame()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,19 +33,24 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnGameStateChanged;
     public static event Action<GameObject> OnPlayerSpawned;
 
-
-    // SAVE DATA MANAGEMENT
+    // SEPARATE SAVE DATA MANAGEMENT
     public JSONSaveData currentData;
     public JSONPlayerData playerData;
     public JSONUsedMathQuestionData usedMathQuestionData;
-    public JSONSettingsGlobalData settingsGlobalData; // saved separately non specific to save slot
     public PlayerDataHandler playerDataHandler;
+
+    // CLASS WRAPPER GAME DATA (HOLDS SAVE DATA, PLAYER DATA, QUESTION DATA)
+    public GameData gameData;
+    public JSONSettingsGlobalData settingsGlobalData; // saved separately non specific to save slot
     public ItemDatabase itemDatabase;
 
     [Header("Player Management")]
     public GameObject playerPrefab;
     private GameObject currentPlayerInstance;
     public GameObject CurrentPlayer => currentPlayerInstance;
+
+    // TESTING FOR MULTIPLE SAVE FILES
+    private string selectedProfileID = "";
 
     private void Awake()
     {
@@ -58,7 +64,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
 
-        LoadGame();
+        JSONSaveSystem.LoadSettingsGlobal();
+        JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
     }
 
     private void Start()
@@ -83,19 +90,19 @@ public class GameManager : MonoBehaviour
     {
         if (isOpen)
         {
-            updateGameState(GameState.Paused);
+            UpdateGameState(GameState.Paused);
             Debug.Log("Paused");
         }
         else
         {
-            updateGameState(GameState.Playing);
+            UpdateGameState(GameState.Playing);
             Debug.Log("Resumed");
         }
 
     }
 
     // Update the current game state and notify listeners
-    public void updateGameState(GameState newState)
+    public void UpdateGameState(GameState newState)
     {
         State = newState;
 
@@ -131,11 +138,12 @@ public class GameManager : MonoBehaviour
     // SAVE/LOAD SYSTEM
     public void SaveGame()
     {
-        JSONSaveSystem.SaveGame(currentData);
-        // playerDataHandler.SavePlayerToData(playerData);
-        // JSONSaveSystem.SavePlayer(playerData);// write JSON to file
+        // JSONSaveSystem.SaveGame(currentData);
+        // SaveCurrentPlayerState(); // Save player-specific data
+        // JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData); // Save used math question data
+        // -------------------------------- FOR TESTING --------------------------------
         SaveCurrentPlayerState(); // Save player-specific data
-        JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData); // Save used math question data
+        SaveGame2();
     }
 
     public void SaveSettingsGlobal()
@@ -145,27 +153,68 @@ public class GameManager : MonoBehaviour
 
     public void LoadGame()
     {
-        currentData = JSONSaveSystem.LoadGame();
-        playerData = JSONSaveSystem.LoadPlayer();
-        usedMathQuestionData = JSONSaveSystem.LoadUsedMathQuestions();
-        settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
+        // currentData = JSONSaveSystem.LoadGame();
+        // playerData = JSONSaveSystem.LoadPlayer();
+        // usedMathQuestionData = JSONSaveSystem.LoadUsedMathQuestions();
+        // settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
 
-        if (currentData == null)
+        // if (currentData == null)
+        // {
+        //     currentData = new JSONSaveData();
+        // }
+
+        // if (playerData == null)
+        // {
+        //     playerData = new JSONPlayerData();
+        // }
+
+        // if (usedMathQuestionData == null)
+        // {
+        //     usedMathQuestionData = new JSONUsedMathQuestionData();
+        // }
+
+
+        // SaveGame();
+
+        // -------------------------------- FOR TESTING --------------------------------
+        LoadGame2();
+        SaveGame2();
+    }
+
+    public void NewGame()
+    {
+        gameData = new GameData();
+    }
+
+    public void LoadGame2()
+    {
+        gameData = JSONSaveSystem.LoadSlot(selectedProfileID);
+
+        if (gameData == null)
         {
-            currentData = new JSONSaveData();
+            gameData = new GameData();
         }
 
-        if (playerData == null)
-        {
-            playerData = new JSONPlayerData();
-        }
+        // push combined data back into your old separate system
+        currentData = gameData.save ?? new JSONSaveData();
+        playerData = gameData.player ?? new JSONPlayerData();
+        usedMathQuestionData = gameData.questions ?? new JSONUsedMathQuestionData();
 
-        if (usedMathQuestionData == null)
-        {
-            usedMathQuestionData = new JSONUsedMathQuestionData();
-        }
+        Debug.Log("Combined GameData loaded.");
+    }
 
-        SaveGame();
+    public void SaveGame2()
+    {
+        // fill gamedata from your existing separate data
+        gameData.save = currentData;
+        gameData.player = playerData;
+        gameData.questions = usedMathQuestionData;
+        // timestamp the data so we know when it was last saved
+        gameData.lastUpdated = DateTime.Now.ToBinary();
+
+        JSONSaveSystem.SaveSlot(gameData, selectedProfileID);
+
+        Debug.Log("Combined GameData saved.");
     }
 
     // Example helper function to complete a level and save progress
@@ -222,12 +271,12 @@ public class GameManager : MonoBehaviour
         if (handler != null)
         {
             handler.SavePlayerToData(playerData);
-            JSONSaveSystem.SavePlayer(playerData);// write JSON to file
+            // JSONSaveSystem.SavePlayer(playerData);// write JSON to file
             // Debug.Log("💾 Player state saved.");
         }
         else
         {
-            // Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
+            Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
         }
     }
 
@@ -245,17 +294,14 @@ public class GameManager : MonoBehaviour
         playerData = new JSONPlayerData();
         usedMathQuestionData = new JSONUsedMathQuestionData();
         SaveGame();
-
-        // this does not work because in SaveGame we overwrite the data again
-        // JSONSaveSystem.DeleteSaveFiles();
     }
 
     // ------------------ Math Question Helper ------------------
-    public System.Collections.Generic.List<MathQuestion> GetUnusedQuestions(MathTopic topic, QuestionDifficulty difficulty)
+    public List<MathQuestion> GetUnusedQuestions(MathTopic topic, QuestionDifficulty difficulty)
     {
         return MathQuestionLoaderJSON.LoadByTopic(
             topic,
-            new System.Collections.Generic.HashSet<int>(usedMathQuestionData.UsedMathQuestionIds)
+            new HashSet<int>(usedMathQuestionData.UsedMathQuestionIds)
         );
     }
 
@@ -264,7 +310,6 @@ public class GameManager : MonoBehaviour
         if (!usedMathQuestionData.UsedMathQuestionIds.Contains(question.id))
         {
             usedMathQuestionData.UsedMathQuestionIds.Add(question.id);
-            JSONSaveSystem.SaveUsedMathQuestions(usedMathQuestionData);
         }
     }
 
@@ -281,6 +326,18 @@ public class GameManager : MonoBehaviour
     }
 
 
+    // ---------------------------------- For Multiple Save Slots ----------------------------------
+    public Dictionary<string, GameData> GetAllProfilesGameData()
+    {
+        return JSONSaveSystem.LoadAllProfiles();
+    }
+
+    public void ChangeSelectedProfileId(string profileId)
+    {
+        // update profile to use for saving and loading
+        selectedProfileID = profileId;
+        // Load Game - will use the profile, updating our game data accordingly
+    }
 }
 
 

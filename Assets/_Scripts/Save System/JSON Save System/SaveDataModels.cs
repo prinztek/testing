@@ -78,6 +78,7 @@ public class JSONUsedMathQuestionData
 [Serializable]
 public class GameData
 {
+    public long lastUpdated;
     public JSONSaveData save;
     public JSONPlayerData player;
     public JSONUsedMathQuestionData questions;
