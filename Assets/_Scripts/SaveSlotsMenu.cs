@@ -8,12 +8,17 @@ public class SaveSlotsMenu : MonoBehaviour
 {
     [Header("Menu Navigation")]
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private EnterNamePanel enterNamePanel;
+    [SerializeField] private OverwriteSavePanel overwriteSavePanel;
     [SerializeField] private GameObject chapterSelectScreen;
 
     [Header("Menu Buttons")]
     [SerializeField] private Button backButton;
+    [SerializeField] private Button confirmButton;
 
     private SaveSlot[] saveSlots;
+    private SaveSlot selectedSlot;
+
 
     private bool isLoadingGame = false;
 
@@ -29,26 +34,72 @@ public class SaveSlotsMenu : MonoBehaviour
 
     public void OnSaveSlotClicked(SaveSlot saveSlot)
     {
-        // optionally ask first for the name and save that saveSlot profileId with the inputted name
-        // disable all buttons
-        DisableMenuButtons();
+        selectedSlot = saveSlot;
 
-        // update the selected profile id to be used for data persistence
-        GameManager.Instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-        GameManager.Instance.LoadGame();
-        // new game
-        if (!isLoadingGame)
+        // visually highlight UI
+        HighlightSelectedSlot(saveSlot);
+
+        // enable confirm button when a slot is selected
+        confirmButton.interactable = true;
+    }
+
+    private void HighlightSelectedSlot(SaveSlot slot)
+    {
+        foreach (var s in saveSlots)
+            s.SetHighlight(false);
+
+        slot.SetHighlight(true);
+    }
+
+
+
+    public void OnConfirmButtonClicked()
+    {
+        if (selectedSlot == null)
+            return;
+
+        if (!isLoadingGame) // NEW GAME
         {
+            if (selectedSlot.HasData())
+            {
+                overwriteSavePanel.Show(
+                    $"Slot {selectedSlot.GetProfileId()} already has a save.\nOverwrite it?",
+                    () => enterNamePanel.Open(OnNameEntered),
+                    () => { }
+                );
+                return;
+            }
             // create a new game - which will initialize our data to a clean slate
-            GameManager.Instance.NewGame();
-            GameManager.Instance.LoadLevel(0, 0); // first level
+            enterNamePanel.Open(OnNameEntered);
         }
-        else // existing save
+        else // LOAD GAME
         {
-            // go to chapter select instead of loading directly into gameplay
-            chapterSelectScreen.SetActive(true);
+            LoadExistingGame();
         }
+    }
 
+
+    private void OnNameEntered(string name)
+    {
+        // Tell GameManager which slot to save into
+        GameManager.Instance.ChangeSelectedProfileId(selectedSlot.GetProfileId());
+
+        // Create a new GameData with playerName
+        GameManager.Instance.NewGame(name);
+
+        // Save immediately
+        GameManager.Instance.SaveGame();
+
+        // Load first level
+        GameManager.Instance.LoadLevel(0, 0);
+    }
+
+    private void LoadExistingGame()
+    {
+        GameManager.Instance.ChangeSelectedProfileId(selectedSlot.GetProfileId());
+        GameManager.Instance.LoadGame();
+        // go to chapter select instead of loading directly into gameplay
+        chapterSelectScreen.SetActive(true);
     }
 
     public void ActivateMenu(bool isLoadingGame)
@@ -66,11 +117,11 @@ public class SaveSlotsMenu : MonoBehaviour
             saveSlot.SetData(profileData);
             if (profileData == null & isLoadingGame)
             {
-                saveSlot.SetInteractable(false);
+                saveSlot.SetInteractable(false); // from load game, disable empty slots
             }
             else
             {
-                saveSlot.SetInteractable(true);
+                saveSlot.SetInteractable(true); // from new game, enable all slots but keep empty ones interactive
             }
 
         }
@@ -84,6 +135,7 @@ public class SaveSlotsMenu : MonoBehaviour
             saveSlot.SetInteractable(false);
         }
         backButton.interactable = false;
+        confirmButton.interactable = false;
     }
 
     public void OnNewGameClicked()
@@ -94,6 +146,21 @@ public class SaveSlotsMenu : MonoBehaviour
     public void OnLoadGameClicked()
     {
         ActivateMenu(true);
+    }
+
+    public bool IsEmptySlot()
+    {
+        return GameManager.Instance.gameData == null;
+    }
+
+    private void EnableMenuButtons()
+    {
+        foreach (SaveSlot saveSlot in saveSlots)
+        {
+            saveSlot.SetInteractable(true);
+        }
+        backButton.interactable = true;
+        confirmButton.interactable = true;
     }
 
 }

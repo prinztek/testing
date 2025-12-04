@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MainMenuUIManager : MonoBehaviour
 {
     public GameObject newPlayerMainMenuPanel;
-    public GameObject createNewGamePanel;
+    public GameObject enterNamePanel;
     public GameObject loadGameFilePanel;
     public GameObject chapterSelectionPanel;
     public GameObject gameSettingsPanel;
@@ -34,7 +34,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         // Deactivate all panels
         newPlayerMainMenuPanel.SetActive(false);
-        createNewGamePanel.SetActive(false);
+        enterNamePanel.SetActive(false);
         loadGameFilePanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
         gameSettingsPanel.SetActive(false);

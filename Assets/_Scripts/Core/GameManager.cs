@@ -181,9 +181,9 @@ public class GameManager : MonoBehaviour
         SaveGame2();
     }
 
-    public void NewGame()
+    public void NewGame(string name)
     {
-        gameData = new GameData();
+        gameData = new GameData(name);
     }
 
     public void LoadGame2()
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
 
         if (gameData == null)
         {
-            gameData = new GameData();
+            gameData = new GameData(selectedProfileID);
         }
 
         // push combined data back into your old separate system

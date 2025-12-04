@@ -158,7 +158,7 @@ public static class JSONSaveSystem
         }
 
         Debug.LogWarning($"No save found for profile '{profileId}', creating empty GameData.");
-        return new GameData();
+        return new GameData(profileId);
     }
 
 

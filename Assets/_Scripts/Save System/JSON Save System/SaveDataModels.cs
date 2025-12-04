@@ -78,8 +78,19 @@ public class JSONUsedMathQuestionData
 [Serializable]
 public class GameData
 {
+    public string playerName;
     public long lastUpdated;
     public JSONSaveData save;
     public JSONPlayerData player;
     public JSONUsedMathQuestionData questions;
+
+    public GameData(string playerName)
+    {
+        this.playerName = playerName;
+        lastUpdated = DateTime.Now.ToBinary();
+
+        save = new JSONSaveData();            // auto-unlocks Chapter0 Level0
+        player = new JSONPlayerData();
+        questions = new JSONUsedMathQuestionData();
+    }
 }
