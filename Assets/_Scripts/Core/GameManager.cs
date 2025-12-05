@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {// HANDLE GAME STATES (PAUSE, GAME OVER, ETC.) HERE
@@ -52,6 +54,11 @@ public class GameManager : MonoBehaviour
     // TESTING FOR MULTIPLE SAVE FILES
     private string selectedProfileID = "";
 
+    [Header("Loading Settings")]
+    [SerializeField] public GameObject loaderCanvas;
+    [SerializeField] public Slider progressBar;
+
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -65,7 +72,9 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         JSONSaveSystem.LoadSettingsGlobal();
-        JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
+        selectedProfileID = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
+
+        LoadGame();
     }
 
     private void Start()
@@ -186,6 +195,28 @@ public class GameManager : MonoBehaviour
         gameData = new GameData(name);
     }
 
+    public void ContinueGame()
+    {
+        // when the continue button is pressed, load the specific chapter and level with that profile
+        // find latest unlocked chapter/level
+        int latestChapter = 0;
+        int latestLevel = 0;
+
+        for (int c = 0; c < gameData.save.chapters.Length; c++)
+        {
+            for (int l = 0; l < gameData.save.chapters[c].levels.Length; l++)
+            {
+                if (gameData.save.chapters[c].levels[l].isUnlocked)
+                {
+                    latestChapter = c;
+                    latestLevel = l;
+                }
+            }
+        }
+
+        LoadLevel(latestChapter, latestLevel);
+    }
+
     public void LoadGame2()
     {
         gameData = JSONSaveSystem.LoadSlot(selectedProfileID);
@@ -235,17 +266,59 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(int chapterIndex, int levelIndex)
     {
         string sceneName = $"Level{chapterIndex + 1}_{levelIndex + 1}"; // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
-        StartCoroutine(LoadLevelAsync(sceneName));
+        // StartCoroutine(LoadLevelAsync(sceneName)); // commented out for async/await version to add loading screen
+        StartCoroutine(LoadLevelAsyncWithLoader(sceneName));
     }
 
-    private IEnumerator LoadLevelAsync(string sceneName)
-    {
-        // Optional: show loading screen here
-        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
-        yield return new WaitUntil(() => load.isDone);
+    // commented out for async/await version to add loading screen
+    // private IEnumerator LoadLevelAsync(string sceneName)
+    // {
+    //     // Optional: show loading screen here
+    //     AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+    //     yield return new WaitUntil(() => load.isDone);
 
-        // Spawn player once scene is loaded
+    //     // Spawn player once scene is loaded
+    //     SpawnPlayer();
+    // }
+
+    public IEnumerator LoadLevelAsyncWithLoader(string sceneName)
+    {
+        // Activate the loader canvas and set the slider to 0% initially
+        loaderCanvas.SetActive(true);
+        progressBar.value = 0f;
+
+
+        // Start loading the scene asynchronously
+        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+        load.allowSceneActivation = false; // Prevents the scene from activating automatically
+
+        float fakeProgress = 0f;
+
+        while (!load.isDone)
+        {
+            // Update progress slider value
+            float realProgress = Mathf.Clamp01(load.progress / 0.9f); // SceneManager.progress max value is 0.9
+
+            // Smoothly move fake progress toward real progress
+            fakeProgress = Mathf.MoveTowards(fakeProgress, realProgress, Time.deltaTime * 0.5f);
+
+            progressBar.value = fakeProgress;
+
+            // When Unity loading finished (0.9), finish smoothly to 1
+            if (fakeProgress >= 0.99f && load.progress >= 0.9f)
+            {
+                progressBar.value = 1f;
+                load.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
+
+        // Spawn player once the scene is fully loaded
         SpawnPlayer();
+
+        // Optionally hide the loading screen once the scene is loaded
+        loaderCanvas.SetActive(false);
     }
 
     private void SpawnPlayer()

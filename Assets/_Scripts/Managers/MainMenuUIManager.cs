@@ -50,12 +50,9 @@ public class MainMenuUIManager : MonoBehaviour
         // SceneManager.LoadScene("Level1_1"); // Update with your game scene name
     }
 
-    public void ContinueGame()
+    public void OnContinueGameClicked()
     {
-        // this is for a returning player
-        // Load the next level the player has completed
-        // Find the last current Chapter Level and last level completed
-        //GameManager.Instance.LoadGame();
+        GameManager.Instance.ContinueGame();
     }
 
     public void QuitGame()
