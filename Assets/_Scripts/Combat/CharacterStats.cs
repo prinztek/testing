@@ -72,6 +72,10 @@ public class CharacterStats : MonoBehaviour
     private void Awake()
     {
         currentHealth = maxHealth;
+        // Immediately fire health change event so UI gets correct starting value
+        OnHealthChanged?.Invoke(currentHealth);
+
+
         UnlockSkill(SkillType.FireBlast);
         UnlockSkill(SkillType.IceShield);
         UnlockSkill(SkillType.LightningDash);
@@ -85,6 +89,15 @@ public class CharacterStats : MonoBehaviour
     }
     private void Update()
     {
+        // 1️⃣ Block all input if the game is paused / a modal is open
+        if (!InputGate.CanAcceptInput)
+            return;
+
+        // 2️⃣ Block input if clicking/touching UI elements (mobile or PC)
+        if (UnityEngine.EventSystems.EventSystem.current != null &&
+            UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (input.RetrieveToggleGrimoireInput())
         {
             if (UIManager.Instance != null)

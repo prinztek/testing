@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
     public GameObject levelCompletePrefab;
     public GameObject levelFailedPrefab;
     public GameObject onScreenControlsPrefab;
-
     public GameObject playerHUD;
 
     // Instantiated global panels
@@ -65,13 +64,13 @@ public class UIManager : MonoBehaviour
         if (playerHUD != null)
         {
             playerHUDInstance = Instantiate(playerHUD, transform);
-            playerHUDInstance.SetActive(false); // important
+            playerHUDInstance.SetActive(false); // hide until player spawns
         }
 
         if (onScreenControlsPrefab != null && Application.isMobilePlatform)
         {
             onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
-            onScreenControlsInstance.SetActive(false); // important
+            onScreenControlsInstance.SetActive(false);
         }
 
         HideAllModals();
@@ -93,25 +92,38 @@ public class UIManager : MonoBehaviour
     {
         bool isGameplayScene = scene.name.StartsWith("Level");
 
-        // Enable HUD only in gameplay scenes
+        // Show HUD only in gameplay scenes
         if (playerHUDInstance != null)
             playerHUDInstance.SetActive(isGameplayScene);
 
-        // Enable mobile controls only in gameplay scenes
+        // Show mobile controls only in gameplay scenes
         if (onScreenControlsInstance != null)
             onScreenControlsInstance.SetActive(isGameplayScene);
 
-        // Hide all scene-specific panels
+        // Hide scene-specific panels
         foreach (var panel in scenePanels)
             panel.SetActive(false);
     }
 
     private void HandlePlayerSpawned(GameObject player)
     {
-        bool isGameplayScene = SceneManager.GetActiveScene().name.StartsWith("Level");
-
         if (playerHUDInstance != null)
-            playerHUDInstance.SetActive(isGameplayScene);
+        {
+            playerHUDInstance.SetActive(true);
+
+            // Assign player references to all HUD components
+            var healthUI = playerHUDInstance.GetComponent<HealthBar>();
+            var goldUI = playerHUDInstance.GetComponent<PlayerGoldUI>();
+
+            if (healthUI != null)
+                healthUI.SetPlayer(player);
+
+            if (goldUI != null)
+                goldUI.SetPlayer(player);
+        }
+
+        if (onScreenControlsInstance != null)
+            onScreenControlsInstance.SetActive(Application.isMobilePlatform);
     }
 
     // ===========================
@@ -181,7 +193,7 @@ public class UIManager : MonoBehaviour
         HideAllModals();
         panel.SetActive(true);
         activePanel = panel;
-        OnModalToggled?.Invoke(true); // pause game
+        OnModalToggled?.Invoke(true);
     }
 
     public void ClosePanel(GameObject panel)

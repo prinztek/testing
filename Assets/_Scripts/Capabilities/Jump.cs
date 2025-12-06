@@ -49,6 +49,14 @@ public class Jump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 1️⃣ Block all input if the game is paused / a modal is open
+        if (!InputGate.CanAcceptInput)
+            return;
+
+        // 2️⃣ Block input if clicking/touching UI elements (mobile or PC)
+        if (UnityEngine.EventSystems.EventSystem.current != null &&
+            UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
         if (stats.IsDead()) return;
         _desiredJump |= input.RetrieveJumpInput();
         // _desiredJump |= _controller.input.RetrieveJumpInput();

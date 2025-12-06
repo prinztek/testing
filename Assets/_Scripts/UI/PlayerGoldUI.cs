@@ -8,19 +8,19 @@ public class PlayerGoldUI : MonoBehaviour
     public PlayerInventory playerInventory;
     public TMP_Text goldCounterText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     private void OnEnable()
     {
-        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        GameManager.OnPlayerSpawned += SetPlayer;
     }
 
     private void OnDisable()
     {
-        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        GameManager.OnPlayerSpawned -= SetPlayer;
     }
 
-    private void HandlePlayerSpawned(GameObject playerObj)
+    public void SetPlayer(GameObject playerObj)
     {
+
         // this is for getting the character stats to subscribe to death event
         characterStats = playerObj.GetComponent<CharacterStats>();
         if (characterStats == null)
@@ -41,6 +41,15 @@ public class PlayerGoldUI : MonoBehaviour
         characterStats.OnDeathStarted += HandleDeath; // When character dies, hide the gold UI
     }
 
+    private void UnsubscribeFromCharacter()
+    {
+        if (characterStats == null) return;
+
+        playerInventory.OnGoldChanged -= UpdateGoldCount;
+        characterStats.OnDeathStarted -= HandleDeath;
+        characterStats = null;
+    }
+
     private void UpdateGoldCount(int currentGold)
     {
         SetGoldCount(currentGold); // Update gold counter when player gold changes
@@ -54,7 +63,7 @@ public class PlayerGoldUI : MonoBehaviour
     private void HandleDeath()
     {
         Debug.Log("Character has died, hiding the health bar.");
-        gameObject.SetActive(false); // Optionally hide the health bar on death
+        // gameObject.SetActive(false); // Optionally hide the health bar on death
     }
 
 }

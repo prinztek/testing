@@ -100,11 +100,13 @@ public class GameManager : MonoBehaviour
         if (isOpen)
         {
             UpdateGameState(GameState.Paused);
+            InputGate.BlockInput();
             Debug.Log("Paused");
         }
         else
         {
             UpdateGameState(GameState.Playing);
+            InputGate.AllowInput();
             Debug.Log("Resumed");
         }
 
@@ -412,9 +414,3 @@ public class GameManager : MonoBehaviour
         // Load Game - will use the profile, updating our game data accordingly
     }
 }
-
-
-
-// Based on Shaped by Rain Studios - How to Implement Save Slots to Manage Multiple Saved Games in Unity | Tutorial
-// Since this GameManager handles saving - This acts as the DataPersistenceManager in the tutorial?
-// holds selectedProfileID

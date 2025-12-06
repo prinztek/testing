@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class LevelFailedButtonHandler : MonoBehaviour

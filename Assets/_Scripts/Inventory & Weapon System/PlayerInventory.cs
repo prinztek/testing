@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private CharacterStats characterStats;
 
     // Backing fields
-    private int _gold;
+    public int _gold;
     private List<InventorySlot> _ownedItems = new List<InventorySlot>();
 
     // Events
