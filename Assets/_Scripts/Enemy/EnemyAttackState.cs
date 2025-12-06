@@ -38,11 +38,14 @@ public class EnemyAttackState : EnemyBaseState
             FacePlayer(enemy);
             enemy.rb.linearVelocity = Vector2.zero;
 
+
+            float attackLength = GetAnimationLength(enemy.animator, "enemyattack1");
+
             // Play attack animation
             enemy.animator.CrossFade("enemyattack1", 0.05f, 0, 0f);
 
             // Wait for animation duration then decide next state
-            enemy.StartCoroutine(CompleteAttack(enemy, 0.5f)); // match animation length
+            enemy.StartCoroutine(CompleteAttack(enemy, attackLength)); // match animation length
         }
     }
 
@@ -92,5 +95,17 @@ public class EnemyAttackState : EnemyBaseState
 
         bool shouldFaceRight = enemy.player.position.x > enemy.transform.position.x;
         enemy.FlipDirection(shouldFaceRight);
+    }
+
+    float GetAnimationLength(Animator animator, string clipName)
+    {
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+                return clip.length;
+        }
+
+        Debug.LogWarning($"Clip '{clipName}' not found on {animator.name}");
+        return 0f;
     }
 }
