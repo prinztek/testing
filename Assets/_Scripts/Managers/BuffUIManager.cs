@@ -7,7 +7,7 @@ public class BuffUIManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject buffSlotPrefab;
-    [SerializeField] private GameObject buffPanel;
+    [SerializeField] public GameObject buffPanel;
     [SerializeField] private StatusEffectManager statusEffectManager;
 
     private readonly Dictionary<Buff, GameObject> buffSlots = new();

@@ -114,12 +114,20 @@ public class UIManager : MonoBehaviour
             // Assign player references to all HUD components
             var healthUI = playerHUDInstance.GetComponent<HealthBar>();
             var goldUI = playerHUDInstance.GetComponent<PlayerGoldUI>();
+            var buffManager = playerHUDInstance.GetComponentInChildren<BuffUIManager>();
 
             if (healthUI != null)
                 healthUI.SetPlayer(player);
 
             if (goldUI != null)
                 goldUI.SetPlayer(player);
+
+            if (buffManager != null)
+            {
+                buffManager.ClearAll();
+                if (buffManager.buffPanel != null)
+                    buffManager.buffPanel.SetActive(false);
+            }
         }
 
         if (onScreenControlsInstance != null)
