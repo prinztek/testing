@@ -67,6 +67,8 @@ public class CharacterStats : MonoBehaviour
     {
         return unlockedSkills.Contains(skill);
     }
+    private bool isChanneling = false;
+    private float channelDuration = 0.417f; // <- length of your animation buff acquiring
 
     // ====================================================================================================================
     private void Awake()
@@ -245,7 +247,7 @@ public class CharacterStats : MonoBehaviour
     {
         if (activeBuff == null)
         {
-            ApplyBuff(buff);
+            StartCoroutine(ChannelBuffRoutine(buff));
         }
         else
         {
@@ -253,6 +255,24 @@ public class CharacterStats : MonoBehaviour
             Debug.Log($"🕓 Queued buff: {buff.GetType().Name}");
         }
     }
+
+    private IEnumerator ChannelBuffRoutine(Buff buff)
+    {
+        isChanneling = true;
+
+        // 1. Play & lock animation for EXACT time of animation
+        yield return StartCoroutine(animationHandler.PlayAndLockCoroutine("buff_acquiring"));
+
+        GameManager.Instance.BlockInput();
+
+        ApplyBuff(buff);
+
+        GameManager.Instance.AllowInput();
+
+        isChanneling = false;
+    }
+
+
 
 
     private void ApplyBuff(Buff buff)

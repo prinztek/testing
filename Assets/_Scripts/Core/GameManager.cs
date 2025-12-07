@@ -413,4 +413,14 @@ public class GameManager : MonoBehaviour
         selectedProfileID = profileId;
         // Load Game - will use the profile, updating our game data accordingly
     }
+
+    public void BlockInput()
+    {
+        InputGate.BlockInput();
+    }
+
+    public void AllowInput()
+    {
+        InputGate.AllowInput();
+    }
 }

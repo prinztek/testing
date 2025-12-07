@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AnimationHandler : MonoBehaviour
@@ -113,12 +114,23 @@ public class AnimationHandler : MonoBehaviour
         PlayAndLock(animName, length, ref attackLockTimer);
     }
 
-    private void PlayAndLock(string animName, float length, ref float lockTimer)
+    public void PlayAndLock(string animName, float length, ref float lockTimer)
     {
         animator.CrossFade(animName, 0.05f, 0, 0f);
         currentAnimation = animName;
         lockTimer = length;
     }
+
+    public IEnumerator PlayAndLockCoroutine(string animName)
+    {
+        float length = GetAnimationLength(animName);
+        PlayAndLock(animName, length, ref hurtLockTimer);
+
+        // Wait until the hurtLockTimer counts down to 0
+        while (hurtLockTimer > 0f)
+            yield return null;
+    }
+
 
     public float GetHurtAnimationLength() => GetAnimationLength("hurt");
     public float GetDeathAnimationLength() => GetAnimationLength("dead");

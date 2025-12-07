@@ -4,33 +4,28 @@ public class PlayerDropThrough : MonoBehaviour
 {
     [SerializeField] internal InputController input = null;
     public float dropDisableTime = 0.25f;
+    [SerializeField] private Ground ground;
 
-    private Collider2D col;
     private bool dropping = false;
-
-    void Start()
-    {
-        col = GetComponent<Collider2D>();
-    }
 
     void Update()
     {
-        if (!dropping && input.RetrieveDropInput())
+        // Block input if the game is paused / UI is clicked
+        if (!InputGate.CanAcceptInput) return;
+        if (UnityEngine.EventSystems.EventSystem.current != null &&
+            UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+
+        // Drop input and check if on OneWayPlatform
+        if (!dropping && input.RetrieveDropInput() && ground.OnOneWayPlatform)
         {
             dropping = true;
+
+            // Move slightly down to avoid immediate collision
             transform.position += Vector3.down;
+
+            // Optionally: temporarily disable collision with the platform here
+
             dropping = false;
         }
-    }
-
-    private bool IsOnDropPlatform()
-    {
-        // Check for collision with a platform underneath
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.0f);
-        if (hit.collider != null && hit.collider.CompareTag("dropPlatformTag"))
-        {
-            return true;
-        }
-        return false;
     }
 }

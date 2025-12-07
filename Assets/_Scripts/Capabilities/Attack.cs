@@ -65,6 +65,7 @@ public class Attack : MonoBehaviour
         if (UnityEngine.EventSystems.EventSystem.current != null &&
             UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
+
         if (stats.IsDead()) return;
         if (!inputReady || input == null || isInPostCooldown) return;
         if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;

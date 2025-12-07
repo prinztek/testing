@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ground : MonoBehaviour
 {
     public bool OnGround { get; private set; }
+    public bool OnOneWayPlatform { get; private set; }
     public float Friction { get; private set; }
 
     [SerializeField] private Transform groundCheck;
@@ -11,7 +12,21 @@ public class Ground : MonoBehaviour
 
     void Update()
     {
-        OnGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius, groundLayer);
+
+        OnGround = false;
+        OnOneWayPlatform = false;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit == null) continue;
+
+            if (hit.CompareTag("OneWayPlatform"))
+            {
+                OnOneWayPlatform = true; // on one-way platform
+            }
+            OnGround = true; // on normal ground
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
