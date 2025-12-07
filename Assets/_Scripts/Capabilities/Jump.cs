@@ -13,7 +13,7 @@ public class Jump : MonoBehaviour
     [SerializeField, Range(0f, 0.3f)] private float _jumpBufferTime = 0.2f;
     [SerializeField] private Attack attack; // Assign this via Inspector
     private CharacterStats stats;
-
+    [SerializeField] private AudioClip jumpSoundClip;
     public ParticleSystem jumpParticles;
     public ParticleSystem landParticles;
 
@@ -149,6 +149,9 @@ public class Jump : MonoBehaviour
                 _jumpSpeed += Mathf.Abs(_body.linearVelocity.y);
 
             _velocity.y += _jumpSpeed;
+
+            if (jumpSoundClip != null)
+                SoundFXManager.Instance.playOneShotSoundFXClilp(jumpSoundClip, transform, 0.5f);
 
             jumpParticles?.Play();
         }

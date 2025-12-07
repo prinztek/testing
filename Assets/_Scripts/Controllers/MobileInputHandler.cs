@@ -58,6 +58,12 @@ public class MobileInputUIHandler : MonoBehaviour
 
         // Ensure UI icon matches player
         UpdateAttackButtonSprite();
+
+        // Assign the joystick to MobileInputController at runtime
+        if (mobileController != null)
+        {
+            mobileController.joystick = joystick;
+        }
     }
 
     // ------------------------------------------------------

@@ -8,7 +8,12 @@ public class MobileInputController : InputController
     [HideInInspector] public bool mobileJumpHoldInput = false;
     [HideInInspector] public bool mobileAttackInput = false;
     [HideInInspector] public bool mobileToggleGrimoireInput = false;
+    [HideInInspector] public bool mobileDropInput = false;
+    public Joystick joystick;
+    public float downThreshold = -0.7f;
 
+    private float downBuffer = 0f;
+    private const float downBufferTime = 0.2f;
 
     public override float RetrieveMoveInput()
     {
@@ -32,6 +37,25 @@ public class MobileInputController : InputController
         bool attack = mobileAttackInput;
         mobileAttackInput = false; // reset after read
         return attack;
+    }
+
+    public override bool RetrieveDropInput()
+    {
+        // Check if joystick is pulled down
+        bool pullingDown = joystick != null && joystick.Vertical < downThreshold;
+
+        // Update DOWN buffer
+        if (pullingDown)
+            downBuffer = downBufferTime;
+        else
+            downBuffer -= Time.deltaTime;
+
+        // Jump button pressed?
+        bool jumpPressed = mobileJumpInput;
+        mobileJumpInput = false;
+
+        // Drop occurs when jump pressed during DOWN buffer window
+        return jumpPressed && downBuffer > 0f;
     }
 
     public override bool RetrieveToggleGrimoireInput()

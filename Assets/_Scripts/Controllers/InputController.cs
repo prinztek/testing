@@ -9,6 +9,6 @@ public abstract class InputController : ScriptableObject
 
     // public abstract bool RetrieveRangedAttackInput();
     // public abstract bool RetrieveAttackHoldInput();
-
+    public abstract bool RetrieveDropInput();
     public abstract bool RetrieveToggleGrimoireInput();
 }

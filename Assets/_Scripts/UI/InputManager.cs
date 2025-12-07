@@ -74,6 +74,12 @@ public class InputManager : MonoBehaviour
                 charStats.input = controller;
                 // Debug.Log("Assigned to CharacterStats");
             }
+
+            if (comp is PlayerDropThrough dropThrough)
+            {
+                dropThrough.input = controller;
+                // Debug.Log("Assigned to CharacterStats");
+            }
         }
     }
 }

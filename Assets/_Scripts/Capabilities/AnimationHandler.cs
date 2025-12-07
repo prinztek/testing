@@ -8,8 +8,6 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private Attack attack;
     [SerializeField] private Move move;
     [SerializeField] private Hurt hurt;
-    [SerializeField] private AudioClip jumpSoundClip;
-
     private string currentAnimation;
     private float hurtLockTimer = 0f;
     private float attackLockTimer = 0f;
@@ -75,17 +73,6 @@ public class AnimationHandler : MonoBehaviour
 
         float horizontal = Mathf.Abs(velocity.x);
         float vertical = velocity.y;
-
-        // 🚀 Detect jump start
-        if (wasOnGround && !onGround && vertical > 0.1f)
-        {
-            // Debug.Log("Jump detected");
-
-            if (jumpSoundClip != null)
-            {
-                SoundFXManager.Instance.playOneShotSoundFXClilp(jumpSoundClip, transform, 0.5f);
-            }
-        }
 
         if (!onGround)
         {
