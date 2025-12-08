@@ -21,6 +21,11 @@ public class EnterNamePanel : MonoBehaviour
             cancelButton.onClick.AddListener(Cancel);
     }
 
+    private void Start()
+    {
+        nameInput.shouldHideMobileInput = true;
+    }
+
     public void Open(Action<string> callback)
     {
         onNameConfirmed = callback;

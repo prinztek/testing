@@ -15310,7 +15310,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1868925272}
   - {fileID: 1565938909}
   - {fileID: 859969510}
   m_Father: {fileID: 0}
@@ -16703,51 +16702,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1.8780106, y: -2.866199}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1868925271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1868925272}
-  - component: {fileID: 1868925273}
-  m_Layer: 0
-  m_Name: ScreenShakeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1868925272
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1868925271}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 965577166}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1868925273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1868925271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29487e382787be045b381117b424ba81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalShakeForce: 0.5
 --- !u!1 &1872558743
 GameObject:
   m_ObjectHideFlags: 0
@@ -16778,7 +16732,7 @@ Transform:
   m_GameObject: {fileID: 1872558743}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5000007, y: 1.2000003, z: -10}
+  m_LocalPosition: {x: 1, y: 1.75, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16919,15 +16873,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.11822917
+    x: 0
     y: 0
-    width: 0.33333334
-    height: 0.39259258
+    width: 1
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 6.625
+  orthographic size: 6.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -17263,7 +17217,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 57757268}
   - {fileID: 187778530}
-  - {fileID: 543273741}
   - {fileID: 1100864619}
   - {fileID: 1343210523}
   - {fileID: 965577166}
+  - {fileID: 543273741}

@@ -15,6 +15,7 @@ public class Keypad : MonoBehaviour
     public GameObject button9;
     public GameObject button0;
     public GameObject buttonClear;
+    public GameObject buttonBackspace;
     public GameObject buttonPeriod;
 
 
@@ -77,6 +78,15 @@ public class Keypad : MonoBehaviour
     {
         // Debug.Log("Button Clear pressed");
         inputField.text = "";
+    }
+
+    public void bBackspace()
+    {
+        // Debug.Log("Button Backspace pressed");
+        if (inputField.text.Length > 0)
+        {
+            inputField.text = inputField.text.Substring(0, inputField.text.Length - 1);
+        }
     }
     public void bPeriod()
     {

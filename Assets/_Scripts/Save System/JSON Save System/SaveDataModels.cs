@@ -44,18 +44,18 @@ public class JSONSettingsGlobalData
     public float musicVolume = 1.0f;
     public float sfxVolume = 1.0f;
     public float uiVolume = 1.0f;
-    public bool screenShakeEnabled = true;
+    public float shakeMultiplier = 1.0f;
     public int lastUsedSlot = -1; // this is for multiple save files
 
     public JSONSettingsGlobalData() { }
 
-    public JSONSettingsGlobalData(float master, float music, float sfx, float ui, bool shake)
+    public JSONSettingsGlobalData(float master, float music, float sfx, float ui, float shakeMultiplier)
     {
         masterVolume = master;
         musicVolume = music;
         sfxVolume = sfx;
         uiVolume = ui;
-        screenShakeEnabled = shake;
+        this.shakeMultiplier = shakeMultiplier;
     }
 }
 

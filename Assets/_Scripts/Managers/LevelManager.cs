@@ -59,8 +59,9 @@ public class LevelManager : MonoBehaviour
 
             if (mqm != null)
             {
+                // Initialize MathQuestionManager with level settings
                 mqm.SetTopic(levelTopic, levelDifficulty);
-                Debug.Log("✅ MathQuestionManager found and initialized.");
+                // Debug.Log("✅ MathQuestionManager found and initialized.");
             }
             else
             {

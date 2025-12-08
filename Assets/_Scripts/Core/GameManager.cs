@@ -71,9 +71,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
 
-        JSONSaveSystem.LoadSettingsGlobal();
+        settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
         selectedProfileID = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
-
         LoadGame();
     }
 
@@ -82,8 +81,7 @@ public class GameManager : MonoBehaviour
         // Try to register to existing UIManager
         if (UIManager.Instance != null)
             RegisterUIManager(UIManager.Instance);
-
-        ApplySavedAudioSettings();
+        ApplySaveSettings();
     }
 
     // Called by UIManager once it exists
@@ -388,13 +386,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ----------------- Audio Related ----------------------------------
-    public void ApplySavedAudioSettings()
+    // ----------------- Settings Related ----------------------------------
+    public void ApplySaveSettings()
     {
         if (SoundMixerManager.Instance == null) return;
+        if (ScreenShakeManager.Instance == null) return;
 
         var settings = settingsGlobalData;
 
+        ScreenShakeManager.Instance.SetShakeMultiplier(settings.shakeMultiplier);
         SoundMixerManager.Instance.SetMasterVolume(settings.masterVolume);
         SoundMixerManager.Instance.SetMusicVolume(settings.musicVolume);
         SoundMixerManager.Instance.SetSFXVolume(settings.sfxVolume);

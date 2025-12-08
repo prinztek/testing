@@ -49,7 +49,7 @@ public class PlayerDataHandler : MonoBehaviour
                 characterStats.UnlockSkill(skill);
         }
 
-        Debug.Log("✅ Player loaded from data. UI events automatically fired.");
+        // Debug.Log("✅ Player loaded from data. UI events automatically fired.");
     }
 
     // From Game to JSON file

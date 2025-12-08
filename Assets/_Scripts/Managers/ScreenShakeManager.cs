@@ -8,7 +8,8 @@ public class ScreenShakeManager : MonoBehaviour
     public static ScreenShakeManager Instance { get; private set; }
 
     [Header("Screen Shake Settings")]
-    [SerializeField] private float globalShakeForce = 3f;
+    [SerializeField] private float baseShakeForce = 3f; // max base force
+    private float shakeMultiplier = 1f; // controlled by slider
 
     private void Awake()
     {
@@ -22,34 +23,24 @@ public class ScreenShakeManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void SetShakeMultiplier(float value)
+    {
+        shakeMultiplier = Mathf.Clamp01(value); // 0–1
+        Debug.Log("ScreenShakeManager: shakeMultiplier = " + shakeMultiplier);
+    }
+    private float CurrentShakeForce => baseShakeForce * shakeMultiplier;
 
     // Screenshake with cinemachine
     public void ScreenShake(Vector2 direction, CinemachineImpulseSource impulseSource)
     {
-        if (impulseSource == null)
-        {
-            Debug.LogWarning("Impulse source is null. Cannot trigger screen shake.");
-            return;
-        }
-        else
-        {
-            impulseSource.GenerateImpulseWithVelocity(-direction * globalShakeForce);
-        }
-
-
+        if (CurrentShakeForce <= 0f || impulseSource == null) return;
+        impulseSource.GenerateImpulseWithVelocity(-direction * CurrentShakeForce);
     }
 
     public void TriggerEarthquakeShake(CinemachineImpulseSource impulseSource)
     {
-        if (impulseSource == null)
-        {
-            Debug.LogWarning("Impulse source is null. Cannot trigger screen shake.");
-            return;
-        }
-
+        if (CurrentShakeForce <= 0f || impulseSource == null) return;
         impulseSource.GenerateImpulse();
     }
-
-
 
 }

@@ -25,5 +25,5 @@ public class DamageTextSpawner : MonoBehaviour
         damageText.SetText(amount.ToString(), color);
     }
 
-
+    // this should go in to bootsrapper systems prefab
 }

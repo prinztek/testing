@@ -61,6 +61,7 @@ public class MathQuestionManager : MonoBehaviour
 
     private void Start()
     {
+        answerInput.shouldHideMobileInput = true;
         GenerateNewQuestions();
         ResetHintButtonText();
     }

@@ -10,7 +10,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject chapterSelectionPanel;
     public GameObject gameSettingsPanel;
     public Button continueButton;
-
+    public GameSettingsManager gameSettingsManager;
 
     void Start()
     {
@@ -40,6 +40,17 @@ public class MainMenuUIManager : MonoBehaviour
         gameSettingsPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
+
+        // Initialize settings panel if that is being shown
+        if (panelToShow == gameSettingsPanel && gameSettingsManager != null)
+        {
+            // gameSettingsManager.InitializeSettingsPanel();
+        }
+    }
+
+    public void OnSettingsButtonClicked()
+    {
+        ShowPanel(gameSettingsPanel);
     }
 
     public void PlayGame()

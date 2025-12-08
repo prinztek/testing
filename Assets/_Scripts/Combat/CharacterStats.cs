@@ -68,7 +68,7 @@ public class CharacterStats : MonoBehaviour
         return unlockedSkills.Contains(skill);
     }
     private bool isChanneling = false;
-    private float channelDuration = 0.417f; // <- length of your animation buff acquiring
+    // private float channelDuration = 0.417f; // <- length of your animation buff acquiring
 
     // ====================================================================================================================
     private void Awake()
