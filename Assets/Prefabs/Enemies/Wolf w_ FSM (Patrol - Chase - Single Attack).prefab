@@ -55,6 +55,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -76,6 +78,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -358,6 +361,7 @@ GameObject:
   - component: {fileID: 5709815116345972770}
   - component: {fileID: 4099497208075663856}
   - component: {fileID: 4044854098511531633}
+  - component: {fileID: 1443549838297986140}
   m_Layer: 6
   m_Name: Wolf w_ FSM (Patrol - Chase - Single Attack)
   m_TagString: Enemy
@@ -373,7 +377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9160245202745568897}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 32.188957, y: -3.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -468,10 +472,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6f858561126aa418af6e95112e93c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  animator: {fileID: 1728071901202750468}
+  spriteRenderer: {fileID: 3755346876267009839}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
   hitImpactPrefab: {fileID: 5083904481168151007, guid: a70d60b16bfe24048920c88db53d4e4e, type: 3}
+  onHitFlashVFX: {fileID: 0}
   maxHealth: 20
   moveSpeed: 3
   touchDamage: 5
@@ -485,7 +490,10 @@ MonoBehaviour:
   canChase: 1
   canComboAttack: 0
   maxComboPhase: 3
-  damage: 5
+  damage: 10
+  dropTable:
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  pickupPrefab: {fileID: 6123459713730238132, guid: 06f78f16ef6f6274294556099e439348, type: 3}
 --- !u!114 &5709815116345972770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +513,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!114 &4099497208075663856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,8 +535,8 @@ MonoBehaviour:
   movingRight: 1
   isFacingRight: 1
   lastHitDirection: {x: 0, y: 0}
-  knockbackForce: 3
-  verticalForce: 2
+  knockbackForce: 0.5
+  verticalForce: 0
   attackCollider: {fileID: 5810343075731694826}
   showChaseRange: 1
   showAttackRange: 1
@@ -583,3 +594,17 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &1443549838297986140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9160245202745568897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cced5a096014e1947aad0689b8eb06e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
+  onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  flashDuration: 0.15

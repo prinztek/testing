@@ -13,6 +13,7 @@ public class EnemyStatsNew : MonoBehaviour
     private CinemachineImpulseSource impulseSource;
     [SerializeField] private AudioClip hurtSoundClip;
     [SerializeField] private GameObject hitImpactPrefab;
+    [SerializeField] private OnHitFlashVFX onHitFlashVFX;
 
     [Header("Enemy Stats")]
     public int maxHealth = 50;
@@ -24,7 +25,7 @@ public class EnemyStatsNew : MonoBehaviour
     public float attackRange = 1.5f;
     public float attackCooldown = 1f;
     public float detectionRange = 5f;
-    public float invincibilityDuration = 0.03f;
+    public float invincibilityDuration = 0.15f;
     public GameObject attackCollider;
     public bool canPatrol = true;
     public bool canAttack;
@@ -47,10 +48,19 @@ public class EnemyStatsNew : MonoBehaviour
     [Header("Drop Item")]
     [SerializeField] public List<DropItem> dropTable;
     [SerializeField] public GameObject pickupPrefab;
+
+    void Awake()
+    {
+        onHitFlashVFX = GetComponent<OnHitFlashVFX>();
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
     void Start()
     {
         currentHealth = maxHealth;  // Set initial health to max health
-        impulseSource = GetComponent<CinemachineImpulseSource>();
+        impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
     }
 
     /// ***********************************************************************************************************************
@@ -63,6 +73,7 @@ public class EnemyStatsNew : MonoBehaviour
         // Debug.Log($"TakeDamage called with: {amount}");
 
         currentHealth -= amount;  // Decrease health by the damage amount
+        onHitFlashVFX.PlayOnDamageVfx();
 
         // Notify health bar of health change using the Action delegate
         OnHealthChanged?.Invoke(currentHealth);

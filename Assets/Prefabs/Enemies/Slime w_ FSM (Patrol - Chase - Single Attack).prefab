@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4540356103894473220}
   - component: {fileID: 4656098946563364253}
   - component: {fileID: 1152192345208515348}
+  - component: {fileID: 529314691770656261}
   m_Layer: 6
   m_Name: Slime w_ FSM (Patrol - Chase - Single Attack)
   m_TagString: Enemy
@@ -129,6 +130,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 262182917609090022}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
   hitImpactPrefab: {fileID: 0}
+  onHitFlashVFX: {fileID: 0}
   maxHealth: 50
   moveSpeed: 2
   touchDamage: 5
@@ -164,6 +166,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &4656098946563364253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +247,20 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &529314691770656261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424185696780118066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cced5a096014e1947aad0689b8eb06e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
+  onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  flashDuration: 0.15
 --- !u!1 &2753242030549843503
 GameObject:
   m_ObjectHideFlags: 0

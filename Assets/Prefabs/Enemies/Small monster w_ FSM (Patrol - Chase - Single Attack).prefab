@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 4091865954916218216}
   - component: {fileID: 1501922232744074792}
   - component: {fileID: 6598823921513506186}
+  - component: {fileID: 7851600552433574233}
   m_Layer: 6
   m_Name: Small monster w_ FSM (Patrol - Chase - Single Attack)
   m_TagString: Enemy
@@ -207,6 +208,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
   hitImpactPrefab: {fileID: 5083904481168151007, guid: a70d60b16bfe24048920c88db53d4e4e, type: 3}
+  onHitFlashVFX: {fileID: 0}
   maxHealth: 20
   moveSpeed: 3
   touchDamage: 5
@@ -323,6 +325,20 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &7851600552433574233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3055051900289899911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cced5a096014e1947aad0689b8eb06e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
+  onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  flashDuration: 0.15
 --- !u!1 &3055453311948989539
 GameObject:
   m_ObjectHideFlags: 0

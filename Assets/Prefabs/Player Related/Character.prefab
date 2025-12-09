@@ -5056,6 +5056,7 @@ GameObject:
   - component: {fileID: 6945633715500797709}
   - component: {fileID: 4936718694790514512}
   - component: {fileID: 3087149480788422989}
+  - component: {fileID: 717712980353668946}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -5402,6 +5403,20 @@ MonoBehaviour:
   input: {fileID: 11400000, guid: 58e05dd6cb742c14c823f69d8dfa84d4, type: 2}
   dropDisableTime: 0.25
   ground: {fileID: 2798417461537876177}
+--- !u!114 &717712980353668946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586264133997509405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cced5a096014e1947aad0689b8eb06e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
+  onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  flashDuration: 0.15
 --- !u!1 &2214127296572561005
 GameObject:
   m_ObjectHideFlags: 0
