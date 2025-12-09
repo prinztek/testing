@@ -8,6 +8,7 @@ public class EnemyStatsNew : MonoBehaviour
     public System.Action OnDeath;
 
     [Header("Component References")]
+    [SerializeField] private EnemyStateMachine fsm;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private CinemachineImpulseSource impulseSource;
@@ -18,6 +19,7 @@ public class EnemyStatsNew : MonoBehaviour
     [Header("Enemy Stats")]
     public int maxHealth = 50;
     private int currentHealth;
+    public int CurrentHealth => currentHealth;
     public float moveSpeed = 2f;
     public int touchDamage = 10;
 
@@ -51,6 +53,7 @@ public class EnemyStatsNew : MonoBehaviour
 
     void Awake()
     {
+        fsm = GetComponent<EnemyStateMachine>();
         onHitFlashVFX = GetComponent<OnHitFlashVFX>();
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
@@ -60,9 +63,15 @@ public class EnemyStatsNew : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;  // Set initial health to max health
-        impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
+        impulseSource = GetComponentInChildren<CinemachineImpulseSource>(); // for screenshake
     }
 
+    // Add this method to get the current health value
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    #region Take Damage Logic
     /// ***********************************************************************************************************************
     /// <summary>
     /// Call this when the enemy takes damage.
@@ -105,10 +114,8 @@ public class EnemyStatsNew : MonoBehaviour
             ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
         }
 
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.2f);
 
-        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.3f);
-
-        var fsm = GetComponent<EnemyStateMachine>();
         fsm.lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
         if (fsm != null && !IsDead)
         {
@@ -129,13 +136,6 @@ public class EnemyStatsNew : MonoBehaviour
                 Die(); // fallback if FSM is missing
         }
     }
-
-    // Add this method to get the current health value
-    public int GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-    public int CurrentHealth => currentHealth;
 
     /// <summary>
     /// Flash effect after taking damage.
@@ -180,6 +180,8 @@ public class EnemyStatsNew : MonoBehaviour
             elapsed += interval;
         }
     }
+    #endregion
+    #region Death Logic
 
     /// ***********************************************************************************************************************
     /// <summary>
@@ -211,7 +213,9 @@ public class EnemyStatsNew : MonoBehaviour
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }
+    #endregion
 
+    #region Drop Item Logic
     void InstantiateLoot(DropItem dropItem)
     {
         if (Random.value <= dropItem.dropChance)
@@ -240,5 +244,5 @@ public class EnemyStatsNew : MonoBehaviour
             }
         }
     }
-
+    #endregion
 }

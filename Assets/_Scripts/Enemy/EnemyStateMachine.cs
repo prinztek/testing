@@ -8,8 +8,8 @@ public class EnemyStateMachine : MonoBehaviour
     [HideInInspector] public Transform player;
 
     // Public states
-    public EnemyPatrolState patrolState = new EnemyPatrolState();
     public EnemyIdleState idleState = new EnemyIdleState();
+    public EnemyPatrolState patrolState = new EnemyPatrolState();
     public EnemyChaseState chaseState = new EnemyChaseState();
     public EnemyAttackState attackState = new EnemyAttackState();
     public EnemyHurtState hurtState = new EnemyHurtState();
@@ -36,7 +36,6 @@ public class EnemyStateMachine : MonoBehaviour
         stats = GetComponent<EnemyStatsNew>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        // player = GameObject.FindGameObjectWithTag("Player")?.transform;
         sensor = GetComponent<EnemyEnvironmentSensor>();  // Add this line
     }
 
@@ -120,23 +119,33 @@ public class EnemyStateMachine : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    public bool CanSeePlayer()
     {
-        if (stats == null) return;
+        if (player == null) return false;
 
-        Gizmos.color = Color.violet;
+        float distance = Vector2.Distance(transform.position, player.position);
 
-        // Draw the actual horizontal attack range
-        Gizmos.DrawWireSphere(transform.position, stats.AttackRange);
-
-        // ALSO draw the "vertical window" for attack
-        Vector3 top = transform.position + Vector3.up * 3f;
-        Vector3 bottom = transform.position + Vector3.down * 3f;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, top + Vector3.right * stats.AttackRange);
-        Gizmos.DrawLine(bottom + Vector3.left * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
-        Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, bottom + Vector3.left * stats.AttackRange);
-        Gizmos.DrawLine(top + Vector3.right * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
+        return distance <= stats.detectionRange;   // No facing direction required
     }
+
+
+    // private void OnDrawGizmosSelected()
+    // {
+    //     if (stats == null) return;
+
+    //     Gizmos.color = Color.violet;
+
+    //     // Draw the actual horizontal attack range
+    //     Gizmos.DrawWireSphere(transform.position, stats.AttackRange);
+
+    //     // ALSO draw the "vertical window" for attack
+    //     Vector3 top = transform.position + Vector3.up * 3f;
+    //     Vector3 bottom = transform.position + Vector3.down * 3f;
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, top + Vector3.right * stats.AttackRange);
+    //     Gizmos.DrawLine(bottom + Vector3.left * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
+    //     Gizmos.DrawLine(top + Vector3.left * stats.AttackRange, bottom + Vector3.left * stats.AttackRange);
+    //     Gizmos.DrawLine(top + Vector3.right * stats.AttackRange, bottom + Vector3.right * stats.AttackRange);
+    // }
 
 }

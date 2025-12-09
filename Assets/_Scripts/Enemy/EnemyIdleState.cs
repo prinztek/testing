@@ -18,6 +18,24 @@ public class EnemyIdleState : EnemyBaseState
     {
         if (enemy.stats.IsDead || enemy.player == null) return;
 
+        // --- PLAYER DETECTION BEFORE IDLE TIMER ---
+        if (enemy.CanSeePlayer() && enemy.stats.canAttack && enemy.stats.canChase)
+        {
+            float dist = Vector2.Distance(enemy.transform.position, enemy.player.position);
+
+            if (dist <= enemy.stats.attackRange)
+            {
+                enemy.TransitionToState(enemy.attackState);
+                return;
+            }
+            else if (dist <= enemy.stats.detectionRange)
+            {
+                enemy.TransitionToState(enemy.chaseState);
+                return;
+            }
+        }
+
+        // --- IDLE TIMER LOGIC ---
         idleTimer += Time.deltaTime;
 
         if (idleTimer >= idleDuration)

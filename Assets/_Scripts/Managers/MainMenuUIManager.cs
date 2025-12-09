@@ -71,4 +71,12 @@ public class MainMenuUIManager : MonoBehaviour
         Application.Quit(); // This will quit the application when running in a build
         Debug.Log("Quit Game"); // This log will appear in the console when running in the editor
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GameManager.Instance.LoadLevel(0, 0);
+        }
+    }
 }

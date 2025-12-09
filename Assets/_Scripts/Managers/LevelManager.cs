@@ -159,7 +159,12 @@ public class LevelManager : MonoBehaviour
         }
         // Pause menu
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // if (GameManager.Instance != null && GameManager.Instance.GameState == GameState.PLaying)
+            //     return; // Do not pause if game is lost
             UIManager.Instance.ShowPauseMenu(true);
+        }
+
     }
 
     // Helper to parse "Level1_2" -> (0, 1)

@@ -80,7 +80,7 @@ public class CharacterStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);
 
 
-        UnlockSkill(SkillType.FireBlast);
+        UnlockSkill(SkillType.FireBlast); // Should be calculator related
         UnlockSkill(SkillType.IceShield);
         UnlockSkill(SkillType.LightningDash);
 
@@ -183,6 +183,7 @@ public class CharacterStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event after healing
     }
 
+    #region Weapon & Damage
     public void EquipMeleeWeapon(GameItem weapon)
     {
         if (weapon != null && weapon.itemType == ItemType.MeleeWeapon)
@@ -243,7 +244,9 @@ public class CharacterStats : MonoBehaviour
             activeBuff.OnAttackHit(enemy);
         }
     }
+    #endregion
 
+    #region Buff System
     public void AddBuff(Buff buff)
     {
         if (activeBuff == null)
@@ -274,8 +277,6 @@ public class CharacterStats : MonoBehaviour
     }
 
 
-
-
     private void ApplyBuff(Buff buff)
     {
         ResetTemporaryModifiers();
@@ -295,7 +296,9 @@ public class CharacterStats : MonoBehaviour
         guaranteedCrits = 0;
         animationHandler.SetAnimationSpeed(1f);
     }
+    #endregion
 
+    #region Taking Damage
     public void TakeDamage(int damage, Vector2 attackerPosition)
     {
         if (isDead) return;
@@ -332,7 +335,9 @@ public class CharacterStats : MonoBehaviour
             GetComponent<Hurt>().TriggerHurt(attackerPosition); // call player to get hurt
         }
     }
+    #endregion
 
+    #region Death Logic
     // ******************************** Death Handling ********************************
     public System.Action OnDeathStarted; // → fires immediately (e.g., disable input, play anim).
     public System.Action OnDeathFinished; // fires after death animation (UI + game over logic).
@@ -362,4 +367,6 @@ public class CharacterStats : MonoBehaviour
     }
 
     public bool IsDead() => isDead;
+
+    #endregion
 }

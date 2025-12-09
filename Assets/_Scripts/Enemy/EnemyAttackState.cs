@@ -10,8 +10,6 @@ public class EnemyAttackState : EnemyBaseState
         isAttacking = false;
         lastAttackTime = Time.time - enemy.stats.attackCooldown; // Allow immediate attack
         enemy.rb.linearVelocity = Vector2.zero;
-
-        // Debug.Log("Entered Attack State");
     }
 
     public override void UpdateState(EnemyStateMachine enemy)
@@ -67,18 +65,7 @@ public class EnemyAttackState : EnemyBaseState
         float distance = Vector2.Distance(enemy.transform.position, enemy.player.position);
 
         // Decide next state
-        if (enemy.stats.canChase && distance <= enemy.stats.DetectionRange)
-        {
-            enemy.TransitionToState(enemy.chaseState);
-        }
-        else if (enemy.stats.canPatrol)
-        {
-            enemy.TransitionToState(enemy.patrolState);
-        }
-        else
-        {
-            enemy.TransitionToState(enemy.idleState);
-        }
+        enemy.TransitionToState(enemy.idleState);
 
         isAttacking = false;
     }
