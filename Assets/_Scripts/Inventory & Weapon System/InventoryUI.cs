@@ -13,8 +13,11 @@ public class InventoryUI : MonoBehaviour
     public Transform itemListParent;
 
     [Header("Equipped Weapon Texts")]
+    public TextMeshProUGUI healthText;
     public TextMeshProUGUI equippedMeleeText;
     public TextMeshProUGUI equippedRangedText;
+    public TextMeshProUGUI activeBuffText;
+    public TextMeshProUGUI goldText;
 
     [Header("Right Panel UI")]
     public TextMeshProUGUI descriptionText;
@@ -102,11 +105,14 @@ public class InventoryUI : MonoBehaviour
             btn.onClick.AddListener(() => ShowInventoryItemDetails(capturedSlot.item));
         }
 
+        healthText.text = $"Health: {characterStats.CurrentHealth} / {characterStats.maxHealth}";
+        activeBuffText.text = "Buffs: " + (characterStats.activeBuff != null ? characterStats.activeBuff.buffName : "None");
         equippedMeleeText.text = "Melee: " +
             (characterStats.equippedMeleeWeapon ? characterStats.equippedMeleeWeapon.itemName : "Fist");
 
         equippedRangedText.text = "Ranged: " +
             (characterStats.equippedRangedWeapon ? characterStats.equippedRangedWeapon.itemName : "None");
+        goldText.text = $"Gold: " + playerInventory._gold;
     }
 
     private void ShowInventoryItemDetails(GameItem item)

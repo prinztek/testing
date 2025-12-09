@@ -32,7 +32,7 @@ public class CharacterStats : MonoBehaviour
     public GameItem equippedMeleeWeapon = null;  // null = Fist
     public GameItem equippedRangedWeapon = null; // null = no ranged
     private CinemachineImpulseSource impulseSource;
-    private Buff activeBuff = null;
+    public Buff activeBuff = null;
     private Queue<Buff> buffQueue = new Queue<Buff>();
     public delegate void AttackEvent(GameObject enemy); // This event will be triggered if an enemy is attack with fireinfuse
     public event AttackEvent OnAttackHit;
