@@ -22,6 +22,10 @@ public class Hurt : MonoBehaviour
     [SerializeField] private float flickerSpeed = 0.1f;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Attack attack;
+    private Material originalMaterial;
+    [SerializeField] private Material onDamageVfxMat;
+    [SerializeField] private float flashDuration = 0.15f;
+    private Coroutine onFlickerVfxCoroutine;
 
     private Rigidbody2D rb;
     private bool isHurt = false;
@@ -30,6 +34,8 @@ public class Hurt : MonoBehaviour
 
     private void Awake()
     {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        originalMaterial = spriteRenderer.material;
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<CharacterStats>();
     }
@@ -80,24 +86,53 @@ public class Hurt : MonoBehaviour
         }
 
         // Start flicker and invincibility coroutine
-        StartCoroutine(FlickerAndInvincibility());
+        PlayOnFlickerVfx();
     }
 
+    public void PlayOnFlickerVfx()
+    {
+        if (onFlickerVfxCoroutine != null)
+        {
+            StopCoroutine(onFlickerVfxCoroutine);
+        }
+        onFlickerVfxCoroutine = StartCoroutine(FlickerAndInvincibility());
+    }
+    // private IEnumerator FlickerAndInvincibility()
+    // {
+    //     float elapsed = 0f;
+
+    //     while (elapsed < flickerDuration)
+    //     {
+    //         spriteRenderer.material = onDamageVfxMat;
+    //         yield return new WaitForSeconds(flashDuration);
+    //         elapsed += flashDuration;
+    //     }
+
+    //     spriteRenderer.material = originalMaterial;
+    //     isInvincible = false;
+    // }
 
     private IEnumerator FlickerAndInvincibility()
     {
+        isInvincible = true;
+
         float elapsed = 0f;
+        bool useWhite = true;
 
         while (elapsed < flickerDuration)
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
-            yield return new WaitForSeconds(flickerSpeed);
-            elapsed += flickerSpeed;
+            spriteRenderer.material = useWhite ? onDamageVfxMat : originalMaterial;
+            useWhite = !useWhite;
+
+            yield return new WaitForSeconds(0.08f);
+            elapsed += 0.08f;
         }
 
-        spriteRenderer.enabled = true;
+        // make sure we end NORMAL
+        spriteRenderer.material = originalMaterial;
         isInvincible = false;
     }
+
 
     public bool IsHurt()
     {

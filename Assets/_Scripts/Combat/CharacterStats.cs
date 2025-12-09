@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     [SerializeField] internal InputController input;
-    [SerializeField] private OnHitFlashVFX onHitFlashVFX;
+    // [SerializeField] private OnHitFlashVFX onHitFlashVFX;
     public enum AttackMode { Melee, Ranged }
     public AttackMode currentAttackMode = AttackMode.Melee;
 
@@ -73,7 +73,7 @@ public class CharacterStats : MonoBehaviour
     // ====================================================================================================================
     private void Awake()
     {
-        onHitFlashVFX = GetComponent<OnHitFlashVFX>();
+        // onHitFlashVFX = GetComponent<OnHitFlashVFX>();
 
         currentHealth = maxHealth;
         // Immediately fire health change event so UI gets correct starting value
@@ -311,7 +311,7 @@ public class CharacterStats : MonoBehaviour
         }
 
         currentHealth -= damage;
-        onHitFlashVFX.PlayOnDamageVfx();
+        // onHitFlashVFX.PlayOnDamageVfx();
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event
 
         // Screenshake direction
@@ -331,9 +331,9 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            // attackerPosition = enemies position
             GetComponent<Hurt>().TriggerHurt(attackerPosition); // call player to get hurt
         }
+
     }
     #endregion
 

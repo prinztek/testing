@@ -21,6 +21,7 @@ public class Move : MonoBehaviour
 
     private float _maxSpeedChange, _acceleration;
     private bool _onGround;
+    private bool _wasMoving = false;
 
     private Rigidbody2D _platformRb;
     private Vector2 _lastPlatformPosition;
@@ -28,7 +29,10 @@ public class Move : MonoBehaviour
 
     // [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
     private Rigidbody2D activePlatformRb;
-
+    [Header("Footstep Sounds")]
+    [SerializeField] private AudioClip[] footstepClips;
+    [SerializeField, Range(0.05f, 1f)] private float stepInterval = 0.3f; // seconds between steps
+    private float _stepTimer = 0f;
     private void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
@@ -72,7 +76,32 @@ public class Move : MonoBehaviour
         float effectiveMaxSpeed = _maxSpeed * stats.moveSpeedMultiplier;
         _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(effectiveMaxSpeed - _ground.Friction, 0f);
 
+        // Only check footstep conditions if grounded and moving
+        bool isMoving = _ground.OnGround && Mathf.Abs(_desiredVelocity.x) > 0.1f;
 
+        // Play first footstep immediately when starting to move
+        if (isMoving && !_wasMoving)
+        {
+            PlayFootstep();
+            _stepTimer = 0f; // reset timer
+        }
+
+        if (isMoving)
+        {
+            _stepTimer += Time.deltaTime;
+
+            if (_stepTimer >= stepInterval)
+            {
+                PlayFootstep();
+                _stepTimer = 0f;
+            }
+        }
+        else
+        {
+            _stepTimer = 0f;
+        }
+
+        _wasMoving = isMoving;
     }
 
     private void FixedUpdate()
@@ -141,7 +170,6 @@ public class Move : MonoBehaviour
 
     }
 
-
     private void Turn()
     {
         if (FacingRight)
@@ -205,5 +233,18 @@ public class Move : MonoBehaviour
             }
         }
     }
+
+    #region Footstep Sound Management
+    private void PlayFootstep()
+    {
+        if (footstepClips.Length == 0) return;
+
+        int index = UnityEngine.Random.Range(0, footstepClips.Length);
+        AudioClip clip = footstepClips[index];
+
+        // Play using your SoundFXManager with slight random pitch
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(clip, transform, 0.03f);
+    }
+    #endregion
 }
 
