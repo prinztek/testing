@@ -379,11 +379,11 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel(0, 5);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             LoadLevel(0, 6);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             LoadLevel(0, 7);
         }

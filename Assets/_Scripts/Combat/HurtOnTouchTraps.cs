@@ -10,7 +10,7 @@ public class HurtOnTouchTraps : MonoBehaviour
     {
         // Ensure the trap doesn't hit multiple times too quickly
         if (Time.time - lastHitTime < cooldown) return;
-
+        Debug.Log("Trap triggered by: " + collision.name);
         // Check if the object colliding is the player (or character with a Hurtbox)
         if (collision.CompareTag("Hurtbox"))
         {

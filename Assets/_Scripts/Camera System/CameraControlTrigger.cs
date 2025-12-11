@@ -9,21 +9,21 @@ public class CameraControlTrigger : MonoBehaviour
     {
         _coll = GetComponent<Collider2D>();
     }
-    // private void OnTriggerEnter2D(Collider2D collision)
-    // {
-    //     if (!collision.CompareTag("Player")) return;
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Player")) return;
 
-    //     if (customInspectorObjects.SwapCameras &&
-    //         customInspectorObjects.cameraOnLeft != null &&
-    //         customInspectorObjects.cameraOnRight != null)
-    //     {
-    //         // Swap back
-    //         customInspectorObjects.cameraOnLeft.Priority = 10;
-    //         customInspectorObjects.cameraOnRight.Priority = 0;
+        if (customInspectorObjects.SwapCameras &&
+            customInspectorObjects.cameraOnLeft != null &&
+            customInspectorObjects.cameraOnRight != null)
+        {
+            // Swap back
+            customInspectorObjects.cameraOnLeft.Priority = 10;
+            customInspectorObjects.cameraOnRight.Priority = 0;
 
-    //         Debug.Log($"🎥 Swapped back to {customInspectorObjects.cameraOnLeft.name}");
-    //     }
-    // }
+            Debug.Log($"🎥 Swapped back to {customInspectorObjects.cameraOnLeft.name}");
+        }
+    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
