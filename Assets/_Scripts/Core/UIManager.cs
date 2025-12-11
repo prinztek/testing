@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject levelFailedPrefab;
     public GameObject onScreenControlsPrefab;
     public GameObject playerHUD;
+    public GameObject textDamageScreenPrefab;
 
     // Instantiated global panels
     private GameObject grimoirePanel;
@@ -24,6 +25,7 @@ public class UIManager : MonoBehaviour
     private GameObject levelFailedPanel;
     private GameObject onScreenControlsInstance;
     private GameObject playerHUDInstance;
+    private GameObject textDamageInstance;
 
     // Scene-specific panels
     private List<GameObject> scenePanels = new List<GameObject>();
@@ -67,10 +69,16 @@ public class UIManager : MonoBehaviour
             playerHUDInstance.SetActive(false); // hide until player spawns
         }
 
+        if (textDamageScreenPrefab != null)
+        {
+            textDamageInstance = Instantiate(textDamageScreenPrefab, transform);
+            textDamageInstance.SetActive(false); // hide until player spawns
+        }
+
         if (onScreenControlsPrefab != null && Application.isMobilePlatform)
         {
             onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
-            onScreenControlsInstance.SetActive(false);
+            onScreenControlsInstance.SetActive(false); // hide until player spawns and only show in gameplay scenes
         }
 
         HideAllModals();
@@ -95,6 +103,10 @@ public class UIManager : MonoBehaviour
         // Show HUD only in gameplay scenes
         if (playerHUDInstance != null)
             playerHUDInstance.SetActive(isGameplayScene);
+
+        // Show Canvas only in gameplay scenes (damage text when hit)
+        if (textDamageInstance != null)
+            textDamageInstance.SetActive(isGameplayScene);
 
         // Show mobile controls only in gameplay scenes
         if (onScreenControlsInstance != null)
@@ -129,6 +141,8 @@ public class UIManager : MonoBehaviour
                     buffManager.buffPanel.SetActive(false);
             }
         }
+
+        textDamageInstance.SetActive(true);
 
         if (onScreenControlsInstance != null)
             onScreenControlsInstance.SetActive(Application.isMobilePlatform);
@@ -174,22 +188,22 @@ public class UIManager : MonoBehaviour
 
     // ===========================
     // SCENE-SPECIFIC UI
-    // ===========================
-    public void RegisterScenePanel(GameObject panel)
-    {
-        if (!scenePanels.Contains(panel))
-            scenePanels.Add(panel);
-    }
+    // // ===========================
+    // public void RegisterScenePanel(GameObject panel)
+    // {
+    //     if (!scenePanels.Contains(panel))
+    //         scenePanels.Add(panel);
+    // }
 
-    public void ShowScenePanel(GameObject panel)
-    {
-        foreach (var p in scenePanels)
-            p.SetActive(false);
+    // public void ShowScenePanel(GameObject panel)
+    // {
+    //     foreach (var p in scenePanels)
+    //         p.SetActive(false);
 
-        panel.SetActive(true);
-        activePanel = panel;
-        OnModalToggled?.Invoke(true);
-    }
+    //     panel.SetActive(true);
+    //     activePanel = panel;
+    //     OnModalToggled?.Invoke(true);
+    // }
 
     // ===========================
     // MODAL HANDLING
@@ -218,10 +232,10 @@ public class UIManager : MonoBehaviour
     public void HideAllModals()
     {
         if (grimoirePanel != null) grimoirePanel.SetActive(false);
-        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (buffChoicePanel != null) buffChoicePanel.SetActive(false);
         if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
         if (levelFailedPanel != null) levelFailedPanel.SetActive(false);
-        if (buffChoicePanel != null) buffChoicePanel.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive(false);
 
         foreach (var panel in scenePanels)
             panel.SetActive(false);

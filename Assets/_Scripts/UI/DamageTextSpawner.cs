@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class DamageTextSpawner : MonoBehaviour
 {
-    public static DamageTextSpawner Instance;
+    public static DamageTextSpawner Instance { get; private set; }
     public GameObject damageTextPrefab;
     public Canvas worldCanvas; // Assign in inspector
 
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
-
-        // if (worldCanvas == null)
-        //     Debug.LogError("[DamageTextSpawner] worldCanvas is NOT assigned!");
-        // else
-        //     Debug.Log("[DamageTextSpawner] worldCanvas assigned: " + worldCanvas.name);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
 

@@ -98,13 +98,13 @@ public class GameManager : MonoBehaviour
         if (isOpen)
         {
             UpdateGameState(GameState.Paused);
-            InputGate.BlockInput();
+            // InputGate.BlockInput();
             Debug.Log("Paused");
         }
         else
         {
             UpdateGameState(GameState.Playing);
-            InputGate.AllowInput();
+            // InputGate.AllowInput();
             Debug.Log("Resumed");
         }
 
@@ -355,10 +355,39 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            ResetSave(); // Reset all saved data
+            LoadLevel(0, 0);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            LoadLevel(0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            LoadLevel(0, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            LoadLevel(0, 3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            LoadLevel(0, 4);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            LoadLevel(0, 5);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            LoadLevel(0, 6);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            LoadLevel(0, 7);
+        }
+
     }
 
     public void ResetSave()
