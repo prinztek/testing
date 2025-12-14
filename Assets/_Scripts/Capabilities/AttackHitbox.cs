@@ -1,9 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AttackHitbox : MonoBehaviour
 {
     private CharacterStats playerStats;  // Reference to the player’s stats
-
+    private HashSet<MonoBehaviour> alreadyHit = new HashSet<MonoBehaviour>(); // Track enemies/bosses hit this attack
+    private void OnEnable()
+    {
+        alreadyHit.Clear();
+    }
     private void Awake()
     {
         // Get the player’s CharacterStats directly from the parent (Player object)
@@ -17,47 +22,44 @@ public class AttackHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if we hit something tagged as "Hurtbox"
-        if (other.CompareTag("Hurtbox") && playerStats != null)
+        if (!other.CompareTag("Hurtbox") || playerStats == null) return;
+
+        // Try to get enemy/boss components
+        EnemyStatsNew enemy = other.GetComponentInParent<EnemyStatsNew>();
+        AncientBoss ancientBoss = other.GetComponentInParent<AncientBoss>();
+        Boss2 boss = other.GetComponentInParent<Boss2>();
+
+        // If already hit, skip
+        if ((enemy != null && alreadyHit.Contains(enemy)) ||
+            (ancientBoss != null && alreadyHit.Contains(ancientBoss)) ||
+            (boss != null && alreadyHit.Contains(boss)))
         {
-            // Debug.Log("Hit a Hurtbox: " + other.name);
-            // Access enemy stats through Hurtbox (assuming it's a child of enemy object)
-            EnemyStatsNew enemyDummy = other.GetComponentInParent<EnemyStatsNew>();
-            AncientBoss ancientBoss = other.GetComponentInParent<AncientBoss>();
-            Boss2 boss = other.GetComponentInParent<Boss2>();
+            return;
+        }
 
-            if (enemyDummy != null)
-            {
-                // Debug.Log("Player Transform:" + transform.root.position);
-                int damage = playerStats.GetDamage();
-                enemyDummy.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
+        int damage = playerStats.GetDamage();
+        Vector3 hitPosition = transform.root.position;
 
-                // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
-                playerStats.TriggerAttackHit(enemyDummy.gameObject);
+        // Apply damage to enemy
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage, hitPosition, doScreenShake: true);
+            playerStats.TriggerAttackHit(enemy.gameObject);
+            alreadyHit.Add(enemy);
+        }
 
-            }
+        // Apply damage to Boss2
+        if (boss != null)
+        {
+            boss.TakeDamage(damage, hitPosition, doScreenShake: true);
+            alreadyHit.Add(boss);
+        }
 
-            if (boss != null)
-            {
-                // Debug.Log("Player Transform:" + transform.root.position);
-                int damage = playerStats.GetDamage();
-                boss.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
-
-                // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
-                // playerStats.TriggerAttackHit(enemyDummy.gameObject);
-
-            }
-
-            if (ancientBoss != null)
-            {
-                // Debug.Log("Player Transform:" + transform.root.position);
-                int damage = playerStats.GetDamage();
-                ancientBoss.TakeDamage(damage, transform.root.position, doScreenShake: true);  // Pass the player's position for screen shake
-
-                // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
-                // playerStats.TriggerAttackHit(enemyDummy.gameObject);
-
-            }
+        // Apply damage to AncientBoss
+        if (ancientBoss != null)
+        {
+            ancientBoss.TakeDamage(damage, hitPosition, doScreenShake: true);
+            alreadyHit.Add(ancientBoss);
         }
     }
 }

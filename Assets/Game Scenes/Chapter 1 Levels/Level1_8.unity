@@ -146,8 +146,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28463939}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.62, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.00012207031, y: -2.619934, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -177,10 +177,13 @@ MonoBehaviour:
   postTurnIdleTime: 1
   attackCooldown: 2
   detectionRange: 9
-  attackRange: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 1
+  meleeRange: 2
+  rangedRange: 5
+  meleeAttackDuration: 1.917
+  rangedAttackDuration: 1.75
   animator: {fileID: 1617800105}
   spriteRenderer: {fileID: 1617800104}
   visual: {fileID: 1617800103}
@@ -189,10 +192,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   damage: 20
-  meleeRange: 2
-  rangedRange: 5
-  meleeAttackDuration: 1.917
-  rangedAttackDuration: 1.75
+  attackHitbox: {fileID: 0}
 --- !u!50 &28463944
 Rigidbody2D:
   serializedVersion: 5
@@ -1765,6 +1765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 681850072}
   - component: {fileID: 681850073}
+  - component: {fileID: 681850074}
   m_Layer: 7
   m_Name: RangeAttackHitBox
   m_TagString: Untagged
@@ -1833,6 +1834,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &681850074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681850071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec972ab782cdcee43b09552b497d617e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AncientBossAttackHitbox
+  ancientBoss: {fileID: 28463942}
 --- !u!1 &683263747
 GameObject:
   m_ObjectHideFlags: 0
@@ -4619,6 +4633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1721606209}
   - component: {fileID: 1721606210}
+  - component: {fileID: 1721606211}
   m_Layer: 7
   m_Name: MeleeAttackHitBox
   m_TagString: Untagged
@@ -4687,6 +4702,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &1721606211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721606208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec972ab782cdcee43b09552b497d617e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  ancientBoss: {fileID: 28463942}
 --- !u!1 &1731405017
 GameObject:
   m_ObjectHideFlags: 0

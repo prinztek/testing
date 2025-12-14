@@ -29,6 +29,10 @@ public class AncientBoss : MonoBehaviour
     [Header("Combat")]
     public float detectionRange = 6f; // Distance to detect player
     public LayerMask playerLayer;
+    [SerializeField] private float meleeRange = 2f;
+    [SerializeField] private float rangedRange = 8f;
+    [SerializeField] private float meleeAttackDuration = 1.2f;
+    [SerializeField] private float rangedAttackDuration = 1.75f;
 
     [Header("References")]
     public Animator animator;
@@ -84,15 +88,8 @@ public class AncientBoss : MonoBehaviour
     public int damage = 20;
     public int GetDamage() { return damage; }
 
-    // Attack
-    [SerializeField] private float meleeRange = 2f;
-    [SerializeField] private float rangedRange = 8f;
-    [SerializeField] private float meleeAttackDuration = 1.2f;
-    [SerializeField] private float rangedAttackDuration = 1.75f;
-
     private enum AttackType { None, Melee, Ranged }
     private AttackType currentAttack;
-
     // ========================================
     // INITIALIZATION
     // ========================================
@@ -345,7 +342,10 @@ public class AncientBoss : MonoBehaviour
             case State.Patrol: PlayAnimation(RunHash); break;
             case State.Turn: PlayAnimation(TurnLeftHash); break;
             case State.Chase: PlayAnimation(RunHash); break;
-            case State.Attack: ChooseAttack(); break;
+            case State.Attack:
+                {
+                    ChooseAttack(); break;
+                }
             case State.Death:
                 PlayAnimation(DeathHash);
                 isDead = true;
