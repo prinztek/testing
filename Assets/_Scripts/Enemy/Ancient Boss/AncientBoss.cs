@@ -90,6 +90,14 @@ public class AncientBoss : MonoBehaviour
 
     private enum AttackType { None, Melee, Ranged }
     private AttackType currentAttack;
+
+    [Header("Hit Feedback")]
+    [SerializeField] private Transform spriteTransform; // assign in Inspector (child object with SpriteRenderer)
+    [SerializeField] private float shakeDuration = 0.1f;
+    [SerializeField] private float shakeIntensity = 0.05f;
+    [SerializeField] private OnHitFlashVFX onHitFlashVFX;
+    private Coroutine shakeCoroutine;
+
     // ========================================
     // INITIALIZATION
     // ========================================
@@ -98,6 +106,7 @@ public class AncientBoss : MonoBehaviour
         if (animator == null) animator = GetComponentInChildren<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (visual == null) visual = spriteRenderer.transform;
+        onHitFlashVFX = GetComponent<OnHitFlashVFX>();
 
         // Set patrol bounds
         Vector3 startPos = transform.position;
@@ -362,6 +371,28 @@ public class AncientBoss : MonoBehaviour
         if (player == null) return false;
         return Vector3.Distance(transform.position, player.position) <= range;
     }
+
+    #endregion
+
+    #region Hit Feedback Coroutines
+    private IEnumerator ShakeSprite()
+    {
+        if (spriteRenderer == null) yield break;
+        Vector3 originalPos = spriteTransform.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
+            float y = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
+            spriteTransform.localPosition = originalPos + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        spriteTransform.localPosition = originalPos;
+    }
+
     #endregion
 
     #region ANIMATION
@@ -398,6 +429,11 @@ public class AncientBoss : MonoBehaviour
     public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
     {
         Debug.Log($"Ancient Boss took {damageAmount} damage.");
+        // Shake sprite and flash on hit
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeSprite());
+
+        onHitFlashVFX.PlayOnDamageVfx();
 
         if (AncientBossHUD != null && !AncientBossHUD.activeSelf)
             AncientBossHUD.SetActive(true);
