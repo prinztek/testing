@@ -65,7 +65,7 @@ public class PlayerDataHandler : MonoBehaviour
             data.items[slot.item.itemName] = slot.quantity;
         }
 
-        DebugPrintDict("AFTER SAVE: data.items", data.items);
+        // DebugPrintDict("AFTER SAVE: data.items", data.items);
 
         data.equippedMeleeWeaponId = characterStats.equippedMeleeWeapon != null ?
             characterStats.equippedMeleeWeapon.itemName : "";
@@ -80,7 +80,7 @@ public class PlayerDataHandler : MonoBehaviour
                 data.unlockedSkills.Add(skill.ToString());
         }
 
-        Debug.Log("💾 Player saved to data.");
+        // Debug.Log("💾 Player saved to data.");
     }
     private void DebugPrintDict(string title, Dictionary<string, int> dict)
     {
