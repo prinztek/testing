@@ -16,5 +16,6 @@ public class LessonBlock
     public string heading;
     public string text;
     public string[] bullets;
+    public string[] sections;
 }
 

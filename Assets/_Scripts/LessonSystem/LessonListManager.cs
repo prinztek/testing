@@ -41,7 +41,7 @@ public class LessonListManager : MonoBehaviour
                 OnLessonButtonClicked(moduleId);
             });
 
-            // Add a colorful border to the button that matches the current MathTopic
+            // Add a colorful border to the button that matches the current topic of the question
             AddBorderIfMatchesTopic(data.title, newButton);
 
             if (isFirst)

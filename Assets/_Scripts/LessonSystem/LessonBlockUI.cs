@@ -1,10 +1,11 @@
 using UnityEngine;
 using TMPro;
+using TexDrawLib;
 
 public class LessonBlockUI : MonoBehaviour
 {
-    public TextMeshProUGUI headingText;
-    public TextMeshProUGUI bodyText;
+    // public TextMeshProUGUI headingText;
+    public TEXDraw bodyText;
 
     public void Setup(LessonBlock data)
     {
@@ -26,21 +27,30 @@ public class LessonBlockUI : MonoBehaviour
         //     bodyText.gameObject.SetActive(false);
         // }
 
-        if (data.heading == "")
+        // if (data.heading == "")
+        // {
+        //     Debug.Log("Empty");
+        // }
+
+        // headingText.text = data.heading;
+        // bodyText.text = data.text;
+
+        // if (data.bullets != null && data.bullets.Length > 0)
+        // {
+        //     string bulletList = "";
+        //     foreach (string bullet in data.bullets)
+        //         bulletList += "\t• " + bullet + "\n";
+
+        //     bodyText.text = bulletList;
+        // }
+
+        if (data.sections != null && data.sections.Length > 0)
         {
-            Debug.Log("Empty");
-        }
+            string sectionList = "";
+            foreach (string section in data.sections)
+                sectionList += section + "\n";
 
-        headingText.text = data.heading;
-        bodyText.text = data.text;
-
-        if (data.bullets != null && data.bullets.Length > 0)
-        {
-            string bulletList = "";
-            foreach (string bullet in data.bullets)
-                bulletList += "\t• " + bullet + "\n";
-
-            bodyText.text = bulletList;
+            bodyText.text += "\n" + sectionList;
         }
     }
 }
