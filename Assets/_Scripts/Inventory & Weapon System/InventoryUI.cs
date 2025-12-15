@@ -105,7 +105,7 @@ public class InventoryUI : MonoBehaviour
             btn.onClick.AddListener(() => ShowInventoryItemDetails(capturedSlot.item));
         }
 
-        healthText.text = $"Health: {characterStats.CurrentHealth} / {characterStats.maxHealth}";
+        healthText.text = $"Health: {characterStats.CurrentHealth}";
         activeBuffText.text = "Buffs: " + (characterStats.activeBuff != null ? characterStats.activeBuff.buffName : "None");
         equippedMeleeText.text = "Melee: " +
             (characterStats.equippedMeleeWeapon ? characterStats.equippedMeleeWeapon.itemName : "Fist");

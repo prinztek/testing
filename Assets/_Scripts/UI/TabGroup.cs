@@ -16,7 +16,7 @@ public class TabGroup : MonoBehaviour
         }
     }
 
-    // Subscribe a TabGroupButton to this TabGroup
+    // Subscribe a TabGroupButton to this TabGroup (add tab button to this tab group)
     public void Subscribe(TabGroupButton button)
     {
         if (tabButtons == null)
