@@ -215,6 +215,97 @@
         "How many ways can you arrange E and A?"
       ],
       "answer": 2
+    },
+    {
+      "id": 23,
+      "questionString": "How many distinct permutations of the letters in the word 'MOMMY' can be made?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "How many distinct arrangements can you make with the letters in 'MOMMY'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Consider how many times each letter is repeated.",
+        "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
+      ],
+      "answer": 20
+    },
+    {
+      "id": 24,
+      "questionString": "How many distinct permutations of the ancient runes in the word 'AURUM' can be made?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "How many distinct ways can you arrange the runes of 'AURUM'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Consider how many times each rune is repeated.",
+        "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
+      ],
+      "answer": 60
+    },
+    {
+      "id": 25,
+      "questionString": "How many distinct permutations can be made from the magical symbols in 'SEER'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "How many distinct arrangements can you make with the letters in 'SEER'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Look at how many times each symbol repeats (E appears twice).",
+        "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
+      ],
+      "answer": 12
+    },
+    {
+      "id": 26,
+      "questionString": "How many distinct arrangements can be made from the enchanted word 'DRAGON'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "How many distinct arrangements can you make with the word 'DRAGON'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "All letters in 'DRAGON' are unique, so just calculate n!.",
+        "Use the formula for distinct permutations: n!"
+      ],
+      "answer": 720
+    },
+    {
+      "id": 27,
+      "questionString": "How many distinct arrangements can be made from the spell-casting word 'WIZARD'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "How many distinct ways can you arrange the letters of 'WIZARD'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Each letter in 'WIZARD' is unique.",
+        "Calculate the total number of distinct permutations with n!"
+      ],
+      "answer": 720
+    },
+    {
+      "id": 28,
+      "questionString": "How many distinct permutations can be made from the sacred word 'ETHEREAL'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "How many distinct arrangements can you make with the word 'ETHEREAL'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Consider how many times each rune repeats (E appears 3 times, A appears 1 time).",
+        "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
+      ],
+      "answer": 840
+    },
+    {
+      "id": 29,
+      "questionString": "How many distinct arrangements can be made from the word 'ELEMENTAL'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "How many distinct ways can you arrange the letters of 'ELEMENTAL'?",
+      "formulaNeeded": "P(n, r) with repetitions",
+      "hints": [
+        "Look at how many times each letter repeats (E appears 2 times, L appears 2 times).",
+        "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
+      ],
+      "answer": 45360
     }
   ]
 }

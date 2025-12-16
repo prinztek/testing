@@ -51,6 +51,7 @@ public class LessonBlockUI : MonoBehaviour
                 sectionList += section + "\n";
 
             bodyText.text += "\n" + sectionList;
+            // bodyText.text += "\n" + sectionList;
         }
     }
 }

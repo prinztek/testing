@@ -58,7 +58,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject loaderCanvas;
     [SerializeField] public Slider progressBar;
 
-
     private void Awake()
     {
         if (instance != null && instance != this)
