@@ -6,29 +6,62 @@
   "lesson": [
     {
       "sections": [
-        "What is a  \n",
-        "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement. \n"
+        "During the quarantine period, you have decided to clean your room. You found the following items: ",
+        "\n",
+        "\\begin{center}\\begin{tabular}{|l|l|l|l|}\\hline Watch & Laptop & Mobile-Phone & Shoes \\\\ \\hline Book & Tablet & Bracelet & Shirt \\\\ \\hline\\end{tabular}\\end{center} \n",
+        "\n",
+        "Suppose you want to store each of these items in a box. There are 8 items to be placed but you only have 3 boxes where only one thing can be placed in each box. How many options do you have if you are going to choose 3 according to its importance? \n",
+        "\n",
+        "\\begin{center}\\begin{tabular}{|c|c|c|}\\hline Box1 & Box2 & Box3 \\\\ \\hline\\end{tabular}\\end{center} \n",
+        "\n",
+        "What will you place on the first, second, and third boxes? Why? \n",
+        "In this situation, suppose you choose to place your laptop in the first box, your mobile phone in the second box, and your book in the third box. Aside from these, what other arrangements can be formed? How can we compute all the possible ways of placing these items? \n",
+        "We determine that there are three events here and each event is where an item will be placed in an empty box. By the Fundamental Counting Principle, there are 8 x 7 x 6 permutations. Observe that 8 x 7 x 6 can be expressed as \\frac{8x7x6x5!}{5!} which is equal to \\frac{8!}{5!}. \n",
+        "\n",
+        "What does 8 and 5 represent? Eight represents the number of items you choose from while 5 represents the remaining items that were not chosen. This can be denoted in permutation notation as; \n",
+        "\n",
+        "\\( nPr &= \\frac{n!}{(n-r)!} \\) where n and r are positive integers and 1 ≤ r ≤ n. \n",
+        "\\( nPr \\) is read as \"Permutation of n objects taken r at a time\". \n",
+        "Other notations are: \n",
+        "\\[ P(n,r), and P\\binom{n}{r} \\] \n",
+        "\n",
+        "From our given example, if we use the Permutation formula, nPr, to determine the number of possible ways of storing 8 things, n = 8, and 3 items at a time in 3 boxes, r = 3, then it will be, \n",
+        "8P3 = \\frac{8!}{(8-3)!} = \\frac{8!}{5!} = \\frac{8 \\times 7 \\times 6 \\times 5!}{5!} = 8 \\times 7 \\times 6 = 336 \\text{ ways}"
       ]
     },
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "sections": [
+        "Examples: \n",
+        "1. Evaluate the following Permutations. \n",
+        "\\quad A. 6P6 \n",
+        "\\quad B. P(10,4) \n",
+        "\\quad C. P(\\nfrac{12}{5}) \n",
+        "\n",
+        "Solutions \n",
+        "\\begin{align} A. 6P6 = \\frac{6!}{(6-6)!} &= \\frac{6!}{0!} \\\\ &= \\frac{6x5x4x3x2x1}{1} \\\\ &= 720 \\end{align} \n",
+        "\n",
+        "\\begin{align} B. P(10,4) = \\frac{10!}{(10-4)!} &= \\frac{10!}{6!} \\\\ &= \\frac{10x9x8x7x6!}{6!} \\\\ &= 10x9x8x7 \\\\ &= 5040 \\end{align} \n",
+        "\n",
+        "\\begin{align} C. P(\\nfrac{12}{5}) = \\frac{12!}{(12-5)!} &= \\frac{12!}{7!} \\\\ &= \\frac{12x11x10x9x8x7!}{7!} \\\\ &= 12x11x10x9x8 \\\\ &= 95040 \\end{align} \n",
+        "\n",
+        "2. Find the unknown variable. \n",
+        "\\quad A. 9Pr = 504 \n",
+        "\\quad B. P(n,3) 990 \n",
+        "\n",
+        "Solutions \n",
+        "\\begin{align} A. 9Pr &= 504 \\\\ \\frac{9!}{(9-r)!} &= 504 \\\\ \\frac{362880}{(9-r)!} &= 504 \\\\ \\frac{362880}{504} &= (9 - r)! \\\\ 720 &= (9 - r)! \\\\ 6! &= (9 - r)! \\\\ 6 &= 9 - r \\\\ 6 &= 9 - r \\\\ -3 &= -r \\\\ 3 &= r \\end{align} \n",
+        "\n",
+        "\\begin{align} B. P(n,3) &= 990 \\\\ \\frac{n!}{(n-3)!} &= 990 \\\\ \\frac{n(n-1)(n-2)(n-3)!}{(n-3)!} &= 990 \\\\ n(n-1)(n-2) &= 990 \\\\ n(n-1)(n-2) &= 11 x 10 x 9 \\\\ n &= 11   \\end{align} \n",
+        "\n",
+        "3. Solve the following problems. \n",
+        "A. In how many ways can the letters of the word COVID be arranged if all letters are used? \n",
+        "Solutions: \n",
+        "\\[ 5P5 = \\frac{5!}{(5-5)!} = \\frac{5!}{0!} = \\frac{5 \\times 4 \\times 3 \\times 2 \\times 1!}{1!} = 120 \\text{ways} \\]",
+        "B. How many different ways can the 6 Grab Food motorcycles be parked if there are 8 available parking spaces? \n",
+        "Solutions: \n",
+        "\\[ P(\\nfrac{8}{6}) \\frac{8!}{(8-6)!} = \\frac{8!}{2!} = \\frac{8 \\times 7 \\times 6 \\times 5 \\times 4 \\times 3 \\times 2!}{2!} = 20160 \\text{ways} \\]",
+        "\n"
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }
