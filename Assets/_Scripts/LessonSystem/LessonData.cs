@@ -14,8 +14,10 @@ public class LessonData
 public class LessonBlock
 {
     public string heading;
-    public string text;
-    public string[] bullets;
     public string[] sections;
 }
 
+
+
+
+// Data Models for Math Modules

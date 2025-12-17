@@ -7,7 +7,7 @@ public class EnemyHurtState : EnemyBaseState
     private bool transitionScheduled;
 
     // Knockback force values
-    private float knockbackForce = 3f; // how far the enemy is knocked back
+    private float knockbackForce = 0.5f; // how far the enemy is knocked back
     private float verticalForce = 0f; // Vertical force to give a slight upward knockback effect ** ZERO FOR NOW
     private float verticalDamping = 0.1f; // Rate of vertical force decay
 

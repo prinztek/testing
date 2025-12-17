@@ -10,22 +10,32 @@ public class Ground : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
-    void Update()
+    public Collider2D OneWayPlatformCollider { get; private set; }
+
+    void FixedUpdate()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius, groundLayer);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            groundCheck.position,
+            groundCheckRadius,
+            groundLayer
+        );
 
         OnGround = false;
         OnOneWayPlatform = false;
+        OneWayPlatformCollider = null;
 
         foreach (Collider2D hit in hits)
         {
             if (hit == null) continue;
 
+            OnGround = true;
+
             if (hit.CompareTag("OneWayPlatform"))
             {
-                OnOneWayPlatform = true; // on one-way platform
+                OnOneWayPlatform = true;
+                OneWayPlatformCollider = hit;
+                break; // IMPORTANT: only need the one we stand on
             }
-            OnGround = true; // on normal ground
         }
     }
 
@@ -48,7 +58,7 @@ public class Ground : MonoBehaviour
     {
         if (collision.rigidbody == null) return;
 
-        PhysicsMaterial2D mat = collision.rigidbody.sharedMaterial;
+        PhysicsMaterial2D mat = collision.collider.sharedMaterial;
         Friction = mat != null ? mat.friction : 0f;
     }
 

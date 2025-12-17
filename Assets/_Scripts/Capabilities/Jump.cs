@@ -58,23 +58,14 @@ public class Jump : MonoBehaviour
             UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
         if (stats.IsDead()) return;
-        _desiredJump |= input.RetrieveJumpInput();
-        // _desiredJump |= _controller.input.RetrieveJumpInput();
 
-        // // if we are falling past a certain speed threshold
-        // if (_body.linearVelocity.y < _fallSpeedYDampingChangeThreshold && !CameraManager.Instance.IsLerpingYDamping && !CameraManager.Instance.LerpedFromPlayerFalling)
-        // {
-        //     CameraManager.Instance.LerpYDamping(true);
-        // }
+        bool jumpPressed = input.RetrieveJumpInput();
 
-        // // if we are standing still or moving up
-        // if (_body.linearVelocity.y >= 0f && !CameraManager.Instance.IsLerpingYDamping && CameraManager.Instance.LerpedFromPlayerFalling)
-        // {
-        //     // reset so it can be called again
-        //     CameraManager.Instance.LerpedFromPlayerFalling = false;
-        //     CameraManager.Instance.LerpYDamping(false);
-        // }
-
+        // If we are attempting a drop-through, do NOT buffer jump
+        if (!(_ground.OnOneWayPlatform && input.RetrieveDropInput()))
+        {
+            _desiredJump |= jumpPressed;
+        }
     }
 
     private void FixedUpdate()
@@ -126,6 +117,7 @@ public class Jump : MonoBehaviour
     }
     private void JumpAction()
     {
+        if (_ground.OnOneWayPlatform && input.RetrieveDropInput()) return;
         if (attack != null && attack.IsAttacking()) return; // Prevent jump during attack
 
         bool isGroundJump = _onGround || (_coyoteCounter > 0f && _jumpPhase < _maxAirJumps);

@@ -36,9 +36,9 @@ public class LessonManager : MonoBehaviour
         // This creates a visual representation of each lesson block in the UI
         // by instantiating a prefab for each block and setting it up with the block data.
 
-        GameObject blockHeaderObj = Instantiate(lessonBlockHeaderPrefab, lessonContainer);
-        LessonBlockHeaderUI headerUI = blockHeaderObj.GetComponent<LessonBlockHeaderUI>();
-        headerUI.Setup(currentLesson);
+        // GameObject blockHeaderObj = Instantiate(lessonBlockHeaderPrefab, lessonContainer);
+        // LessonBlockHeaderUI headerUI = blockHeaderObj.GetComponent<LessonBlockHeaderUI>();
+        // headerUI.Setup(currentLesson);
 
         foreach (var block in currentLesson.lesson)
         {
