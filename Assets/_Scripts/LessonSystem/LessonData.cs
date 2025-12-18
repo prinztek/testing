@@ -10,19 +10,28 @@ public class LessonData
     public LessonBlock[] lesson;
 }
 
+[Serializable]
+public class LessonBlock
+{
+    public LessonContent[] contents;
+}
+
+
+[Serializable]
+public class LessonContent
+{
+    public LessonContentType type;
+    // TEXT
+    public string[] lines;
+    // IMAGE
+    public string imagePath;
+}
+
 public enum LessonContentType
 {
     Text,
     Image
-    // Interactive (later)
-}
-
-[Serializable]
-public class LessonBlock
-{
-    public string heading;
-    public string[] sections;
-    public string[] imagePaths;
+    // Interactive Objects (future)
 }
 
 

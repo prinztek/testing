@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-
+using Newtonsoft.Json;
 public class LessonManager : MonoBehaviour
 {
     [Header("UI References")]
@@ -13,13 +13,15 @@ public class LessonManager : MonoBehaviour
     public void LoadLesson(string moduleId)
     {
         TextAsset jsonFile = Resources.Load<TextAsset>($"Modules/{moduleId}");
+
+        Debug.Log(jsonFile.text);
         if (jsonFile == null)
         {
             // Debug.LogError($"❌ Lesson file not found: {moduleId}");
             return;
         }
-
-        currentLesson = JsonUtility.FromJson<LessonData>(jsonFile.text);
+        // return JsonConvert.DeserializeObject<LessonData>(jsonFile.text);
+        currentLesson = JsonConvert.DeserializeObject<LessonData>(jsonFile.text);
         DisplayLesson();
     }
 

@@ -5,30 +5,28 @@
   "description": "",
   "lesson": [
     {
-      "sections": [
-        " In how many ways can 3 people A, B, and C be seated around a circular table? \n",
-        "If we have 3 persons and if we want to arrange them in a line, then the total number of permutations of 3 persons taken all at a time is 3P3 = 3! = 6. We have the following linear sitting arrangements as, \n",
-        "\\quad ABC, ACB, BAC, BCA, CAB, and CBA \n",
-        "\\quad Now the circular part! \n",
-        "If we arrange 3 persons around a circular table, as shown in the diagram below, notice that the arrangement does not change even if each person moves his position by one place. In this particular arrangement, C is always on the right side of A, and B is always on the left side of A. Hence, it represents one permutation. There is no starting point in the arrangement of things in a circular pattern. So, when each person moves his position by one place clockwise or counter clockwise, the positions are not changed. \n",
-        "Circular arrangement 1 \n",
-        "\n",
-        "\n",
-        "\n",
-        "\n",
-        "\n",
-        "Circular arrangement 2 \n",
-        "\n",
-        "\n",
-        "\n",
-        "\n",
-        "\n"
-      ]
-    },
-    {
-      "imagePaths": [
-        "Modules Images/circular-arrangement-1",
-        "Modules Images/circular-arrangement-1"
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "In how many ways can 3 people A, B, and C be seated around a circular table? \n",
+            "If we arrange them in a line, the total number of permutations is $3! = 6$. \n",
+            "\\quad ABC, ACB, BAC, BCA, CAB, and CBA \n",
+            "\\quad Now the circular part! \n",
+            "When arranged in a circle, rotations are not distinct.\n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "This arrangement represents a single circular permutation. \n",
+            "There is no fixed starting point in a circular arrangement. \n"
+          ]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/circular-arrangement-1"
+        }
       ]
     }
   ]
