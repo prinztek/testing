@@ -5,7 +5,7 @@ public class PlayerDropThrough : MonoBehaviour
 {
     [SerializeField] internal InputController input = null;
     public float dropDisableTime = 0.5f;
-    [SerializeField] private float dropCooldown = 1f; // 1 second cooldown
+    [SerializeField] private float dropCooldown = 0.5f; // 1 second cooldown
     [SerializeField] private Ground ground;
     private Collider2D col;
     private float lastDropTime = -1f;
