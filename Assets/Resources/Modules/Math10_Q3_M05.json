@@ -10,22 +10,71 @@
           "type": "Text",
           "lines": [
             "In how many ways can 3 people A, B, and C be seated around a circular table? \n",
-            "If we arrange them in a line, the total number of permutations is $3! = 6$. \n",
+            "If we have 3 persons and if we want to arrange them in a line, then the total number of permutations of 3 persons taken all at a time is 3P3 = 3! = 6. We have the following linear sitting arrangements as, \n",
             "\\quad ABC, ACB, BAC, BCA, CAB, and CBA \n",
             "\\quad Now the circular part! \n",
-            "When arranged in a circle, rotations are not distinct.\n"
+            "If we arrange 3 persons around a circular table, as shown in the diagram below, notice that the arrangement does not change even if each person moves his position by one place. In this particular arrangement, C is always on the right side of A, and B is always on the left side of A. Hence, it represents one permutation. There is no starting point in the arrangement of things in a circular pattern. So, when each person moves his position by one place clockwise or counter clockwise, the positions are not changed.\n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": ["Circular arrangement 1 \n"]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/circular-arrangement-1"
+        },
+        {
+          "type": "Text",
+          "lines": ["Circular arrangement 2 \n"]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/circular-arrangement-2"
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Hence, if we have n elements, the total number of linear permutation of n elements taken at a time is n! Observe that n linear permutations correspond to 1 circular permutation. This can be denoted as \n",
+            "\\[ P &= \\frac{n!}{n} &= (n - 1)! \\]",
+            "Now, if we use the above formula, we get the total number of circular permutations of 3 persons taken all at a time as (3 - 1)! and there are 2 possible arrangements. \n",
+            "What if we consider the direction of the arrangement in clockwise or in the counter-clockwise rotation? Observe the arrangement of different beads in a bracelet, keys on the key rings, and the like. The clockwise and the counter-clockwise orders are not distinguishable then the total number of circular permutations of n elements taken all together is \\frac{(n-1)!}{2}. But if bracelets, key rings, and the like have a lock, then the permutation becomes linear and can be denoted as, \\frac{n!}{2}.\n",
+            "\\quad So, the important points about circular arrangements are as follows: \n",
+            "1. If the clockwise and the counter-clockwise orders CAN be distinguished, then the total number of circular permutations of n elements taken all together is \n",
+            "\\[ (n-1)! \\]",
+            "2. If the clockwise and the counter-clockwise orders CANNOT be distinguished, then the total number of circular permutations of n elements taken all together is \\frac{(n-1)!}{2}(without lock), and \\frac{n!}{2}(with lock). \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "This arrangement represents a single circular permutation. \n",
-            "There is no fixed starting point in a circular arrangement. \n"
+            "Examples: \n",
+            "\\quad 1. In how many ways can 6 people be seated at a round table? \n",
+            "\\quad \\quad Solution: \n",
+            "\\begin{align} P &= (n - 1)! \\\\ &= (6 - 1)! \\\\ &= 5! \\\\ P &= 120 ways \\end{align} \n",
+            "\\quad 2. In how many ways can 6 people be seated at a round table? \n",
+            "\\quad \\quad A. a bracelet has no lock?: \n",
+            "\\quad \\quad B. a bracelet has a lock?: \n",
+            "\\quad \\quad Solution: \n",
+            "\\quad A. \n",
+            "\\begin{align} P &= \\frac{(5 - 1)!}{2} \\\\ &= \\frac{4!}{2} \\\\ &= \\frac{25}{2} \\\\ P &= 12 ways \\end{align} \n",
+            "\\quad B. Since the bracelet has a lock, we can determine where to start. \n",
+            "\\begin{align} P &= \\frac{n!}{2} \\\\ &= \\frac{5!}{2} \\\\ &= \\frac{120}{2} \\\\ P &= 60 ways \\end{align} \n",
+            "\\quad 3. In how many ways can 3 girls and 3 boys sit around a circular table so that boys and girls alternate? \n",
+            "\\quad \\quad Solution: \n",
+            "\\quad \\quad Let us choose to sit the girls around the table first. They can be seated in (3-1)! = 2! = 2 ways. \n",
+            "\\quad \\quad The boys have 6 ways or 3! in sitting between the girls. So, we have 2 x 3! = 2 x 6 = 12 ways of sitting 3 girls and 3 boys around a table so that they alternate. \n"
           ]
         },
         {
-          "type": "Image",
-          "imagePath": "Modules Images/circular-arrangement-1"
+          "type": "Text",
+          "lines": [
+            "Remember that... \n",
+            "In Circular Permutation, \n",
+            "1. If the clockwise and the counter-clockwise orders CAN be distinguished, then the total number of circular permutations of n elements taken all together is \n",
+            "\\[ (n - 1)! \\] \n",
+            "If the clockwise and the counter-clockwise orders CANNOT be distinguished, then the total number of circular permutations of n elements taken all together is \\frac{(n-1)!}{2}(without lock), and \\frac{n!}{2}(with lock). \n"
+          ]
         }
       ]
     }

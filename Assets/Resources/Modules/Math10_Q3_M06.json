@@ -5,24 +5,49 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "In this self-learning module lesson, we will show how to analyze and solve word problems using the different formulas. \n",
+            "Let us try these word problems. \n",
+            "1. How many 4 letter words with or without meaning, can be formed out of the letters of the word 'LOGARITHMS' if repetition of letters is not allowed? \n",
+            "In this kind of problem, we can use permutation. \n",
+            "\\[ nPr &= \\frac{n!}{(n - r)!} \\] \n",
+            "\\[ n &= 10, r &= 4 \\] \n",
+            "\\[ 10P4 &= \\frac{10!}{(10 - 4)!} \\] \n",
+            "\\[ &= 5,040 \\text{ letter words} \\] \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. Jervis is organizing sports equipment for the physical education room. He has 15 balls that must be placed in a line. In how many ways can he line up 6 footballs, 2 soccer balls, 4 kick balls, and 3 basketballs? \n",
+            "Since there are identical elements/objects, we will use the formula of distinguishable permutation. \n",
+            "\\[ P &= \\frac{n!}{a!b!c!...} \\] \n",
+            "\\[ &= \\frac{15!}{6!2!4!3!} \\] \n",
+            "\\[ P &= 6,306,300 \\text{ ways} \\] \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. Find the number of ways in which 5 people, Rose, Malou, Sheina, Bobby, and Chris can sit around a circular table, such that Bobby and Malou always sit next to each other?",
+            "P = (n - 1)!, but as you can see in the problem, there is a restriction wherein Bobby and Malou want to sit next to each other and that is considered as a single entity. So n = 4 but Bobby and Malou has their own arrangements and that is 2!. Therefore, \n",
+            "\\[ P &= (4 - 1)! x 2 \\] \n",
+            "\\[ &= 3! x 2! \\] \n",
+            "\\[ &= \\text{12 ways} \\] \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Remember that... \n",
+            "In solving word problems involving permutation, we can use the following formulas: \n",
+            "\\begin{align} P &= \\frac{n!}{(n - r)!} \\text{ for the linear form taken r at a time} \\\\ P &= \\frac{n!}{a!b!c!...} \\text{ for distinguishable} \\\\ P &= (n-1)! \\text{ for circular} \\\\ P &= \\frac{(n-1)!}{2} \\text{ for circular withour lock} \\\\ P &= \\frac{n!}{2} \\text{ for circular with lock} \\end{align} \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

@@ -37,7 +37,10 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Arrange 5 people in a circle",
       "formulaNeeded": "(n-1)!",
-      "hints": ["Fix one person", "Arrange the rest", "4! = 24"],
+      "hints": [
+        "Fix one person and arrange the rest",
+        "subtracting 1 to total number of people fixes 1 person"
+      ],
       "answer": 24
     },
     {
@@ -306,6 +309,62 @@
         "Use the formula for permutations of multiset objects: n! / (k1! * k2! * ... * kr!)"
       ],
       "answer": 45360
+    },
+    {
+      "id": 30,
+      "questionString": "In how many different ways can a family of 4 sit around a table if they may sit in any way? ",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "(n-1)!",
+      "hints": ["Fix one person and arrange the rest"],
+      "answer": 864
+    },
+    {
+      "id": 31,
+      "questionString": "How many bracelets with no lock can be formed from 7 different colored beads? ",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "(n-1)!/2",
+      "hints": ["Fix one person and arrange the rest"],
+      "answer": 360
+    },
+    {
+      "id": 32,
+      "questionString": "Eight keys are to be arranged in a key ring. How many different arrangements are there? ",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "(n-1)!/2",
+      "hints": [
+        "Fix one key and arrange the rest",
+        "Account for counter clockwise arrangements"
+      ],
+      "answer": 5040
+    },
+    {
+      "id": 33,
+      "questionString": "Pasig City Mayor Vico Sotto together with the 6 City Councilors of District 2 is having a meeting to discuss the Pasig Supplemental SAP. How many different ways can they arrange themselves in a circular table? ",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 7 persons around a circular table.",
+      "formulaNeeded": "(n-1)!",
+      "hints": ["Fix one person and arrange the rest"],
+      "answer": 720
+    },
+    {
+      "id": 34,
+      "questionString": "In how many ways can 2 red beads, 3 blue beads, 2 yellow beads, and 2 white beads be arranged in a necklace if beads of the same color are placed together? ",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "(n-1)! / 2",
+      "hints": [
+        "Treat each color as a block necklace to get the number of circular arrangements",
+        "And then arrange beads within each block or colors to get the total arrangements"
+      ],
+      "answer": 864
     }
   ]
 }

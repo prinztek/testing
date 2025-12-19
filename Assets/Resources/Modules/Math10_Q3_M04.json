@@ -5,60 +5,68 @@
   "description": "",
   "lesson": [
     {
-      "sections": [
-        "How many possible three-letter arrangements are there in the word MOM? Using the permutation 3P3 = 3! = 6 then, by tree diagram these are the results;\n",
-        "M \n",
-        "|-- O \n",
-        "| \\quad |-- M ---- MOM\n",
-        "|-- M\n",
-        "| \\quad |-- O ---- MMO\n",
-        "O \n",
-        "|-- M \n",
-        "| \\quad |-- M ---- OMM\n",
-        "|-- M\n",
-        "| \\quad |-- M ---- OMM\n",
-        "M \n",
-        "|-- O \n",
-        "| \\quad |-- M ---- MOM\n",
-        "|-- M\n",
-        "| \\quad |-- O ---- MMO\n",
-        "As shown in the diagram above there are 6 arrangements. What did you observe about the three-letter arrangements? There are 2-MOM, 2-OMM, and 2- MMO. We know that the permutations of 3 letters of the word MOM are 3!, we must take into consideration that we cannot distinguish between the two M;s in any of the permutation but the two M's can be permuted in 2! ways and do not produce a different result. Hence, the number of distinguishable permutations P is given by",
-        "\\[ P = \\frac{3!}{2!} = 3 \\]"
-      ]
-    },
-    {
-      "sections": [
-        "Permutations with repetition (Distinguishable Permutation)",
-        "8P3 = \\frac{8!}{(8-3)!} = \\frac{8!}{5!} = \\frac{8 \\times 7 \\times 6 \\times 5!}{5!} = 8 \\times 7 \\times 6 = 336 \\text{ ways}",
-        "The number of permutations of n things where a things are alike, b things are alike, and c things are alike, and so forth, is:",
-        "\\[ P = \\frac{n!}{a!b!c!...} \\]"
-      ]
-    },
-    {
-      "sections": [
-        "Examples: \n",
-        "1. 1. Find the number of distinguishable permutations of the letters in the word BASKETBALL. \n",
-        "Solution: \n",
-        "There is a total of 10! permutations in the word BASKETBALL but there are 2 B's, 2 A's, and 2 L's and can be permuted 2!, 2!, 2! ways respectively, in each permutation without altering the result. Hence, the number of distinguishable permutations is given by: \n",
-        "\\[ P = \\frac{10!}{2!2!2!} = 453600 \\text{ ways} \\]",
-        "\n",
-        "2. I have 6 face masks and 4 face shields to give to 10 frontliners. In how many ways can I distribute the 10 gifts to the 10 frontliners? \n",
-        "Solution: \n",
-        "Since there are 10 gifts and 10 frontliners, using the formula, I can distribute the gifts in \n",
-        "\\[ \\frac{10!}{6!4!} = \\frac{10x9x8x7x6}{6!4x3x2x1} = 210 \\text{ ways} \\]",
-        "\n",
-        "Solution: \n",
-        "3. A frontliner at the Pasig City General Hospital has 4 blue PPEs, 3 white PPEs, and 2 green PPEs. In how many ways can he arrange all his PPE’s in his locker? \n",
-        "\\[ \\frac{9!!}{4!3!2!} = 1260 \\text{ ways} \\]",
-        "\n"
-      ]
-    },
-    {
-      "sections": [
-        "Remember that... \n",
-        "Permutations with repetition (Distinguishable Permutation)",
-        "The number of permutations of n things where a things are alike, b things are alike, and c things are alike, and so forth, is:",
-        "\\[ P = \\frac{n!}{a!b!c!...} \\]"
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "How many possible three-letter arrangements are there in the word MOM? Using the permutation 3P3 = 3! = 6 then, by tree diagram these are the results;\n",
+            "M \n",
+            "|-- O \n",
+            "| \\quad |-- M ---- MOM\n",
+            "|-- M\n",
+            "| \\quad |-- O ---- MMO\n",
+            "O \n",
+            "|-- M \n",
+            "| \\quad |-- M ---- OMM\n",
+            "|-- M\n",
+            "| \\quad |-- M ---- OMM\n",
+            "M \n",
+            "|-- O \n",
+            "| \\quad |-- M ---- MOM\n",
+            "|-- M\n",
+            "| \\quad |-- O ---- MMO\n",
+            "As shown in the diagram above there are 6 arrangements. What did you observe about the three-letter arrangements? There are 2-MOM, 2-OMM, and 2- MMO. We know that the permutations of 3 letters of the word MOM are 3!, we must take into consideration that we cannot distinguish between the two M;s in any of the permutation but the two M's can be permuted in 2! ways and do not produce a different result. Hence, the number of distinguishable permutations P is given by",
+            "\\[ P = \\frac{3!}{2!} = 3 \\]"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Permutations with repetition (Distinguishable Permutation)",
+            "8P3 = \\frac{8!}{(8-3)!} = \\frac{8!}{5!} = \\frac{8 \\times 7 \\times 6 \\times 5!}{5!} = 8 \\times 7 \\times 6 = 336 \\text{ ways}",
+            "The number of permutations of n things where a things are alike, b things are alike, and c things are alike, and so forth, is:",
+            "\\[ P = \\frac{n!}{a!b!c!...} \\]"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. 1. Find the number of distinguishable permutations of the letters in the word BASKETBALL. \n",
+            "Solution: \n",
+            "There is a total of 10! permutations in the word BASKETBALL but there are 2 B's, 2 A's, and 2 L's and can be permuted 2!, 2!, 2! ways respectively, in each permutation without altering the result. Hence, the number of distinguishable permutations is given by: \n",
+            "\\[ P = \\frac{10!}{2!2!2!} = 453600 \\text{ ways} \\]",
+            "\n",
+            "2. I have 6 face masks and 4 face shields to give to 10 frontliners. In how many ways can I distribute the 10 gifts to the 10 frontliners? \n",
+            "Solution: \n",
+            "Since there are 10 gifts and 10 frontliners, using the formula, I can distribute the gifts in \n",
+            "\\[ \\frac{10!}{6!4!} = \\frac{10x9x8x7x6}{6!4x3x2x1} = 210 \\text{ ways} \\]",
+            "\n",
+            "Solution: \n",
+            "3. A frontliner at the Pasig City General Hospital has 4 blue PPEs, 3 white PPEs, and 2 green PPEs. In how many ways can he arrange all his PPE’s in his locker? \n",
+            "\\[ \\frac{9!!}{4!3!2!} = 1260 \\text{ ways} \\]",
+            "\n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Remember that... \n",
+            "Permutations with repetition (Distinguishable Permutation)",
+            "The number of permutations of n things where a things are alike, b things are alike, and c things are alike, and so forth, is:",
+            "\\[ P = \\frac{n!}{a!b!c!...} \\]"
+          ]
+        }
       ]
     }
   ]
