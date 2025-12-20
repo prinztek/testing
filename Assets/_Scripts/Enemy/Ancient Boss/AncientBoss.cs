@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
-
 public class AncientBoss : MonoBehaviour
 {
     // ========================================
@@ -27,6 +26,7 @@ public class AncientBoss : MonoBehaviour
     public float attackCooldown = 2f;
 
     [Header("Combat")]
+    public Transform centerTransform; // ancient boss center mass
     public float detectionRange = 6f; // Distance to detect player
     public LayerMask playerLayer;
     [SerializeField] private float meleeRange = 2f;
@@ -211,8 +211,6 @@ public class AncientBoss : MonoBehaviour
             ChangeState(State.Patrol);
     }
 
-
-
     private void PatrolState()
     {
         if (PlayerInRange(detectionRange))
@@ -256,7 +254,7 @@ public class AncientBoss : MonoBehaviour
     private void ChooseAttack()
     {
         stateTimer = 0f;
-        float distance = Vector3.Distance(transform.position, player.position);
+        float distance = Vector3.Distance(centerTransform.position, player.position);
         if (distance <= meleeRange)
         {
             currentAttack = AttackType.Melee;
@@ -279,10 +277,10 @@ public class AncientBoss : MonoBehaviour
             return;
         }
 
-        Vector3 characterOrigin = transform.position + Vector3.right * (facingRight ? 2 : -2);
-        float distanceToRealPlayerOrigin = Vector3.Distance(characterOrigin, player.position);
+        // Vector3 characterOrigin = centerTransform.position + Vector3.right * (facingRight ? 2 : -2);
+        // float distanceToRealPlayerOrigin = Vector3.Distance(characterOrigin, player.position);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(centerTransform.position, player.position);
 
         // Player is close but attack is on cooldown → hold position
         if (distanceToPlayer <= meleeRange && attackTimer < attackCooldown)
@@ -313,7 +311,7 @@ public class AncientBoss : MonoBehaviour
         }
 
         // Move towards player
-        Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 direction = (player.position - centerTransform.position).normalized;
         transform.position += direction * chaseSpeed * Time.deltaTime;
 
         // Face player if needed
@@ -369,8 +367,66 @@ public class AncientBoss : MonoBehaviour
     private bool PlayerInRange(float range)
     {
         if (player == null) return false;
-        return Vector3.Distance(transform.position, player.position) <= range;
+        return Vector3.Distance(centerTransform.position - Vector3.left * 2, player.position) <= range;
     }
+    public GameObject rockSpikePrefab;
+    public float spikeSpacing = 2f;   // Distance between spikes
+    public float delayBetweenSpikes = 0.3f;
+
+    public void TriggerSpikeBarrage()
+    {
+        StartCoroutine(SpikeBarrage());
+    }
+    public IEnumerator SpikeBarrage()
+    {
+        // Determine direction based on the facing direction
+        float direction = facingRight ? 1f : -1f;
+
+        // Calculate the starting position, considering the direction
+        Vector3 startPos = centerTransform.position + Vector3.down * 2;
+
+        // Spawn spikes in sequence, adjusting positions based on direction
+        yield return SpawnSpike(rockSpikePrefab, startPos);
+        yield return new WaitForSeconds(delayBetweenSpikes);
+
+        yield return SpawnSpike(rockSpikePrefab, startPos + Vector3.right * direction * spikeSpacing);
+        yield return new WaitForSeconds(delayBetweenSpikes);
+
+        yield return SpawnSpike(rockSpikePrefab, startPos + Vector3.right * direction * spikeSpacing * 2f);
+    }
+
+    IEnumerator SpawnSpike(GameObject spikePrefab, Vector3 position)
+    {
+        GameObject spike = Instantiate(spikePrefab, position, Quaternion.identity);
+
+        Transform visual = spike.transform.GetChild(0);
+        BoxCollider2D col = visual.GetComponent<BoxCollider2D>();
+
+        float startHeight = 0.1f;
+        float endHeight = 3f;
+        float growTime = 0.1f;
+        float t = 0f;
+
+        Vector2 colliderOffset = col.offset;
+
+        while (t < growTime)
+        {
+            t += Time.deltaTime;
+            float height = Mathf.Lerp(startHeight, endHeight, t / growTime);
+
+            // Resize sprite
+            visual.localScale = new Vector3(1f, height, 1f);
+
+            // Resize collider from bottom
+            col.size = new Vector2(col.size.x, height);
+            col.offset = new Vector2(colliderOffset.x, height / 2f);
+
+            yield return null;
+        }
+
+        Destroy(spike, 1.2f);
+    }
+
 
     #endregion
 
@@ -450,7 +506,7 @@ public class AncientBoss : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         // Vector3 center = transform.position + Vector3.right * (facingRight ? -2 : 2);
-        Vector3 center = transform.position;
+        Vector3 center = centerTransform.position;
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(center, detectionRange);

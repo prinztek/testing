@@ -10,6 +10,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject chapterSelectionPanel;
     public GameObject gameSettingsPanel;
     public Button continueButton;
+    public Button chapterSelectButton;
     public GameSettingsManager gameSettingsManager;
 
     void Start()
@@ -19,11 +20,13 @@ public class MainMenuUIManager : MonoBehaviour
             // no save files yet
             // hide continue button
             continueButton.gameObject.SetActive(false);
+            chapterSelectButton.gameObject.SetActive(false);
             // otherwise direct it to the latest level of the most recent slot
         }
         else
         {
             continueButton.gameObject.SetActive(true);
+            chapterSelectButton.gameObject.SetActive(true);
         }
 
         // Ensure the New Player Main Menu Panel is active when the game starts
@@ -40,12 +43,6 @@ public class MainMenuUIManager : MonoBehaviour
         gameSettingsPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
-
-        // Initialize settings panel if that is being shown
-        if (panelToShow == gameSettingsPanel && gameSettingsManager != null)
-        {
-            // gameSettingsManager.InitializeSettingsPanel();
-        }
     }
 
     public void OnSettingsButtonClicked()
@@ -64,6 +61,11 @@ public class MainMenuUIManager : MonoBehaviour
     public void OnContinueGameClicked()
     {
         GameManager.Instance.ContinueGame();
+    }
+
+    public void OnChapterSelectClicked()
+    {
+        ShowPanel(chapterSelectionPanel);
     }
 
     public void QuitGame()
