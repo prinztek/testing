@@ -11,8 +11,6 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject gameSettingsPanel;
     public Button continueButton;
     public Button chapterSelectButton;
-    public GameSettingsManager gameSettingsManager;
-
     void Start()
     {
         if (JSONSaveSystem.GetMostRecentlyUpdatedProfileId() == null)
@@ -45,17 +43,11 @@ public class MainMenuUIManager : MonoBehaviour
         panelToShow.SetActive(true);
     }
 
-    public void OnSettingsButtonClicked()
-    {
-        ShowPanel(gameSettingsPanel);
-    }
-
     public void PlayGame()
     {
         // this is for a new player
         // loads Level1_1
         GameManager.Instance.LoadLevel(1, 1);
-        // SceneManager.LoadScene("Level1_1"); // Update with your game scene name
     }
 
     public void OnContinueGameClicked()
@@ -67,18 +59,14 @@ public class MainMenuUIManager : MonoBehaviour
     {
         ShowPanel(chapterSelectionPanel);
     }
+    public void OnSettingsButtonClicked()
+    {
+        ShowPanel(gameSettingsPanel);
+    }
 
     public void QuitGame()
     {
         Application.Quit(); // This will quit the application when running in a build
         Debug.Log("Quit Game"); // This log will appear in the console when running in the editor
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            GameManager.Instance.LoadLevel(0, 0);
-        }
     }
 }
