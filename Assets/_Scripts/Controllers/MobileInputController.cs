@@ -10,10 +10,9 @@ public class MobileInputController : InputController
     [HideInInspector] public bool mobileToggleGrimoireInput = false;
     [HideInInspector] public bool mobileDropInput = false;
     public Joystick joystick;
-    public float downThreshold = -0.7f;
-
+    public float downThreshold = -0.5f;
     private float downBuffer = 0f;
-    private const float downBufferTime = 0.2f;
+    private const float downBufferTime = 0.3f;
 
     public override float RetrieveMoveInput()
     {

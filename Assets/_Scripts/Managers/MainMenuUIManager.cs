@@ -8,6 +8,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject enterNamePanel;
     public GameObject loadGameFilePanel;
     public GameObject chapterSelectionPanel;
+    public GameObject levelSelectionPanel;
     public GameObject gameSettingsPanel;
     public Button continueButton;
     public Button chapterSelectButton;
@@ -38,6 +39,7 @@ public class MainMenuUIManager : MonoBehaviour
         enterNamePanel.SetActive(false);
         loadGameFilePanel.SetActive(false);
         chapterSelectionPanel.SetActive(false);
+        levelSelectionPanel.SetActive(false);
         gameSettingsPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
