@@ -50,11 +50,11 @@ public class MobileInputController : InputController
             downBuffer -= Time.deltaTime;
 
         // Jump button pressed?
-        bool jumpPressed = mobileJumpInput;
-        mobileJumpInput = false;
+        // bool jumpPressed = mobileJumpInput;
+        // mobileJumpInput = false;
 
         // Drop occurs when jump pressed during DOWN buffer window
-        return jumpPressed && downBuffer > 0f;
+        return mobileJumpInput && downBuffer > 0f;
     }
 
     public override bool RetrieveToggleGrimoireInput()
