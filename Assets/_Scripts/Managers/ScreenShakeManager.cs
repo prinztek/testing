@@ -37,6 +37,12 @@ public class ScreenShakeManager : MonoBehaviour
         impulseSource.GenerateImpulseWithVelocity(-direction * CurrentShakeForce);
     }
 
+    public void ScreenShake(CinemachineImpulseSource impulseSource)
+    {
+        if (CurrentShakeForce <= 0f || impulseSource == null) return;
+        impulseSource.GenerateImpulse();
+    }
+
     public void TriggerEarthquakeShake(CinemachineImpulseSource impulseSource)
     {
         if (CurrentShakeForce <= 0f || impulseSource == null) return;

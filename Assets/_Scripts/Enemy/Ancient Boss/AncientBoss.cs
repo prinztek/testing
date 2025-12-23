@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 public class AncientBoss : MonoBehaviour
@@ -7,12 +8,13 @@ public class AncientBoss : MonoBehaviour
     // ========================================
     // ENUMS
     // ========================================
-    public enum State { Wake, Idle, Patrol, Turn, Chase, Attack, Hit, Death }
+    public enum State { Wake, Idle, Patrol, Turn, Chase, Attack, Hit, Death, Spinning, Buff }
 
     // ========================================
     // SETTINGS
     // ========================================
     [Header("Movement")]
+    public float moveSpeed = 2f;
     public float patrolSpeed = 2f;
     public float chaseSpeed = 4f;
     public float patrolDistance = 8f;
@@ -27,18 +29,21 @@ public class AncientBoss : MonoBehaviour
 
     [Header("Combat")]
     public Transform centerTransform; // ancient boss center mass
+    public Transform rockSpikeStartTransform; // ancient boss center mass
     public float detectionRange = 6f; // Distance to detect player
     public LayerMask playerLayer;
     [SerializeField] private float meleeRange = 2f;
     [SerializeField] private float rangedRange = 8f;
     [SerializeField] private float meleeAttackDuration = 1.2f;
     [SerializeField] private float rangedAttackDuration = 1.75f;
+    [SerializeField] private float spinChargeDuration = 4.64f;
 
     [Header("References")]
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public Transform visual;
     public GameObject AncientBossHUD;
+    private CinemachineImpulseSource impulseSource;
 
     [Header("Offset Compensation")]
     [Tooltip("Adjust this to compensate for off-center sprite pivot")]
@@ -63,6 +68,8 @@ public class AncientBoss : MonoBehaviour
     private static readonly int RunHash = Animator.StringToHash("run");
     private static readonly int MeleeAttackHash = Animator.StringToHash("meleeAttack");
     private static readonly int RangeAttackHash = Animator.StringToHash("rangeAttack");
+    private static readonly int BuffHash = Animator.StringToHash("buff");
+    private static readonly int SpinningChargeAttackHash = Animator.StringToHash("spinCharge");
     private static readonly int DeathHash = Animator.StringToHash("dead");
     private static readonly int TurnLeftHash = Animator.StringToHash("turnLeft");
 
@@ -88,7 +95,7 @@ public class AncientBoss : MonoBehaviour
     public int damage = 20;
     public int GetDamage() { return damage; }
 
-    private enum AttackType { None, Melee, Ranged }
+    private enum AttackType { None, Melee, Ranged, Spin }
     private AttackType currentAttack;
 
     [Header("Hit Feedback")]
@@ -107,6 +114,7 @@ public class AncientBoss : MonoBehaviour
         if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (visual == null) visual = spriteRenderer.transform;
         onHitFlashVFX = GetComponent<OnHitFlashVFX>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
 
         // Set patrol bounds
         Vector3 startPos = transform.position;
@@ -157,8 +165,11 @@ public class AncientBoss : MonoBehaviour
             case State.Chase: ChaseState(); break;
             case State.Attack: AttackState(); break;
             case State.Death: DeathState(); break;
+            case State.Spinning: SpinningState(); break;
         }
     }
+
+
 
     #region STATES
     private void WakeState()
@@ -220,7 +231,7 @@ public class AncientBoss : MonoBehaviour
         }
 
         Vector3 target = movingRight ? rightBound : leftBound;
-        transform.position = Vector3.MoveTowards(transform.position, target, patrolSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
@@ -237,7 +248,7 @@ public class AncientBoss : MonoBehaviour
                 if (stateTimer >= meleeAttackDuration)
                 {
                     attackTimer = 0f;
-                    ChangeState(State.Chase);
+                    ChangeState(State.Chase);  // After regular melee, return to chase
                 }
                 break;
 
@@ -245,11 +256,20 @@ public class AncientBoss : MonoBehaviour
                 if (stateTimer >= rangedAttackDuration)
                 {
                     attackTimer = 0f;
-                    ChangeState(State.Chase);
+                    ChangeState(State.Chase);  // After ranged attack, return to chase
+                }
+                break;
+
+            case AttackType.Spin:  // Handle spinning attack
+                if (stateTimer >= spinChargeDuration)
+                {
+                    attackTimer = 0f;
+                    ChangeState(State.Spinning);  // Transition to spinning state
                 }
                 break;
         }
     }
+
 
     private void ChooseAttack()
     {
@@ -258,7 +278,18 @@ public class AncientBoss : MonoBehaviour
         if (distance <= meleeRange)
         {
             currentAttack = AttackType.Melee;
-            PlayAnimation(MeleeAttackHash);
+            PlayAnimation(MeleeAttackHash);  // Regular melee attack
+            // Randomly decide between Melee and Spin attack
+            // int randomAttack = UnityEngine.Random.Range(0, 2); // 0 or 1 for random choice
+            // if (randomAttack == 0)
+            // {
+            //     currentAttack = AttackType.Melee;
+            //     PlayAnimation(MeleeAttackHash);  // Regular melee attack
+            // }
+            // else
+            // {
+            //     currentAttack = AttackType.Spin;  // Spinning attack // Call Spinning State
+            // }
         }
         else
         {
@@ -266,6 +297,49 @@ public class AncientBoss : MonoBehaviour
             PlayAnimation(RangeAttackHash);
         }
     }
+
+    private float cooldownTimer = 0f; // Accumulates time for cooldown
+    public float damageCooldown = 0.4f; // Time interval between damage applications during the spin (adjust this value)
+
+    private void SpinningState()
+    {
+        // First, check if we're in the spin charge phase
+        if (stateTimer <= spinChargeDuration)
+        {
+            PlayAnimation(SpinningChargeAttackHash); // Play the spinning charge animation
+        }
+        else
+        {
+            // Now we are in the spinning phase, where we continuously apply damage
+            // Accumulate time in the cooldown timer
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= damageCooldown)
+            {
+                // Detect all enemies in the spinning attack range (adjust radius if necessary)
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(centerTransform.position, 2f, playerLayer); // Radius can be adjusted
+                Debug.Log($"Found {hitEnemies.Length} enemies in range");
+
+                foreach (var hit in hitEnemies)
+                {
+                    if (hit.CompareTag("Player")) // Ensure we're hitting the player
+                    {
+                        hit.GetComponent<CharacterStats>().TakeDamage(1, centerTransform.position); // Apply damage to the player
+                    }
+                }
+                cooldownTimer = 0f; // Reset cooldown timer after damage is applied
+            }
+        }
+
+        // After the spin finishes, reset and go back to the next state
+        if (stateTimer >= spinChargeDuration) // Adjust for the time duration of the spin animation
+        {
+            attackTimer = 0f; // Reset attack timer
+            ChangeState(State.Idle); // Or whatever state you want to transition to
+            cooldownTimer = 0f; // Reset cooldown for the next attack
+        }
+    }
+
+
 
     private void ChaseState()
     {
@@ -312,7 +386,7 @@ public class AncientBoss : MonoBehaviour
 
         // Move towards player
         Vector3 direction = (player.position - centerTransform.position).normalized;
-        transform.position += direction * chaseSpeed * Time.deltaTime;
+        transform.position += direction * moveSpeed * Time.deltaTime;
 
         // Face player if needed
         bool playerOnRight = direction.x > 0;
@@ -379,55 +453,41 @@ public class AncientBoss : MonoBehaviour
     }
     public IEnumerator SpikeBarrage()
     {
-        // Determine direction based on the facing direction
         float direction = facingRight ? 1f : -1f;
+        Vector3 startPos = rockSpikeStartTransform.position;
 
-        // Calculate the starting position, considering the direction
-        Vector3 startPos = centerTransform.position + Vector3.down * 2;
-
-        // Spawn spikes in sequence, adjusting positions based on direction
-        yield return SpawnSpike(rockSpikePrefab, startPos);
-        yield return new WaitForSeconds(delayBetweenSpikes);
-
-        yield return SpawnSpike(rockSpikePrefab, startPos + Vector3.right * direction * spikeSpacing);
-        yield return new WaitForSeconds(delayBetweenSpikes);
-
-        yield return SpawnSpike(rockSpikePrefab, startPos + Vector3.right * direction * spikeSpacing * 2f);
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 pos = startPos + Vector3.right * direction * spikeSpacing * i;
+            StartCoroutine(SpawnSpike(rockSpikePrefab, pos)); // Spawn independently
+            yield return new WaitForSeconds(delayBetweenSpikes); // Stagger spawn timing
+        }
     }
 
     IEnumerator SpawnSpike(GameObject spikePrefab, Vector3 position)
     {
         GameObject spike = Instantiate(spikePrefab, position, Quaternion.identity);
 
-        Transform visual = spike.transform.GetChild(0);
-        BoxCollider2D col = visual.GetComponent<BoxCollider2D>();
-
-        float startHeight = 0.1f;
-        float endHeight = 3f;
-        float growTime = 0.1f;
-        float t = 0f;
-
-        Vector2 colliderOffset = col.offset;
-
-        while (t < growTime)
+        RockSpike spikeComponent = spike.GetComponent<RockSpike>();
+        if (spikeComponent != null)
         {
-            t += Time.deltaTime;
-            float height = Mathf.Lerp(startHeight, endHeight, t / growTime);
-
-            // Resize sprite
-            visual.localScale = new Vector3(1f, height, 1f);
-
-            // Resize collider from bottom
-            col.size = new Vector2(col.size.x, height);
-            col.offset = new Vector2(colliderOffset.x, height / 2f);
-
-            yield return null;
+            spikeComponent.SetFacing(facingRight);
+            spikeComponent.Emerge(); // play emerge animation
         }
 
-        Destroy(spike, 1.2f);
+        StartScreenshakeForAttacking();
+
+        // Stay active for fixed duration (matches your attack window)
+        yield return new WaitForSeconds(1.0f); // spike stays emerged
+
+        if (spikeComponent != null)
+        {
+            spikeComponent.Retract(); // play retract animation
+        }
+
+        yield return new WaitForSeconds(0.1f); // retract animation duration
+        Destroy(spike);
     }
-
-
     #endregion
 
     #region Hit Feedback Coroutines
@@ -485,10 +545,10 @@ public class AncientBoss : MonoBehaviour
     public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
     {
         Debug.Log($"Ancient Boss took {damageAmount} damage.");
-        // Shake sprite and flash on hit
-        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
-        shakeCoroutine = StartCoroutine(ShakeSprite());
-
+        // Sprite shake on hit
+        // if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        // shakeCoroutine = StartCoroutine(ShakeSprite());
+        // Sprite flash on hit
         onHitFlashVFX.PlayOnDamageVfx();
 
         if (AncientBossHUD != null && !AncientBossHUD.activeSelf)
@@ -499,6 +559,30 @@ public class AncientBoss : MonoBehaviour
 
         if (currentHealth <= 0)
             ChangeState(State.Death);
+
+        StartScreenshakeFromGettingAttacked(attackerPosition);
+    }
+    #endregion
+
+    #region SCREENSHAKE
+
+    public void StartScreenshakeFromGettingAttacked(Vector2 attackerPosition)
+    {
+        if (impulseSource != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
+            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+            Debug.Log("Ancient Boss Screen Shake From Getting Attacked");
+        }
+    }
+
+    public void StartScreenshakeForAttacking()
+    {
+        if (impulseSource != null)
+        {
+            ScreenShakeManager.Instance.ScreenShake(impulseSource);
+            Debug.Log("Ancient Boss Screen Shake For Attacking");
+        }
     }
     #endregion
 

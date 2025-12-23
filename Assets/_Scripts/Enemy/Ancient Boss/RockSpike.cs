@@ -1,27 +1,39 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class RockSpike : MonoBehaviour
 {
-    [SerializeField] private int rockSpikeDamage;
-    private HashSet<CharacterStats> alreadyHit = new HashSet<CharacterStats>();
-    // ✅ Auto-reset when the hitbox is enabled
-    private void OnEnable()
+    [SerializeField] private Animator animator;
+    [SerializeField] private RockSpikeHitBox hitbox;
+
+    public void Emerge()
     {
-        alreadyHit.Clear();
+        animator.CrossFade("spikeEmerge", 0.05f);
+        // Activate hitbox after a short delay matching emergence animation
+        StartCoroutine(ActivateHitboxAfterDelay(0.1f));
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private IEnumerator ActivateHitboxAfterDelay(float delay)
     {
-        if (!other.CompareTag("Hurtbox")) return;
+        yield return new WaitForSeconds(delay);
+        hitbox.EnableHitbox();
+    }
 
-        CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
-        if (playerStats == null) return; // ✅ FIX
+    public void Retract()
+    {
+        animator.CrossFade("spikeRetract", 0.05f);
+        hitbox.DisableHitbox(); // immediately or after delay matching retract
+    }
 
-        if (alreadyHit.Contains(playerStats)) return;
+    public void SetFacing(bool facingRight)
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
 
-        playerStats.TakeDamage(rockSpikeDamage, transform.root.position);
-
-        alreadyHit.Add(playerStats);
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 }
