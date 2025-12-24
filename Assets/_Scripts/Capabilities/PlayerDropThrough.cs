@@ -43,11 +43,8 @@ public class PlayerDropThrough : MonoBehaviour
         }
 
         Physics2D.IgnoreCollision(platformCol, col, true);
-
         // Wait for a short time in seconds
         yield return new WaitForSeconds(dropDisableTime);
-
-
         Physics2D.IgnoreCollision(platformCol, col, false);
         dropping = false;
     }

@@ -42,8 +42,6 @@ public class Jump : MonoBehaviour
         _defaultGravityScale = 1f;
 
         // _fallSpeedYDampingChangeThreshold = CameraManager.Instance._fallSpeedYDampingChangeThreshold;
-
-
     }
 
     // Update is called once per frame

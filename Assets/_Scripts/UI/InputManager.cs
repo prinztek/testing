@@ -5,6 +5,7 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     public InputController playerController;
     public InputController mobileController;
+    private InputController activeController;
     public GameObject player;
 
     void Awake()
@@ -49,8 +50,25 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (activeController != null)
+            activeController.SampleInput();
+    }
+
+    void LateUpdate()
+    {
+        if (activeController != null)
+            activeController.ResetFrameInput();
+    }
+
     void AssignInput(InputController controller)
     {
+        if (controller == null || player == null)
+            return;
+
+        activeController = controller;
+
         foreach (var comp in player.GetComponents<MonoBehaviour>())
         {
             if (comp is Move move)
@@ -78,7 +96,7 @@ public class InputManager : MonoBehaviour
             if (comp is PlayerDropThrough dropThrough)
             {
                 dropThrough.input = controller;
-                // Debug.Log("Assigned to CharacterStats");
+                // Debug.Log("Assigned to PlayerDropThrough");
             }
         }
     }

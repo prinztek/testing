@@ -1,53 +1,35 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerController", menuName = "InputController/PlayerController")]
+[CreateAssetMenu(fileName = "KeyboardController", menuName = "InputController/Keyboard")]
 public class KeyboardInputController : InputController
 {
-    private float downBuffer = 0f;
-    private const float downBufferTime = 0.2f;
-    public override float RetrieveMoveInput()
-    {
-        return Input.GetAxisRaw("Horizontal");
-    }
-    public override bool RetrieveJumpInput()
-    {
-        return Input.GetButtonDown("Jump");
-    }
+    private float downBuffer;
+    private const float downBufferTime = 0.25f;
 
-    public override bool RetrieveJumpHoldInput()
+    public override void SampleInput()
     {
-        return Input.GetButton("Jump");
-    }
+        // Movement
+        Move = Input.GetAxisRaw("Horizontal");
 
-    public override bool RetrieveAttackInput()
-    {
-        return Input.GetButtonDown("Fire1");
-    }
+        // Jump
+        JumpPressed = Input.GetButtonDown("Jump");
+        JumpHeld = Input.GetButton("Jump");
 
-    // public override bool RetrieveAttackHoldInput()
-    // {
-    //     return Input.GetButton("Fire1");
-    // }
+        // Attack
+        AttackPressed = Input.GetButtonDown("Fire1");
 
-    public override bool RetrieveDropInput()
-    {
-        bool down = Input.GetAxisRaw("Vertical") < -0.5f;
+        // Down input for one-way platforms
+        bool pullingDown = Input.GetAxisRaw("Vertical") < -0.5f;
 
-        // Refresh DOWN buffer if down is held
-        if (down)
+        if (pullingDown)
             downBuffer = downBufferTime;
         else
             downBuffer -= Time.deltaTime;
 
-        bool jump = Input.GetButtonDown("Jump");
+        // Drop-through logic
+        DropPressed = JumpPressed && downBuffer > 0f;
 
-        // Drop if jump pressed while DOWN buffer active
-        return jump && downBuffer > 0f;
-    }
-
-
-    public override bool RetrieveToggleGrimoireInput()
-    {
-        return Input.GetKeyDown(KeyCode.Tab);
+        // UI
+        ToggleGrimoirePressed = Input.GetKeyDown(KeyCode.Tab);
     }
 }
