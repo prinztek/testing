@@ -3,17 +3,26 @@ using UnityEngine;
 public class BasicInteractableObject : MonoBehaviour
 {
     // BasicInteractableObject - an interactable that opens up a canvas with the mini game
-    public GameObject uiCanvas; // Reference to your mini game/ puzzle canvas - assign in inspector - the window that pops up when interacting
-    public GameObject stoneWallObject; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
+    public GameObject runeGamePrefab; // Reference to your mini game/ puzzle canvas - assign in inspector - the window that pops up when interacting
+    public StoneWall stoneWall; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
+    private GameObject spawnedPuzzle;
 
     public void Interact()
     {
-        if (uiCanvas != null)
+        if (spawnedPuzzle == null)
         {
-            UIManager.Instance.ShowModal(uiCanvas);
-            // uiCanvas.SetActive(true); // Show your interaction canvas
-            Debug.Log("Interacting with object.");
+            spawnedPuzzle = Instantiate(runeGamePrefab);
+            var puzzle = spawnedPuzzle.GetComponentInChildren<RuneGameManager>();
+
+            puzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
         }
+
+        UIManager.Instance.ShowModal(spawnedPuzzle);
+    }
+    public void OnRuneGameSolved()
+    {
+        stoneWall.Lift();
+        CloseCanvas();
     }
 
     public void CloseCanvas()

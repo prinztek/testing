@@ -8,7 +8,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void EnterState(EnemyStateMachine enemy)
     {
         isAttacking = false;
-        lastAttackTime = Time.time - enemy.stats.attackCooldown; // Allow immediate attack
+        // lastAttackTime = Time.time - enemy.stats.attackCooldown; // Allow immediate attack
         enemy.rb.linearVelocity = Vector2.zero;
     }
 
@@ -65,7 +65,11 @@ public class EnemyAttackState : EnemyBaseState
         float distance = Vector2.Distance(enemy.transform.position, enemy.player.position);
 
         // Decide next state
-        enemy.TransitionToState(enemy.idleState);
+        if (distance <= enemy.stats.AttackRange)
+            enemy.TransitionToState(enemy.idleState); // idle respects cooldown
+        else
+            enemy.TransitionToState(enemy.chaseState);
+
 
         isAttacking = false;
     }
