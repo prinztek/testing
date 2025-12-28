@@ -7,6 +7,7 @@ public class EnemyDeathState : EnemyBaseState
 
     public override void EnterState(EnemyStateMachine enemy)
     {
+        Debug.Log("Death State Entered");
         stateStartTime = Time.time;
 
         // Stop movement and disable physics interaction

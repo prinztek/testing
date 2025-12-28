@@ -14,6 +14,7 @@ public class EnemyStatsNew : MonoBehaviour
     private CinemachineImpulseSource impulseSource;
     [SerializeField] private AudioClip hurtSoundClip;
     [SerializeField] private GameObject hitImpactPrefab;
+    [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
 
     [Header("Enemy Stats")]
@@ -126,14 +127,14 @@ public class EnemyStatsNew : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            isDead = true;
-            if (fsm != null)
-            {
-                fsm.SwitchState(fsm.deathState);
-                OnDeath?.Invoke();
-            }
-            else
-                Die(); // fallback if FSM is missing
+            // isDead = true;
+            // if (fsm != null)
+            // {
+            //     fsm.SwitchState(fsm.deathState);
+            //     OnDeath?.Invoke();
+            // }
+            // else
+            Die();
         }
     }
 
@@ -187,26 +188,75 @@ public class EnemyStatsNew : MonoBehaviour
     /// <summary>
     /// Handles death without FSM (fallback).
     /// </summary>
+    // private void Die()
+    // {
+
+    //     StopAllCoroutines();   // stop any ongoing coroutines
+
+    //     if (isDead) return;
+
+    //     isDead = true;
+    //     FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+
+    //     if (animator != null)
+    //         animator.CrossFade("enemydead", 0.1f);
+
+    //     // death VFX animations
+    //     if (hitImpactPrefab != null)
+    //     {
+    //         GameObject deathFX = Instantiate(deathFXPrefab, transform.position, Quaternion.identity, transform);
+    //         Destroy(deathFX, 0.5f); // clean up after
+    //     }
+    //     // Spawn Drop Item
+    //     // Debug.Log("Spawn Drop Item");
+    //     foreach (DropItem dropItem in dropTable)
+    //     {
+    //         InstantiateLoot(dropItem);
+    //     }
+    //     StartCoroutine(DestroyAfterDelay(1f));
+    // }
+
     private void Die()
     {
-
-        StopAllCoroutines();   // stop any ongoing coroutines
-
         if (isDead) return;
-
         isDead = true;
-        FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+        OnDeath?.Invoke();   // tell the enemy health bar that the enemy just died
 
-        if (animator != null)
-            animator.CrossFade("enemydead", 0.1f);
-        // Spawn Drop Item
-        // Debug.Log("Spawn Drop Item");
-        foreach (DropItem dropItem in dropTable)
+        StopAllCoroutines();
+
+        // Disable AI & movement
+        if (fsm != null)
+            fsm.enabled = false;
+
+        if (fsm.rb != null)
+        {
+            fsm.rb.linearVelocity = Vector2.zero;
+            fsm.rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        // Disable all colliders
+        foreach (var col in GetComponents<Collider2D>())
+            col.enabled = false;
+
+        // Death FX
+        if (deathFXPrefab != null)
+        {
+            GameObject fx = Instantiate(deathFXPrefab, transform.position, Quaternion.identity);
+            Destroy(fx, 0.5f);
+        }
+
+        // Drop loot ONCE
+        foreach (var dropItem in dropTable)
         {
             InstantiateLoot(dropItem);
         }
-        StartCoroutine(DestroyAfterDelay(1f));
+
+        // Notify LevelManager
+        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an even call?
+
+        Destroy(gameObject, 2f);
     }
+
 
     private IEnumerator DestroyAfterDelay(float delay)
     {
