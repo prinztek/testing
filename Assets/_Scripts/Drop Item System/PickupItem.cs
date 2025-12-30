@@ -99,7 +99,7 @@ public class PickupItem : MonoBehaviour
                 }
             }
 
-            if (itemData.itemType == ItemType.Consumable)
+            if (itemData.itemType == ItemType.Consumable || itemData.itemType == ItemType.KeyItem)
             {
                 PlayerInventory playerInventory = player.GetComponent<PlayerInventory>();
                 if (playerInventory != null)

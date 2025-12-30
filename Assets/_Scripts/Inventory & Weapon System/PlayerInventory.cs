@@ -9,7 +9,7 @@ public class PlayerInventory : MonoBehaviour
 
     // Backing fields
     public int _gold;
-    private List<InventorySlot> _ownedItems = new List<InventorySlot>();
+    [SerializeField] private List<InventorySlot> _ownedItems = new List<InventorySlot>();
 
     // Events
     public event Action OnInventoryChanged;
@@ -99,5 +99,27 @@ public class PlayerInventory : MonoBehaviour
             if (characterStats.equippedRangedWeapon == item) characterStats.UnequipRangedWeapon();
             else characterStats.EquipRangedWeapon(item);
         }
+    }
+
+    // === USE KEY ===
+    public bool UnlockGate()
+    {
+        for (int i = 0; i < _ownedItems.Count; i++)
+        {
+            InventorySlot slot = _ownedItems[i];
+
+            if (slot.item.itemType == ItemType.KeyItem && slot.quantity > 0)
+            {
+                slot.quantity--;
+
+                if (slot.quantity <= 0)
+                    _ownedItems.RemoveAt(i);
+
+                OnInventoryChanged?.Invoke();
+                return true; // gate can unlock
+            }
+        }
+
+        return false; // no key found
     }
 }
