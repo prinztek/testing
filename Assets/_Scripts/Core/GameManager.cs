@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         // Prevent multiple event bindings
         ui.OnModalToggled -= HandleModalToggled;
         ui.OnModalToggled += HandleModalToggled;
-        // Debug.Log("✅ GameManager linked with UIManager modal toggle event");
+        // Debug.Log("GameManager linked with UIManager modal toggle event (pause game when a modal is open)");
     }
 
     private void HandleModalToggled(bool isOpen)

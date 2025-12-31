@@ -2,20 +2,44 @@ using UnityEngine;
 
 public class ExitPoint : MonoBehaviour
 {
+    [Header("Visual")]
+    [SerializeField] private SpriteRenderer visual;
+
+    [Header("Colors")]
+    [SerializeField] private Color lockedColor = Color.red;
+    [SerializeField] private Color unlockedColor = Color.green;
+    private bool unlocked = false;
     private bool canExit = true;
+    private void Awake()
+    {
+        if (!visual)
+            visual = GetComponentInChildren<SpriteRenderer>();
+
+        SetLocked();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!canExit) return;
+        if (!unlocked) return;
 
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Level Complete!");
-            // Notify LevelManager
-
             LevelManager.Instance.OnLevelCompleted();
-
-            canExit = false; // prevent multiple triggers
         }
+    }
+
+    public void Unlock()
+    {
+        unlocked = true;
+        visual.color = unlockedColor;
+        Debug.Log("🚪 Exit unlocked!");
+        Debug.Log("🟢 Exit turned green");
+    }
+
+    private void SetLocked()
+    {
+        unlocked = false;
+        visual.color = lockedColor;
     }
 }

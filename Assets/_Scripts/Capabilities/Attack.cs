@@ -140,7 +140,7 @@ public class Attack : MonoBehaviour
         float duration = animationHandler.GetAttackAnimationLength(phase, animWeapon);
         animationHandler.PlayAttackAnimation(phase, animWeapon, !_ground.OnGround); // handles only the animation
 
-        ApplyAttackNudge(nudgeForce);
+        // ApplyAttackNudge(nudgeForce);
         lockedUntil = Time.time + duration;
 
         if (phase == GetMaxComboPhase())
@@ -167,7 +167,7 @@ public class Attack : MonoBehaviour
 
         animationHandler.PlayAttackAnimation(1, animWeapon, true);
 
-        ApplyAttackNudge(nudgeForce);
+        // ApplyAttackNudge(nudgeForce);
 
         lockedUntil = Time.time + duration;
         isInPostCooldown = true;

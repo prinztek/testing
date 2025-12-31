@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private CharacterStats playerStats;
-    [SerializeField] private GameObject exitPoint; // Exit object
+    [SerializeField] private ExitPoint exitPoint; // Exit object
 
     private int totalEnemies;
     private int defeatedEnemies;
@@ -73,12 +73,6 @@ public class LevelManager : MonoBehaviour
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
         Debug.Log($"🧠 LevelManager initialized. Found {totalEnemies} enemies.");
-
-        // --- Hide endpoint until level cleared ---
-        if (exitPoint != null)
-            exitPoint.SetActive(false);
-        else
-            Debug.LogWarning("⚠️ LevelManager: Exit point not assigned in Inspector.");
     }
 
     // Called when an enemy dies
@@ -86,25 +80,27 @@ public class LevelManager : MonoBehaviour
     {
         defeatedEnemies++;
         if (defeatedEnemies >= totalEnemies)
+        {
             UnlockExit();
+            Debug.Log("Exit unlocked!");
+        }
     }
 
     private void UnlockExit()
     {
         if (exitPoint != null)
         {
-            exitPoint.SetActive(true);
-            Debug.Log("🚪 Exit unlocked!");
+            exitPoint.Unlock();
         }
         else
         {
-            Debug.LogWarning("⚠️ ExitPoint missing, cannot unlock exit.");
+            Debug.LogWarning("ExitPoint missing, cannot unlock exit.");
         }
     }
 
     public void OnLevelCompleted()
     {
-        Debug.Log("✅ Level completed!");
+        // Debug.Log("Level completed!");
 
         string sceneName = SceneManager.GetActiveScene().name;
         if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
