@@ -5,23 +5,35 @@ public class RuneSlot : MonoBehaviour, IDropHandler
 {
     public Rune placedRune;
 
+    [SerializeField] private Transform runePoolParent;
+
     public void OnDrop(PointerEventData eventData)
     {
-        Rune draggedRune = eventData.pointerDrag.GetComponent<Rune>();
+        Rune rune = eventData.pointerDrag?.GetComponent<Rune>();
+        if (rune == null) return;
 
-        if (draggedRune != null)
-        {
-            if (placedRune != null)
-            {
-                // Return the previously placed rune to the dragged rune's original parent
-                placedRune.transform.SetParent(draggedRune.OriginalParent);
-                placedRune.transform.localPosition = Vector3.zero;
-            }
-
-            draggedRune.transform.SetParent(transform);
-            draggedRune.transform.localPosition = Vector3.zero;
-            placedRune = draggedRune;
-        }
+        PlaceRune(rune);
     }
 
+    private void PlaceRune(Rune rune)
+    {
+        // Replace existing rune
+        if (placedRune != null)
+        {
+            placedRune.CurrentSlot = null;
+            placedRune.transform.SetParent(runePoolParent);
+            placedRune.transform.localPosition = Vector3.zero;
+        }
+
+        placedRune = rune;
+        rune.CurrentSlot = this;
+
+        rune.transform.SetParent(transform);
+        rune.transform.localPosition = Vector3.zero;
+    }
+
+    public void ClearSlot()
+    {
+        placedRune = null;
+    }
 }

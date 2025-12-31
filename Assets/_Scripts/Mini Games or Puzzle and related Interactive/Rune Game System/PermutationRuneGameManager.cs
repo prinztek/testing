@@ -181,7 +181,14 @@ public class PermutationRuneGameManager : MonoBehaviour
     public void OnAddRuneSet()
     {
         if (isSolved)
+        {
             return;
+        }
+
+        if (!CanAdd())
+        {
+            return;
+        }
 
         string currentSequence = GetCurrentSequence();
 
@@ -214,20 +221,39 @@ public class PermutationRuneGameManager : MonoBehaviour
         return sequence;
     }
 
+    bool CanAdd()
+    {
+        HashSet<Rune> usedRunes = new HashSet<Rune>();
+
+        foreach (var slot in runeSlots)
+        {
+            if (slot.placedRune == null)
+                return false;
+
+            if (!usedRunes.Add(slot.placedRune))
+                return false; // duplicate rune
+        }
+
+        return true;
+    }
+
+
     public void ResetSlots()
     {
         foreach (var slot in runeSlots)
         {
             if (slot.placedRune != null)
             {
-                // Return the rune to its original parent
-                slot.placedRune.transform.SetParent(slot.placedRune.OriginalParent);
-                slot.placedRune.transform.localPosition = Vector3.zero;
+                Rune rune = slot.placedRune;
+
+                rune.CurrentSlot = null;
+                rune.transform.SetParent(rune.runePoolParent);
+                rune.transform.localPosition = Vector3.zero;
+
                 slot.placedRune = null;
             }
         }
     }
-
     public bool CheckSequence()
     {
         // Loop through all user sequences

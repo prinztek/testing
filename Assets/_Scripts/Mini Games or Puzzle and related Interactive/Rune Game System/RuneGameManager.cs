@@ -181,22 +181,13 @@ public class RuneGameManager : MonoBehaviour
     public void OnAddRuneSet()
     {
         if (isSolved)
-            return;
-
+            return; // Don't allow adding new sequences
+        // Capture the current sequence
         string currentSequence = GetCurrentSequence();
-
-        // Prevent incomplete sequences
-        if (currentSequence.Contains("_"))
-            return;
-
-        // Prevent duplicates
-        if (userSequences.Contains(currentSequence))
-            return;
+        // Add the currentSequence to userSequences
 
         userSequences.Add(currentSequence);
-
-        // Add a visual entry
-        // completedPermutationsPanel.AddPermutation(currentSequence);
+        Debug.Log("Added sequence: " + currentSequence);
 
         ResetSlots();
     }
@@ -206,10 +197,11 @@ public class RuneGameManager : MonoBehaviour
         string sequence = "";
         foreach (var slot in runeSlots)
         {
-            if (slot.placedRune != null)
-                sequence += slot.placedRune.runeID;
-            else
-                sequence += "_"; // Empty placeholder
+            if (slot.placedRune == null)
+            {
+                return "";
+            }
+            sequence += slot.placedRune.runeID;
         }
         return sequence;
     }
@@ -221,7 +213,7 @@ public class RuneGameManager : MonoBehaviour
             if (slot.placedRune != null)
             {
                 // Return the rune to its original parent
-                slot.placedRune.transform.SetParent(slot.placedRune.OriginalParent);
+                slot.placedRune.transform.SetParent(slot.placedRune.runePoolParent);
                 slot.placedRune.transform.localPosition = Vector3.zero;
                 slot.placedRune = null;
             }
