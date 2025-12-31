@@ -12,9 +12,23 @@ public class BasicInteractableObject : MonoBehaviour
         if (spawnedPuzzle == null)
         {
             spawnedPuzzle = Instantiate(runeGamePrefab);
-            var puzzle = spawnedPuzzle.GetComponentInChildren<RuneGameManager>();
 
-            puzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
+            // Try to get either puzzle manager (RuneGameManager (Permutation and its condition) or (Permutation))
+            var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<RuneGameManager>();
+            var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
+
+            if (permutationAndConditionPuzzle != null)
+            {
+                permutationAndConditionPuzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
+            }
+            else if (permutationPuzzle != null)
+            {
+                permutationPuzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
+            }
+            else
+            {
+                Debug.LogWarning("No puzzle manager found on spawned prefab!");
+            }
         }
 
         UIManager.Instance.ShowModal(spawnedPuzzle);
