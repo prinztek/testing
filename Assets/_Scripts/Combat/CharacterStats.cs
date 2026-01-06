@@ -12,6 +12,7 @@ public class CharacterStats : MonoBehaviour
 
     [SerializeField] public AnimationHandler animationHandler;
     public BuffUIManager buffUIManager;
+    [SerializeField] private Hurt hurt;
 
     [Header("Health")]
     public int maxHealth = 25;
@@ -85,6 +86,9 @@ public class CharacterStats : MonoBehaviour
         UnlockSkill(SkillType.LightningDash);
 
         buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
+
+        hurt = GetComponent<Hurt>();
+
     }
     private void Start()
     {
@@ -302,6 +306,7 @@ public class CharacterStats : MonoBehaviour
     public void TakeDamage(int damage, Vector2 attackerPosition)
     {
         if (isDead) return;
+        if (hurt.IsHurt() || hurt.IsInvincible()) return;
 
         if (shieldHitsRemaining > 0)
         {

@@ -7,34 +7,47 @@ public class BasicInteractableObject : MonoBehaviour
     public StoneWall stoneWall; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
     private GameObject spawnedPuzzle;
 
+    public bool isPuzzleSolved = false;
     public void Interact()
     {
+
+        // If already solved, do nothing
+        if (isPuzzleSolved == true)
+        {
+            return;
+        }
+
         if (spawnedPuzzle == null)
         {
             spawnedPuzzle = Instantiate(runeGamePrefab);
 
             // Try to get either puzzle manager (RuneGameManager (Permutation and its condition) or (Permutation))
             var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<RuneGameManager>();
+            var factorialTotemPuzzle = spawnedPuzzle.GetComponentInChildren<FactorialTotemGameManager>();
             var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
 
             if (permutationAndConditionPuzzle != null)
             {
-                permutationAndConditionPuzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
+                permutationAndConditionPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else if (permutationPuzzle != null)
             {
-                permutationPuzzle.OnPuzzleSolved.AddListener(OnRuneGameSolved);
+                permutationPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (factorialTotemPuzzle != null)
+            {
+                factorialTotemPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {
                 Debug.LogWarning("No puzzle manager found on spawned prefab!");
             }
         }
-
         UIManager.Instance.ShowModal(spawnedPuzzle);
     }
-    public void OnRuneGameSolved()
+    public void OnPuzzleSolved()
     {
+        isPuzzleSolved = true;
         stoneWall.Lift();
         CloseCanvas();
     }

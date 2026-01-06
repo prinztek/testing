@@ -159,6 +159,10 @@ public class Move : MonoBehaviour
 
     private void TurnCheck()
     {
+        // Do NOT allow flipping of direction while attacking
+        if (attack != null && attack.IsAttacking())
+            return;
+
         if (_direction.x > 0f && !FacingRight)
         {
             Turn();

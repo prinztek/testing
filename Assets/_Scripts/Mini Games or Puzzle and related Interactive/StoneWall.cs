@@ -9,6 +9,7 @@ public class StoneWall : MonoBehaviour
     public float liftHeight = 5f;
     public float liftDuration = 1f;
     private CinemachineImpulseSource impulseSource;
+    [SerializeField] private AudioClip stoneLiftSoundClip;
 
     void Start()
     {
@@ -17,6 +18,8 @@ public class StoneWall : MonoBehaviour
     }
     public void Lift()
     {
+        if (stoneLiftSoundClip != null)
+            SoundFXManager.Instance.playOneShotSoundFXClilp(stoneLiftSoundClip, transform, 0.4f);
         StartCoroutine(RumbleAndLift());
         ScreenShakeManager.Instance.TriggerEarthquakeShake(impulseSource);
     }

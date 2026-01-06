@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: {fileID: 0}
-  exitPoint: {fileID: 256654108}
+  exitPoint: {fileID: 256654109}
   levelTopic: 0
   levelDifficulty: 1
 --- !u!4 &50264044
@@ -167,11 +167,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &256654108 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7297046587703863029, guid: 31bcab5cb2405964e9e60cf953ac064e, type: 3}
+--- !u!114 &256654109 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5566218946061156126, guid: 31bcab5cb2405964e9e60cf953ac064e, type: 3}
   m_PrefabInstance: {fileID: 9173282622990058680}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614f5f8a4050c1c4c87e6aa1c2c78388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &279897513
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,13 +660,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.33333334
-    height: 0.44444445
+    width: 1
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 7.5
+  orthographic size: 6.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -685,7 +691,7 @@ Transform:
   m_GameObject: {fileID: 555506367}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 0.20000005, z: -10}
+  m_LocalPosition: {x: 1.0222216, y: 0.20000005, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12375,6 +12381,7 @@ MonoBehaviour:
   rumbleMagnitude: 0.1
   liftHeight: 3
   liftDuration: 1
+  stoneLiftSoundClip: {fileID: 8300000, guid: 536e2e88021cfd84db9340d7eb882f43, type: 3}
 --- !u!114 &1313943076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13341,7 +13348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7297046587703863029, guid: 31bcab5cb2405964e9e60cf953ac064e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8878727762792168422, guid: 31bcab5cb2405964e9e60cf953ac064e, type: 3}
       propertyPath: m_LocalScale.y

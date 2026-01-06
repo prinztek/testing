@@ -17,7 +17,7 @@ public class PermutationRuneGameManager : MonoBehaviour
     public bool useMultipleAnswers = false; // Toggle this to switch between a single or multiple answers
 
     public bool isDistinct = false; // If true, only distinct sequences are considered correct
-    public bool isSolved = false; // Add this at the top of RuneGameManager
+    public bool isSolved = false;
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
     public GameObject runesParentPanel;

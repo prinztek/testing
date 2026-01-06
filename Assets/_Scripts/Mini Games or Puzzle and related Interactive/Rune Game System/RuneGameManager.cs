@@ -180,8 +180,13 @@ public class RuneGameManager : MonoBehaviour
     }
     public void OnAddRuneSet()
     {
-        if (isSolved)
-            return; // Don't allow adding new sequences
+        if (isSolved) return; // Don't allow adding new sequences
+
+        if (!CanAdd())
+        {
+            return;
+        }
+
         // Capture the current sequence
         string currentSequence = GetCurrentSequence();
         // Add the currentSequence to userSequences
@@ -204,6 +209,22 @@ public class RuneGameManager : MonoBehaviour
             sequence += slot.placedRune.runeID;
         }
         return sequence;
+    }
+
+    bool CanAdd()
+    {
+        HashSet<Rune> usedRunes = new HashSet<Rune>();
+
+        foreach (var slot in runeSlots)
+        {
+            if (slot.placedRune == null)
+                return false;
+
+            if (!usedRunes.Add(slot.placedRune))
+                return false; // duplicate rune
+        }
+
+        return true;
     }
 
     public void ResetSlots()

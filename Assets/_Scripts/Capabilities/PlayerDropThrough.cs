@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerDropThrough : MonoBehaviour
 {
     [SerializeField] internal InputController input = null;
-    public float dropDisableTime = 0.5f;
+    public float dropDisableTime = 0.3f;
     [SerializeField] private float dropCooldown = 0.5f; // 1 second cooldown
     [SerializeField] private Ground ground;
     private Collider2D col;
