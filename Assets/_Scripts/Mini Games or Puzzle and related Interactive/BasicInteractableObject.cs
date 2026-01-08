@@ -22,7 +22,7 @@ public class BasicInteractableObject : MonoBehaviour
             spawnedPuzzle = Instantiate(runeGamePrefab);
 
             // Try to get either puzzle manager (RuneGameManager (Permutation and its condition) or (Permutation))
-            var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<RuneGameManager>();
+            var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationAndConditionRuneGameManager>();
             var factorialTotemPuzzle = spawnedPuzzle.GetComponentInChildren<FactorialTotemGameManager>();
             var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
 

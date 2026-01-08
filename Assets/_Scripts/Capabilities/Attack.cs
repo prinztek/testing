@@ -24,7 +24,7 @@ public class Attack : MonoBehaviour
 
     [Header("Attack Base Damage")]
     [SerializeField] private int baseAttack = 1;
-    [SerializeField] private float nudgeForce = 0f; // Tune this for desired push
+    [SerializeField] private float nudgeForce = 0f; // Optional nudge on attack
     private int attackPhase = 0;
     private float lockedUntil = 0f;
     private bool canCombo = false;
