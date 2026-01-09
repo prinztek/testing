@@ -14,6 +14,7 @@ public class CharacterStats : MonoBehaviour
     public BuffUIManager buffUIManager;
     [SerializeField] private Hurt hurt;
 
+    [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
     [Header("Health")]
     public int maxHealth = 25;
     [SerializeField] private int currentHealth;
@@ -255,7 +256,8 @@ public class CharacterStats : MonoBehaviour
     {
         if (activeBuff == null)
         {
-            StartCoroutine(ChannelBuffRoutine(buff));
+            // StartCoroutine(ChannelBuffRoutine(buff)); // instead of a channeling animation, we play the buff acquiring animation vfx
+            OnBuffAcquired(buff);
         }
         else
         {
@@ -279,6 +281,26 @@ public class CharacterStats : MonoBehaviour
 
         isChanneling = false;
     }
+
+
+    public void OnBuffAcquired(Buff buff)
+    {
+        BuffAcquireVFX vfx = Instantiate(
+            buffAcquireVfxPrefab,
+            transform.position,
+            Quaternion.identity
+        );
+
+        // Optional: attach to character so it follows
+        vfx.transform.SetParent(transform);
+        vfx.transform.localPosition = Vector3.zero;
+
+        // PLAY Buff Acquire VFX
+        vfx.Play();
+
+        ApplyBuff(buff);
+    }
+
 
 
     private void ApplyBuff(Buff buff)
