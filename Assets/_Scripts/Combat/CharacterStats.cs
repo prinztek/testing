@@ -15,6 +15,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private Hurt hurt;
 
     [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
+    [SerializeField] private PopupText buffAcquirePopupTextPrefab;
     [Header("Health")]
     public int maxHealth = 25;
     [SerializeField] private int currentHealth;
@@ -297,6 +298,12 @@ public class CharacterStats : MonoBehaviour
 
         // PLAY Buff Acquire VFX
         vfx.Play();
+
+        PopupText popup = Instantiate(
+            buffAcquirePopupTextPrefab,
+            transform.position + new Vector3(0, 1f, 0),
+            Quaternion.identity
+        );
 
         ApplyBuff(buff);
     }
