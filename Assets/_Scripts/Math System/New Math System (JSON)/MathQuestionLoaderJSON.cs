@@ -40,10 +40,10 @@ public static class MathQuestionLoaderJSON
         var rng = new System.Random();
         filtered = filtered.OrderBy(q => rng.Next()).ToList();
         // Print before returning
-        foreach (var item in filtered)
-        {
-            Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
-        }
+        // foreach (var item in filtered)
+        // {
+        //     Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
+        // }
 
         return filtered
             .Select(q => new MathQuestion(q.id, topic, difficulty, q.questionString, q.answer, q.hints))
@@ -60,10 +60,10 @@ public static class MathQuestionLoaderJSON
             .ToList();
 
         // Print before returning
-        foreach (var item in filtered)
-        {
-            Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
-        }
+        // foreach (var item in filtered)
+        // {
+        //     Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
+        // }
 
         // Convert to MathQuestion objects
         return filtered

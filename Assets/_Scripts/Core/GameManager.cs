@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject loaderCanvas;
     [SerializeField] public Slider progressBar;
 
+    [Header("Fade Settings")]
+    [SerializeField] private UI_Fade uiFade;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -282,10 +285,16 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator LoadLevelAsyncWithLoader(string sceneName)
     {
+        // Fade gameplay → black
+        yield return uiFade.FadeOut();
+
+        // Show loader (still black)
         // Activate the loader canvas and set the slider to 0% initially
         loaderCanvas.SetActive(true);
         progressBar.value = 0f;
 
+        // Fade black → loader
+        yield return uiFade.FadeIn();
 
         // Start loading the scene asynchronously
         AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
@@ -312,12 +321,15 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+        // Fade loader → black
+        yield return uiFade.FadeOut();
 
         // Spawn player once the scene is fully loaded
         SpawnPlayer();
+        loaderCanvas.SetActive(false); // hide the loading screen once the scene is loaded
 
-        // Optionally hide the loading screen once the scene is loaded
-        loaderCanvas.SetActive(false);
+        // Fade black → gameplay
+        yield return uiFade.FadeIn();
     }
 
     private void SpawnPlayer()
