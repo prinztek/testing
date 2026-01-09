@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour
         {
             playerStats.OnDeathFinished -= OnLevelFailed; // avoid duplicate
             playerStats.OnDeathFinished += OnLevelFailed; // subscribe properly
-            Debug.Log("📌 LevelManager subscribed to player death event.");
+            Debug.Log("LevelManager subscribed to player death event.");
         }
     }
 
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
             {
                 // Initialize MathQuestionManager with level settings
                 mqm.SetTopic(levelTopic, levelDifficulty);
-                // Debug.Log("✅ MathQuestionManager found and initialized.");
+                // Debug.Log("MathQuestionManager found and initialized.");
             }
             else
             {
@@ -70,9 +70,10 @@ public class LevelManager : MonoBehaviour
         }
 
         // --- Count total enemies in the scene ---
-        totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length;
+        totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length +
+                       FindObjectsByType<AncientBoss>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
-        Debug.Log($"🧠 LevelManager initialized. Found {totalEnemies} enemies.");
+        Debug.Log($"LevelManager initialized. Found {totalEnemies} enemies.");
     }
 
     // Called when an enemy dies
@@ -128,7 +129,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnLevelFailed()
     {
-        Debug.Log("❌ Level failed!");
+        Debug.Log("Level failed!");
 
         if (GameManager.Instance != null)
             GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);

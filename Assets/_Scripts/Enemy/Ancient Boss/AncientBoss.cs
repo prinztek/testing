@@ -8,7 +8,7 @@ public class AncientBoss : MonoBehaviour
     // ========================================
     // ENUMS
     // ========================================
-    public enum State { Wake, Idle, Patrol, Turn, Chase, Attack, Hit, Death, Spinning, Buff }
+    public enum State { Dormant, Wake, Idle, Patrol, Turn, Chase, Attack, Hit, Death, Spinning, Buff }
 
     // ========================================
     // SETTINGS
@@ -63,6 +63,7 @@ public class AncientBoss : MonoBehaviour
     // ========================================
     // ANIMATION HASHES
     // ========================================
+    private static readonly int SleepHash = Animator.StringToHash("sleep");
     private static readonly int WakeHash = Animator.StringToHash("wake");
     private static readonly int IdleHash = Animator.StringToHash("idle");
     private static readonly int RunHash = Animator.StringToHash("run");
@@ -88,6 +89,7 @@ public class AncientBoss : MonoBehaviour
 
     // Combat
     private Transform player;
+    private CharacterStats playerStats;
     private float attackTimer;
     private bool isDead = false;
     private bool isTurning = false;
@@ -99,7 +101,7 @@ public class AncientBoss : MonoBehaviour
     private AttackType currentAttack;
 
     [Header("Hit Feedback")]
-    [SerializeField] private Transform spriteTransform; // assign in Inspector (child object with SpriteRenderer)
+    [SerializeField] private Transform spriteTransform;
     [SerializeField] private float shakeDuration = 0.1f;
     [SerializeField] private float shakeIntensity = 0.05f;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
@@ -122,7 +124,7 @@ public class AncientBoss : MonoBehaviour
         rightBound = startPos + Vector3.right * patrolDistance;
 
         currentHealth = maxHealth;
-        ChangeState(State.Wake);
+        ChangeState(State.Dormant);
     }
 
     private void OnEnable()
@@ -139,11 +141,13 @@ public class AncientBoss : MonoBehaviour
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
+        if (playerObj != null) playerStats = player.GetComponent<CharacterStats>();
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         player = playerObj.transform;
+        playerStats = player.GetComponent<CharacterStats>();
     }
 
     // ========================================
@@ -152,6 +156,10 @@ public class AncientBoss : MonoBehaviour
     private void Update()
     {
         if (isDead) return;
+
+        // Boss does NOTHING while dormant // sleeping
+        if (currentState == State.Dormant)
+            return;
 
         stateTimer += Time.deltaTime;
         attackTimer += Time.deltaTime;
@@ -277,19 +285,23 @@ public class AncientBoss : MonoBehaviour
         float distance = Vector3.Distance(centerTransform.position, player.position);
         if (distance <= meleeRange)
         {
-            currentAttack = AttackType.Melee;
-            PlayAnimation(MeleeAttackHash);  // Regular melee attack
+            // Regular melee attack
+            // currentAttack = AttackType.Melee;
+            // PlayAnimation(MeleeAttackHash);
             // Randomly decide between Melee and Spin attack
-            // int randomAttack = UnityEngine.Random.Range(0, 2); // 0 or 1 for random choice
-            // if (randomAttack == 0)
-            // {
-            //     currentAttack = AttackType.Melee;
-            //     PlayAnimation(MeleeAttackHash);  // Regular melee attack
-            // }
-            // else
-            // {
-            //     currentAttack = AttackType.Spin;  // Spinning attack // Call Spinning State
-            // }
+            int randomAttack = UnityEngine.Random.Range(0, 2); // 0 or 1 for random choice
+            if (randomAttack == 0)
+            {
+                currentAttack = AttackType.Melee;
+                PlayAnimation(MeleeAttackHash);  // Regular melee attack
+            }
+            else
+            {
+                currentAttack = AttackType.Spin;  // Spinning attack // Call Spinning State
+            }
+
+            // currentAttack = AttackType.Spin;  // Spinning attack // Call Spinning State
+
         }
         else
         {
@@ -299,47 +311,53 @@ public class AncientBoss : MonoBehaviour
     }
 
     private float cooldownTimer = 0f; // Accumulates time for cooldown
-    public float damageCooldown = 0.4f; // Time interval between damage applications during the spin (adjust this value)
-
+    public float damageCooldown = 0.1f; // Time interval between damage applications during the spin (adjust this value)
+    [SerializeField] private Vector2 spinHitboxSize = new Vector2(5f, 3f);
+    [SerializeField] private bool showSpinHitbox = true;
+    [SerializeField] private float spinDuration = 3f;
     private void SpinningState()
     {
-        // First, check if we're in the spin charge phase
+        // --- CHARGE PHASE (Buff Animation) ---
         if (stateTimer <= spinChargeDuration)
         {
-            PlayAnimation(SpinningChargeAttackHash); // Play the spinning charge animation
-        }
-        else
-        {
-            // Now we are in the spinning phase, where we continuously apply damage
-            // Accumulate time in the cooldown timer
-            cooldownTimer += Time.deltaTime;
-            if (cooldownTimer >= damageCooldown)
-            {
-                // Detect all enemies in the spinning attack range (adjust radius if necessary)
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(centerTransform.position, 2f, playerLayer); // Radius can be adjusted
-                Debug.Log($"Found {hitEnemies.Length} enemies in range");
-
-                foreach (var hit in hitEnemies)
-                {
-                    if (hit.CompareTag("Player")) // Ensure we're hitting the player
-                    {
-                        hit.GetComponent<CharacterStats>().TakeDamage(1, centerTransform.position); // Apply damage to the player
-                    }
-                }
-                cooldownTimer = 0f; // Reset cooldown timer after damage is applied
-            }
+            // Play the buff animation while "charging"
+            PlayAnimation(BuffHash);
+            return;
         }
 
-        // After the spin finishes, reset and go back to the next state
-        if (stateTimer >= spinChargeDuration) // Adjust for the time duration of the spin animation
+        // --- SPIN DAMAGE PHASE ---
+        PlayAnimation(SpinningChargeAttackHash); // The actual spin attack animation
+
+        // Tick damage based on cooldown
+        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer <= 0f)
         {
-            attackTimer = 0f; // Reset attack timer
-            ChangeState(State.Idle); // Or whatever state you want to transition to
-            cooldownTimer = 0f; // Reset cooldown for the next attack
+            ApplySpinDamage();            // Apply damage to Hurtbox
+            cooldownTimer = damageCooldown; // Reset cooldown
+        }
+
+        // --- END SPIN ---
+        if (stateTimer >= spinChargeDuration + spinDuration)
+        {
+            cooldownTimer = 0f;
+            attackTimer = 0f;
+            ChangeState(State.Idle);
         }
     }
+    private void ApplySpinDamage()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(centerTransform.position, spinHitboxSize, 0f, playerLayer);
 
-
+        foreach (var hit in hitEnemies)
+        {
+            if (hit.CompareTag("Hurtbox"))
+            {
+                CharacterStats stats = hit.GetComponentInParent<CharacterStats>();
+                if (stats != null)
+                    stats.TakeDamage(1, centerTransform.position);
+            }
+        }
+    }
 
     private void ChaseState()
     {
@@ -418,6 +436,7 @@ public class AncientBoss : MonoBehaviour
     {
         switch (state)
         {
+            case State.Dormant: PlayAnimation(SleepHash); break;
             case State.Wake: PlayAnimation(WakeHash); break;
             case State.Idle: PlayAnimation(IdleHash); break;
             case State.Patrol: PlayAnimation(RunHash); break;
@@ -430,6 +449,8 @@ public class AncientBoss : MonoBehaviour
             case State.Death:
                 PlayAnimation(DeathHash);
                 isDead = true;
+                // Notify LevelManager
+                UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an even call?
                 break;
         }
     }
@@ -438,6 +459,14 @@ public class AncientBoss : MonoBehaviour
     #endregion
 
     #region COMBAT
+    public void WakeUp()
+    {
+        if (currentState != State.Dormant)
+            return; // Already awake or dead
+
+        ChangeState(State.Wake);
+    }
+
     private bool PlayerInRange(float range)
     {
         if (player == null) return false;
@@ -541,10 +570,14 @@ public class AncientBoss : MonoBehaviour
     }
     #endregion
 
-    #region HEALTH
+    #region HEALTH/ TAKING DAMAGE
     public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
     {
-        Debug.Log($"Ancient Boss took {damageAmount} damage.");
+        if (currentState == State.Dormant)
+            return;
+
+        if (isDead) return;
+        // Debug.Log($"Ancient Boss took {damageAmount} damage.");
         // Sprite shake on hit
         // if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
         // shakeCoroutine = StartCoroutine(ShakeSprite());
@@ -609,6 +642,15 @@ public class AncientBoss : MonoBehaviour
         Handles.color = Color.cyan;
         Handles.Label(center + Vector3.right * rangedRange, "Ranged");
 #endif
+
+        if (!showSpinHitbox || centerTransform == null)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(
+            centerTransform.position,
+            spinHitboxSize
+        );
     }
     #endregion
 }
