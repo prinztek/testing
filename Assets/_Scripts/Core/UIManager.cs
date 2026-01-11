@@ -57,12 +57,6 @@ public class UIManager : MonoBehaviour
         if (pauseMenuPrefab != null)
             pauseMenu = Instantiate(pauseMenuPrefab, transform);
 
-        if (levelCompletePrefab != null)
-            levelCompletePanel = Instantiate(levelCompletePrefab, transform);
-
-        if (levelFailedPrefab != null)
-            levelFailedPanel = Instantiate(levelFailedPrefab, transform);
-
         if (playerHUD != null)
         {
             playerHUDInstance = Instantiate(playerHUD, transform);
@@ -80,6 +74,12 @@ public class UIManager : MonoBehaviour
             onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
             onScreenControlsInstance.SetActive(false); // hide until player spawns and only show in gameplay scenes
         }
+
+        if (levelCompletePrefab != null)
+            levelCompletePanel = Instantiate(levelCompletePrefab, transform);
+
+        if (levelFailedPrefab != null)
+            levelFailedPanel = Instantiate(levelFailedPrefab, transform);
 
         HideAllModals();
     }

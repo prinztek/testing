@@ -45,7 +45,7 @@ public class PlayerDataHandler : MonoBehaviour
         // Unlock skills
         foreach (var skillName in data.unlockedSkills)
         {
-            if (System.Enum.TryParse(skillName, out CharacterStats.SkillType skill))
+            if (System.Enum.TryParse(skillName, out SkillType skill))
                 characterStats.UnlockSkill(skill);
         }
 
@@ -74,7 +74,7 @@ public class PlayerDataHandler : MonoBehaviour
             characterStats.equippedRangedWeapon.itemName : "";
 
         data.unlockedSkills.Clear();
-        foreach (CharacterStats.SkillType skill in System.Enum.GetValues(typeof(CharacterStats.SkillType)))
+        foreach (SkillType skill in System.Enum.GetValues(typeof(SkillType)))
         {
             if (characterStats.HasSkill(skill))
                 data.unlockedSkills.Add(skill.ToString());

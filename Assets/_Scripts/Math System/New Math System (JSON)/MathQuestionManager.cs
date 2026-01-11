@@ -81,10 +81,16 @@ public class MathQuestionManager : MonoBehaviour
 
     public void GenerateNewQuestions()
     {
-        questionQueue = MathQuestionLoaderJSON.LoadByTopic(
-            topic,
-            new HashSet<int>(GameManager.Instance.usedMathQuestionData.UsedMathQuestionIds)
-        );
+        var usedIds = new HashSet<int>(GameManager.Instance.usedMathQuestionData.UsedMathQuestionIds);
+        // Try unused questions first
+        questionQueue = MathQuestionLoaderJSON.LoadByTopic(topic, usedIds);
+
+        // If none left, allow reuse
+        if (questionQueue.Count == 0)
+        {
+            Debug.Log("No unused questions left — reusing old ones.");
+            questionQueue = MathQuestionLoaderJSON.Load(topic);
+        }
 
         currentIndex = 0;
         LoadCurrentQuestion();
@@ -95,16 +101,7 @@ public class MathQuestionManager : MonoBehaviour
         // Check if we've answered all questions
         if (currentIndex >= questionQueue.Count)
         {
-            // Disable question UI
-            currentQuestion = null;
-            expandedQuestionText.text = "All questions answered!";
-            answerInput.text = "";
-            answerInput.interactable = false;
-            hintText.text = "Hints:";
-            hintButton.interactable = false;
-
-            // Notify any listeners that the batch is completed
-            OnQuestionBatchCompleted?.Invoke();
+            GenerateNewQuestions(); // 🔁 restart immediately
             return;
         }
 
@@ -176,8 +173,8 @@ public class MathQuestionManager : MonoBehaviour
         }
         else
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
-            Debug.Log($"❌ Wrong. Expected: {currentQuestion.answer}");
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
+            Debug.Log($"Wrong. Expected: {currentQuestion.answer}");
         }
     }
 

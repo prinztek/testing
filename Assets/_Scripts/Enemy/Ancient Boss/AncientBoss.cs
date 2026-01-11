@@ -583,6 +583,7 @@ public class AncientBoss : MonoBehaviour
         // shakeCoroutine = StartCoroutine(ShakeSprite());
         // Sprite flash on hit
         onHitFlashVFX.PlayOnDamageVfx();
+        StartScreenshakeFromGettingAttacked(attackerPosition);
 
         if (AncientBossHUD != null && !AncientBossHUD.activeSelf)
             AncientBossHUD.SetActive(true);
@@ -591,9 +592,11 @@ public class AncientBoss : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);
 
         if (currentHealth <= 0)
+        {
             ChangeState(State.Death);
+            playerStats?.UnlockSkill(SkillType.PermutationPulse); // Grant player experience points
+        }
 
-        StartScreenshakeFromGettingAttacked(attackerPosition);
     }
     #endregion
 

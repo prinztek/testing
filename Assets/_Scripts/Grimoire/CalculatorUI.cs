@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class CalculatorUI : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class CalculatorUI : MonoBehaviour
     // ==========================
     public void SelectAdd() { SetOperation(Operation.Add, "+"); }
     public void SelectSub() { SetOperation(Operation.Sub, "-"); }
-    public void SelectMul() { SetOperation(Operation.Mul, "×"); }
+    public void SelectMul() { SetOperation(Operation.Mul, "x"); }
     public void SelectDiv() { SetOperation(Operation.Div, "÷"); }
 
     private void SetOperation(Operation op, string symbol)

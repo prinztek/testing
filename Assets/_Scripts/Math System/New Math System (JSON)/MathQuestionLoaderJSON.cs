@@ -26,7 +26,7 @@ public static class MathQuestionLoaderJSON
         }
     }
 
-    // ✅ Now returns List<MathQuestion> and accepts usedIds
+    // returns List<MathQuestion> and accepts usedIds
     public static List<MathQuestion> Load(MathTopic topic, QuestionDifficulty difficulty, HashSet<int> usedIds = null)
     {
         EnsureDatabaseLoaded();
@@ -47,6 +47,23 @@ public static class MathQuestionLoaderJSON
 
         return filtered
             .Select(q => new MathQuestion(q.id, topic, difficulty, q.questionString, q.answer, q.hints))
+            .ToList();
+    }
+
+    // returns List<MathQuestion> regardless of usedIds
+    public static List<MathQuestion> Load(MathTopic topic)
+    {
+        EnsureDatabaseLoaded();
+
+        var filtered = database.questions
+            .Where(q => q.type.Equals(topic.ToString(), System.StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        var rng = new System.Random();
+        filtered = filtered.OrderBy(q => rng.Next()).ToList();
+
+
+        return filtered
+            .Select(q => new MathQuestion(q.id, topic, Enum.Parse<QuestionDifficulty>(q.difficulty, true), q.questionString, q.answer, q.hints))
             .ToList();
     }
 

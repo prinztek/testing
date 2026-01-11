@@ -63,7 +63,8 @@ public class CameraManager : MonoBehaviour
             _currentCamera = cameraFromRight;
 
             // update our composer value
-            _positionComposer = _currentCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
+            // _positionComposer = _currentCamera.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
+            _currentCamera.Lens.OrthographicSize = 6.2f;
 
         }
         else if (_currentCamera == cameraFromRight && triggerExitDirection.x < 0f)

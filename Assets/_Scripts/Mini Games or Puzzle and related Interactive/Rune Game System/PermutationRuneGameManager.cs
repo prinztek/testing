@@ -175,8 +175,8 @@ public class PermutationRuneGameManager : MonoBehaviour
             return;
 
         // Prevent duplicates
-        if (userSequences.Contains(currentSequence))
-            return;
+        // if (userSequences.Contains(currentSequence))
+        //     return;
 
         userSequences.Add(currentSequence);
 
@@ -234,16 +234,34 @@ public class PermutationRuneGameManager : MonoBehaviour
     }
     public bool CheckSequence()
     {
-        // Loop through all user sequences
+        // The player has submitted the correct number of sequences
+        if (userSequences.Count != correctSequences.Count)
+        {
+            // Not enough sequences submitted yet
+            return false;
+        }
+
+        // Check that every correct sequence is included in the user's submissions
+        foreach (var correctSeq in correctSequences)
+        {
+            if (!userSequences.Contains(correctSeq))
+            {
+                // The user is missing at least one required sequence
+                return false;
+            }
+        }
+
+        // Step 3: double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
         foreach (var userSeq in userSequences)
         {
             if (!correctSequences.Contains(userSeq))
             {
-                return false; // Found an incorrect sequence, user is incorrect
+                // The user submitted an invalid sequence
+                return false;
             }
         }
-        // If we get here, all user sequences were valid
-        return true;
+
+        return true; // The user submitted all sequences correctly
     }
 
 }

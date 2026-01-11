@@ -2,7 +2,12 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
+{
+    PermutationPulse,
+    IceShield,
+    LightningDash
+}
 public class CharacterStats : MonoBehaviour
 {
     [SerializeField] internal InputController input;
@@ -45,13 +50,8 @@ public class CharacterStats : MonoBehaviour
     public delegate void HealthChanged(int currentHealth);
     public event HealthChanged OnHealthChanged; // This event will be triggered whenever the character’s health changes.
 
-    // ====================================================================================================================
-    public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
-    {
-        FireBlast,
-        IceShield,
-        LightningDash
-    }
+    // case SkillType.LightningDash: return "Skip a question with a small gold penalty.";
+
     // this is supposed to be something that is related to help players solve math questions easier
     // e.g., FireBlast can eliminate one wrong choice, IceShield can give a hint, LightningDash can skip question with small gold penalty
 
@@ -83,9 +83,9 @@ public class CharacterStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);
 
 
-        UnlockSkill(SkillType.FireBlast); // Should be calculator related
-        UnlockSkill(SkillType.IceShield);
-        UnlockSkill(SkillType.LightningDash);
+        UnlockSkill(SkillType.PermutationPulse); // Should be calculator related
+        // UnlockSkill(SkillType.IceShield);
+        // UnlockSkill(SkillType.LightningDash);
 
         buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
 
