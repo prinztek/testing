@@ -11,6 +11,14 @@ public class EnemyChaseState : EnemyBaseState
     {
         if (enemy.stats.IsDead || enemy.player == null) return;
 
+        // do not chase the player while falling
+        // Break chase if territory rules fail
+        // if (enemy.IsOutsideTerritory() || enemy.PlayerLeftTerritory())
+        // {
+        //     enemy.TransitionToState(enemy.returnState);
+        //     return;
+        // }
+
         FacePlayer(enemy);
 
         Vector2 direction = (enemy.player.position - enemy.transform.position).normalized;

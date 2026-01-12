@@ -17,4 +17,13 @@ public class CompletedPermutationsPanel : MonoBehaviour
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
     }
+    public void RemoveLastPermutation()
+    {
+        int childCount = contentParent.childCount;
+        if (childCount > 0)
+        {
+            Transform lastChild = contentParent.GetChild(childCount - 1);
+            Destroy(lastChild.gameObject);
+        }
+    }
 }

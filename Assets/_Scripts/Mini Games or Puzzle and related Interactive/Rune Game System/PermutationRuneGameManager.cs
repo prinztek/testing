@@ -186,6 +186,25 @@ public class PermutationRuneGameManager : MonoBehaviour
         ResetSlots();
     }
 
+    public void OnClearLastRuneSet()
+    {
+        if (isSolved)
+        {
+            return;
+        }
+
+        if (userSequences.Count == 0)
+            return;
+
+        // Remove the last added sequence
+        int lastIndex = userSequences.Count - 1;
+        string lastSequence = userSequences[lastIndex];
+        userSequences.RemoveAt(lastIndex);
+
+        // Remove visual entry
+        completedPermutationsPanel.RemoveLastPermutation();
+    }
+
     public string GetCurrentSequence()
     {
         string sequence = "";

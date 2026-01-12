@@ -14,6 +14,7 @@ public class EnemyStateMachine : MonoBehaviour
     public EnemyAttackState attackState = new EnemyAttackState();
     public EnemyHurtState hurtState = new EnemyHurtState();
     public EnemyDeathState deathState = new EnemyDeathState();
+    public EnemyReturnState returnState = new EnemyReturnState();
 
     private EnemyBaseState currentState;
     public EnemyBaseState LastState { get; private set; }
@@ -30,6 +31,11 @@ public class EnemyStateMachine : MonoBehaviour
     [SerializeField] private bool showAttackRange = true;
 
     [HideInInspector] public EnemyEnvironmentSensor sensor;
+    [Header("Territory")]
+    [SerializeField] public Transform leftLimit;
+    [SerializeField] public Transform rightLimit;
+
+    [HideInInspector] public Vector2 homePosition;
 
     void Awake()
     {
@@ -37,6 +43,8 @@ public class EnemyStateMachine : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         sensor = GetComponent<EnemyEnvironmentSensor>();  // Add this line
+
+        homePosition = transform.position;
     }
 
     private void OnEnable()
@@ -126,6 +134,19 @@ public class EnemyStateMachine : MonoBehaviour
         float distance = Vector2.Distance(transform.position, player.position);
 
         return distance <= stats.detectionRange;   // No facing direction required
+    }
+    public bool IsOutsideTerritory()
+    {
+        float x = transform.position.x;
+        return x < leftLimit.position.x || x > rightLimit.position.x;
+    }
+
+    public bool PlayerLeftTerritory()
+    {
+        if (player == null) return true;
+
+        float px = player.position.x;
+        return px < leftLimit.position.x || px > rightLimit.position.x;
     }
 
 
