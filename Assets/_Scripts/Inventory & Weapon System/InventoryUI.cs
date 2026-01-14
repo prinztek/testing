@@ -71,7 +71,7 @@ public class InventoryUI : MonoBehaviour
         RefreshUI();
         UpdateGoldUI(playerInventory.Gold);
 
-        Debug.Log("✅ InventoryUI connected to player inventory.");
+        // Debug.Log("✅ InventoryUI connected to player inventory.");
     }
 
     public void RefreshUI()
@@ -199,6 +199,6 @@ public class InventoryUI : MonoBehaviour
     private void UpdateGoldUI(int gold)
     {
         // Optional: add gold text update here if needed
-        Debug.Log($"💰 Gold updated: {gold}");
+        Debug.Log($"Gold updated: {gold}");
     }
 }

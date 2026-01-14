@@ -5,7 +5,7 @@ using UnityEngine;
 public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
 {
     PermutationPulse,
-    IceShield,
+    FactorialEngine,
     LightningDash
 }
 public class CharacterStats : MonoBehaviour

@@ -110,7 +110,7 @@ public class MathQuestionManager : MonoBehaviour
         expandedQuestionText.text = currentQuestion.prompt;
         answerInput.text = "";
         answerInput.interactable = true;
-        hintText.text = "Hints:";
+        hintText.text = "";
         hintUsedCounter = 0;
         ResetHintButtonText();
         hintButton.interactable = true;
@@ -126,6 +126,8 @@ public class MathQuestionManager : MonoBehaviour
 
     public void GenerateNewHint()
     {
+        Debug.Log("Hint button clicked");
+
         if (playerInventory == null || currentQuestion == null) return;
 
         int cost = baseHintCost + (baseHintCost * hintUsedCounter);
@@ -134,7 +136,7 @@ public class MathQuestionManager : MonoBehaviour
         maxHints = currentQuestion.hints.Length;
         if (hintUsedCounter < maxHints)
         {
-            hintText.text += $"\n💡 {currentQuestion.hints[hintUsedCounter]}";
+            hintText.text += $"\n {currentQuestion.hints[hintUsedCounter]}";
             hintUsedCounter++;
             playerInventory.DeductGold(cost);
             ResetHintButtonText();

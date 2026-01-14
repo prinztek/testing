@@ -450,7 +450,7 @@ public class AncientBoss : MonoBehaviour
                 PlayAnimation(DeathHash);
                 isDead = true;
                 // Notify LevelManager
-                UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an even call?
+                UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
                 break;
         }
     }
