@@ -5,7 +5,12 @@ public enum MathTopic
     Permutation_Formula,
     Distinguishable_Permutation,
     Circular_Permutation,
-    Problem_Solving_on_Permutation
+    Problem_Solving_on_Permutation,
+    Illustrates_the_Combination_of_an_Objects,
+    Permutation_vs_Combination,
+    Combination_Notation,
+    Evaluating_Combination_Notation,
+    Problem_Solving_on_Permutation_and_Combination
 }
 public enum QuestionDifficulty { Easy = 1, Medium = 2, Hard = 3 }
 

@@ -198,8 +198,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.06818819, a: 1}
+  m_Sprite: {fileID: 21300000, guid: b0e7474906ab1624bbc8dbb7638bf7d4, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -13654,6 +13654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 796691406}
   - component: {fileID: 796691405}
+  - component: {fileID: 796691407}
   m_Layer: 0
   m_Name: PermanentFactorialSkill
   m_TagString: Untagged
@@ -13674,6 +13675,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerStats: {fileID: 0}
+  factorialEnginePopupTextPrefab: {fileID: 5992145644940613810, guid: 6e28e9b05293b2c46b2ce8f053ba0403, type: 3}
+  bobHeight: 0.25
+  bobSpeed: 2
+  rotationSpeed: 30
 --- !u!4 &796691406
 Transform:
   m_ObjectHideFlags: 0
@@ -13683,13 +13688,49 @@ Transform:
   m_GameObject: {fileID: 796691404}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 14, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 48015589}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &796691407
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796691404}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 1
 --- !u!1 &806953136
 GameObject:
   m_ObjectHideFlags: 0
@@ -13788,6 +13829,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.b
+      value: 0.25485048
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.g
+      value: 0.42377245
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6509434
+      objectReference: {fileID: 0}
     - target: {fileID: 3226639147316609228, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
       propertyPath: m_Name
       value: OneWayPlatform
@@ -14775,7 +14828,7 @@ Transform:
   m_GameObject: {fileID: 1638293138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.8811078, y: -1.3, z: -10}
+  m_LocalPosition: {x: 1.0222216, y: -1.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14797,7 +14850,7 @@ MonoBehaviour:
   m_AssetsPPU: 16
   m_RefResolutionX: 320
   m_RefResolutionY: 180
-  m_CropFrame: 1
+  m_CropFrame: 0
   m_GridSnapping: 0
   m_FilterMode: 0
   m_UpscaleRT: 0
@@ -14924,7 +14977,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 7.1875
+  orthographic size: 6.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -15038,6 +15091,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.b
+      value: 0.25490198
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.g
+      value: 0.42352942
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941413900011438421, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6509804
+      objectReference: {fileID: 0}
     - target: {fileID: 3226639147316609228, guid: 54fac79aa0a732d419a4f8b2e53e0894, type: 3}
       propertyPath: m_Name
       value: OneWayPlatform (1)
@@ -15376,13 +15441,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime w_ FSM (Patrol - Chase - Single Attack)
       objectReference: {fileID: 0}
+    - target: {fileID: 1721505393596508598, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4540356103894473220, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
       propertyPath: wallLayer.m_Bits
       value: 4096
       objectReference: {fileID: 0}
+    - target: {fileID: 4540356103894473220, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
+      propertyPath: wallCheckDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4560704100032700795, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4656098946563364253, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
       propertyPath: knockbackForce
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656098946563364253, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
+      propertyPath: showAttackRange
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5808566880406867078, guid: 73d20e315f84ad64280502ebe4c1e0bd, type: 3}
       propertyPath: m_LocalPosition.x

@@ -83,7 +83,8 @@ public class CharacterStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);
 
 
-        UnlockSkill(SkillType.PermutationPulse); // Should be calculator related
+        // UnlockSkill(SkillType.PermutationPulse); // Should be calculator related
+        // UnlockSkill(SkillType.FactorialEngine); // Should be calculator related
         // UnlockSkill(SkillType.IceShield);
         // UnlockSkill(SkillType.LightningDash);
 

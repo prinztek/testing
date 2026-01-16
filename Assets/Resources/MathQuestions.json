@@ -7,7 +7,10 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Arrange 6 books",
       "formulaNeeded": "n!",
-      "hints": ["Use factorial", "6! = 720"],
+      "hints": [
+        "Consider how many choices you have for the first position, then the next.",
+        "There is a compact mathematical notation that represents this process."
+      ],
       "answer": 720
     },
     {
@@ -17,7 +20,11 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Arrange 5 of 7 students",
       "formulaNeeded": "nPr",
-      "hints": ["Use permutation formula", "7P5 = 2520"],
+      "hints": [
+        "Decide how many students need to be in the line.",
+        "Think about how many choices you have for each position in the line.",
+        "There is a counting method for ordering a specific number of items from a bigger group without using all of them."
+      ],
       "answer": 2520
     },
     {
@@ -103,18 +110,23 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Arrange 4 unique digits",
       "formulaNeeded": "n!",
-      "hints": ["4! = 24"],
+      "hints": [
+        "Think about how many choices you have for the first position, then the next, and so on."
+      ],
       "answer": 24
     },
     {
       "id": 11,
-      "questionString": "How many different ways can 3 identical balls and 2 different balls be arranged in a row?",
+      "questionString": "How many four-letter arrangements of the word 'BOOK' can be made if the first letter must be B?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Arrange balls with identicals",
-      "formulaNeeded": "n! / p!",
-      "hints": ["Use distinguishable permutation logic"],
-      "answer": 60
+      "simplifiedQuestionString": "Arrange 'BOOK' if B is first",
+      "formulaNeeded": "Think about arranging the remaining letters",
+      "hints": [
+        "The first letter is fixed as B, so place it at the start.",
+        "How many ways can you arrange the remaining letters O, O, K?"
+      ],
+      "answer": 3
     },
     {
       "id": 12,
@@ -163,7 +175,9 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Form 5-digit number from 5 digits",
       "formulaNeeded": "n!",
-      "hints": ["5! = 120"],
+      "hints": [
+        "Start by choosing a digit for the first position, then the next, and so on."
+      ],
       "answer": 120
     },
     {
@@ -365,6 +379,32 @@
         "And then arrange beads within each block or colors to get the total arrangements"
       ],
       "answer": 864
+    },
+    {
+      "id": 35,
+      "questionString": "How many three-letter arrangements of the word 'SUN' can be made if the middle letter must be U?",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 'SUN' if U is in the middle",
+      "formulaNeeded": "Think about arranging the other letters around the fixed one",
+      "hints": [
+        "Place U in the middle position.",
+        "How many ways can the letters S and N be arranged around it?"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 36,
+      "questionString": "How many three-letter arrangements of the word 'DOG' can be made if the first letter must be D?",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 'DOG' if D is first",
+      "formulaNeeded": "Think about arranging the remaining letters",
+      "hints": [
+        "Place D at the beginning.",
+        "How many ways can you arrange O and G after it?"
+      ],
+      "answer": 2
     }
   ]
 }

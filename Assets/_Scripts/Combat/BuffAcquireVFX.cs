@@ -11,7 +11,7 @@ public class BuffAcquireVFX : MonoBehaviour
     {
         if (visualAnimator == null) return;
 
-        visualAnimator.Play(visualStateName, 0, 0f);
+        // visualAnimator.Play(visualStateName, 0, 0f);
 
         float clipLength = GetClipLength();
         Destroy(gameObject, clipLength);

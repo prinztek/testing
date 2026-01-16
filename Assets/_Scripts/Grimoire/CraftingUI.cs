@@ -20,7 +20,7 @@ public class CraftingUI : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-        // 🔹 If player already exists when UI enables, connect immediately
+        // If player already exists when UI enables, connect immediately
         if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
         {
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
@@ -79,11 +79,11 @@ public class CraftingUI : MonoBehaviour
     private void CraftSelectedItem()
     {
         if (selectedItem == null) return;
-        Debug.Log($"✅ Crafted: {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold.");
+        Debug.Log($"Crafted: {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold.");
         // Add logic here to deduct gold and give the item
         if (playerInventory.Gold < selectedItem.costInGold)
         {
-            Debug.LogWarning("⚠️ Not enough gold to craft this item.");
+            Debug.LogWarning("Not enough gold to craft this item.");
             return;
         }
         playerInventory.DeductGold(selectedItem.costInGold);

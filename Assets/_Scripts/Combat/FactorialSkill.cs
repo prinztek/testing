@@ -4,7 +4,18 @@ public class FactorialSkill : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private CharacterStats playerStats;
+    [SerializeField] private PopupText factorialEnginePopupTextPrefab;
 
+    [Header("Bobbing Animation")]
+    [SerializeField] private float bobHeight = 0.25f;
+    [SerializeField] private float bobSpeed = 2f;
+    [SerializeField] private float rotationSpeed = 30f;
+
+    private Vector3 startPosition;
+    void Awake()
+    {
+        startPosition = transform.position;
+    }
     void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
@@ -19,6 +30,19 @@ public class FactorialSkill : MonoBehaviour
     {
         playerStats = playerObj.GetComponent<CharacterStats>();
     }
+    void Update()
+    {
+        AnimateBobbing();
+    }
+
+    private void AnimateBobbing()
+    {
+        float yOffset = Mathf.Sin(Time.time * bobSpeed) * bobHeight;
+        transform.position = startPosition + new Vector3(0f, yOffset, 0f);
+
+        // Optional subtle rotation
+        transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -32,6 +56,16 @@ public class FactorialSkill : MonoBehaviour
 
     void UnlockSkill()
     {
-        playerStats?.UnlockSkill(SkillType.PermutationPulse); // Grant player experience points
+        playerStats?.UnlockSkill(SkillType.FactorialEngine); // Grant player experience points
+        OnFactorialEngineAcquired();
+    }
+
+    public void OnFactorialEngineAcquired()
+    {
+        PopupText popup = Instantiate(
+            factorialEnginePopupTextPrefab,
+            transform.position + new Vector3(0, 1f, 0),
+            Quaternion.identity
+        );
     }
 }

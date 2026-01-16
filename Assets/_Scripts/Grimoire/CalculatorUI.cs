@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class CalculatorUI : MonoBehaviour
 {
+    public PlayerInventory playerInventory;
+
+
     [Header("Input Fields")]
     public TMP_InputField inputA;
     public TMP_InputField inputB;
@@ -11,7 +14,26 @@ public class CalculatorUI : MonoBehaviour
     [Header("Result")]
     public TMP_Text resultText;
     // public TMP_Text selectedOperationText;
+    public int calculationCost = 20; // Gold cost for calculation
+    private void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        // If player already exists when UI enables, connect immediately
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
+    }
 
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    private void HandlePlayerSpawned(GameObject playerObj)
+    {
+        playerInventory = playerObj.GetComponent<PlayerInventory>();
+    }
     private TMP_InputField activeInput;
 
     private enum Operation { None, Add, Sub, Mul, Div }
@@ -86,6 +108,12 @@ public class CalculatorUI : MonoBehaviour
             return;
         }
 
+        if (playerInventory.Gold < calculationCost)
+        {
+            resultText.text = "Not enough gold!";
+            return;
+        }
+
         float a, b;
 
         if (!float.TryParse(inputA.text, out a) ||
@@ -111,6 +139,7 @@ public class CalculatorUI : MonoBehaviour
                 result = a / b;
                 break;
         }
+        playerInventory.DeductGold(calculationCost);
 
         resultText.text = "Result: " + result;
     }
