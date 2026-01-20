@@ -5,24 +5,81 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "In a raffle draw, there are major and consolation prizes at stake. The first, the second, and the third prize winners are only entitled to the major prizes. Rose, Malou, and Shiena are hoping to win one of these prizes. \n",
+            "1. In how many ways can they are called winners? Is it important who will be called first? Why? \n",
+            "2. If they won the consolation prize wherein the prizes are the same, is it important who will be called first? Why?\n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions \n",
+            "1. The order of the names called is very important. If the first to be called is the third prize winner, therefore, there are lots of possible arrangements of winners; \n",
+            "Rose, Malou, Shiena - wherein Rose won the third prize, Malou won the second prize, and Shiena won the first prize. \n",
+            "Malou, Rose, Shiena - wherein Malou won the third prize, Rose won the second prize, and Shiena won the first prize. \n",
+            "Shiena, Malou, Rose - wherein Shiena won the third prize, Malou won the second prize and Rose won the first prize. \n",
+            "Following the ordered arrangement of the winners, what are the other arrangements that can be formed? The other arrangements are; \n",
+            "Rose, Shiena, Malou. \n",
+            "Malou, Shiena, Rose. \n",
+            "Shiena, Rose, Malou. \n",
+            "So there are 6 possible arrangement of winners. Since the arrangement of things in definite order is important, therefore, it is a Permutation. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions \n",
+            "2. For a consolation prize, the order of calling the names of the winners is not important since they have the same prize. Thus, \n",
+            "Rose, Malou, Shiena \\w \\w \\w Rose, Shiena, Malou. \n",
+            "Malou, Rose, Shiena \\w \\w \\w Malou, Shiena, Rose \n",
+            "Shiena, Malou, Rose \\w \\w \\w Shiena, Rose, Malou \n",
+            "is considered as one arrangement since it involves the same person and the same prizes. In this situation, the arrangement is not important, therefore, it is a Combination. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples \n",
+            "Determine if the following situations represent Permutation or Combination. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "A. Choosing 3 students from 10 students in a class who will represent the Math, Science, and English contests. \n",
+            "Solutions: \n",
+            "After the 3 students are chosen, each one of them will be assigned as a contestant in Math, Science, and English. Arrangement of the contestant is important thus, it is Permutation. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "B. Selecting 10 students from 25 students who auditioned to join the school's dance club. \n",
+            "Solutions: \n",
+            "The order of selecting the 10 students is not important as all of them will be members of the dance club. The arrangement is not important thus, it is a Combination. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "C. Choosing 12 songs from Spotify to be played at a birthday party. \n",
+            "Solutions: \n",
+            "After choosing the 12 songs from Spotify, they will be lined up for playing at a birthday party. The different line-ups are the different arrangements of songs. The arrangement is important thus, it is Permutation. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "D. Choosing 3 distinct flavors of ice cream from 6 flavors and placing them on an ice cream cone. \n",
+            "Solutions: \n",
+            "The order of the 3 ice cream flavors is not important as all the flavors will be put in the ice cream cone. The arrangement is not important thus, it is a Combination. \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

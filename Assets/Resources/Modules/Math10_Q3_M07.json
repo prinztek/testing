@@ -5,24 +5,63 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "Arnold, Bobby, Chris, Dan, and Emil are the best dancers in 10- Lapu Lapu. In how many ways can Mr. Santoyas select 2 out of his 5 best dancers in his class to represent in a competition? \n",
+            "In that case we have; \n",
+            "\\begin{tabular}{cccccc}",
+            "Arnold & Bobby Bobby & Arnold Chris & Arnold Dan & Arnold Emil & Arnold \\\\",
+            "Arnold & Chris Bobby & Chris Chris & Bobby Dan & Bobby Emil & Bobby \\\\",
+            "Arnold & Dan Bobby   & Dan Chris    & Dan Dan   & Chris Emil  & Chris \\\\",
+            "Arnold & Emil Bobby  & Emil Chris   & Emil Dan  & Emil Emil   & Dan \\\\",
+            "\\end{tabular} \n",
+            "So there are 20 possible ways, each of these 20 different possible selections is called permutation. In particular, they are called the permutations of five objects taken two at a time, and the number of such permutations possible is denoted by \n",
+            "5P2 = 20\n",
+            "What have you noticed about the selections; Arnold, Bobby and Bobby, Arnold? These selections cannot be considered distinct. And by eliminating such similar cases, only 10 different possible ways remain. \n",
+            " \\begin{tabular}{cccccc} \n",
+            " Arnold & Bobby Bobby & Arnold Chris & Arnold Dan & Arnold Emil & Arnold \\\\ \n",
+            " Arnold & Chris Bobby & Chris Chris  & Bobby Dan  & Bobby Emil  & Bobby \\\\ \n",
+            " Arnold & Dan Bobby   & Dan Chris    & Dan Dan    & Chris Emil  & Chris \\\\ \n",
+            " Arnold & Emil Bobby  & Emil Chris   & Emil Dan   & Emil Emil  & Dan \\\\ \n",
+            " \\end{tabular} \n",
+            "Based from the given problem, is the order of selecting two out of five best dancers important? \n",
+            "Since the order is not important, then Mr. Santoyas have 10 possible ways in selecting 2 from his five best dancers in his class to compete. This is an example of combination. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "What is a combination? \n",
+            "A combination is a mathematical technique that determines the number of possible arrangement in a collection of objects where the order of arrangement is not important. In combinations, you can select the items in any order. \n",
+            "In this kind of problem, we can use permutation. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples \n",
+            "Tell whether the given situation/task illustrates combination or not. If it is not, rephrase the situation/task to make it an illustration of combination. \n",
+            "1. A team of 8 basketball players needs to choose a captain and co-captain. \n",
+            "2. There are 45 applicants for three Computer Programmer Positions \n",
+            "3. Eight outfits chosen from fifteen outfits to be modelled. \n",
+            "4. Top three winners out of seven contestants in math quiz bee. \n",
+            "5. Five badminton players chosen from a group of nine. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions \n",
+            "1. Not combination, because there is an order of arrangement since the position captain is different from the co-captain. (A team of 8 basketball players needs to choose 2 leaders to guide the team.) \n",
+            "2. Combination, because you are just going to select 3 Computer Programmer Positions from the applicants, so the order is not important. \n",
+            "3. Combination, because you are just going to select 8 outfits from the given 15 sets of outfit. Still, the order is not important. \n",
+            "4. Not combination, because the top three winners can be rank as first, second, and third. So, order of arrangement is important. (Selecting the highest three out of seven contestants in math quiz bee.) \n",
+            "5. Combination, because you are just going to select 5 badminton players from a group of nine. Therefore, the order in selecting is not important. \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

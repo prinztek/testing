@@ -5,24 +5,121 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "Let's recall the problem in the previous lesson. How many three-letter combinations can be formed from the word MATH? \n",
+            "Recall that this was represented in combination notation as C(4,3) and there were 4 possible combinations. However, in permutation, there were 24 possible arrangements. Those arrangements are shown below. Notice that the set of the different combinations formed is the subset of the set of permutations. Each combination of three letters determine 3! = 6 permutations of the letters in the combination: \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Table of Combinations and Permutations of 3 letters from the word MATH \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Hence, the number of combinations multiplied by 3! gives the number of permutations: C(4,3) • 3! = P(4,3) , or equivalently,  \n",
+            "C(4,3) = \\frac{P(4,3)}{3!} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Why do we need to divide it by 3!? This is to count the arrangements of the same group as one since they are already counted in P(4,3). \n",
+            "Solving for C(n, r), gives you C(n,r) = \\frac{P(n,r)}{r!}. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Knowing that P(n,r) = \\frac{n!}{(n-r)!}, substitute this in the above equation and in so doing \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "we get C(n,r) = \\frac{\\frac{n!}{(n-r)!}}{(n-r)!} Multiplying numerator n!/(n-r)! by the reciprocal of the \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": ["denominator (\\frac{1}{r!}), then the equation becomes"]
+        },
+        {
+          "type": "Text",
+          "lines": ["C(n,r) = \\frac{n!}{r!(n-r)!}"]
+        },
+        {
+          "type": "Text",
+          "lines": ["Using the above formula to solve the problem,"]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "C(4,3) = \\frac{4!}{3!(4-3)!} = \\frac{4!}{3!1!} = \\frac{4x3!}{3!} = 4 \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. Evaluate the following combinations. \n",
+            "A. 9C6 \\: B. C(12, 8) \\: C. 4 • C(\\binom{20}{20}) \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions: \n",
+            "A. 9C6 = \\frac{9!}{6!(9-6)!} = \\frac{9!}{6!3!} = \\frac{9x8x7x6!}{6!3!} = \\frac{9x8x7}{3!} = \\frac{9x8x7}{3x2x1} = 84 \n",
+            "B. C(12, 8) = \\frac{12!}{8!(12-8)!} = \\frac{12!}{8!4!} = \\frac{12x11x10x9x8!}{8!4!} = \\frac{12x11x10x9}{4!} = \\frac{12x11x10x9}{4x3x2x1} = 495 \n",
+            "C. 4 • C(\\binom{20}{20}) = 4 • \\frac{20!}{20!(20-20)!} = 4 • \\frac{20!}{20!0!} = 4 • \\frac{20!}{20!(1)} = 4 • 1 = 4 \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. Find the unknown variable. \n",
+            "A. nC2 = 21 \\: B. C(11, r) = 330 \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions: \n",
+            "A. \n",
+            "\\frac{n!}{(n-2)! 2!} = 21 \n",
+            "\\frac{n(n-1)(n-2)!}{(n-2)! 2!} = 21 \n",
+            "\\frac{n(n-1)}{2!} = 21 \n",
+            "\\frac{n(n-1)}{2 • 1} = 21 \n",
+            "n(n-1) = 42 \n",
+            "n^2 - n = 42 \n",
+            "n^2 - n - 42 = 0 \n",
+            "(n - 7)(n + 6) = 0 \n",
+            "n = 7 \\: ; \\: n = -6 \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "There are 2 values of n and we will only consider n=7 since n= -6 is an extraneous root because factorial is a product of positive integers. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "B. \n",
+            "\\frac{11!}{(11-r)! r!} = 330 \n",
+            "\\frac{11!}{330} = (11 - r)! r! \n",
+            "\\frac{11 • 10 • 9 • 8 • 7 • 6 • 5 • 4 • 3 • 2 • 1}{11 • 10 • 3} = (11 - r)! r! \n",
+            "3 • 8 • 7! = (11 - r)! r! \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

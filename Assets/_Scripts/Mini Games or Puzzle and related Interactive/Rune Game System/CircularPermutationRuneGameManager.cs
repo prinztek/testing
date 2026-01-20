@@ -6,87 +6,153 @@ using UnityEngine.Events;
 public class CircularPermutationRuneGameManager : MonoBehaviour
 {
 
-    [Header("Rune Setup")]
-    public List<RuneSlot> runeSlots;
-    [Header("Condition Settings (optional)")]
-    [Tooltip("The rune that must appear in the first slot (leave empty if unused)")]
-    public string requiredFirstRune = "";
-    [Tooltip("The rune that must appear in the last slot (leave empty if unused)")]
-    public string requiredLastRune = "";
-    [Tooltip("The rune that must appear somewhere in the sequence (leave empty if unused)")]
-    public string requiredContainsRune = "";
-    [Tooltip("A rune that must appear at a specific slot (leave index -1 if unused)")]
-    public string requiredRuneAtIndex = "";
-    public int runeIndex = -1;
-    private string userSequence = ""; // holds the sequence submitted by the player
-
-    [Header("Events")]
-    public UnityEvent OnPuzzleSolved;
+    public List<RuneSlot> runeSlots; // Assign in Inspector
+    public List<string> correctSequences = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
+    // This will hold either a single sequence or multiple sequences
+    public List<string> userSequences = new List<string>(); // { "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" }
+    public bool isDistinct = false; // If true, only distinct sequences are considered correct
     public bool isSolved = false;
 
+    [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
+    public GameObject runesParentPanel;
+
+    private List<string> runes = new List<string>();
+
+    public Canvas runeGameCanvas; // Reference to the Rune Game Canvas
+
+    [Header("UI")]
+    [SerializeField] private CompletedPermutationsPanel completedPermutationsPanel;
+
+    public UnityEvent OnPuzzleSolved;
+    void Start()
+    {
+        runes.Clear();
+
+        if (runesParentPanel == null)
+        {
+            Debug.LogError("Runes Parent Panel is not assigned!");
+            return;
+        }
+
+        // Get all Rune components from children of the panel
+        Rune[] runeComponents = runesParentPanel.GetComponentsInChildren<Rune>();
+
+        foreach (var runeComp in runeComponents)
+        {
+            if (runeComp != null)
+                runes.Add(runeComp.runeID);
+        }
+
+        // Clear previous data
+        userSequences.Clear();
+    }
+
+
+
+    // ******************************************************************************
+    // Public methods to be called by UI buttons or other scripts
     public void OnSubmit()
     {
         if (isSolved)
-            return;
+            return; // Puzzle already solved, do nothing
 
-        if (!TryGetSequence()) // Verify all slots are filled
-            return;
-
-        if (IsValidSequence(userSequence))
+        if (!userSequences.Any())
         {
-            isSolved = true;
-            OnPuzzleSolved?.Invoke();
+            return;
+        }
+
+        bool isCorrect = CheckSequence();
+        if (isCorrect)
+        {
             Debug.Log("Correct sequence!");
+            // // runeGameCanvas.enabled = false; // Hide the rune game canvas
+            // UIManager.Instance.CloseActivePanel(); // Hide the rune game canvas through the UIManager
+            // stoneWall.Lift(); // Lift the stone wall
+
+            isSolved = true; // Mark puzzle as solved
+            OnPuzzleSolved?.Invoke();
         }
-        else
+
+        Debug.Log("Incorrect sequence.");
+    }
+    public void OnAddRuneSet()
+    {
+        if (isSolved)
         {
-            userSequence = "";
-            ResetSlots();
-            Debug.Log("Incorrect sequence. Try again.");
+            return;
         }
+
+        if (!CanAdd())
+        {
+            return;
+        }
+
+        string currentSequence = GetCurrentSequence();
+
+        // Prevent incomplete sequences
+        if (currentSequence.Contains("_"))
+            return;
+
+        // Prevent duplicates
+        // if (userSequences.Contains(currentSequence))
+        //     return;
+
+        userSequences.Add(currentSequence);
+
+        // Add a visual entry
+        completedPermutationsPanel.AddPermutation(currentSequence);
+
+        ResetSlots();
     }
 
-    // ---------------- VALIDATION ----------------
-
-    private bool IsValidSequence(string sequence)
+    public void OnClearLastRuneSet()
     {
-        // Check each condition if set
-        if (!string.IsNullOrEmpty(requiredFirstRune) && !sequence.StartsWith(requiredFirstRune))
-            return false;
-
-        if (!string.IsNullOrEmpty(requiredLastRune) && !sequence.EndsWith(requiredLastRune))
-            return false;
-
-        if (!string.IsNullOrEmpty(requiredContainsRune) && !sequence.Contains(requiredContainsRune))
-            return false;
-
-        if (!string.IsNullOrEmpty(requiredRuneAtIndex) && runeIndex >= 0) // 
+        if (isSolved)
         {
-            // if runeIndex is out of bounds or rune at index doesn't match
-            if (runeIndex >= sequence.Length || sequence[runeIndex].ToString() != requiredRuneAtIndex)
-                return false;
+            return;
         }
 
-        return true;
+        if (userSequences.Count == 0)
+            return;
+
+        // Remove the last added sequence
+        int lastIndex = userSequences.Count - 1;
+        string lastSequence = userSequences[lastIndex];
+        userSequences.RemoveAt(lastIndex);
+
+        // Remove visual entry
+        completedPermutationsPanel.RemoveLastPermutation();
     }
 
-
-    // ---------------- HELPERS ----------------
-
-    bool TryGetSequence()
+    public string GetCurrentSequence()
     {
-        userSequence = "";
+        string sequence = "";
+        foreach (var slot in runeSlots)
+        {
+            if (slot.placedRune != null)
+                sequence += slot.placedRune.runeID;
+            else
+                sequence += "_"; // Empty placeholder
+        }
+        return sequence;
+    }
+
+    bool CanAdd()
+    {
+        HashSet<Rune> usedRunes = new HashSet<Rune>();
 
         foreach (var slot in runeSlots)
         {
             if (slot.placedRune == null)
                 return false;
-            Debug.Log("Slot empty: " + slot.name);
-            userSequence += slot.placedRune.runeID;
+
+            if (!usedRunes.Add(slot.placedRune))
+                return false; // duplicate rune
         }
 
         return true;
     }
+
 
     public void ResetSlots()
     {
@@ -103,6 +169,37 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
                 slot.placedRune = null;
             }
         }
+    }
+    public bool CheckSequence()
+    {
+        // The player has submitted the correct number of sequences
+        if (userSequences.Count != correctSequences.Count)
+        {
+            // Not enough sequences submitted yet
+            return false;
+        }
+
+        // Check that every correct sequence is included in the user's submissions
+        foreach (var correctSeq in correctSequences)
+        {
+            if (!userSequences.Contains(correctSeq))
+            {
+                // The user is missing at least one required sequence
+                return false;
+            }
+        }
+
+        // Step 3: double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
+        foreach (var userSeq in userSequences)
+        {
+            if (!correctSequences.Contains(userSeq))
+            {
+                // The user submitted an invalid sequence
+                return false;
+            }
+        }
+
+        return true; // The user submitted all sequences correctly
     }
 }
 

@@ -5,24 +5,85 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "Consider the letters from the word MATH. How many three-letter combinations can be formed? \n",
+            "If order of the letters is important, then we have the following possible arrangements: \n",
+            "The number of different arrangements of 4 letters taken 3 at a time is shown by the Permutation notation, \n",
+            "P(4,3) = \\frac{4!}{(4-3)!} = 24 \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "There are 24 three-letter arrangements. But in combination, the arrangement is not important. Looking at each column, there are 6 arrangements with the same letters and each column is considered as one combination. These groups are \n",
+            "(M,A,T), (A,T,H), (M,T,H), (M,A,H) \n",
+            "so there are 4 possible combinations. The number of combination that may be formed from n objects taken r at a time is denoted by the following notations andread as, the combination of n taken r at a time: \n",
+            "nCr C(n,r) C\\binom{n}{r} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Note that there are 4 letters (M,A,T, H) -> n = 4 \n",
+            "There are 3 selected letters at a time -> r = 3 \n",
+            "Thus, the combination of 4 letters taken 3 at a time is denoted by, \n",
+            "4C3 or C(4,3) C\\binom{4}{3} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples \n",
+            "Write the following problems in combination notation. \n",
+            "1. Ten finalists are to be chosen from 30 contestants in a Math interschool competition. In how many ways can the 10 finalists be proclaimed? \n",
+            "2. How many lines can be formed from 12 distinct points if no three points are collinear? \n",
+            "3. A photography club is made up of 8 boys and 6 girls. A committee of 7 has to be formed for the documentation of the World Teachers' Day program. In how many ways this can be done if the committee consists of: \n",
+            "a. 4 boys and 3 girls? \n",
+            "b. at least 5 girls? \n",
+            "c. at most 2 girls? \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions: \n",
+            "1. if n = 30 contestants and r = 10 contestants at a time then, 30C10. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. if n = 12 points and r = 2 points (to determine a line) then, 12C2. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. a. for boys, n = 8 r = 4 for girls, n = 6 r = 3 \n",
+            "The number of groups of 4 boys that can be formed from 8 boys is 8C4. \n",
+            "Similarly, the number of 3 girls that can be formed from 6 girls is 6C3. \n",
+            "Using the fundamental principle of counting since the two events must occur at the same time, we have 8C4 ● 6C3 or C(8, 4) ● C(6, 3). \n",
+            "b. Since at least 5 girls are to be there in every committee, the committee can consist of 5 girls and 2 boys or 6 girls and 1 boy. \n",
+            "5 girls and 2 boys can be formed in 6C5 ● 8C2 ways \n",
+            "6 girls and 1 boy can be formed in 6C6 ● 8C1 ways \n",
+            "Now, either the two ways can satisfy the condition, we add the number of ways in those events, hence \n",
+            "6C5 ● 8C2 + 6C6 ● 8C1 \n",
+            "You may also write the notation as \n",
+            "C(6,5) ● C(8,2) + C(6,6) ● C(8,1) \n",
+            "c. In at most 2 girls means that girls are less than or equal to 2. The committee can consist of \n",
+            "2 girls and 5 boys that can be formed in C(6,2) ● C(8,5) ways \n",
+            "1 girl and 6 boys that can be formed in C(6,1) ● C(8,6) ways \n",
+            "No girl and 7 boys that can be formed in C(6,0) ● C(8,7) ways \n",
+            "Either of these ways can satisfy the condition, therefore, the number of ways is the sum of those events. Thus, \n",
+            "6C2 ● 8C5 + 6C1 ● 8C6 + 6C0 ● 8C7  \n",
+            "You may also write the combination notation as, \n",
+            "C(6,2) ● C(8,5) + C(6,1) ● C(8,6) + C(6,0) ● C(8,7) \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }
