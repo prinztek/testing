@@ -17,16 +17,14 @@ public static class MathQuestionLoaderJSON
         if (jsonFile != null)
         {
             database = JsonUtility.FromJson<MathQuestionDatabaseJSON>(jsonFile.text);
-            // Debug.Log("📘 Loaded " + database.questions.Length + " math questions.");
         }
         else
         {
-            // Debug.LogError("❌ MathQuestions.json not found in Resources!");
             database = new MathQuestionDatabaseJSON { questions = new MathQuestionJSON[0] };
         }
     }
 
-    // returns List<MathQuestion> and accepts usedIds
+    // returns List<MathQuestion> including usedIds
     public static List<MathQuestion> Load(MathTopic topic, QuestionDifficulty difficulty, HashSet<int> usedIds = null)
     {
         EnsureDatabaseLoaded();
@@ -34,7 +32,7 @@ public static class MathQuestionLoaderJSON
         var filtered = database.questions
             .Where(q => q.type.Equals(topic.ToString(), System.StringComparison.OrdinalIgnoreCase))
             .Where(q => q.difficulty.Equals(difficulty.ToString(), System.StringComparison.OrdinalIgnoreCase))
-            .Where(q => usedIds == null || !usedIds.Contains(q.id)) // 🔹 Skip answered ones
+            .Where(q => usedIds == null || !usedIds.Contains(q.id)) // Skip answered ones
             .ToList();
 
         var rng = new System.Random();
@@ -58,12 +56,26 @@ public static class MathQuestionLoaderJSON
         var filtered = database.questions
             .Where(q => q.type.Equals(topic.ToString(), System.StringComparison.OrdinalIgnoreCase))
             .ToList();
-        var rng = new System.Random();
-        filtered = filtered.OrderBy(q => rng.Next()).ToList();
 
+        // Print before returning
+        foreach (var item in filtered)
+        {
+            Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
+        }
 
+        // Convert to MathQuestion objects and send
         return filtered
-            .Select(q => new MathQuestion(q.id, topic, Enum.Parse<QuestionDifficulty>(q.difficulty, true), q.questionString, q.answer, q.hints))
+            .Select(q => new MathQuestion(
+                q.id,
+                topic,
+                Enum.TryParse(q.difficulty, out QuestionDifficulty diff)
+                    ? diff
+                    : QuestionDifficulty.Easy,
+                q.questionString,
+                q.answer,
+                q.hints
+            ))
+            .OrderBy(q => q.difficulty) // sort by difficulty
             .ToList();
     }
 
@@ -76,25 +88,19 @@ public static class MathQuestionLoaderJSON
             .Where(q => usedIds == null || !usedIds.Contains(q.id))
             .ToList();
 
-        // Print before returning
-        // foreach (var item in filtered)
-        // {
-        //     Debug.Log($"ID:{item.id}, Topic:{item.type}, Difficulty:{item.difficulty}, Question:{item.questionString}, Answer:{item.answer}");
-        // }
-
-        // Convert to MathQuestion objects
+        // Convert to MathQuestion objects and send
         return filtered
             .Select(q => new MathQuestion(
                 q.id,
                 topic,
-                Enum.TryParse(q.difficulty, out QuestionDifficulty diff) ? diff : QuestionDifficulty.Easy,
+                Enum.TryParse(q.difficulty, out QuestionDifficulty diff)
+                    ? diff
+                    : QuestionDifficulty.Easy,
                 q.questionString,
                 q.answer,
                 q.hints
             ))
+            .OrderBy(q => q.difficulty) // sort by difficulty
             .ToList();
     }
-
-
-
 }

@@ -9,62 +9,77 @@
         {
           "type": "Text",
           "lines": [
-            "Let's recall the problem in the previous lesson. How many three-letter combinations can be formed from the word MATH? \n",
-            "Recall that this was represented in combination notation as C(4,3) and there were 4 possible combinations. However, in permutation, there were 24 possible arrangements. Those arrangements are shown below. Notice that the set of the different combinations formed is the subset of the set of permutations. Each combination of three letters determine 3! = 6 permutations of the letters in the combination: \n"
+            "In the previous self-learning modules, we learned about the definition of permutation and combination and when to use it. In this lesson, your understanding of the topic will be deepened. You will apply your prior knowledge in solving problems involving permutations and combinations. Enough examples and exercises are presented to facilitate learning."
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "Table of Combinations and Permutations of 3 letters from the word MATH \n"
+            "Example 1: \n",
+            "How many different possible permutations can be made from the word 'CIRCLE' such that the vowels will never be together? \n",
+            "Solution: \n",
+            "'CIRCLE' contains 6 letters of which 1 letter occurs twice, hence, \n",
+            "P = \\frac{6!}{2!} = 360 ways \n",
+            "While the number of possible ways with vowels always together is; \n",
+            "P = \\frac{5!x2!}{2!} = 120 ways \n",
+            "Thus, the number of possible ways that the vowels will never be together is; \n",
+            "P = 360 - 120 = 240 ways \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "Hence, the number of combinations multiplied by 3! gives the number of permutations: C(4,3) • 3! = P(4,3) , or equivalently,  \n",
-            "C(4,3) = \\frac{P(4,3)}{3!} \n"
+            "Example 1: \n",
+            "In a meeting, it is required to seat 4 women and 5 men in a row so that the women\noccupy the even places. How many arrangements are possible? \n",
+            "Solution: \n",
+            "The total number of places is 9. \n",
+            "The even places are 2nd, 4th, 6th, 8th. \n",
+            "The 4 women can be arranged occupying even places in P (4, 4) = 24 ways. \n",
+            "Five men can be arranged on the remaining 5 places in P (5, 5) = 120 ways. \n",
+            "Therefore, the numbers of arrangements are, \n",
+            "P (4, 4) • P(5,5) \n",
+            "24 • 120 = 2,880 ways \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "Why do we need to divide it by 3!? This is to count the arrangements of the same group as one since they are already counted in P(4,3). \n",
-            "Solving for C(n, r), gives you C(n,r) = \\frac{P(n,r)}{r!}. \n"
+            "Example 3: \n",
+            "In a playground, 3 brothers and 7 other boys are playing together. How many ways can all the boys be seated in a circular order so that none of the three brothers are seated together? \n",
+            "Solution: \n",
+            "The number of ways to arrange 11 boys in a circular manner without restriction is; \n",
+            "(10-1)! = 9! \n",
+            "The number of ways to arrange the boys where the 3 brothers are seated beside each other is;  \n",
+            "7P7 (other boys) • 3P3 (3 brothers) \n",
+            "Hence, the numbers of ways to arrange if none of the 3 brothers are seated together are; \n",
+            "9! - ( 7P7 • 3P3) \n",
+            "362,880 - 30,240 = 332,640 ways \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "Knowing that P(n,r) = \\frac{n!}{(n-r)!}, substitute this in the above equation and in so doing \n"
+            "Example 4: \n",
+            "In how many ways can 4 yellow beads, 5 red beads, and 4 green beads be arranged\non a bracelet without a lock if the only difference in beads is color? \n",
+            "Solution: \n",
+            "The beads of the same color are identical, therefore, \n",
+            "P = \\frac{(13-1)!}{2 x 4! 5! 4!} = 3,645 ways \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "we get C(n,r) = \\frac{\\frac{n!}{(n-r)!}}{(n-r)!} Multiplying numerator n!/(n-r)! by the reciprocal of the \n"
-          ]
-        },
-        {
-          "type": "Text",
-          "lines": ["denominator (\\frac{1}{r!}), then the equation becomes"]
-        },
-        {
-          "type": "Text",
-          "lines": ["C(n,r) = \\frac{n!}{r!(n-r)!}"]
-        },
-        {
-          "type": "Text",
-          "lines": ["C(n,r) = \\frac{n!}{r!(n-r)!}"]
-        },
-        {
-          "type": "Text",
-          "lines": ["Using the above formula to solve the problem,"]
-        },
-        {
-          "type": "Text",
-          "lines": [
-            "C(4,3) = \\frac{4!}{3!(4-3)!} = \\frac{4!}{3!1!} = \\frac{4x3!}{3!} = 4 \n"
+            "Example 5: \n",
+            "How many polygons can be possibly formed from 5 distinct points on a plane, such\nthat no three points are collinear? \n",
+            "Solution: \n",
+            "The polygons may have 3, 4, or 5 vertices. These polygons are triangle, quadrilateral, and pentagon. Thus, the number of possible polygons, (N). \n",
+            "P = \\frac{(13-1)!}{2 x 4! 5! 4!} = 3,645 ways \n",
+            "\\begin{align} \n",
+            "N &= _5C_3 + _5C_4 + _5C_5 \\\n",
+            "N &= 10 + 5 + 1 \\\n",
+            "N &= 16 \n",
+            "\\end{align}\n",
+            "So, there are 16 polygons that can be possibly formed. \n"
           ]
         }
       ]
