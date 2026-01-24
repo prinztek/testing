@@ -28,11 +28,13 @@ public class AttackHitbox : MonoBehaviour
         EnemyStatsNew enemy = other.GetComponentInParent<EnemyStatsNew>();
         AncientBoss ancientBoss = other.GetComponentInParent<AncientBoss>();
         Boss2 boss = other.GetComponentInParent<Boss2>();
+        DestroyableBlock destroyableBlock = other.GetComponentInParent<DestroyableBlock>();
 
         // If already hit, skip
         if ((enemy != null && alreadyHit.Contains(enemy)) ||
             (ancientBoss != null && alreadyHit.Contains(ancientBoss)) ||
-            (boss != null && alreadyHit.Contains(boss)))
+            (boss != null && alreadyHit.Contains(boss)) ||
+            (destroyableBlock != null && alreadyHit.Contains(destroyableBlock)))
         {
             return;
         }
@@ -60,6 +62,11 @@ public class AttackHitbox : MonoBehaviour
         {
             ancientBoss.TakeDamage(damage, hitPosition, doScreenShake: true);
             alreadyHit.Add(ancientBoss);
+        }
+
+        if (destroyableBlock != null)
+        {
+            destroyableBlock.TakeDamage(damage);
         }
     }
 }

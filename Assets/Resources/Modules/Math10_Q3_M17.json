@@ -5,24 +5,108 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "In this lesson we will learn if one event affects another event and how to find its probability. But first try to answer this activity. \n",
+            "Directions: State whether the result of the first event affects the result of the second event. \n",
+            "\\quad 1. Studying hard, getting a high grade \n",
+            "\\quad 2. Eating a lot, gaining weight \n",
+            "\\quad 3. Playing computer games, submitting all assignments and projects on time. \n",
+            "\\quad 4. Tossing a coin, rolling a die \n",
+            "\\quad 5. Attending a singing lesson, raining today \n",
+            "Sometimes the result of one event affects the probability of the second event like numbers 1 to 3. However, tossing a coin does not affect rolling a die as well as attending a singing lesson does not affect the probability of raining or not. When a first event affects the probability of a second event, the events are said to be dependent, while when the first event does not affect the probability of the second, the events are independent. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. Tell whether the events are independent or dependent. Explain. \n",
+            "\\quad a. You flip heads on one coin and tails on another coin. \n",
+            "Answer: The outcome of flipping one coin does not affect the outcome of flipping the other coin. So, the events are independent. \n",
+            "\\quad b. Your teacher chooses one student to lead a group, and then chooses another student to lead another group. \n",
+            "Answer: The teacher cannot pick the same student to lead both groups. So, there are fewer students to choose from when the leader of the second group is chosen. So, the events are dependent. \n",
+            "\\quad c. Select three cards, one at a time, from a standard poker deck. \n",
+            "Answer: When you select a card for the first time you have 52 choices, but for the second time there will only be 51 left, then for the third time there will be 50 left and so the word one at a time indicates dependent events, because the first choice affects the second choice and so on. \n",
+            "Let us consider problems that involve independent and dependent events \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. There are two red balls, 4 yellow balls, and 1 blue ball in a box. Two balls are drawn randomly one by one with replacement. Find the probabilities of the following events happening. \n",
+            "\\quad a. Two yellow balls are drawn. \n",
+            "\\quad b. The two balls drawn are not yellow \n",
+            "\\quad c. Only one yellow ball is drawn \n",
+            "\\quad d. At least one ball drawn is not yellow \n",
+            "\\quad e. The two balls drawn are of the same color \n",
+            "Solutions: \n",
+            "\\quad a. Since the balls are drawn one by one with replacement this is an example of independent events and to get the probability of independent events P(yellow and yellow) = P(yellow) ∙ P(yellow). The probability of getting yellow first is \\frac{4}{7} since there were 4 yellow balls and 7 balls in all, the probability of getting yellow for the second time is \\frac{4}{7} since replacement was made after getting the first ball, so there were still 4 yellow balls and 7 balls in all. Therefore the P(yellow, yellow) = \\frac{4}{7} x \\frac{4}{7} = \\frac{16}{49}. \n",
+            "\\quad b. There were 3 colors which is not yellow, and 7 colors in all. \n",
+            "\\quad Therefore, \n",
+            "\\quad \\begin{align} \n",
+            "\\quad P(not yellow, not yellow) &= P(not yellow) ∙ P(not yellow) \n",
+            "\\quad &= \\frac{3}{7} ∙ \\frac{3}{7} = \\frac{9}{49} \n",
+            "\\quad \\end{align} \n",
+            "\\quad c. If only yellow ball is drawn, then we can have P(yellow, not yellow) being yellow first or P(not yellow, yellow) being not yellow first, so we will have \n",
+            "\\quad Therefore, \n",
+            "\\quad \\begin{align} \n",
+            "\\quad P(yellow, not yellow) + P(not yellow, yellow) &= \\frac{4}{7} ∙ \\frac{3}{7} + \\frac{3}{7} ∙ \\frac{4}{7}  \n",
+            "\\quad &= \\frac{12}{49} + \\frac{12}{49} \n",
+            "\\quad &= \\frac{24}{49} \n",
+            "\\quad \\end{align} \n",
+            "\\quad d. At least one ball drawn is yellow means P(yellow, not yellow) or P(not yellow, yellow) having one yellow or P(yellow, yellow) having two yellows. So we will have it equal to; \n",
+            "\\quad \\begin{align} \n",
+            "\\quad &= \\frac{4}{7} ∙ \\frac{3}{7} + \\frac{3}{7} ∙ \\frac{4}{7} + \\frac{4}{7} ∙ \\frac{4}{7}  \n",
+            "\\quad &= \\frac{12}{49} + \\frac{12}{49} + \\frac{16}{49}  \n",
+            "\\quad &= \\frac{40}{49} \n",
+            "\\quad \\end{align} \n",
+            "\\quad Another solution is the use of complement. The complement of at least one ball drawn is yellow is getting no yellow ball. So P(not yellow, not yellow) = \\frac{3}{7} ∙ \\frac{3}{7} = \\frac{9}{49} , it is the complement of getting at least one yellow ball we need to subtract it form 1. So we will have; \n",
+            "\\quad \\begin{align} \n",
+            "\\quad &= 1 - \\frac{9}{49}\n",
+            "\\quad &= \\frac{40}{49} \n",
+            "\\quad \\end{align} \n",
+            "\\quad which the same as the first answer. We can always use the complement if the word at least one was used in the problem. \n",
+            "\\quad c. If two balls drawn are of the same color we will have P(yellow, yellow) or P(red, red) we can't get same blue since there is only one blue. Hence we will have it \n",
+            "\\quad \\begin{align} \n",
+            "\\quad &= \\frac{4}{7} ∙ \\frac{4}{7} + \\frac{2}{7} ∙ \\frac{2}{7} \n",
+            "\\quad &= \\frac{16}{49} + \\frac{4}{49} \n",
+            "\\quad &= \\frac{20}{49} \n",
+            "\\quad \\end{align} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. Three cards are chosen at random from a deck of 52 cards without replacement. What is the probability of choosing a king, a queen, and an ace in order?  \n",
+            "Solution: \n",
+            "Since this is choosing a card without replacement and in order also means one at a time, this is an example of dependent events. To get the probability of dependent events in this example; \n",
+            "P(king, queen, ace) = P(king) ∙ P(queen after king) ∙ P(ace after queen) \n",
+            "First let us solve the following; \n",
+            "P(King)= \\frac{4}{52} since there were 4 kings and 52 cards in all  \n",
+            "P(queen after king) = \\frac{4}{51} since there were 4 queens and only 51 cards left after getting the first card which is the king. \n",
+            "P(ace after the queen) = \\frac{4}{50} since there were 4 aces and only 50 cards were left after getting the king as the first card and the queen as the second card.\n",
+            "Going back to the formula, substitute each value, we will have; \n",
+            "\\begin{align} \n",
+            "P(king, queen, ace) &= P(king) ∙ P(queen after king) ∙ P(ace after queen) \n",
+            "&= \\frac{4}{52} ∙ \\frac{4}{51} ∙ \\frac{4}{50}  \n",
+            "&= \\frac{4^3}{P(52, 3)} ∙ \\frac{4}{51} ∙ \\frac{4}{50} \n",
+            "&= \\frac{64}{132600}  \n",
+            "&= \\frac{8}{16575}  \n",
+            "\\end{align} \n",
+            "What if order is not necessary? How will you solve for it? If order is not necessary it also means you will get the item at the same time. That will involve combination. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Two events are independent if the occurrence of one of the events gives no information about whether or not the other event will occur; that is the events have no influence on each other. If two events A and B, are independent, then the probability of both events occurring is the product of the probability of A and the probability of b. In symbols, P(A and B) = P(A) ∙ P(B). \n",
+            "When the outcome of one event affects the outcome of another event, they are dependent events. If two events, A and B, are dependent, then the probability of both events occurring is the product of the probability of A and the probability of B after A occurs. In symbols, P(A and B) = P(A) ∙ P(B after A). \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

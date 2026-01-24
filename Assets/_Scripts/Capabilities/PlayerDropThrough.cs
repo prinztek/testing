@@ -30,22 +30,50 @@ public class PlayerDropThrough : MonoBehaviour
         }
     }
 
+    // public IEnumerator Drop()
+    // {
+    //     Debug.Log("Dropping Down");
+    //     dropping = true;
+
+    //     Collider2D platformCol = ground.OneWayPlatformCollider;
+    //     if (platformCol == null)
+    //     {
+    //         dropping = false;
+    //         yield break;
+    //     }
+
+    //     Physics2D.IgnoreCollision(platformCol, col, true);
+    //     // Wait for a short time in seconds
+    //     yield return new WaitForSeconds(dropDisableTime);
+    //     Physics2D.IgnoreCollision(platformCol, col, false);
+    //     dropping = false;
+    // }
+
     public IEnumerator Drop()
     {
-        Debug.Log("Dropping Down");
         dropping = true;
 
-        Collider2D platformCol = ground.OneWayPlatformCollider;
-        if (platformCol == null)
+        PlatformEffector2D effector = ground.OneWayEffector;
+        if (effector == null)
         {
             dropping = false;
             yield break;
         }
 
-        Physics2D.IgnoreCollision(platformCol, col, true);
-        // Wait for a short time in seconds
+        // Disable one-way behavior
+        effector.enabled = false;
+
+        // Small downward push helps guarantee separation
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, -1f);
+        }
+
         yield return new WaitForSeconds(dropDisableTime);
-        Physics2D.IgnoreCollision(platformCol, col, false);
+
+        effector.enabled = true;
         dropping = false;
     }
+
 }
