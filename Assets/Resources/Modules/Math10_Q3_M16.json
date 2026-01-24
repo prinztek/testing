@@ -5,24 +5,59 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "In this lesson, we will apply all that you have learned in Combinatorics as well as in Probability. You will learn here that Permutations and Combinations can be used in solving problems that involve Probabilities. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. In a lottery three numbers are chosen from 0 to 9. You win if the three numbers you pick match the three numbers selected by the lottery machine. \n",
+            "\\quad a. What is the probability of winning this lottery if the number cannot be repeated? \n",
+            "\\quad b. What is the probability of winning this lottery if the numbers can be repeated \n",
+            "\\quad What is the probability of winning this lottery if you must watch the exact order that the lottery machine picked the numbers? \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "\\quad Solutions: \n",
+            "a. If the number cannot be repeated, we choose 3 out of 10 numbers, and order doesn't matter, we will use _10C_3 which is equal to 120. Since there is only one winning number the probability will be \\frac{1}{120} \n",
+            "b. If the numbers can be repeated we will use 103, thus the probability is \\frac{1}{1000}. \n",
+            "c. If you must watch the exact order we will use 10P3, thus the probability \\frac{1}{720}. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. Rose has the options of selecting 3 novels for a literature course. The book list consists of 10 classics and 5 contemporary novels. Find the probability that all novels selected will be contemporary novels. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "\\quad Solutions: \n",
+            "To select three from five contemporary novels we find _5C_3 which is equal to 10. Since Rose has to select three novels from fifteen novels in the list, the total number of outcomes in the sample space is given by _{15}C_3 which is equal to 455, therefore the probability that all novels selected will be contemporary novels is \\frac{10}{455} = \\frac{2}{91} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. A combination lock shows 10 digits. Find the probability that if the combination to unlock the lock consists of three digits, it will contain the digits 1, 2, and 3. Repetitions are not permitted. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "\\quad Solutions: \n",
+            "The number of ways 1, 2, and 3 can be used is 3P3, which is equal to 6, and the number of ways to select 3 digits from 10 digits in order is 10P3 which is equal to 720. Hence the probability of selecting 1, 2, and 3 in any order is \\frac{6}{720} = \\frac{1}{720} \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

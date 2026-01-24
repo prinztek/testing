@@ -5,24 +5,119 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "Bobby and Chris are playing a scrabble game. To determine who will play first, they decided to roll a die. Whoever gets the higher number will put the word first. Both players roll a die, and Bobby rolls a 4. What is the probability that Chris will play first? \n",
+            "From the situation presented, let us find P(E) where E is the event that “the die shows either 5 or 6”. \n",
+            "Let A be the event that the die shows a 5.\n",
+            "Let B be the event that the die shows a 6.\n",
+            "What is the probability of A?\n",
+            "What is the probability of B?\n",
+            "What is the probability of A and B? A or B?",
+            "The probability of A is \\frac{1}{6} since there is only one 5 in the sample space of die, same with the probability of 6 since there is only one 6 in the sample of a die. \n",
+            "How about the probability of A and B? A or B? When the events connected by the conjunctions and or or, the events A and B are said to be a compound event.",
+            "A compound event consists of two or more simple events that are connected by conjunctions and or or. \n",
+            "The probability of two events is found by adding the probability of each event. \n",
+            "P(A or B) = P(A \\cup B) = P(A) + P(B) \n",
+            "If A and B are events in the same sample space, then the probability of A or B occurring is: \n",
+            "P(A or B) = P(A \\cup B) = P(A) + P(B) - P(A \\cap B) \n",
+            "If A and B is an empty set, then the probability of A or B occurring is: \n",
+            "P(A or B) = P(A \\cup B) = P(A) + P(B) \n",
+            "So, from the situation the probability that “the die shows either 5 or 6” is: \n",
+            "\\begin{align} \n",
+            "P(A or B) = P(A \\cup B) &= \\frac{1}{6} + \\frac{1}{6} \n",
+            "&= \\frac{2}{6} or \\frac{1}{3} \n",
+            "\\end{align} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. A card is drawn at random from a standard deck of 52 playing cards. Find the probability that the card is \n",
+            "a) An Ace or a King \n",
+            "b) A heart or a queen \n",
+            "c) Neither a King nor a Queen \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solution: \n",
+            "\\begin{align} \n",
+            "a) P(Ace or King) &= P(Ace) + P(King) \n",
+            "&= \\frac{4}{52} + \\frac{4}{52} \n",
+            "&= \\frac{1}{13} = \\frac{1}{13} \n",
+            "&= \\frac{2}{13} \n",
+            "\\end{align} \n",
+            "\\begin{align} \n",
+            "P(heart or queen) &= P(heart) + P(queen) - P(heart \\cap queen) \n",
+            "&= \\frac{13}{52} + \\frac{4}{52} - \\frac{1}{52} \n",
+            "&= \\frac{17}{52} - \\frac{1}{52}\n",
+            "&= \\frac{16}{52} or \\frac{4}{13}\n",
+            "\\end{align} \n",
+            "\\begin{align} \n",
+            "\\quad \\u2234 P(neither King nor Queen) &= 1 - P(King or Queen) \n",
+            "&= 1 - \\frac{2}{13} \n",
+            "&= \\frac{11}{13} \n",
+            "\\end{align} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. The probabilities of three teams, A, B, and C winning a volleyball competition are \\frac{1}{4}, \\frac{1}{8}, and \\frac{1}{10} respectively. Assuming only one team can win, calculate the probability that; \n",
+            "a) either A or B wins \n",
+            "b) neither A nor C wins \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solution: \n",
+            "\\begin{align} \n",
+            "a) P(A or B wins) &= P(A wins) + P(B wins) \n",
+            "&= \\frac{1}{4} + \\frac{1}{8} \n",
+            "&= \\frac{2+1}{8} \n",
+            "&= \\frac{3}{8} \n",
+            "\\end{align} \n",
+            "\\begin{align} \n",
+            "b) P(A or C wins) &= P(A wins) + P(C wins) \n",
+            "&= \\frac{1}{4} + \\frac{1}{10} \n",
+            "&= \\frac{5+2}{20} \n",
+            "&= \\frac{7}{20} \n",
+            "\\end{align} \n",
+            "\\begin{align} \n",
+            "Therefore, P(neither A or C wins) &= 1 - P(L or N wins) \n",
+            "&= 1 - \\frac{7}{20} \n",
+            "&= \\frac{13}{20} \n",
+            "\\end{align} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. If there is a 30% chance of rain on Saturday, a 70% chance of rain on Sunday, and a 21% chance of rain on Saturday and Sunday, what is the probability that it will rain on either Saturday or Sunday? \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solution: \n",
+            "P(Saturday) = 0.30 and P(Sunday) = 0.70 \n",
+            "P(Sat and Sun) = 0.21 \n",
+            "\\begin{align} \n",
+            "P(Sat or Sun) &= P(Sat) + P(Sun) - P(Sat and Sun) \n",
+            "&= 0.30 + 0.70 - 0.21 \n",
+            "&= 1.00 - 0.21 \n",
+            "&= 0.79 or 79% \n",
+            "\\end{align} \n",
+            "Therefore, the probability that it will rain during the weekend is 79%. \n"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }

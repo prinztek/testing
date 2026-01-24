@@ -161,6 +161,30 @@ public static class JSONSaveSystem
         return new GameData(profileId);
     }
 
+    public static GameData DeleteSlot(string profileId)
+    {
+        // base case - if the profile id is null, return right away
+        if (profileId == null)
+        {
+            return null;
+        }
+
+        string folderPath = Path.Combine(Application.persistentDataPath, profileId);
+        string fullPath = Path.Combine(folderPath, "game_data.json");
+
+        if (File.Exists(fullPath))
+        {
+            File.Delete(fullPath);
+            Debug.Log($"Deleted save for profile '{profileId}' at: {fullPath}");
+        }
+        else
+        {
+            Debug.LogWarning($"No save found for profile '{profileId}' to delete.");
+        }
+
+        return new GameData(profileId);
+    }
+
 
     // ========================================================================================
     //          MULTIPLE SAVE SLOTS

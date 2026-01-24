@@ -39,6 +39,13 @@ public class EnemyStatsNew : MonoBehaviour
     private bool isInvincible = false;
     private bool isDead = false;
 
+    [Header("Stats Modifiers")]
+    public float tempDamageMultiplier = 1f;
+    public int shieldHitsRemaining = 0;
+    public float moveSpeedMultiplier = 1f;
+    public float attackSpeedMultiplier = 1f;
+    public int guaranteedCrits = 0;
+
     // Use Action for health change instead of UnityEvent
     public System.Action<int> OnHealthChanged; // Delegate to notify health changes
 

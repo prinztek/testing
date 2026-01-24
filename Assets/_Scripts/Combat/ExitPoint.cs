@@ -33,8 +33,6 @@ public class ExitPoint : MonoBehaviour
     {
         unlocked = true;
         visual.color = unlockedColor;
-        // Debug.Log("🚪 Exit unlocked!");
-        // Debug.Log("🟢 Exit turned green");
     }
 
     private void SetLocked()

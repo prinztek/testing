@@ -31,6 +31,7 @@ public enum LessonContentType
 {
     Text,
     Image
+    // Image Max width: 105px
     // Interactive Objects (future)
 }
 

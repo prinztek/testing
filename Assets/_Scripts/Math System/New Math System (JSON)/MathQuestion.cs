@@ -10,7 +10,14 @@ public enum MathTopic
     Permutation_vs_Combination,
     Combination_Notation,
     Evaluating_Combination_Notation,
-    Problem_Solving_on_Permutation_and_Combination
+    Problem_Solving_on_Permutation_and_Combination,
+    Union_and_Intersection_of_Events,
+    Simple_Probability,
+    Probability_of_Two_Events,
+    Mutually_Exclusive_Events,
+    Probability_Using_Permutations_and_Combinations,
+    Probability_of_Independent_and_Dependent_Events,
+    Conditional_Probability
 }
 public enum QuestionDifficulty { Easy = 1, Medium = 2, Hard = 3 }
 

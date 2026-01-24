@@ -5,24 +5,160 @@
   "description": "",
   "lesson": [
     {
-      "heading": "What is a Permutation?",
-      "text": "A permutation is an ordered arrangement of objects. Changing the order creates a new arrangement."
-    },
-    {
-      "heading": "Why Order Matters",
-      "text": "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements."
-    },
-    {
-      "heading": "Types of Conditions",
-      "bullets": [
-        "Case 1: An element must be in a specific position (e.g., Bobby must be first).",
-        "Case 2: Two or more elements must be together (e.g., friends sit side by side).",
-        "Case 3: Two or more elements must not be together (e.g., books not next to each other)."
+      "contents": [
+        {
+          "type": "Text",
+          "lines": [
+            "Bobby and Chris are playing a scrabble game. To determine who will play first, they decided to roll a die. Whoever gets the higher number will put the word first. Both players roll a die, and Bobby rolls a 4. What is the probability that Chris will play first? \n",
+            "1) Event A: toss a coin and get “heads”. \n",
+            "Event B: toss a coin and get “tails”. \n",
+            "2) Event A: roll a dice and get a “1”. \n",
+            "Event B: roll a dice and get a “6”. \n",
+            "3) Event A: roll a dice and get a “2”. \n",
+            "Event B: roll a dice and get an even number. \n",
+            "4) A bag contains 2 yellow balls and 3 blue balls. A ball is drawn from it. \n",
+            "Event A: You get a yellow ball. \n",
+            "Event B: You get a blue ball. \n",
+            "5) One student is selected as the class monitor. \n",
+            "Event A: John is selected as the monitor. \n",
+            "Event B: Peter is selected as the monitor. \n",
+            "In numbers 1, 2, 4, and 5 the two events cannot happen at the same time since when you toss a coin you can only get head or tail but not both, while in rolling a die you can only get 1 or 6 but not both, in getting a ball in a bag, you can only get yellow or blue but not both, in choosing a class monitor, you can only choose John or Peter but not both. \n",
+            "But in number 3, getting a 2 and an even number can happen at the sametime. Since 2 is an even number, if you get 2 you also get an even number. \n",
+            "Two events may or may not happen at the same time. Two events that cannot happen at the same time is called Mutually Exclusive Events. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "What is a Mutually Exclusive Event? \n",
+            "Two events are Mutually Exclusive if both events cannot happen at the same time. These events have no common elements. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Examples: \n",
+            "1. Illustrate and identify if the following events are mutually exclusive or not. \n",
+            "a. A card is drawn from a deck of standard playing cards. \n",
+            "Event A: An ace is drawn. \n",
+            "Event B: A king is drawn. \n",
+            "Solutions: \n"
+          ]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/venn-diagram-2"
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Events A and B are mutually exclusive since you can only get an ace or a kingbut not both and there is no element in common. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "b. A card is drawn from a deck of standard playing cards. \n",
+            "Event A: A heart is drawn. \n",
+            "Event B: A king is drawn. \n",
+            "Solutions: \n"
+          ]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/venn-diagram-2"
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Events A and B are not mutually exclusive or NON- mutually exclusive since the king of hearts is common to both hearts and kings. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "2. Find the indicated probability. \n",
+            "a. P(A) = 0.65, P(B) = 0.30, P(AUB) = 0.75, P(A∩B) = ? \n",
+            "b. P(A) = 0.55, P(B) = 0.35, P(A∩B) = 0.15, P(AUB) = ? \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Solutions: \n",
+            "\\begin{align} \n",
+            "a. P(AUB) &= P(A) + P(B) - P(A∩B) formula \n",
+            "0.75 &= 0.65 + 0.30 - P(A∩B) substitution \n",
+            "0.75 &= 0.95 - P(A∩B) simplifying \n",
+            "0.75 - 0.95 &= - P(A∩B) APE \n",
+            "-0.20 &= - P(A∩B) simplifying \n",
+            "0.20 &= P(A∩B) MPE \n",
+            "b. P(AUB) &= P(A) + P(B) - P(A∩B) formula \n",
+            "&= 0.55 + 0.35 - 0.15 substitution \n",
+            "&= 0.75 simplifying \n",
+            "\\end{align}"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "3. In a hospital, there are 9 nurses and 4 physicians. Five nurses and one physician are males. If a person is selected from the staff, what is the probability that the person is a nurse or female? \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": ["Solutions: \n"]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "\\begin{center} \\begin{tabular}{|l|c|c|c|} \\hline Staff & Females & Males & Total \\\\ \\hline Nurses & 4 & 5 & 9 \\\\ \\hline Physician & 3 & 1 & 4 \\\\ \\hline Total & 7 & 6 & 13 \\\\ \\hline \\end{tabular} \\end{center} \n",
+            "Based on the table, we see that there are 9 nurses and 7 females. Some staffs (4) are both nurses and females. \n",
+            "\\begin{align} \n",
+            "P(nurse or female) &= P(nurse) + P(female) - P(nurse and female) \n",
+            "&= \\frac{9}{13} + \\frac{7}{13} - \\frac{4}{13} \n",
+            "&= \\frac{12}{13} \n",
+            "\\end{align} \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "4. 16 people study French, 21 study Spanish and there are 30 altogether. Find the probability of people who study French only. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": ["Solutions: \n"]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "This is an example of non-mutually exclusive events since you can study French and Spanish at the same time. Let b be the number of students who study French and Spanish. French only will be 16 - b, Spanish only will be 21 - b. \n"
+          ]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/venn-diagram-2"
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Since (French U Spanish) = 30 \n",
+            "\\begin{align} \n",
+            "(16 - b )+ b +( 21 - b) &= 30 French U Spanish = 30 \n",
+            "- b + 37 &= 30 Simplifying  \n",
+            "- b &= 30 - 37 APE \n",
+            "- b &= - 7 Simplifying \n",
+            "b &= 7 MPE \n",
+            "16 - b &= French only Solving for the required \n",
+            "9 &= French only Solving by substitution \n",
+            "Therefore P(French only) &= \\frac{9}{30} \n",
+            "&= \\frac{3}{10} \n",
+            "\\end{align}"
+          ]
+        }
       ]
-    },
-    {
-      "heading": "Summary",
-      "text": "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged."
     }
   ]
 }
