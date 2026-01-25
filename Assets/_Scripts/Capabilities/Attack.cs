@@ -33,8 +33,13 @@ public class Attack : MonoBehaviour
     private Ground _ground;
     private bool hasAirAttacked = false;
     private bool isAirAttacking = false;
-
     private bool wasGrounded = true;
+
+    [Header("Attack Sound Clips")]
+    [SerializeField] private AudioClip swordAttack1Clip;
+    [SerializeField] private AudioClip swordAttack2Clip;
+    [SerializeField] private AudioClip swordAttack3Clip;
+    [SerializeField] private AudioClip bowAttackClip;
 
     private void Awake()
     {
@@ -68,7 +73,8 @@ public class Attack : MonoBehaviour
 
         if (stats.IsDead()) return;
         if (!inputReady || input == null || isInPostCooldown) return;
-        if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
+        if (hurt != null && (hurt.IsHurt())) return;
+        // if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
 
         if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for now
 
@@ -154,6 +160,21 @@ public class Attack : MonoBehaviour
         {
             canCombo = true;
         }
+
+        if (animWeapon == "Sword" && phase == 1)
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack1Clip, transform, 0.2f);
+        }
+        else if (animWeapon == "Sword" && phase == 2)
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack2Clip, transform, 0.2f);
+
+        }
+        else if (animWeapon == "Sword" && phase == 3)
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack3Clip, transform, 0.2f);
+
+        }
     }
 
     // only allow the character to air attack after a certain time after leaving the ground
@@ -173,6 +194,16 @@ public class Attack : MonoBehaviour
         isInPostCooldown = true;
 
         Invoke(nameof(EndAirAttack), duration + postComboCooldown);
+
+        if (animWeapon == "Sword")
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack1Clip, transform, 0.2f);
+        }
+        else if (animWeapon == "Bow")
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(bowAttackClip, transform, 0.2f);
+        }
+
     }
 
     private void EndAirAttack()
@@ -188,6 +219,9 @@ public class Attack : MonoBehaviour
         lockedUntil = Time.time + duration;
         isInPostCooldown = true;
         Invoke(nameof(ResetPostCooldown), duration + postComboCooldown);
+
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(bowAttackClip, transform, 0.2f);
+
     }
     private void ResetPostCooldown()
     {
