@@ -7,10 +7,10 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
 {
 
     public List<RuneSlot> runeSlots; // Assign in Inspector
-    public List<string> correctSequences = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
+    public List<string> correctSequences = new List<string> { "ABC", "BCA", "CAB", }; // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
+    public List<string> correctSequence2 = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
     // This will hold either a single sequence or multiple sequences
     public List<string> userSequences = new List<string>(); // { "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" }
-    public bool isDistinct = false; // If true, only distinct sequences are considered correct
     public bool isSolved = false;
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
@@ -201,6 +201,21 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
 
         return true; // The user submitted all sequences correctly
     }
+
+    string NormalizeCircular(string s)
+    {
+        string best = s;
+
+        for (int i = 1; i < s.Length; i++)
+        {
+            string rotated = s.Substring(i) + s.Substring(0, i);
+            if (string.Compare(rotated, best) < 0)
+                best = rotated;
+        }
+
+        return best;
+    }
+
 }
 
 

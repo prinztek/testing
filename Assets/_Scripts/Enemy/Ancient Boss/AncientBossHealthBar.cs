@@ -21,11 +21,10 @@ public class AncientBossHealthBar : MonoBehaviour
 
         // Set the initial values of the health bar from Boss2
         SetMaxHealth(boss.maxHealth); // Set max health
-        SetHealth(boss.CurrentHealth); // Set the current health
+        SetHealth(boss.currentHealth); // Set the current health
 
         // Subscribe to health change events
-        boss.OnHealthChanged += UpdateHealthBar;
-        boss.OnDeathStarted += HandleDeath; // When character dies, hide the health bar
+        // boss.OnDeathStarted += HandleDeath; // When character dies, hide the health bar
     }
 
     private void OnDisable()
@@ -33,8 +32,7 @@ public class AncientBossHealthBar : MonoBehaviour
         // Unsubscribe to prevent memory leaks
         if (boss != null)
         {
-            boss.OnHealthChanged -= UpdateHealthBar;
-            boss.OnDeathStarted -= HandleDeath;
+            // boss.OnDeathStarted -= HandleDeath;
         }
     }
 

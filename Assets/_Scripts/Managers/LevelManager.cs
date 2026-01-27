@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -122,7 +123,9 @@ public class LevelManager : MonoBehaviour
         }
 
         if (UIManager.Instance != null)
-            UIManager.Instance.ShowLevelComplete(true);
+        {
+            StartCoroutine(LevelCompleteSequence());
+        }
         else
             Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level complete screen.");
     }
@@ -137,7 +140,9 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("⚠️ GameManager.Instance not found during level failure.");
 
         if (UIManager.Instance != null)
-            UIManager.Instance.ShowLevelFailed(true);
+        {
+            StartCoroutine(LevelFailedSequence());
+        }
         else
             Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level failed screen.");
     }
@@ -185,5 +190,22 @@ public class LevelManager : MonoBehaviour
 
         return false;
     }
+
+    private IEnumerator LevelCompleteSequence()
+    {
+        UIManager.Instance.FadeFromBlackFast();
+        yield return new WaitForSeconds(0.4f);
+        UIManager.Instance.ShowLevelComplete(true);
+    }
+
+
+    private IEnumerator LevelFailedSequence()
+    {
+        UIManager.Instance.FadeFromBlackFast();
+        yield return new WaitForSeconds(0.4f);
+        UIManager.Instance.ShowLevelFailed(true);
+    }
+
+
 }
 

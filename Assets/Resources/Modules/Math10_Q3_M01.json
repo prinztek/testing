@@ -16,28 +16,56 @@
         {
           "type": "Text",
           "lines": [
+            "Example 1: \n",
+            "List all the possible three-letter arrangement in the word EAR. \n",
+            "Solutions \n",
+            "E - A - R --- E A R \n",
+            "E - R - A --- E R A \n",
+            "A - E - R --- A E R \n",
+            "A - R - E --- A R E \n",
+            "R - A - E --- R A E \n",
+            "R - E - A --- R E A \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
             "Example 2: \n",
             "How many three-letter arrangements in the word EAR can be formed satisfying the given conditions. \n",
             "\\quad A. the first letter is E \n",
             "\\quad B. the vowels are together \n",
             "\\quad C. the vowels must NOT be together \n",
             "Solutions \n",
-            "\\small \\quad A. There are 2 arrangements formed whose first letter is E. Those are EAR and E \n",
-            "\\small \\quad B. There are 4 arrangements formed wherein the vowels are together. Those are E \n",
-            "\\small \\quad C. There are 2 arrangements formed wherein the vowels are NOT together. Those are ERA and ARE. \n"
+            "\\quad A. There are 2 arrangements formed whose first letter is E. Those are \\underline{E}AR and \\underline{E}RA \n",
+            "\\quad B. There are 4 arrangements formed wherein the vowels are together. Those are \\underline{EA}R, \\underline{AE}R, R\\underline{EA}, R\\underline{AE},  \n",
+            "\\quad C. There are 2 arrangements formed wherein the vowels are NOT together. Those are \\underline{E}R\\underline{A} and \\underline{A}R\\underline{E}. \n"
           ]
         },
         {
           "type": "Text",
           "lines": [
-            "Why Order Matters \n",
-            "In permutations, the order of arrangement is important. ABC and BAC are considered different arrangements. \n",
-            "Types of Conditions \n",
-            "\\small \\quad Case 1: An element must be in a specific position (e.g., Bobby must be first). \n",
-            "\\small \\quad Case 2: Two or more elements must be together (e.g., friends sit side by side). \n",
-            "\\small \\quad Case 3: Two or more elements must not be together (e.g., books not next to each other). \n",
-            "Summary \n",
-            "A permutation is an arrangement where order matters. Conditions can limit or define how objects are arranged. \n"
+            "Example 3: \n",
+            "Which of the following situations show Permutation. \n",
+            "\\quad A. The number of ways a president, a vice president, and a treasurer can be chosen from a group of 20 persons. \n",
+            "\\quad B. Aki is planning to purchase a photo album. It comes in 3 sizes, small, medium, and large; and the cover comes in soft and hardbound. The pages can be glossy or silk and the print can be colored or black and white. How many choices does he have for the photo album? \n",
+            "\\quad C. The number of 4-digit code that can be made using the digits from 0 to 9 if repetition of digits is not allowed. \n",
+            "Solutions \n",
+            "\\quad A. There are 3 positions to be arranged in choosing from the same group of 20 persons, and each position is to be filled once. Therefore it is a permutation.  \n",
+            "\\quad B. It is not permutation because the arrangement is choosing from different groups like sizes, cover, pages, and print. Choosing from different groups tend to have repetition.  \n",
+            "\\quad C. It is a permutation, arranging 4-digit code choosing from the same group of numbers and repetition is not allowed. \n"
+          ]
+        },
+        {
+          "type": "Text",
+          "lines": [
+            "Example 4: \n",
+            "Identify and underline the phrase or statement in each of the following situations that show a condition. \n",
+            "\\quad A. Rose, Malou, and Shiena are to be arranged in a line from left to right. But Shiena wants to be placed on the right side. \n",
+            "\\quad B. Rose, Bobby, and Malou are to be seated in a row. Rose and Malou want to be seated next to each other. \n",
+            "\\quad C. How will you arrange Chris, Rose, Bobby, and Shiena in a row if Chris and Bobby refuse to stand beside each other? \n",
+            "Solutions \n",
+            "\\quad Sometimes, problems in Permutation involve conditions. For example, in a certain situation, an element must be placed in a certain position. Like in situation A, the statement “Shiena wants to be placed on the right side.” shows condition. \n",
+            "\\quad Other situations that show conditions are if an element may be arranged in a line where two or more objects must be placed together or must not be placed together. Like in situations B and C. The condition being asked in B is the statement that “Rose and Malou want to be seated next to each other.” While in C, it is the statement that “Chris and Bobby refuse to stand beside each other.” \n"
           ]
         }
       ]

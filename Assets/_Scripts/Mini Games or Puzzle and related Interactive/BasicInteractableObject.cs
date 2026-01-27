@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class BasicInteractableObject : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class BasicInteractableObject : MonoBehaviour
     public GameObject runeGamePrefab; // Reference to your mini game/ puzzle canvas - assign in inspector - the window that pops up when interacting
     public StoneWall stoneWall; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
     private GameObject spawnedPuzzle;
+    public GameObject spotLight;
+    public GameObject visualContext;
 
     public bool isPuzzleSolved = false;
     public void Interact()
@@ -56,5 +59,17 @@ public class BasicInteractableObject : MonoBehaviour
     {
         UIManager.Instance.CloseActivePanel();
         // uiCanvas.SetActive(false);
+    }
+
+    public void HighlightObject()
+    {
+        // spotLight.SetActive(true);
+        visualContext.SetActive(true);
+    }
+
+    public void RemoveHighlightObject()
+    {
+        // spotLight.SetActive(false);
+        visualContext.SetActive(false);
     }
 }

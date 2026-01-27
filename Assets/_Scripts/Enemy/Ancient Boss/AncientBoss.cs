@@ -1,147 +1,116 @@
-using System;
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor;
 using UnityEngine;
 
 public class AncientBoss : MonoBehaviour
 {
     // ========================================
-    // ENUMS
+    // STATES
     // ========================================
-    private enum BossIntent { None, Reposition, Attack }
-    public enum State { Dormant, Wake, Idle, Turn, Reposition, Attack, Hit, Death, Spinning, Buff }
+    public enum State
+    {
+        Dormant,
+        Wake,
+        Idle,
+        Approach, // like a run or closing gap between the player and the ancient boss
+        Attack,
+        Recovery,
+        Death
+    }
+
+    public enum BossAttackType
+    {
+        Stomp,      // ground spikes
+        Laser,      // mid-range punish
+        Spin        // close-range denial
+    }
 
     // ========================================
-    // SETTINGS
+    // REFERENCES
     // ========================================
-    [Header("Movement")]
-    public float repositionSpeed = 4f;
-    public float repositionDuration = 0.8f;
-
-    [Header("Timing")]
-    public float wakeTime = 1.3f;
-    public float idleTime = 0.6f;
-    public float turnDuration = 0.4f;
-    public float attackCooldown = 2f;
-    public float recoveryTime = 0.6f;
-
-    [Header("Combat")]
-    public Transform centerTransform;
-    public Transform rockSpikeStartTransform;
-    public float detectionRange = 8f;
-    public LayerMask playerLayer;
-
-    [SerializeField] private float meleeRange = 2f;
-    [SerializeField] private float rangedRange = 8f;
-    [SerializeField] private float meleeAttackDuration = 1.2f;
-    [SerializeField] private float rangedAttackDuration = 1.75f;
-    [SerializeField] private float spinChargeDuration = 1.2f;
-    [SerializeField] private float spinDuration = 3f;
-
     [Header("References")]
-    public Animator animator;
-    public SpriteRenderer spriteRenderer;
-    public Transform visual;
-    public GameObject AncientBossHUD;
-    private CinemachineImpulseSource impulseSource;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform visual;
+    [SerializeField] private Transform centerTransform;  // sprite center 
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform rockSpikeStartTransform;
+    [SerializeField] private GameObject rockSpikePrefab;
+    [SerializeField] private GameObject bossHUD;
+    [SerializeField] private CinemachineImpulseSource impulseSource;
 
-    [Header("Sprite Offset")]
-    public float flipOffsetX = -4.4f;
+    // ========================================
+    // TIMING
+    // ========================================
+    [Header("Timing")]
+    [SerializeField] private float wakeTime = 1.2f;
+    [SerializeField] private float idleBeforeAttack = 0.8f;
+    [SerializeField] private float attackDuration = 1.2f; // matches melee animation
+    [SerializeField] private float recoveryAfterAttack = 1.0f;
 
+    // ========================================
+    // SPIKE ATTACK
+    // ========================================
+    [Header("Spike Barrage")]
+    [SerializeField] private float spikeSpacing = 2f;
+    [SerializeField] private float delayBetweenSpikes = 0.3f;
+    [SerializeField] private int spikeCount = 3;
+
+    // ========================================
+    // STATS
+    // ========================================
     [Header("Stats")]
-    public int maxHealth = 200;
-    [SerializeField] private int currentHealth;
-    public int CurrentHealth => currentHealth;
-    public int damage = 20;
+    [SerializeField] public int maxHealth = 200;
+    public int currentHealth;
+    private bool isDead;
+
+    [SerializeField] private int damage;
+
+    [Header("Approach")]
+    [SerializeField] private float approachSpeed = 3.5f;
+    [SerializeField] private float desiredAttackRange = 1.4f;
+    [SerializeField] private float maxApproachTime = 1.2f;
+
+    [SerializeField] private float turnPauseTime = 0.15f;
+    private float lastTurnTime;
+
+
 
     // ========================================
-    // EVENTS
-    // ========================================
-    public delegate void HealthChanged(int currentHealth);
-    public event HealthChanged OnHealthChanged;
-
-    public delegate void DeathStarted();
-    public event DeathStarted OnDeathStarted;
-
-    // ========================================
-    // ANIMATION HASHES
+    // ANIMATIONS
     // ========================================
     private static readonly int SleepHash = Animator.StringToHash("sleep");
     private static readonly int WakeHash = Animator.StringToHash("wake");
     private static readonly int IdleHash = Animator.StringToHash("idle");
     private static readonly int RunHash = Animator.StringToHash("run");
     private static readonly int MeleeAttackHash = Animator.StringToHash("meleeAttack");
-    private static readonly int RangeAttackHash = Animator.StringToHash("rangeAttack");
-    private static readonly int BuffHash = Animator.StringToHash("buff");
-    private static readonly int SpinningChargeAttackHash = Animator.StringToHash("spinCharge");
+    private static readonly int LaserAttackHash = Animator.StringToHash("rangeAttack");
+    private static readonly int SpinAttackHash = Animator.StringToHash("spinCharge");
     private static readonly int DeathHash = Animator.StringToHash("dead");
-    private static readonly int TurnLeftHash = Animator.StringToHash("turnLeft");
 
     // ========================================
-    // STATE
+    // STATE DATA
     // ========================================
     private State currentState;
+    public BossAttackType currentAttack;
+    public int attackDirection { get; private set; } // -1 left, +1 right
+    [SerializeField] private float repositionSpeed = 3f;
     private float stateTimer;
-    private float attackTimer;
-
     private bool facingRight = true;
-    private bool isTurning;
-    private bool isDead;
+    private bool isAttacking;
+
+    [Header("Attack Ranges")]
+    [SerializeField] private float closeRange = 1.2f;   // Spin
+    [SerializeField] private float midRange = 2.0f;   // Stomp
+    [SerializeField] private float farRange = 4.0f;   // Laser
+
 
     // ========================================
-    // TARGETING
+    // UNITY
     // ========================================
     private Transform player;
     private CharacterStats playerStats;
-
-    // Reposition
-    private Vector3 repositionTarget;
-    private bool hasRepositionTarget;
-
-    // Attacks
-    private enum AttackType { None, Melee, Ranged, Spin }
-    private AttackType currentAttack;
-
-    // ========================================
-    // SPIKE ATTACK
-    // ========================================
-    public GameObject rockSpikePrefab;
-    public float spikeSpacing = 2f;
-    public float delayBetweenSpikes = 0.3f;
-
-    // ========================================
-    // SPIN ATTACK
-    // ========================================
-    private float cooldownTimer = 0f;
-    public float damageCooldown = 0.1f;
-    [SerializeField] private Vector2 spinHitboxSize = new Vector2(5f, 3f);
-    [SerializeField] private bool showSpinHitbox = true;
-
-    // ========================================
-    // HIT FEEDBACK
-    // ========================================
-    [Header("Hit Feedback")]
-    [SerializeField] private Transform spriteTransform;
-    [SerializeField] private float shakeDuration = 0.1f;
-    [SerializeField] private float shakeIntensity = 0.05f;
-    [SerializeField] private OnHitFlashVFX onHitFlashVFX;
-    private Coroutine shakeCoroutine;
-
-    // ========================================
-    // UNITY LIFECYCLE
-    // ========================================
-    private void Awake()
-    {
-        animator ??= GetComponentInChildren<Animator>();
-        spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
-        visual ??= spriteRenderer.transform;
-        onHitFlashVFX ??= GetComponent<OnHitFlashVFX>();
-        impulseSource = GetComponent<CinemachineImpulseSource>();
-
-        currentHealth = maxHealth;
-        ChangeState(State.Dormant);
-    }
+    private Coroutine currentAttackCoroutine;
 
     private void OnEnable()
     {
@@ -153,390 +122,265 @@ public class AncientBoss : MonoBehaviour
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
     }
 
-    private void Start()
-    {
-        var playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-            playerStats = playerObj.GetComponent<CharacterStats>();
-        }
-    }
-
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         player = playerObj.transform;
         playerStats = player.GetComponent<CharacterStats>();
     }
 
+    private void Awake()
+    {
+        animator ??= GetComponentInChildren<Animator>();
+        spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
+        visual ??= spriteRenderer.transform;
+        rb = GetComponent<Rigidbody2D>();
+
+        currentHealth = maxHealth;
+        ChangeState(State.Dormant);
+    }
+
     private void Update()
     {
-        if (isDead || currentState == State.Dormant)
-            return;
+        if (isDead) return;
 
         stateTimer += Time.deltaTime;
-        attackTimer += Time.deltaTime;
 
         switch (currentState)
         {
-            case State.Wake: WakeState(); break;
-            case State.Idle: IdleState(); break;
-            case State.Turn: TurnState(); break;
-            case State.Reposition: RepositionState(); break;
-            case State.Attack: AttackState(); break;
-            case State.Spinning: SpinningState(); break;
-            case State.Death: DeathState(); break;
-        }
-    }
-
-    // ========================================
-    // STATES
-    // ========================================
-    private void WakeState()
-    {
-        if (stateTimer >= wakeTime)
-            ChangeState(State.Idle);
-    }
-
-    private void IdleState()
-    {
-        if (stateTimer < idleTime)
-            return;
-
-        if (!PlayerInRange(detectionRange))
-            return;
-
-        DecideNextAction();
-    }
-
-    private void DecideNextAction()
-    {
-        float dx = player.position.x - centerTransform.position.x;
-
-        if (!IsFacing(dx))
-        {
-            ChangeState(State.Turn);
-            return;
-        }
-
-        if (attackTimer >= attackCooldown)
-            ChangeState(State.Attack);
-        else
-            ChangeState(State.Reposition);
-    }
-
-    private void TurnState()
-    {
-        if (!isTurning)
-            StartCoroutine(TurnRoutine());
-    }
-
-    private IEnumerator TurnRoutine()
-    {
-        isTurning = true;
-        yield return new WaitForSeconds(turnDuration);
-        Flip();
-        isTurning = false;
-        ChangeState(State.Idle);
-    }
-
-    private void RepositionState()
-    {
-        if (!hasRepositionTarget)
-            return;
-
-        Vector3 rootTarget = repositionTarget + (transform.position - centerTransform.position);
-
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            rootTarget,
-            repositionSpeed * Time.deltaTime
-        );
-
-        float dist = Mathf.Abs(centerTransform.position.x - repositionTarget.x);
-
-        if (dist < 0.05f || stateTimer >= repositionDuration)
-        {
-            hasRepositionTarget = false;
-            ChangeState(State.Idle);
-        }
-    }
-
-    private void ChooseRepositionTarget()
-    {
-        hasRepositionTarget = true;
-
-        float dir = Mathf.Sign(player.position.x - centerTransform.position.x);
-        float desiredDistance = UnityEngine.Random.Range(meleeRange * 1.3f, rangedRange * 0.9f);
-
-        repositionTarget = new Vector3(
-            player.position.x - dir * desiredDistance,
-            centerTransform.position.y,
-            centerTransform.position.z
-        );
-
-        FaceDirection(dir);
-    }
-
-    private void AttackState()
-    {
-        switch (currentAttack)
-        {
-            case AttackType.Melee:
-                if (stateTimer >= meleeAttackDuration)
-                    EndAttack();
+            case State.Wake:
+                if (stateTimer >= wakeTime)
+                    ChangeState(State.Idle);
                 break;
 
-            case AttackType.Ranged:
-                if (stateTimer >= rangedAttackDuration)
-                    EndAttack();
+            case State.Idle:
+                if (stateTimer >= idleBeforeAttack)
+                {
+                    SelectAttack();
+
+                    if (NeedsToCloseGap())
+                        ChangeState(State.Approach);
+                    else
+                        ChangeState(State.Attack);
+                }
                 break;
 
-            case AttackType.Spin:
-                if (stateTimer >= spinChargeDuration)
-                    ChangeState(State.Spinning);
+            case State.Approach:
+                MoveTowardPlayer(); // move to fixedUpdate?
+
+                if (InAttackRange() || stateTimer >= maxApproachTime)
+                    ChangeState(State.Attack);
+                break;
+
+            case State.Attack:
+                // Wait for animation / events to handle hitboxes
+                if (stateTimer >= attackDuration)
+                    ChangeState(State.Recovery);
+                break;
+
+            case State.Recovery:
+                if (stateTimer >= recoveryAfterAttack)
+                    ChangeState(State.Idle);
                 break;
         }
     }
 
-    private void EndAttack()
+    // private void FixedUpdate()
+    // {
+    //     if (currentState == State.Approach)
+    //     {
+    //         MoveTowardPlayer();
+    //     }
+    // }
+
+    // ========================================
+    // STATE MACHINE
+    // ========================================
+    private void ChangeState(State newState)
     {
-        attackTimer = 0f;
-        idleTime = recoveryTime;
-        ChangeState(State.Idle);
-    }
+        currentState = newState;
+        stateTimer = 0f;
 
-    private void ChooseAttack()
-    {
-        float dist = Vector3.Distance(centerTransform.position, player.position);
-
-        if (dist <= meleeRange)
+        switch (newState)
         {
-            currentAttack = UnityEngine.Random.value < 0.5f ? AttackType.Melee : AttackType.Spin;
-            if (currentAttack == AttackType.Melee)
-                PlayAnimation(MeleeAttackHash);
+            case State.Dormant:
+                PlayAnimation(SleepHash);
+                break;
+
+            case State.Wake:
+                PlayAnimation(WakeHash);
+                break;
+
+            case State.Idle:
+                rb.linearVelocity = Vector2.zero;
+                PlayAnimation(IdleHash);
+                break;
+
+            case State.Approach:
+                PlayAnimation(RunHash);
+                break;
+
+            case State.Attack:
+                isAttacking = true;
+                rb.linearVelocity = Vector2.zero;
+                AttackHandler();
+                // wrap attack because there are multiple attacks
+                // we can't just play the attack animation here 
+                break;
+
+            case State.Recovery:
+                isAttacking = false;
+                PlayAnimation(IdleHash);
+                break;
+
+            case State.Death:
+                PlayAnimation(DeathHash);
+                isDead = true;
+                bossHUD?.SetActive(false);
+                break;
         }
-        else
-        {
-            currentAttack = AttackType.Ranged;
-            PlayAnimation(RangeAttackHash);
-        }
-    }
-
-    private void SpinningState()
-    {
-        // Charge phase
-        if (stateTimer <= spinChargeDuration)
-        {
-            PlayAnimation(BuffHash);
-            return;
-        }
-
-        // Spin damage phase
-        PlayAnimation(SpinningChargeAttackHash);
-
-        cooldownTimer -= Time.deltaTime;
-        if (cooldownTimer <= 0f)
-        {
-            ApplySpinDamage();
-            cooldownTimer = damageCooldown;
-        }
-
-        if (stateTimer >= spinChargeDuration + spinDuration)
-        {
-            cooldownTimer = 0f;
-            attackTimer = 0f;
-            ChangeState(State.Idle);
-        }
-    }
-
-    private void ApplySpinDamage()
-    {
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(centerTransform.position, spinHitboxSize, 0f, playerLayer);
-
-        foreach (var hit in hitEnemies)
-        {
-            if (hit.CompareTag("Hurtbox"))
-            {
-                CharacterStats stats = hit.GetComponentInParent<CharacterStats>();
-                if (stats != null)
-                    stats.TakeDamage(damage, centerTransform.position);
-            }
-        }
-    }
-
-    private void DeathState()
-    {
-        if (AncientBossHUD != null)
-            AncientBossHUD.SetActive(false);
-        OnDeathStarted?.Invoke();
-        isDead = true;
     }
 
     // ========================================
-    // HELPERS
+    // DIRECTION & TARGETING
     // ========================================
-    private bool PlayerInRange(float range)
+
+    private bool NeedsToCloseGap()
     {
-        return player != null &&
-               Vector3.Distance(centerTransform.position, player.position) <= range;
+        if (player == null) return false;
+
+        float desiredRange = GetDesiredRangeForCurrentAttack();
+        float distance = Mathf.Abs(player.position.x - centerTransform.position.x);
+
+        return distance > desiredRange + 0.2f;
     }
 
-    private bool IsFacing(float xDir)
+    private bool InAttackRange()
     {
-        return (xDir > 0 && facingRight) || (xDir < 0 && !facingRight);
+        if (player == null) return true;
+
+        float desiredRange = GetDesiredRangeForCurrentAttack();
+        float distance = Mathf.Abs(player.position.x - centerTransform.position.x);
+
+        return distance <= desiredRange;
     }
 
-    private void FaceDirection(float xDir)
+
+    private void MoveTowardPlayer()
     {
-        if (currentState == State.Attack || currentState == State.Spinning)
+        if (player == null) return;
+
+        int desiredDir = player.position.x < centerTransform.position.x ? -1 : 1;
+
+        // If not facing the player yet → turn first, do not move
+        if ((desiredDir > 0 && !facingRight) || (desiredDir < 0 && facingRight))
+        {
+            FaceDirection(desiredDir);
+            lastTurnTime = Time.time;
+            rb.linearVelocity = Vector2.zero;
             return;
+        }
 
-        bool shouldFaceRight = xDir > 0;
-        if (facingRight == shouldFaceRight)
+        if (Time.time - lastTurnTime < turnPauseTime)
+        {
+            rb.linearVelocity = Vector2.zero;
             return;
-
-        facingRight = shouldFaceRight;
-        ApplyFlip();
+        }
+        // Move ONLY in the facing direction
+        float moveDir = facingRight ? 1f : -1f;
+        rb.linearVelocity = new Vector2(moveDir * approachSpeed, rb.linearVelocity.y);
     }
 
-    private void Flip()
+
+    private void LockAttackDirection()
     {
-        facingRight = !facingRight;
-        ApplyFlip();
+        if (player == null) return;
+
+        attackDirection = player.position.x < centerTransform.position.x ? -1 : 1;
+        FaceDirection(attackDirection);
     }
 
-    private void ApplyFlip()
+    private void FaceDirection(int dir)
     {
+        if ((dir > 0 && facingRight) || (dir < 0 && !facingRight)) return;
+
+        facingRight = dir > 0;
         Vector3 scale = visual.localScale;
         scale.x = facingRight ? 1f : -1f;
         visual.localScale = scale;
 
         Vector3 pos = visual.localPosition;
-        pos.x = facingRight ? 0f : flipOffsetX;
+        pos.x = facingRight ? 0f : -4.4f;
         visual.localPosition = pos;
     }
 
-    private void ChangeState(State newState)
+    // ========================================
+    // ATTACK SELECTION
+    // ========================================
+    public void SelectAttack()
     {
-        OnStateExit(currentState);
-        currentState = newState;
-        stateTimer = 0f;
-        OnStateEnter(newState);
+        if (player == null) return;
+
+        float distance = Mathf.Abs(player.position.x - centerTransform.position.x);
+
+        if (distance <= closeRange)
+        {
+            currentAttack = BossAttackType.Spin;
+        }
+        else if (distance <= midRange)
+        {
+            currentAttack = BossAttackType.Stomp;
+        }
+        else
+        {
+            currentAttack = BossAttackType.Laser;
+        }
     }
 
-    private void OnStateEnter(State state)
+    private void PlayAttackAnimation()
     {
-        switch (state)
+        switch (currentAttack)
         {
-            case State.Dormant:
-                PlayAnimation(SleepHash);
+            case BossAttackType.Stomp:
+                PlayAnimation(MeleeAttackHash);
                 break;
-            case State.Wake:
-                PlayAnimation(WakeHash);
+            case BossAttackType.Laser:
+                PlayAnimation(LaserAttackHash);
                 break;
-            case State.Idle:
-                PlayAnimation(IdleHash);
-                break;
-            case State.Reposition:
-                ChooseRepositionTarget();
-                PlayAnimation(RunHash);
-                break;
-            case State.Turn:
-                PlayAnimation(TurnLeftHash);
-                break;
-            case State.Attack:
-                ChooseAttack();
-                break;
-            case State.Death:
-                PlayAnimation(DeathHash);
-                isDead = true;
-                UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+            case BossAttackType.Spin:
+                PlayAnimation(SpinAttackHash);
                 break;
         }
     }
 
-    private void OnStateExit(State state)
+    private void AttackHandler()
     {
-        // Add any cleanup logic here if needed
-    }
-
-    private void PlayAnimation(int animHash)
-    {
-        animator?.CrossFade(animHash, 0f, 0);
+        LockAttackDirection();
+        PlayAttackAnimation();
     }
 
     // ========================================
-    // PUBLIC METHODS
+    // ANIMATION EVENT ENTRY POINTS
     // ========================================
-    public void WakeUp()
-    {
-        if (currentState != State.Dormant)
-            return;
-
-        ChangeState(State.Wake);
-    }
-
-    public int GetDamage()
-    {
-        return damage;
-    }
-
-    public void TakeDamage(int damageAmount, Vector2 attackerPosition, bool doScreenShake = true)
-    {
-        if (currentState == State.Dormant || isDead)
-            return;
-
-        // Visual feedback
-        // if (shakeCoroutine != null)
-        //     StopCoroutine(shakeCoroutine);
-        // shakeCoroutine = StartCoroutine(ShakeSprite());
-
-        onHitFlashVFX?.PlayOnDamageVfx();
-
-        if (doScreenShake)
-            StartScreenshakeFromGettingAttacked(attackerPosition);
-
-        // Show HUD
-        if (AncientBossHUD != null && !AncientBossHUD.activeSelf)
-            AncientBossHUD.SetActive(true);
-
-        // Apply damage
-        currentHealth -= damageAmount;
-        OnHealthChanged?.Invoke(currentHealth);
-
-        if (currentHealth <= 0)
-        {
-            ChangeState(State.Death);
-            playerStats?.UnlockSkill(SkillType.PermutationPulse);
-        }
-    }
-
     public void TriggerSpikeBarrage()
     {
-        StartCoroutine(SpikeBarrage());
+        if (!isAttacking || currentAttack != BossAttackType.Stomp) return;
+        StartCoroutine(SpikeBarrageRoutine());
     }
 
-    // ========================================
-    // COROUTINES
-    // ========================================
-    private IEnumerator SpikeBarrage()
+    private IEnumerator SpikeBarrageRoutine()
     {
-        float direction = facingRight ? 1f : -1f;
         Vector3 startPos = rockSpikeStartTransform.position;
-
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < spikeCount; i++)
         {
-            Vector3 pos = startPos + Vector3.right * direction * spikeSpacing * i;
-            StartCoroutine(SpawnSpike(rockSpikePrefab, pos));
+            Vector3 pos = startPos + Vector3.right * attackDirection * spikeSpacing * i;
+            SpawnSpike(pos);
             yield return new WaitForSeconds(delayBetweenSpikes);
         }
     }
 
-    private IEnumerator SpawnSpike(GameObject spikePrefab, Vector3 position)
+    private void SpawnSpike(Vector3 position)
     {
-        GameObject spike = Instantiate(spikePrefab, position, Quaternion.identity);
-
+        GameObject spike = Instantiate(rockSpikePrefab, position, Quaternion.identity);
         RockSpike spikeComponent = spike.GetComponent<RockSpike>();
         if (spikeComponent != null)
         {
@@ -544,91 +388,69 @@ public class AncientBoss : MonoBehaviour
             spikeComponent.Emerge();
         }
 
-        StartScreenshakeForAttacking();
-
-        yield return new WaitForSeconds(1.0f);
-
-        if (spikeComponent != null)
-        {
-            spikeComponent.Retract();
-        }
-
-        yield return new WaitForSeconds(0.1f);
-        Destroy(spike);
-    }
-
-    private IEnumerator ShakeSprite()
-    {
-        if (spriteTransform == null)
-            yield break;
-
-        Vector3 originalPos = spriteTransform.localPosition;
-        float elapsed = 0f;
-
-        while (elapsed < shakeDuration)
-        {
-            float x = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
-            float y = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
-            spriteTransform.localPosition = originalPos + new Vector3(x, y, 0);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        spriteTransform.localPosition = originalPos;
-    }
-
-    // ========================================
-    // SCREENSHAKE
-    // ========================================
-    public void StartScreenshakeFromGettingAttacked(Vector2 attackerPosition)
-    {
         if (impulseSource != null)
-        {
-            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
-            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
-        }
-    }
-
-    public void StartScreenshakeForAttacking()
-    {
-        if (impulseSource != null)
-        {
             ScreenShakeManager.Instance.ScreenShake(impulseSource);
-        }
+
+        Destroy(spike, 1.2f);
     }
 
     // ========================================
-    // GIZMOS
+    // PUBLIC METHODS
     // ========================================
+    public void WakeUp()
+    {
+        if (currentState == State.Dormant)
+            ChangeState(State.Wake);
+    }
+
+    public int GetDamage()
+    {
+        return damage;
+    }
+
+    // ========================================
+    // HELPERS
+    // ========================================
+    private void PlayAnimation(int hash)
+    {
+        animator.CrossFade(hash, 0f, 0);
+    }
+
+    private float GetDesiredRangeForCurrentAttack()
+    {
+        switch (currentAttack)
+        {
+            case BossAttackType.Spin:
+                return closeRange;
+
+            case BossAttackType.Stomp:
+                return midRange;
+
+            case BossAttackType.Laser:
+                return farRange;
+
+            default:
+                return midRange;
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
-        if (centerTransform == null)
-            return;
+        if (centerTransform == null) return;
 
         Vector3 center = centerTransform.position;
 
+        // Close range (Spin)
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(center, detectionRange);
+        Gizmos.DrawWireSphere(center, closeRange);
 
+        // Mid range (Stomp)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(center, midRange);
+
+        // Far range (Laser)
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(center, rangedRange);
-
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(center, meleeRange);
-
-#if UNITY_EDITOR
-        Handles.color = Color.white;
-        Handles.Label(center + Vector3.up * 2f, $"State: {currentState}");
-        Handles.color = Color.magenta;
-        Handles.Label(center + Vector3.right * meleeRange, "Melee");
-        Handles.color = Color.cyan;
-        Handles.Label(center + Vector3.right * rangedRange, "Ranged");
-#endif
-
-        if (showSpinHitbox)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(center, spinHitboxSize);
-        }
+        Gizmos.DrawWireSphere(center, farRange);
     }
+
 }

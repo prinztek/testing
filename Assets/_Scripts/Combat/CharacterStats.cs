@@ -317,7 +317,7 @@ public class CharacterStats : MonoBehaviour
         activeBuff = buff;
         buff.Assign(this);
         buffUIManager?.AddBuffUI(buff);
-        Debug.Log($"✨ Applied buff: {buff.GetType().Name}");
+        Debug.Log($"Applied buff: {buff.GetType().Name}");
     }
 
 
@@ -382,7 +382,7 @@ public class CharacterStats : MonoBehaviour
         isDead = true;
 
         animationHandler.PlayDeadAnimation(animationHandler.GetDeathAnimationLength());
-        Debug.Log("💀 Character died.");
+        Debug.Log("Character died.");
 
         OnDeathStarted?.Invoke();
 

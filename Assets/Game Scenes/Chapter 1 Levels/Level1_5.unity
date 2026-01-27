@@ -662,6 +662,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1081786384582853094, guid: 25aa3d4b88cc9fb459ed3ef74c5f0f93, type: 3}
   m_PrefabInstance: {fileID: 409510389}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &514261863 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3570441138306765049, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+  m_PrefabInstance: {fileID: 5051867786047487025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8d839edb31114eb99802b40e08f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuneSlot
 --- !u!1001 &549707943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1761,6 +1772,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1217842183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6319033118779227341, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+  m_PrefabInstance: {fileID: 5051867786047487025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8d839edb31114eb99802b40e08f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuneSlot
 --- !u!1 &1235319461
 GameObject:
   m_ObjectHideFlags: 0
@@ -14855,6 +14877,17 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1637260372 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5368838270267056866, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+  m_PrefabInstance: {fileID: 5051867786047487025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb8d839edb31114eb99802b40e08f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuneSlot
 --- !u!1001 &1640481489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15318,7 +15351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9bdfae5b7316dd4dac3442da58a78b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RotateObject
-  sensitivity: 1
+  sensitivity: 0.5
   useLimits: 0
   minRotation: -180
   maxRotation: 180
@@ -15456,6 +15489,10 @@ PrefabInstance:
     - target: {fileID: 365983944742558977, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 666178286300491530, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: m_Name
+      value: RuneSlot 2
       objectReference: {fileID: 0}
     - target: {fileID: 1011282699426377790, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_Pivot.x
@@ -15646,8 +15683,40 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: runeSlots.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'runeSlots.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1217842183}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'runeSlots.Array.data[1]'
+      value: 
+      objectReference: {fileID: 514261863}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'runeSlots.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1637260372}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: correctSequence2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: correctSequences.Array.size
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'correctSequence2.Array.data[0]'
+      value: ACB
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'correctSequence2.Array.data[1]'
+      value: CBA
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'correctSequence2.Array.data[2]'
+      value: BAC
       objectReference: {fileID: 0}
     - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: 'correctSequences.Array.data[0]'
@@ -15655,7 +15724,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: 'correctSequences.Array.data[1]'
-      value: ACB
+      value: BCA
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111858315371512345, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: 'correctSequences.Array.data[2]'
+      value: CAB
       objectReference: {fileID: 0}
     - target: {fileID: 5653450351893584948, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15720,10 +15793,18 @@ PrefabInstance:
     - target: {fileID: 7611141651027402496, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7999461625879855934, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: m_Name
+      value: RuneSlot 1
       objectReference: {fileID: 0}
     - target: {fileID: 8024761944684309591, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_Name
       value: CircularPermutationRuneGamePrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 8229076135531109649, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
+      propertyPath: m_Name
+      value: RuneSlot 3
       objectReference: {fileID: 0}
     - target: {fileID: 8340622762231502376, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15777,7 +15858,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4248010749035055541, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1013997686}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1409989924598517376, guid: 0b62242a110afa34499a4d135aa6d7e5, type: 3}

@@ -16,7 +16,7 @@ public class ProjectileLauncher : MonoBehaviour
     {
         if (projectilePrefab != null && launchPoint != null)
         {
-            Debug.Log($"FacingRight: {move.FacingRight}");
+            // Debug.Log($"FacingRight: {move.FacingRight}");
 
             // Instantiate the projectile
             GameObject projectile = Instantiate(projectilePrefab, launchPoint.position, Quaternion.identity);
@@ -43,3 +43,5 @@ public class ProjectileLauncher : MonoBehaviour
         }
     }
 }
+
+// this is for characters range attack

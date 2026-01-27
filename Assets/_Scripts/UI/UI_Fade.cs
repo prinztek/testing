@@ -4,42 +4,51 @@ using UnityEngine;
 public class UI_Fade : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private float fadeDuration = 1.5f;
+    [SerializeField] private float defaultFadeDuration = 1f;
+    [SerializeField] private float fastFadeDuration = 0.4f;
     private Coroutine changeAlphaCo;
 
     public IEnumerator FadeIn()
     {
-        yield return FadeEffect(0); // black to transparent
+        yield return FadeEffect(0f, defaultFadeDuration);
     }
+
     public IEnumerator FadeOut()
     {
-        yield return FadeEffect(1); // transparent to black
+        yield return FadeEffect(1f, defaultFadeDuration);
     }
-    private IEnumerator FadeEffect(float targetAlpha)
-    {
-        // stop previous fade effect if any
-        if (changeAlphaCo != null)
-        {
-            StopCoroutine(changeAlphaCo);
-        }
 
-        // start new fade effect
-        changeAlphaCo = StartCoroutine(ChangeAlphaCo(targetAlpha));
+    public IEnumerator FastFadeIn()
+    {
+        yield return FadeEffect(0f, fastFadeDuration);
+    }
+
+    public IEnumerator FastFadeOut()
+    {
+        yield return FadeEffect(1f, fastFadeDuration);
+    }
+    private IEnumerator FadeEffect(float targetAlpha, float duration)
+    {
+        if (changeAlphaCo != null)
+            StopCoroutine(changeAlphaCo);
+
+        changeAlphaCo = StartCoroutine(ChangeAlphaCo(targetAlpha, duration));
         yield return changeAlphaCo;
     }
 
-    private IEnumerator ChangeAlphaCo(float targetAlpha)
+    private IEnumerator ChangeAlphaCo(float targetAlpha, float duration)
     {
         float startAlpha = canvasGroup.alpha; // get current alpha
         float timePassed = 0f; // how time much time has passed
 
-        while (timePassed < fadeDuration)
+        while (timePassed < duration)
         {
             timePassed += Time.deltaTime; // increase time passed
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timePassed / fadeDuration); // change alpha (fade effect)
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timePassed / duration);
             yield return null; // wait for next frame
         }
 
         canvasGroup.alpha = targetAlpha;
     }
+
 }

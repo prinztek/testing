@@ -9,7 +9,6 @@ public class Ground : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
-    public PlatformEffector2D OneWayEffector { get; private set; }
     public Collider2D OneWayPlatformCollider { get; private set; }
 
     void FixedUpdate()
@@ -33,8 +32,7 @@ public class Ground : MonoBehaviour
             if (hit.CompareTag("OneWayPlatform"))
             {
                 OnOneWayPlatform = true;
-                // OneWayPlatformCollider = hit;
-                OneWayEffector = hit.GetComponent<PlatformEffector2D>();
+                OneWayPlatformCollider = hit;
                 break; // IMPORTANT: only need the one we stand on
             }
         }

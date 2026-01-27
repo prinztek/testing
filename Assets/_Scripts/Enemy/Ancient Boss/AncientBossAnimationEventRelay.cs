@@ -7,11 +7,11 @@ public class AncientBossAnimationEventRelay : MonoBehaviour
     public void ExecuteCrystalBarrage()
     {
         ancientBoss?.TriggerSpikeBarrage();
-        ExecuteScreenShakeForCrystalBarrage();
+        // ExecuteScreenShakeForCrystalBarrage();
     }
 
-    public void ExecuteScreenShakeForCrystalBarrage()
-    {
-        ancientBoss?.StartScreenshakeForAttacking();
-    }
+    // public void ExecuteScreenShakeForCrystalBarrage()
+    // {
+    //     ancientBoss?.StartScreenshakeForAttacking();
+    // }
 }

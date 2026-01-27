@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TexDrawLib;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,6 +21,9 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     public string requiredRuneAtIndex = "";
     public int runeIndex = -1;
     private string userSequence = ""; // holds the sequence submitted by the player
+
+    [Header("Correct Answer Reasoning")]
+    public TEXDraw correctAnswerExplanation;
 
     [Header("Events")]
     public UnityEvent OnPuzzleSolved;

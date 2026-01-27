@@ -26,14 +26,15 @@ public class AttackHitbox : MonoBehaviour
 
         // Try to get enemy/boss components
         EnemyStatsNew enemy = other.GetComponentInParent<EnemyStatsNew>();
-        AncientBoss ancientBoss = other.GetComponentInParent<AncientBoss>();
+        // AncientBoss ancientBoss = other.GetComponentInParent<AncientBoss>();
         Boss2 boss = other.GetComponentInParent<Boss2>();
         DestroyableBlock destroyableBlock = other.GetComponentInParent<DestroyableBlock>();
+        EnemyStats enemyStats = other.GetComponentInParent<EnemyStats>();
 
         // If already hit, skip
         if ((enemy != null && alreadyHit.Contains(enemy)) ||
-            (ancientBoss != null && alreadyHit.Contains(ancientBoss)) ||
-            (boss != null && alreadyHit.Contains(boss)) ||
+            // (ancientBoss != null && alreadyHit.Contains(ancientBoss)) ||
+            // (boss != null && alreadyHit.Contains(boss)) ||
             (destroyableBlock != null && alreadyHit.Contains(destroyableBlock)))
         {
             return;
@@ -50,23 +51,34 @@ public class AttackHitbox : MonoBehaviour
             alreadyHit.Add(enemy);
         }
 
-        // Apply damage to Boss2
-        if (boss != null)
+        // Apply damage to enemy
+        if (enemyStats != null)
         {
-            boss.TakeDamage(damage, hitPosition, doScreenShake: true);
-            alreadyHit.Add(boss);
+            enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true);
+            playerStats.TriggerAttackHit(enemyStats.gameObject);
+            alreadyHit.Add(enemyStats);
         }
 
+        // Apply damage to Boss2
+        // if (boss != null)
+        // {
+        //     boss.TakeDamage(damage, hitPosition, doScreenShake: true);
+        //     playerStats.TriggerAttackHit(boss.gameObject);
+        //     alreadyHit.Add(boss);
+        // }
+
         // Apply damage to AncientBoss
-        if (ancientBoss != null)
-        {
-            ancientBoss.TakeDamage(damage, hitPosition, doScreenShake: true);
-            alreadyHit.Add(ancientBoss);
-        }
+        // if (ancientBoss != null)
+        // {
+        //     ancientBoss.TakeDamage(damage, hitPosition, doScreenShake: true);
+        //     playerStats.TriggerAttackHit(enemy.gameObject);
+        //     alreadyHit.Add(ancientBoss);
+        // }
 
         if (destroyableBlock != null)
         {
             destroyableBlock.TakeDamage(damage);
+            alreadyHit.Add(destroyableBlock);
         }
     }
 }

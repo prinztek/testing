@@ -27,6 +27,7 @@ public class InteractionTrigger : MonoBehaviour
         if (other.CompareTag("Interactable") && other.TryGetComponent(out BasicInteractableObject interactable))
         {
             currentInteractable = interactable;
+            currentInteractable.HighlightObject();
             // Debug.Log("Can interact with " + interactable.name);
         }
     }
@@ -36,6 +37,7 @@ public class InteractionTrigger : MonoBehaviour
         // Clear only if the same interactable
         if (other.CompareTag("Interactable") && other.GetComponent<BasicInteractableObject>() == currentInteractable)
         {
+            currentInteractable.RemoveHighlightObject();
             currentInteractable = null;
             // Debug.Log("Left interaction range");
         }

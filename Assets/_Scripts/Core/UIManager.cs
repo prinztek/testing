@@ -36,6 +36,9 @@ public class UIManager : MonoBehaviour
     // Event for GameManager to pause/unpause
     public event Action<bool> OnModalToggled;
 
+    [Header("Fade Settings")]
+    [SerializeField] private UI_Fade uiFade;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -255,4 +258,17 @@ public class UIManager : MonoBehaviour
     }
 
     public GameObject GetActivePanel() => activePanel;
+
+    public void FadeToBlackFast()
+    {
+        if (uiFade != null)
+            StartCoroutine(uiFade.FastFadeOut());
+    }
+
+    public void FadeFromBlackFast()
+    {
+        if (uiFade != null)
+            StartCoroutine(uiFade.FastFadeIn());
+    }
 }
+
