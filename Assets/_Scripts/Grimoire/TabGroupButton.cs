@@ -66,7 +66,7 @@ public class TabGroupButton : MonoBehaviour
         // Ensure buttonText exists before trying to change color
         if (buttonText != null)
         {
-            buttonText.color = Color.black;  // Set the TMP text color to violetRed
+            // buttonText.color = Color.black;  // Set the TMP text color to violetRed
         }
         else
         {
@@ -80,7 +80,7 @@ public class TabGroupButton : MonoBehaviour
         // buttonText.color = new Color32(238, 225, 211, 255);
         // Light Beige / Off-white color for deselected state
         // Alternatively, you could use gray or transparent color:
-        buttonText.color = Color.gray; // Or a semi-transparent color
+        // buttonText.color = Color.gray; // Or a semi-transparent color
         // buttonText.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent white
     }
 
