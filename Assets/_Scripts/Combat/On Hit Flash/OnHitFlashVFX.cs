@@ -15,6 +15,7 @@ public class OnHitFlashVFX : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         originalMaterial = sr.material;
     }
+
     public void PlayOnDamageVfx()
     {
         if (onDamageVfxCoroutine != null)

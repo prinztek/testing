@@ -97,20 +97,6 @@ public class Hurt : MonoBehaviour
         }
         onFlickerVfxCoroutine = StartCoroutine(FlickerAndInvincibility());
     }
-    // private IEnumerator FlickerAndInvincibility()
-    // {
-    //     float elapsed = 0f;
-
-    //     while (elapsed < flickerDuration)
-    //     {
-    //         spriteRenderer.material = onDamageVfxMat;
-    //         yield return new WaitForSeconds(flashDuration);
-    //         elapsed += flashDuration;
-    //     }
-
-    //     spriteRenderer.material = originalMaterial;
-    //     isInvincible = false;
-    // }
 
     private IEnumerator FlickerAndInvincibility()
     {

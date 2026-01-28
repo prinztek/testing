@@ -259,7 +259,7 @@ public class EnemyStatsNew : MonoBehaviour
         }
 
         // Notify LevelManager
-        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an even call?
+        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
 
         Destroy(gameObject, 2f);
     }

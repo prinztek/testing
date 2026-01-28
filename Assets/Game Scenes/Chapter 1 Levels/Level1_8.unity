@@ -351,11 +351,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee89c24693b46419b84bdce647a2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  deathFXPrefab: {fileID: 0}
+  onHitFlashVFX: {fileID: 0}
   isBoss: 1
   maxHealth: 100
   attackDamage: 10
   defense: 0
   moveSpeed: 2
+  dropTable: []
+  pickupPrefab: {fileID: 0}
+  IsDead: 0
 --- !u!1 &80565523
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +439,79 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.5, y: 3}
   m_EdgeRadius: 0
+--- !u!1001 &81404349
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4060275262224955477, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4060275262224955477, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: 'm_ApplyToSortingLayers.Array.data[0]'
+      value: 1262675037
+      objectReference: {fileID: 0}
+    - target: {fileID: 4060275262224955477, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: 'm_ApplyToSortingLayers.Array.data[1]'
+      value: -1304636877
+      objectReference: {fileID: 0}
+    - target: {fileID: 4060275262224955477, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: 'm_ApplyToSortingLayers.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.66203
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.1023939
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136676374535001692, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861001942308308855, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
+      propertyPath: m_Name
+      value: Global Light 2D Everything Prefab
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bc1386127b924bd47876ba1d0d43fc58, type: 3}
 --- !u!1 &135014005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,90 +1787,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1237099636
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1237099638}
-  - component: {fileID: 1237099637}
-  m_Layer: 0
-  m_Name: Light 2D
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1237099637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237099636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
-  m_ComponentVersion: 2
-  m_LightType: 4
-  m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_LightVolumeIntensity: 1
-  m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 5de4424b33d23cb200000000f7cd444b
-  m_LightCookieSprite: {fileID: 0}
-  m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 0
-  m_NormalMapDistance: 3
-  m_NormalMapQuality: 2
-  m_UseNormalMap: 0
-  m_ShadowsEnabled: 1
-  m_ShadowIntensity: 0.75
-  m_ShadowSoftness: 0.3
-  m_ShadowSoftnessFalloffIntensity: 0.5
-  m_ShadowVolumeIntensityEnabled: 0
-  m_ShadowVolumeIntensity: 0.75
-  m_LocalBounds:
-    m_Center: {x: 0, y: -0.00000011920929, z: 0}
-    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 360
-  m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 1
-  m_ShapeLightParametricSides: 5
-  m_ShapeLightParametricAngleOffset: 0
-  m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
-  m_ShapeLightFalloffOffset: {x: 0, y: 0}
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
---- !u!4 &1237099638
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237099636}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.2656932, y: 5.071182, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1283771372
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,11 +2245,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee89c24693b46419b84bdce647a2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  deathFXPrefab: {fileID: 0}
+  onHitFlashVFX: {fileID: 0}
   isBoss: 1
   maxHealth: 100
   attackDamage: 10
   defense: 0
   moveSpeed: 2
+  dropTable: []
+  pickupPrefab: {fileID: 0}
+  IsDead: 0
 --- !u!114 &1583726209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3023,7 +3022,7 @@ Transform:
   m_GameObject: {fileID: 1753834115}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5937428, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10346,7 +10345,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 401489060}
-  - {fileID: 1237099638}
   - {fileID: 1990089303}
   - {fileID: 187988382}
   - {fileID: 1753834116}
@@ -10361,3 +10359,4 @@ SceneRoots:
   - {fileID: 1209995127}
   - {fileID: 1720713945}
   - {fileID: 1583726213}
+  - {fileID: 81404349}

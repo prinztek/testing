@@ -99,11 +99,11 @@ public class CharacterStats : MonoBehaviour
     }
     private void Update()
     {
-        // 1️⃣ Block all input if the game is paused / a modal is open
+        // 1️. Block all input if the game is paused / a modal is open
         if (!InputGate.CanAcceptInput)
             return;
 
-        // 2️⃣ Block input if clicking/touching UI elements (mobile or PC)
+        // 2. Block input if clicking/touching UI elements (mobile or PC)
         if (UnityEngine.EventSystems.EventSystem.current != null &&
             UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
@@ -174,19 +174,19 @@ public class CharacterStats : MonoBehaviour
         if (currentAttackMode == AttackMode.Melee && equippedRangedWeapon != null)
         {
             currentAttackMode = AttackMode.Ranged;
-            Debug.Log("Switched to 🏹 Ranged mode");
+            Debug.Log("Switched to Ranged mode");
         }
         else
         {
             currentAttackMode = AttackMode.Melee;
-            Debug.Log("Switched to ✊ Melee mode");
+            Debug.Log("Switched to Melee mode");
         }
     }
 
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        Debug.Log($"❤️ Healed for {amount}, current HP: {currentHealth}");
+        Debug.Log($" Healed for {amount}, current HP: {currentHealth}");
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event after healing
     }
 
