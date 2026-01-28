@@ -24,6 +24,11 @@ public class FireInfuseBuff : Buff
             anyEnemy.ApplyDot(damagePerTick: 3, duration: 5f, interval: 0.5f);
         }
 
+        if (enemy.TryGetComponent(out EnemyStats enemyStats))
+        {
+            enemyStats.AddStatus(new BurnStatus(3, 5f, 0.5f));
+        }
+
         hitsRemaining--;
         // Debug.Log($"🔥 Burning DoT applied to {enemy.name}! Hits left: {hitsRemaining}");
 

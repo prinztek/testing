@@ -18,8 +18,13 @@ public class PopupText : MonoBehaviour
         startPos = transform.position;
     }
 
-    void OnEnable()
+    public void Setup(string message, Color? color = null)
     {
+        text.text = message;
+
+        if (color.HasValue)
+            text.color = color.Value;
+
         Play();
     }
 

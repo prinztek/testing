@@ -19,6 +19,13 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private int defense = 0;
     [SerializeField] private float moveSpeed = 2f;
 
+    [Header("Stats Modifiers")]
+    public float tempDamageMultiplier = 1f;
+    public int shieldHitsRemaining = 0;
+    public float moveSpeedMultiplier = 1f;
+    public float attackSpeedMultiplier = 1f;
+    public int guaranteedCrits = 0;
+
     [Header("Drop Item")]
     [SerializeField] public List<DropItem> dropTable;
     [SerializeField] public GameObject pickupPrefab;
@@ -32,10 +39,55 @@ public class EnemyStats : MonoBehaviour
     public event Action OnDeath;
     public event Action<int> OnDamageTaken;
 
+    [Header("Status Effect and Buff Related")]
+    public StatusEffect activeStatus = null;
+    private Queue<StatusEffect> statusQueue = new Queue<StatusEffect>();
+
     private void Awake()
     {
         CurrentHealth = maxHealth;
     }
+
+    private void Update()
+    {
+        if (activeStatus != null)
+        {
+            activeStatus.OnTick(Time.deltaTime);
+            activeStatus.Update(Time.deltaTime);
+
+            if (activeStatus.isExpired)
+            {
+                activeStatus.OnExpire();
+                activeStatus = null;
+
+                if (statusQueue.Count > 0)
+                {
+                    ApplyStatus(statusQueue.Dequeue());
+                }
+            }
+        }
+    }
+
+    public void AddStatus(StatusEffect status)
+    {
+        if (activeStatus == null)
+        {
+            ApplyStatus(status);
+        }
+        else
+        {
+            statusQueue.Enqueue(status);
+            Debug.Log($"🕓 Queued status: {status.statusName}");
+        }
+    }
+
+    private void ApplyStatus(StatusEffect status)
+    {
+        activeStatus = status;
+        status.Assign(this);
+        Debug.Log($"Applied status: {status.statusName}");
+    }
+
 
     #region Health
 
@@ -73,6 +125,11 @@ public class EnemyStats : MonoBehaviour
         }
     }
 
+    public void TakeStatusEffectDamageOverTime(int damagePerTick)
+    {
+
+    }
+
     public void Heal(int amount)
     {
         if (IsDead) return;
@@ -84,6 +141,7 @@ public class EnemyStats : MonoBehaviour
     private void Die()
     {
         if (IsDead) return;
+        Debug.Log("Enemy Died");
         IsDead = true;
         CurrentHealth = 0;
 
@@ -105,6 +163,8 @@ public class EnemyStats : MonoBehaviour
 
         // Notify LevelManager
         UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
+
+        Destroy(gameObject, 2f);
     }
 
     #endregion

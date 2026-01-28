@@ -29,6 +29,12 @@ public class FactorialSkill : MonoBehaviour
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         playerStats = playerObj.GetComponent<CharacterStats>();
+
+        // if the player already learned the skill        
+        if (playerStats != null && playerStats.HasSkill(SkillType.FactorialEngine))
+        {
+            Destroy(gameObject);
+        }
     }
     void Update()
     {
@@ -49,6 +55,9 @@ public class FactorialSkill : MonoBehaviour
         if (collision == null) return;
         if (collision.CompareTag("Player"))
         {
+            if (playerStats != null && playerStats.HasSkill(SkillType.FactorialEngine))
+                return;
+
             UnlockSkill();
             Destroy(gameObject); // Remove the skill object from the scene
         }
@@ -67,5 +76,7 @@ public class FactorialSkill : MonoBehaviour
             transform.position + new Vector3(0, 1f, 0),
             Quaternion.identity
         );
+
+        popup.Setup("Factorial Engine Acquired");
     }
 }

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
 {
-    PermutationPulse,
     FactorialEngine,
-    LightningDash
+    PermutationEngine,
+    CombinationEngine,
+    ProbabilityEngine
 }
 public class CharacterStats : MonoBehaviour
 {
