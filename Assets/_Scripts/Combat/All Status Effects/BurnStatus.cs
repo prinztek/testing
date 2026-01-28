@@ -15,7 +15,7 @@ public class BurnStatus : StatusEffect
 
     public override void OnApply()
     {
-        Debug.Log("🔥 Burn applied");
+        Debug.Log("Burn applied");
     }
 
     public override void OnTick(float deltaTime)
@@ -30,6 +30,6 @@ public class BurnStatus : StatusEffect
 
     public override void OnExpire()
     {
-        Debug.Log("🔥 Burn expired");
+        Debug.Log("Burn expired");
     }
 }

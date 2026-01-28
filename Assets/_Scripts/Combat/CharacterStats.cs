@@ -307,6 +307,8 @@ public class CharacterStats : MonoBehaviour
             Quaternion.identity
         );
 
+        popup.Setup(buff.buffName + "Acquired");
+
         ApplyBuff(buff);
     }
 

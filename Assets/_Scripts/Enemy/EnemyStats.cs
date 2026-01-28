@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class EnemyStats : MonoBehaviour
 {
     [Header("Component References")]
-    private CinemachineImpulseSource impulseSource;
+    [SerializeField] private CinemachineImpulseSource impulseSource;
     [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
 
@@ -46,6 +46,8 @@ public class EnemyStats : MonoBehaviour
     private void Awake()
     {
         CurrentHealth = maxHealth;
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+        onHitFlashVFX = GetComponent<OnHitFlashVFX>();
     }
 
     private void Update()
@@ -103,6 +105,7 @@ public class EnemyStats : MonoBehaviour
         OnDamageTaken?.Invoke(finalDamage);
         OnHealthChanged?.Invoke(CurrentHealth);
 
+
         if (CurrentHealth <= 0)
         {
             Die();
@@ -117,18 +120,25 @@ public class EnemyStats : MonoBehaviour
             }
         }
 
-        // Screenshake with direction
-        if (doScreenShake && impulseSource != null)
+        if (activeStatus is BurnStatus)
         {
-            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
-            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+            // vfx for burn status effect damage
+            onHitFlashVFX?.PlayOnBurnVfx();
+        }
+        else
+        {
+            // vfx for normal hit damage
+            onHitFlashVFX.PlayOnDamageVfx();
+            // Screenshake with direction
+            if (doScreenShake && impulseSource != null)
+            {
+                Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
+                ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+            }
         }
     }
 
-    public void TakeStatusEffectDamageOverTime(int damagePerTick)
-    {
-
-    }
+    public void TakeDamageOverTime() { }
 
     public void Heal(int amount)
     {
