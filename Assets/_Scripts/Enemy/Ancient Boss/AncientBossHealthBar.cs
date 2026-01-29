@@ -20,8 +20,8 @@ public class AncientBossHealthBar : MonoBehaviour
         }
 
         // Set the initial values of the health bar from Boss2
-        SetMaxHealth(boss.maxHealth); // Set max health
-        SetHealth(boss.currentHealth); // Set the current health
+        SetMaxHealth(boss.enemyStats.maxHealth); // Set max health
+        SetHealth(boss.enemyStats.CurrentHealth); // Set the current health
 
         // Subscribe to health change events
         // boss.OnDeathStarted += HandleDeath; // When character dies, hide the health bar

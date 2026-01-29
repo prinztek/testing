@@ -11,6 +11,9 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
 
+    // only for bosses
+    [SerializeField] private GameObject bossHUD;
+
     [Header("Ground Check Settings:")]
     [SerializeField] public Transform groundCheckPoint; // point at which ground check happens
     [SerializeField] public float groundCheckY = 0.2f; // how far down from ground check point is Grounded() checked
@@ -105,6 +108,11 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsDead) return;
 
+        if (bossHUD != null && bossHUD.activeSelf == false)
+        {
+            bossHUD.SetActive(true);
+        }
+
         Debug.Log("Taken Damage: " + rawDamage);
 
         int finalDamage = Mathf.Max(rawDamage - defense, 1);
@@ -117,6 +125,7 @@ public class EnemyStats : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Die();
+            bossHUD.SetActive(false);
         }
 
         // Show floating damage
@@ -177,12 +186,10 @@ public class EnemyStats : MonoBehaviour
                 GameObject fx = Instantiate(deathFXPrefab, transform.position, Quaternion.identity);
                 Destroy(fx, 0.5f);
             }
+            Destroy(gameObject, 2f);
         }
-
         // Notify LevelManager
         UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
-
-        Destroy(gameObject, 2f);
     }
 
     #endregion

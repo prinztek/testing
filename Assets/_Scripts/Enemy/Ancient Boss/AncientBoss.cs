@@ -29,6 +29,7 @@ public class AncientBoss : MonoBehaviour
     // REFERENCES
     // ========================================
     [Header("References")]
+    [SerializeField] public EnemyStats enemyStats;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform visual;
@@ -60,8 +61,6 @@ public class AncientBoss : MonoBehaviour
     // STATS
     // ========================================
     [Header("Stats")]
-    [SerializeField] public int maxHealth = 200;
-    public int currentHealth;
     private bool isDead;
 
     [SerializeField] private int damage;
@@ -130,12 +129,11 @@ public class AncientBoss : MonoBehaviour
 
     private void Awake()
     {
+        enemyStats ??= GetComponent<EnemyStats>();
         animator ??= GetComponentInChildren<Animator>();
         spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
         visual ??= spriteRenderer.transform;
         rb = GetComponent<Rigidbody2D>();
-
-        currentHealth = maxHealth;
         ChangeState(State.Dormant);
     }
 
@@ -235,7 +233,7 @@ public class AncientBoss : MonoBehaviour
             case State.Death:
                 PlayAnimation(DeathHash);
                 isDead = true;
-                bossHUD?.SetActive(false);
+                // bossHUD?.SetActive(false);
                 break;
         }
     }

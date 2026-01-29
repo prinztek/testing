@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &28463941
 Transform:
   m_ObjectHideFlags: 0
@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc469707ffae0854b9d4163f07372ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  enemyStats: {fileID: 0}
   animator: {fileID: 1617800105}
   spriteRenderer: {fileID: 1617800104}
   visual: {fileID: 1617800103}
@@ -178,8 +179,8 @@ MonoBehaviour:
   rb: {fileID: 28463944}
   rockSpikeStartTransform: {fileID: 397938632}
   rockSpikePrefab: {fileID: 3900428670762296330, guid: 7ae2f4f80a167dc48921cd9a5f8bd32b, type: 3}
-  bossHUD: {fileID: 0}
-  impulseSource: {fileID: 0}
+  bossHUD: {fileID: 1801469652}
+  impulseSource: {fileID: 28463947}
   wakeTime: 1
   idleBeforeAttack: 0.8
   attackDuration: 1.2
@@ -187,8 +188,6 @@ MonoBehaviour:
   spikeSpacing: 2
   delayBetweenSpikes: 0.1
   spikeCount: 3
-  maxHealth: 100
-  currentHealth: 0
   damage: 20
   approachSpeed: 3.5
   desiredAttackRange: 1.4
@@ -285,6 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  onBurnVfxMat: {fileID: 0}
   flashDuration: 0.15
 --- !u!114 &28463947
 MonoBehaviour:
@@ -351,13 +351,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee89c24693b46419b84bdce647a2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  impulseSource: {fileID: 0}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
+  bossHUD: {fileID: 1801469652}
+  groundCheckPoint: {fileID: 0}
+  groundCheckY: 0.2
+  groundCheckX: 0.5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
   isBoss: 1
   maxHealth: 100
   attackDamage: 10
   defense: 0
   moveSpeed: 2
+  tempDamageMultiplier: 1
+  shieldHitsRemaining: 0
+  moveSpeedMultiplier: 1
+  attackSpeedMultiplier: 1
+  guaranteedCrits: 0
   dropTable: []
   pickupPrefab: {fileID: 0}
   IsDead: 0
@@ -1554,7 +1567,7 @@ Transform:
   m_GameObject: {fileID: 1062066049}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: -1, y: -1.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2017,7 +2030,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376522574}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3428f90326e06374ba8e3b50fac796a8, type: 3}
   m_Name: 
@@ -2226,13 +2239,14 @@ GameObject:
   - component: {fileID: 1583726210}
   - component: {fileID: 1583726209}
   - component: {fileID: 1583726208}
+  - component: {fileID: 1583726214}
   m_Layer: 6
   m_Name: Skeleton Summoner Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1583726208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2245,13 +2259,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee89c24693b46419b84bdce647a2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  impulseSource: {fileID: 0}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
+  bossHUD: {fileID: 0}
+  groundCheckPoint: {fileID: 0}
+  groundCheckY: 0.2
+  groundCheckX: 0.5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
   isBoss: 1
   maxHealth: 100
   attackDamage: 10
   defense: 0
   moveSpeed: 2
+  tempDamageMultiplier: 1
+  shieldHitsRemaining: 0
+  moveSpeedMultiplier: 1
+  attackSpeedMultiplier: 1
+  guaranteedCrits: 0
   dropTable: []
   pickupPrefab: {fileID: 0}
   IsDead: 0
@@ -2321,6 +2348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  onBurnVfxMat: {fileID: 0}
   flashDuration: 0.15
 --- !u!61 &1583726211
 BoxCollider2D:
@@ -2356,7 +2384,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1, y: -1.04}
+  m_Offset: {x: -1, y: -1.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2366,7 +2394,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 3}
+  m_Size: {x: 1.5, y: 2.5}
   m_EdgeRadius: 0
 --- !u!50 &1583726212
 Rigidbody2D:
@@ -2404,7 +2432,7 @@ Transform:
   m_GameObject: {fileID: 1583726205}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: -2, z: 0}
+  m_LocalPosition: {x: 0, y: -2.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2412,6 +2440,28 @@ Transform:
   - {fileID: 1736257417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1583726214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583726205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3032d675e1b0fb146bd25c29fada8c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  animator: {fileID: 1376522578}
+  rb: {fileID: 1583726212}
+  visual: {fileID: 1376522575}
+  centerTransform: {fileID: 1062066050}
+  idleTime: 1
+  attackDuration: 1.583
+  summonDuration: 1.333
+  recoveryTime: 0.8
+  moveSpeed: 5
+  attackRange: 5
 --- !u!1 &1607739352
 GameObject:
   m_ObjectHideFlags: 0
@@ -3187,6 +3237,11 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &1801469652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4182880591062649872, guid: e9670043a93cddc459de80793949ff18, type: 3}
+  m_PrefabInstance: {fileID: 1878140083}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1878140083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10344,6 +10399,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 81404349}
   - {fileID: 401489060}
   - {fileID: 1990089303}
   - {fileID: 187988382}
@@ -10359,4 +10415,3 @@ SceneRoots:
   - {fileID: 1209995127}
   - {fileID: 1720713945}
   - {fileID: 1583726213}
-  - {fileID: 81404349}
