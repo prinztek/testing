@@ -11,10 +11,16 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
 
-    [Header("Base Stats")]
+    [Header("Ground Check Settings:")]
+    [SerializeField] public Transform groundCheckPoint; // point at which ground check happens
+    [SerializeField] public float groundCheckY = 0.2f; // how far down from ground check point is Grounded() checked
+    [SerializeField] public float groundCheckX = 0.5f; // how far horizontally from ground check point to the edge of the player is
+    [SerializeField] private LayerMask whatIsGround; // ground layer
 
+    #region Stats
+    [Header("Base Stats")]
     [SerializeField] private bool isBoss = false;
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] public int maxHealth = 100;
     [SerializeField] private int attackDamage = 10;
     [SerializeField] private int defense = 0;
     [SerializeField] private float moveSpeed = 2f;
@@ -25,6 +31,8 @@ public class EnemyStats : MonoBehaviour
     public float moveSpeedMultiplier = 1f;
     public float attackSpeedMultiplier = 1f;
     public int guaranteedCrits = 0;
+
+    #endregion
 
     [Header("Drop Item")]
     [SerializeField] public List<DropItem> dropTable;
@@ -237,4 +245,76 @@ public class EnemyStats : MonoBehaviour
         }
     }
     #endregion
+
+    public bool Grounded()
+    {
+        if (groundCheckPoint == null) return false;
+
+        return Physics2D.Raycast(groundCheckPoint.position, Vector2.down, groundCheckY, whatIsGround)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, whatIsGround)
+            || Physics2D.Raycast(groundCheckPoint.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, whatIsGround);
+    }
+
+    // public bool HasGroundAhead(int direction)
+    // {
+    //     if (groundCheckPoint == null) return false;
+
+    //     Vector3 origin = groundCheckPoint.position
+    //                    + Vector3.right * direction * groundCheckX;
+
+    //     return Physics2D.Raycast(origin, Vector2.down, groundCheckY, whatIsGround);
+    // }
+
+    public bool HasGroundAhead(int direction)
+    {
+        if (groundCheckPoint == null) return false;
+
+        Vector2 origin =
+            groundCheckPoint.position +
+            Vector3.right * direction * groundCheckX;
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            origin,
+            Vector2.down,
+            groundCheckY,
+            whatIsGround
+        );
+
+        // if (hit.collider != null)
+        // {
+        //     Debug.Log($"[HasGroundAhead] Hit: {hit.collider.name}");
+        // }
+        // else
+        // {
+        //     Debug.Log("[HasGroundAhead] No hit");
+        // }
+
+        return hit.collider;
+    }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheckPoint == null) return;
+
+        Gizmos.color = Color.green;
+
+        // // Center ground check
+        // Gizmos.DrawLine(
+        //     groundCheckPoint.position,
+        //     groundCheckPoint.position + Vector3.down * groundCheckY
+        // );
+
+        // // Right ground check
+        // Gizmos.DrawLine(
+        //     groundCheckPoint.position + Vector3.right * groundCheckX,
+        //     groundCheckPoint.position + Vector3.right * groundCheckX + Vector3.down * groundCheckY
+        // );
+
+        // // Left ground check
+        // Gizmos.DrawLine(
+        //     groundCheckPoint.position + Vector3.left * groundCheckX,
+        //     groundCheckPoint.position + Vector3.left * groundCheckX + Vector3.down * groundCheckY
+        // );
+    }
 }
