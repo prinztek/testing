@@ -7,6 +7,7 @@ public class RatArcherEnemy : MonoBehaviour
     // ========================================
     public enum State
     {
+        Idle,
         Patrol,
         Detect,         // Spotted player, prepare to engage
         KeepDistance,   // Maintain optimal shooting range
@@ -66,8 +67,9 @@ public class RatArcherEnemy : MonoBehaviour
     // ========================================
     [Header("Combat Timing")]
     [SerializeField] private float detectTime = 0.3f;        // Time spent in Detect state
+    [SerializeField] private float idleDuration = 2f;        // Time spent in Idle state
     [SerializeField] private float attackDuration = 1.0f;    // Full attack animation time (aim + shoot)
-    [SerializeField] private float recoveryTime = 0.8f;      // Cooldown after shooting
+    [SerializeField] private float recoveryTime = 1.0f;      // Cooldown after shooting
     [SerializeField] private float repositionTime = 1.5f;    // Max time spent repositioning
 
     // ========================================
@@ -93,7 +95,7 @@ public class RatArcherEnemy : MonoBehaviour
     private float stateTimer;
     private bool facingRight = true;
     private float cachedPlayerDistance;
-
+    private bool alreadyIdled = false;
     private Transform player;
 
     // ========================================
@@ -127,6 +129,12 @@ public class RatArcherEnemy : MonoBehaviour
 
         switch (currentState)
         {
+            // case State.Idle:
+            //     if (stateTimer >= idleDuration)
+            //     {
+            //         Patrol();
+            //     }
+            //     break;
             case State.Patrol:
                 Patrol();
 
@@ -260,6 +268,13 @@ public class RatArcherEnemy : MonoBehaviour
     // ========================================
     // BEHAVIOR
     // ========================================
+    private void Idle()
+    {
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        alreadyIdled = true;
+        return;
+    }
+
     private void Patrol()
     {
         if (!enemyStats.Grounded())
@@ -273,6 +288,10 @@ public class RatArcherEnemy : MonoBehaviour
         // Edge detection
         if (!enemyStats.HasGroundAhead(dir))
         {
+            // if (alreadyIdled != true)
+            // {
+
+            // }
             FaceDirection(-dir);
             return;
         }
