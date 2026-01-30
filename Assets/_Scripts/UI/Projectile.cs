@@ -39,7 +39,8 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Ignore collisions with other projectiles, or maybe your player
-        if (other.CompareTag("Player") || other.name.Contains("CameraBounds"))
+        // if (other.CompareTag("Player") || other.name.Contains("CameraBounds"))
+        if (other.name.Contains("CameraBounds"))
             return;
 
         // Debug.Log($"Arrow hit: {other.name} | Tag: {other.tag}");

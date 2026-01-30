@@ -1,4 +1,7 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class SkeletonSummonerBoss : MonoBehaviour
 {
@@ -31,6 +34,7 @@ public class SkeletonSummonerBoss : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform visual;
     [SerializeField] private Transform centerTransform;
+    [SerializeField] private GameObject meleeAttackVFX;
 
     // ========================================
     // TIMING
@@ -250,5 +254,20 @@ public class SkeletonSummonerBoss : MonoBehaviour
         // Close range (Spin)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(center, attackRange);
+    }
+
+    public void ShowMeleeAttackVFX()
+    {
+        GameObject fx = Instantiate(
+            meleeAttackVFX,
+            visual.position,
+            Quaternion.identity,
+            visual
+        );
+    }
+
+    public void HideMeleeAttackVFX()
+    {
+        Debug.Log("Destroy Melee Attack VFX");
     }
 }

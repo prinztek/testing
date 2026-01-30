@@ -125,7 +125,11 @@ public class EnemyStats : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Die();
-            bossHUD.SetActive(false);
+
+            if (isBoss == true)
+            {
+                bossHUD.SetActive(false);
+            }
         }
 
         // Show floating damage

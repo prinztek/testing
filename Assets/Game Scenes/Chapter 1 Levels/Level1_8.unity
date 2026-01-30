@@ -440,7 +440,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1, y: -1.04}
+  m_Offset: {x: -1.2, y: -1.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -450,7 +450,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5, y: 3}
+  m_Size: {x: 1.5, y: 2}
   m_EdgeRadius: 0
 --- !u!1001 &81404349
 PrefabInstance:
@@ -764,7 +764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 263269486}
   - component: {fileID: 263269488}
-  - component: {fileID: 263269487}
+  - component: {fileID: 263269489}
   m_Layer: 7
   m_Name: MeleeAttackHitBox
   m_TagString: Untagged
@@ -781,25 +781,12 @@ Transform:
   m_GameObject: {fileID: 263269485}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: -1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1376522575}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &263269487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 263269485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec972ab782cdcee43b09552b497d617e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  ancientBoss: {fileID: 0}
 --- !u!61 &263269488
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -834,7 +821,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.12, y: 0.1}
+  m_Offset: {x: 2, y: -1.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -844,8 +831,20 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5, y: 2}
+  m_Size: {x: 3, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &263269489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263269485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdbdb478747c0d4bb031073de74f321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
 --- !u!1 &315382145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,7 +1996,7 @@ GameObject:
   - component: {fileID: 1376522575}
   - component: {fileID: 1376522577}
   - component: {fileID: 1376522578}
-  - component: {fileID: 1376522576}
+  - component: {fileID: 1376522579}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -2023,19 +2022,6 @@ Transform:
   - {fileID: 80565524}
   m_Father: {fileID: 1583726213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1376522576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376522574}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3428f90326e06374ba8e3b50fac796a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  ancientBoss: {fileID: 0}
 --- !u!212 &1376522577
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2116,6 +2102,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1376522579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376522574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d21616ce4d7d6af42b374c45ba5b0da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  skeletonSummonerBoss: {fileID: 0}
 --- !u!1 &1508286215
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,16 +2451,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3032d675e1b0fb146bd25c29fada8c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  enemyStats: {fileID: 0}
   animator: {fileID: 1376522578}
   rb: {fileID: 1583726212}
   visual: {fileID: 1376522575}
   centerTransform: {fileID: 1062066050}
+  meleeAttackVFX: {fileID: 3846046830363884647, guid: 33232a5083b2a5f40a390920ae497d16, type: 3}
   idleTime: 1
   attackDuration: 1.583
   summonDuration: 1.333
   recoveryTime: 0.8
   moveSpeed: 5
   attackRange: 5
+  currentAttack: 0
 --- !u!1 &1607739352
 GameObject:
   m_ObjectHideFlags: 0
