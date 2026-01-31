@@ -1,3 +1,5 @@
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
@@ -72,6 +74,10 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     [SerializeField] private bool aggressive = true;        // If true, chases relentlessly
     [SerializeField] private float giveUpDistance = 12f;    // Stop chasing if player this far
     [SerializeField] private bool canFallOffLedges = false; // Whether skeleton walks off edges
+
+    [Header("Attack Nudge")]
+    [SerializeField] private float attackNudgeForce = 2.5f;
+    private bool attackNudgeApplied;
 
     // ========================================
     // ANIMATIONS
@@ -211,6 +217,16 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (currentState == State.Attack && !attackNudgeApplied)
+        {
+            int dir = facingRight == true ? 1 : -1;
+            rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
+            attackNudgeApplied = true;
+        }
+    }
+
     // ========================================
     // STATE MACHINE
     // ========================================
@@ -242,9 +258,10 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
                 break;
 
             case State.Attack:
-                rb.linearVelocity = Vector2.zero;
+                // rb.linearVelocity = Vector2.zero;
                 FacePlayer();
                 PlayAnimation(AttackHash);
+                attackNudgeApplied = false;
                 break;
 
             case State.Recovery:
@@ -254,7 +271,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
 
             case State.Stunned:
                 rb.linearVelocity = Vector2.zero;
-                PlayAnimation(IdleHash);
+                // PlayAnimation(HurtHash);
                 break;
 
             case State.Death:
@@ -387,8 +404,8 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
         }
         else
         {
-            // Optional: Go into stunned state when hit
-            // ChangeState(State.Stunned);
+            // Go into stunned state when hit
+            ChangeState(State.Stunned);
         }
     }
 

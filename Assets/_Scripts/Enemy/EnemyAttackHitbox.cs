@@ -1,59 +1,53 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemyAttackHitbox : MonoBehaviour
 {
-    private EnemyStatsNew enemyStats;
-    // Refactor this later
+    private EnemyStatsNew enemyStatsNew;
+    private EnemyStats enemyStats;
 
+    private HashSet<CharacterStats> alreadyHit = new HashSet<CharacterStats>();
 
     private void Awake()
     {
-        // Change to GetComponentInParent to look for EnemyStatsNew on any parent, not just root
-        enemyStats = transform.GetComponentInParent<EnemyStatsNew>();
-
-        // Check if enemyStats was assigned correctly
-        if (enemyStats == null)
-        {
-            Debug.LogError("EnemyStatsNew component not found on parent objects!");
-        }
+        enemyStatsNew = GetComponentInParent<EnemyStatsNew>();
+        enemyStats = GetComponentInParent<EnemyStats>();
     }
 
+    private void OnEnable()
+    {
+        alreadyHit.Clear();
+    }
 
-    // Called when the enemy hitbox triggers a collision
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the collider belongs to a "Hurtbox" (likely the player or another enemy)
-        if (other.CompareTag("Hurtbox"))
+        if (!other.CompareTag("Hurtbox"))
+            return;
+
+        CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
+        if (playerStats == null)
+            return;
+
+        if (alreadyHit.Contains(playerStats))
+            return;
+
+        alreadyHit.Add(playerStats);
+
+        int damage = GetDamage();
+        if (damage > 0)
         {
-            // Try to get the CharacterStats component from the parent of the other object
-            CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
-
-            if (playerStats != null && enemyStats != null)
-            {
-                // Apply damage to the player
-                playerStats.TakeDamage(enemyStats.damage, transform.root.position);
-                // Optional: Apply additional effects like knockback or status effects
-            }
-
+            playerStats.TakeDamage(damage, transform.root.position);
         }
     }
+
+    private int GetDamage()
+    {
+        if (enemyStatsNew != null)
+            return enemyStatsNew.damage;
+
+        if (enemyStats != null)
+            return enemyStats.GetAttackDamage();
+
+        return 0;
+    }
 }
-
-
-// private HashSet<CharacterStats> alreadyHit = new HashSet<CharacterStats>();
-
-// private void OnTriggerEnter2D(Collider2D other)
-// {
-//     if (other.CompareTag("Hurtbox"))
-//     {
-//         CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
-
-//         if (playerStats != null && enemyStats != null && !alreadyHit.Contains(playerStats))
-//         {
-//             playerStats.TakeDamage(enemyStats.damage, transform.root.position);
-//             alreadyHit.Add(playerStats);
-//         }
-//     }
-// }
-
-// public void ResetHits() => alreadyHit.Clear();
