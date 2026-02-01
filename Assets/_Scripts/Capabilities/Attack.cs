@@ -144,6 +144,7 @@ public class Attack : MonoBehaviour
 
         string animWeapon = GetWeaponAnimType(); // "Fist" or "Sword"
         float duration = animationHandler.GetAttackAnimationLength(phase, animWeapon);
+        duration /= stats.attackSpeedMultiplier;
         animationHandler.PlayAttackAnimation(phase, animWeapon, !_ground.OnGround); // handles only the animation
 
         // ApplyAttackNudge(nudgeForce);
@@ -185,6 +186,7 @@ public class Attack : MonoBehaviour
 
         string animWeapon = GetWeaponAnimType();
         float duration = 0.333f; // Or get from animationHandler if needed
+        duration /= stats.attackSpeedMultiplier;
 
         animationHandler.PlayAttackAnimation(1, animWeapon, true);
 
@@ -215,6 +217,8 @@ public class Attack : MonoBehaviour
     private void PerformRangedAttack()
     {
         float duration = animationHandler.GetAttackAnimationLength(1, "bow");
+        duration /= stats.attackSpeedMultiplier;
+
         animationHandler.PlayAttackAnimation(1, "bow");
         lockedUntil = Time.time + duration;
         isInPostCooldown = true;

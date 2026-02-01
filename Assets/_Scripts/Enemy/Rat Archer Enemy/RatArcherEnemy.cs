@@ -442,13 +442,16 @@ public class RatArcherEnemy : MonoBehaviour
         if (currentState != State.Attack) return;
         if (player == null) return;
         // Flip direction based on character facing
-        Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+        Vector2 dir = player.position.x < transform.position.x ? Vector2.left : Vector2.right;
         EnemyProjectile proj =
             Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
 
         proj.SetDamage(damage, gameObject);
-        proj.Launch(direction * projectileSpeed);
+        proj.Launch(dir * projectileSpeed);
 
+        // Rotate the arrow to face the direction
+        float angle = dir.x > 0 ? 0 : 180;
+        proj.transform.rotation = Quaternion.Euler(0, 0, angle);
         Debug.Log("[RatArcher] Arrow shot! (Implement projectile spawning here)");
     }
 

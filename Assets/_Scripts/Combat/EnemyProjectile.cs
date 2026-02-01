@@ -15,6 +15,10 @@ public class EnemyProjectile : MonoBehaviour
     {
         this.velocity = velocity;
         timer = 0f;
+
+        // Rotate the projectile to face the direction it's moving
+        // float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+        // transform.rotation = Quaternion.Euler(0, 0, angle);
         Debug.Log($"Projectile launched with velocity: {velocity}");
     }
 

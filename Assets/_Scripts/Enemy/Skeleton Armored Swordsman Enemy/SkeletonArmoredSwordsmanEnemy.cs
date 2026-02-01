@@ -118,6 +118,13 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     {
         if (isDead) return;
 
+        // Check for stun before anything else
+        if (enemyStats.activeStatus != null && !enemyStats.canMove)
+        {
+            if (currentState != State.Stunned)
+                ChangeState(State.Stunned);
+        }
+
         stateTimer += Time.deltaTime;
 
         switch (currentState)
@@ -201,7 +208,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
             case State.Stunned:
                 rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
-                if (stateTimer >= stunDuration)
+                if (enemyStats.activeStatus == null || enemyStats.canMove)
                 {
                     // Return to combat after stun
                     if (PlayerDetected())
@@ -214,6 +221,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
                     }
                 }
                 break;
+
         }
     }
 
@@ -221,6 +229,8 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     {
         if (currentState == State.Attack && !attackNudgeApplied)
         {
+            if (enemyStats.canAttack == false) return;
+
             int dir = facingRight == true ? 1 : -1;
             rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
             attackNudgeApplied = true;
@@ -287,6 +297,9 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     // ========================================
     private void Patrol()
     {
+
+        if (enemyStats.canMove == false) return;
+
         if (!enemyStats.Grounded())
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
@@ -316,6 +329,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     private void ChasePlayer()
     {
         if (player == null) return;
+        if (enemyStats.canMove == false) return;
 
         if (!enemyStats.Grounded())
         {
@@ -364,50 +378,6 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
         return distance > giveUpDistance;
     }
 
-    // ========================================
-    // COMBAT (Called by Animation Event)
-    // ========================================
-    public void OnAttackHit()
-    {
-        if (currentState != State.Attack) return;
-        if (attackPoint == null) return;
-
-        // Check for player in attack range
-        Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerLayer);
-
-        foreach (Collider2D hit in hits)
-        {
-            // Try to damage player
-            CharacterStats playerStats = hit.GetComponent<CharacterStats>();
-            if (playerStats != null)
-            {
-                Vector2 attackDirection = hit.transform.position - transform.position;
-                playerStats.TakeDamage(damage, transform.position);
-
-                Debug.Log($"[Skeleton] Hit player for {damage} damage!");
-            }
-        }
-    }
-
-    // ========================================
-    // DAMAGE HANDLING
-    // ========================================
-    public void TakeDamage(int damageAmount)
-    {
-        if (isDead) return;
-
-        currentHealth -= damageAmount;
-
-        if (currentHealth <= 0)
-        {
-            ChangeState(State.Death);
-        }
-        else
-        {
-            // Go into stunned state when hit
-            ChangeState(State.Stunned);
-        }
-    }
 
     // ========================================
     // DIRECTION

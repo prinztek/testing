@@ -53,12 +53,17 @@ public class EnemyStats : MonoBehaviour
     [Header("Status Effect and Buff Related")]
     public StatusEffect activeStatus = null;
     private Queue<StatusEffect> statusQueue = new Queue<StatusEffect>();
+    internal bool canMove;
+    internal bool canAttack;
 
     private void Awake()
     {
         CurrentHealth = maxHealth;
         impulseSource = GetComponent<CinemachineImpulseSource>();
         onHitFlashVFX = GetComponent<OnHitFlashVFX>();
+
+        canMove = true;
+        canAttack = true;
     }
 
     private void Update()
@@ -111,7 +116,7 @@ public class EnemyStats : MonoBehaviour
     }
 
 
-    #region Health
+    #region Take Damage
 
     public void TakeDamage(int rawDamage, Vector2 attackerPosition, bool doScreenShake = true, bool statusDamage = false)
     {
@@ -201,12 +206,18 @@ public class EnemyStats : MonoBehaviour
         }
         // Notify LevelManager
         UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
+
+        // if not boss
+        //      code here
+
+        // if boss
+        //      code here
     }
 
     #endregion
 
     #region Getters
-
+    public bool IsStunned() => !canMove || !canAttack;
     public int GetAttackDamage() => Mathf.RoundToInt(attackDamage * damageMultiplier);
     public int GetDefense() => defense;
     public float GetMoveSpeed() => moveSpeed * moveSpeedMultiplier;

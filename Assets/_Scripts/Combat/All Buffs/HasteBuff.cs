@@ -1,28 +1,24 @@
-using UnityEngine;
-
 public class HasteBuff : Buff
 {
-    private float moveSpeedBoost;
-    private float attackSpeedBoost;
+    private float moveBoost = 1.1f;
+    private float attackBoost = 1.1f;
 
-    public HasteBuff(float duration, float moveBoost = 5f, float attackBoost = 5f)
+    public HasteBuff(float duration, float moveBoost = 1.5f, float attackBoost = 1.25f)
         : base("Haste", duration)
     {
-        this.moveSpeedBoost = moveBoost;
-        this.attackSpeedBoost = attackBoost;
+        this.moveBoost = moveBoost;
+        this.attackBoost = attackBoost;
     }
 
     public override void OnApply()
     {
-        target.moveSpeedMultiplier *= moveSpeedBoost;
-        target.attackSpeedMultiplier *= attackSpeedBoost;
-        // Debug.Log($"⚡ Haste applied! Speed x{moveSpeedBoost}, Attack Speed x{attackSpeedBoost}");
+        target.moveSpeedMultiplier = moveBoost;
+        target.attackSpeedMultiplier = attackBoost;
+        target.animationSpeedMultiplier = attackBoost;
     }
 
     public override void OnExpire()
     {
-        target.moveSpeedMultiplier /= moveSpeedBoost;
-        target.attackSpeedMultiplier /= attackSpeedBoost;
-        // Debug.Log("⚡ Haste expired.");
+        // Do nothing reset via character stats
     }
 }

@@ -36,6 +36,7 @@ public class CharacterStats : MonoBehaviour
     public float moveSpeedMultiplier = 1f;
     public float attackSpeedMultiplier = 1f;
     public int guaranteedCrits = 0;
+    public float animationSpeedMultiplier = 1f;
 
     [Header("Equipped Weapons")]
     public GameItem equippedMeleeWeapon = null;  // null = Fist
@@ -50,12 +51,6 @@ public class CharacterStats : MonoBehaviour
     // Delegate and event for health changes
     public delegate void HealthChanged(int currentHealth);
     public event HealthChanged OnHealthChanged; // This event will be triggered whenever the character’s health changes.
-
-    // case SkillType.LightningDash: return "Skip a question with a small gold penalty.";
-
-    // this is supposed to be something that is related to help players solve math questions easier
-    // e.g., FireBlast can eliminate one wrong choice, IceShield can give a hint, LightningDash can skip question with small gold penalty
-
     private HashSet<SkillType> unlockedSkills = new HashSet<SkillType>();
 
     public void UnlockSkill(SkillType skill)
