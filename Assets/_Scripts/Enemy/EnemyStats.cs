@@ -29,7 +29,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
 
     [Header("Stats Modifiers")]
-    public float tempDamageMultiplier = 1f;
+    public float damageMultiplier = 1f;
     public int shieldHitsRemaining = 0;
     public float moveSpeedMultiplier = 1f;
     public float attackSpeedMultiplier = 1f;
@@ -72,13 +72,22 @@ public class EnemyStats : MonoBehaviour
             {
                 activeStatus.OnExpire();
                 activeStatus = null;
-
+                ResetTemporaryModifiers();
                 if (statusQueue.Count > 0)
                 {
                     ApplyStatus(statusQueue.Dequeue());
                 }
             }
         }
+    }
+
+    private void ResetTemporaryModifiers()
+    {
+        damageMultiplier = 1f;
+        moveSpeedMultiplier = 1f;
+        shieldHitsRemaining = 0;
+        attackSpeedMultiplier = 1f;
+        guaranteedCrits = 0;
     }
 
     public void AddStatus(StatusEffect status)
@@ -104,7 +113,7 @@ public class EnemyStats : MonoBehaviour
 
     #region Health
 
-    public void TakeDamage(int rawDamage, Vector2 attackerPosition, bool doScreenShake = true)
+    public void TakeDamage(int rawDamage, Vector2 attackerPosition, bool doScreenShake = true, bool statusDamage = false)
     {
         if (IsDead) return;
 
@@ -125,23 +134,15 @@ public class EnemyStats : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Die();
-
-            if (isBoss == true)
-            {
-                bossHUD.SetActive(false);
-            }
         }
 
         // Show floating damage
         if (DamageTextSpawner.Instance != null)
         {
-            if (!doScreenShake)
-            {
-                DamageTextSpawner.Instance.ShowDamage(transform.position, finalDamage, Color.red);
-            }
+            DamageTextSpawner.Instance.ShowDamage(transform.position, finalDamage, Color.red);
         }
 
-        if (activeStatus is BurnStatus)
+        if (activeStatus is BurnStatus && statusDamage == true)
         {
             // vfx for burn status effect damage
             onHitFlashVFX?.PlayOnBurnVfx();
@@ -159,7 +160,7 @@ public class EnemyStats : MonoBehaviour
         }
     }
 
-    public void TakeDamageOverTime() { }
+    public void TakeBurnDamage() { }
 
     public void Heal(int amount)
     {
@@ -173,6 +174,12 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsDead) return;
         Debug.Log("Enemy Died");
+
+        if (isBoss == true)
+        {
+            bossHUD.SetActive(false);
+        }
+
         IsDead = true;
         CurrentHealth = 0;
 
@@ -200,9 +207,9 @@ public class EnemyStats : MonoBehaviour
 
     #region Getters
 
-    public int GetAttackDamage() => attackDamage;
+    public int GetAttackDamage() => Mathf.RoundToInt(attackDamage * damageMultiplier);
     public int GetDefense() => defense;
-    public float GetMoveSpeed() => moveSpeed;
+    public float GetMoveSpeed() => moveSpeed * moveSpeedMultiplier;
     public int GetMaxHealth() => maxHealth;
 
     #endregion

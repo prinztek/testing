@@ -43,7 +43,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     // PATROL & IDLE
     // ========================================
     [Header("Patrol & Idle")]
-    [SerializeField] private float patrolSpeed = 1.2f;
+    [SerializeField] private float patrolSpeed;
     [SerializeField] private float idleDuration = 2.5f;
     [SerializeField] private float patrolDuration = 4f;
     private float patrolTimer;
@@ -53,7 +53,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     // ========================================
     [Header("Combat")]
     [SerializeField] private float detectionRange = 6f;     // How far skeleton can see
-    [SerializeField] private float chaseSpeed = 3f;         // Speed when chasing player
+    [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
     [SerializeField] private LayerMask playerLayer;         // What counts as player
@@ -310,7 +310,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
             return;
         }
 
-        rb.linearVelocity = new Vector2(dir * patrolSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dir * enemyStats.GetMoveSpeed(), rb.linearVelocity.y);
     }
 
     private void ChasePlayer()
@@ -334,7 +334,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
         }
 
         FaceDirection(dir);
-        rb.linearVelocity = new Vector2(dir * chaseSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dir * enemyStats.GetMoveSpeed(), rb.linearVelocity.y);
     }
 
     // ========================================

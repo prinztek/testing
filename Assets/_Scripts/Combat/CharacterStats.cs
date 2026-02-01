@@ -143,31 +143,6 @@ public class CharacterStats : MonoBehaviour
         {
             TryToggleAttackMode();
         }
-
-        // if (Input.GetKeyDown(KeyCode.Z)) // toggle acquired skill 1
-        // {
-        //     if (HasSkill(SkillType.FireBlast))
-        //     {
-        //         Debug.Log("allow player to use FireBlast");
-        //     }
-        // }
-
-        // if (Input.GetKeyDown(KeyCode.X)) // toggle acquired skill 2
-        // {
-        //     if (HasSkill(SkillType.IceShield))
-        //     {
-        //         Debug.Log("allow player to use IceShield");
-        //     }
-        // }
-
-        // if (Input.GetKeyDown(KeyCode.C)) // toggle acquired skill 3
-        // {
-        //     if (HasSkill(SkillType.LightningDash))
-        //     {
-        //         Debug.Log("allow player to use LightningDash");
-        //     }
-        // }
-
     }
 
     public void TryToggleAttackMode()
@@ -312,8 +287,6 @@ public class CharacterStats : MonoBehaviour
         ApplyBuff(buff);
     }
 
-
-
     private void ApplyBuff(Buff buff)
     {
         ResetTemporaryModifiers();
@@ -344,8 +317,10 @@ public class CharacterStats : MonoBehaviour
         if (shieldHitsRemaining > 0)
         {
             shieldHitsRemaining--;
-            Debug.Log("🛡️ Shield absorbed the hit! Hits left: " + shieldHitsRemaining);
+            Debug.Log("Shield absorbed the hit! Hits left: " + shieldHitsRemaining);
             return;
+
+            // play deflection vfx
         }
 
         currentHealth -= damage;

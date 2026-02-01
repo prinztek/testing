@@ -13,14 +13,13 @@ public class FireInfuseBuff : Buff
 
     public override void OnApply()
     {
-        Debug.Log("🔥 Fire Infuse applied: " + maxHits + " fiery hits");
+        Debug.Log("Fire Infuse applied: " + maxHits + " fiery hits");
     }
 
     public override void OnAttackHit(GameObject enemy)
     {
         if (enemy.TryGetComponent(out EnemyStatsNew anyEnemy))
         {
-            // ✅ Apply DoT
             anyEnemy.ApplyDot(damagePerTick: 3, duration: 5f, interval: 0.5f);
         }
 
@@ -30,7 +29,7 @@ public class FireInfuseBuff : Buff
         }
 
         hitsRemaining--;
-        // Debug.Log($"🔥 Burning DoT applied to {enemy.name}! Hits left: {hitsRemaining}");
+        // Debug.Log($"Burning DoT applied to {enemy.name}! Hits left: {hitsRemaining}");
 
         if (hitsRemaining <= 0)
         {
@@ -40,12 +39,12 @@ public class FireInfuseBuff : Buff
 
     public override void OnExpire()
     {
-        Debug.Log("🔥 Fire Infuse expired.");
+        Debug.Log("Fire Infuse expired.");
     }
 
     public override string GetUIDisplay()
     {
-        return $"🔥 Fire Infuse - {hitsRemaining} hits";
+        return $"Fire Infuse - {hitsRemaining} hits";
     }
 
 }

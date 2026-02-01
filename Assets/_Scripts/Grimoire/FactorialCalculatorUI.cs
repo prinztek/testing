@@ -39,8 +39,11 @@ public class FactorialCalculatorUI : MonoBehaviour
     private void Awake()
     {
         // Make sure UI starts locked
+
         if (input != null)
+        {
             input.interactable = false;
+        }
 
         if (buttons != null)
         {
@@ -78,7 +81,12 @@ public class FactorialCalculatorUI : MonoBehaviour
         if (input == null)
             return;
 
-        input.text += key;
+        if (input.text.Length < 2)
+        {
+            input.text += key;
+        }
+
+        Debug.Log("Input limit reached!");
     }
 
     public void ClearInput()

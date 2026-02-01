@@ -54,7 +54,7 @@ public class AttackHitbox : MonoBehaviour
         // Apply damage to enemy
         if (enemyStats != null)
         {
-            enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true);
+            enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true, statusDamage: false);
             playerStats.TriggerAttackHit(enemyStats.gameObject);
             alreadyHit.Add(enemyStats);
         }

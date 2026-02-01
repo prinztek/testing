@@ -23,8 +23,8 @@ public class BurnStatus : StatusEffect
         tickTimer += deltaTime;
         if (tickTimer >= tickInterval)
         {
-            tickTimer = 0f;
-            target.TakeDamage(damagePerTick, target.transform.position, false);
+            tickTimer -= tickInterval;
+            target.TakeDamage(damagePerTick, target.transform.position, false, true);
         }
     }
 

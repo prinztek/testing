@@ -15,7 +15,7 @@ public class PrecisionStrikeBuff : Buff
 
     public override void OnApply()
     {
-        // Debug.Log($"🎯 Precision Strike applied! {guaranteedCrits} guaranteed crits ready.");
+        // Debug.Log($"Precision Strike applied! {guaranteedCrits} guaranteed crits ready.");
         target.tempDamageMultiplier *= multiplier;
         target.guaranteedCrits = remainingCrits;
     }
@@ -24,7 +24,7 @@ public class PrecisionStrikeBuff : Buff
     {
         if (remainingCrits > 0)
         {
-            // Debug.Log($"🎯 Crit! Hit {enemy.name} with Precision Strike.");
+            // Debug.Log($"Crit! Hit {enemy.name} with Precision Strike.");
             remainingCrits--;
             target.guaranteedCrits = remainingCrits;
 
