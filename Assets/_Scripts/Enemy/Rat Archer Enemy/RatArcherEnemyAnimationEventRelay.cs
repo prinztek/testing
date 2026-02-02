@@ -3,15 +3,15 @@ using UnityEngine;
 public class RatArcherEnemyAnimationEventRelay : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private RatArcherEnemy ratArcherEnemy;
+    [SerializeField] private ArcherEnemy archerEnemy;
 
     private void Awake()
     {
-        ratArcherEnemy ??= GetComponentInParent<RatArcherEnemy>();
+        archerEnemy ??= GetComponentInParent<ArcherEnemy>();
     }
     public void OnShootArrow()
     {
-        ratArcherEnemy?.OnShootArrow();
+        archerEnemy?.OnShootArrow();
         // ExecuteScreenShakeForCrystalBarrage();
     }
 

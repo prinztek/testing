@@ -7,11 +7,13 @@ public class SlimeEnemy : MonoBehaviour
     // ========================================
     public enum State
     {
+        Idle,
         Patrol,
         Approach,
         Attack,
         Recovery,
-        Death
+        Death,
+        Stunned
     }
 
     // ========================================
@@ -42,11 +44,14 @@ public class SlimeEnemy : MonoBehaviour
     // COMBAT
     // ========================================
     [Header("Combat")]
+    [SerializeField] private float idleDuration = 1.5f;      // Time to pause at walls/ledges
     [SerializeField] private float approachSpeed = 2.5f;
     [SerializeField] private float detectRange = 3f;
     [SerializeField] private float attackRange = 1.2f;
     [SerializeField] private float attackDuration = 0.6f;
     [SerializeField] private float recoveryTime = 0.8f;
+    [SerializeField] private float stunDuration = 2.0f;      // How long stun lasts
+
 
     // ========================================
     // ANIMATIONS
@@ -62,8 +67,8 @@ public class SlimeEnemy : MonoBehaviour
     private State currentState;
     private float stateTimer;
     private bool facingRight = true;
-
     private Transform player;
+    private bool shouldFlipAfterIdle = false;  // Track if we should flip when idle ends
 
     // ========================================
     // UNITY
@@ -84,14 +89,29 @@ public class SlimeEnemy : MonoBehaviour
     {
         if (isDead) return;
 
-        stateTimer += Time.deltaTime;
-        if (GameManager.Instance.State != GameManager.GameState.Playing)
+        // Check for stun before anything else
+        if (enemyStats.activeStatus != null && enemyStats.IsStunned() == true)
         {
-            return;
+            if (currentState != State.Stunned)
+                ChangeState(State.Stunned);
         }
+
+        stateTimer += Time.deltaTime;
 
         switch (currentState)
         {
+            case State.Idle:
+                Idle();
+                // Check for player during idle first
+                if (PlayerDetected())
+                {
+                    ChangeState(State.Approach);
+                }
+                else
+                {
+                    Idle();  // Only process idle logic if no player
+                }
+                break;
             case State.Patrol:
                 Patrol();
 
@@ -124,6 +144,23 @@ public class SlimeEnemy : MonoBehaviour
                 if (stateTimer >= recoveryTime)
                     ChangeState(State.Patrol);
                 break;
+
+            case State.Stunned:
+                // Just wait out the stun
+                if (enemyStats.IsStunned() == false)
+                {
+                    // After stun, decide what to do based on player position
+                    if (InAttackRange())
+                    {
+                        ChangeState(State.Attack);
+                    }
+                    else if (!PlayerDetected())
+                    {
+                        ChangeState(State.Patrol);
+                    }
+                    break;
+                }
+                break;
         }
     }
 
@@ -137,6 +174,11 @@ public class SlimeEnemy : MonoBehaviour
 
         switch (newState)
         {
+            case State.Idle:
+                rb.linearVelocity = Vector2.zero;
+                PlayAnimation(IdleHash);
+                break;
+
             case State.Patrol:
                 PlayAnimation(MoveHash);
                 break;
@@ -156,6 +198,11 @@ public class SlimeEnemy : MonoBehaviour
                 PlayAnimation(IdleHash);
                 break;
 
+            case State.Stunned:
+                rb.linearVelocity = Vector2.zero;
+                PlayAnimation(IdleHash);  // Or you could add a "stunned" animation
+                break;
+
             case State.Death:
                 rb.linearVelocity = Vector2.zero;
                 // PlayAnimation(DeathHash);
@@ -167,20 +214,38 @@ public class SlimeEnemy : MonoBehaviour
     // ========================================
     // BEHAVIOR
     // ========================================
+    private void Idle()
+    {
+        // Just wait, then flip if needed and return to patrol
+        if (stateTimer >= idleDuration)
+        {
+            if (shouldFlipAfterIdle)
+            {
+                FaceDirection(facingRight ? -1 : 1);
+                shouldFlipAfterIdle = false;
+            }
+            ChangeState(State.Patrol);
+        }
+    }
     private void Patrol()
     {
-        if (enemyStats.Grounded() == false)
-        {
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            return;
-        }
+
+        if (enemyStats.IsStunned() == true)
+
+            if (enemyStats.Grounded() == false)
+            {
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                return;
+            }
 
         int dir = facingRight ? 1 : -1;
 
         // Edge detection using EnemyStats
         if (enemyStats.HasGroundAhead(dir) == false)
         {
-            FaceDirection(-dir);
+            // Mark that we should flip after idling
+            shouldFlipAfterIdle = true;
+            ChangeState(State.Idle);
             return;
         }
 

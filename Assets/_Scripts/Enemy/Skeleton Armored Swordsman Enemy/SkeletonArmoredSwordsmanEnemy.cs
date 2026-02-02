@@ -206,9 +206,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
                 break;
 
             case State.Stunned:
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-
-                if (enemyStats.activeStatus == null || enemyStats.canMove)
+                if (enemyStats.IsStunned() == false)
                 {
                     // Return to combat after stun
                     if (PlayerDetected())
@@ -229,7 +227,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     {
         if (currentState == State.Attack && !attackNudgeApplied)
         {
-            if (enemyStats.canAttack == false) return;
+            if (enemyStats.IsStunned() == false) return;
 
             int dir = facingRight == true ? 1 : -1;
             rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
@@ -281,7 +279,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
 
             case State.Stunned:
                 rb.linearVelocity = Vector2.zero;
-                // PlayAnimation(HurtHash);
+                PlayAnimation(IdleHash);
                 break;
 
             case State.Death:
