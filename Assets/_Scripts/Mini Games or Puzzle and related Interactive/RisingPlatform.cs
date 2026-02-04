@@ -3,8 +3,8 @@ using UnityEngine;
 public class RisingPlatform : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public Vector3 targetPosition;    // Where the platform should rise to
-    public float speed = 2f;          // Movement speed
+    public Vector3 targetPosition;
+    public float speed = 2f;
 
     private Vector3 startPosition;
     private bool moveUp;
@@ -13,7 +13,6 @@ public class RisingPlatform : MonoBehaviour
     {
         startPosition = transform.position;
     }
-
     void Update()
     {
         if (moveUp)
@@ -26,7 +25,6 @@ public class RisingPlatform : MonoBehaviour
         }
     }
 
-    // Called by the switch
     public void SetRaised(bool raised)
     {
         moveUp = raised;

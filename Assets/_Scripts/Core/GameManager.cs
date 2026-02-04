@@ -366,39 +366,110 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // ------------------ LEVEL LOADING TESTING ------------------
+        // // CHAPTER 1
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     LoadLevel(0, 0);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     LoadLevel(0, 1);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     LoadLevel(0, 2);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha4))
+        // {
+        //     LoadLevel(0, 3);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha5))
+        // {
+        //     LoadLevel(0, 4);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha6))
+        // {
+        //     LoadLevel(0, 5);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha7))
+        // {
+        //     LoadLevel(0, 6);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha8))
+        // {
+        //     LoadLevel(0, 7);
+        // }
+
+
+        // CHAPTER 2
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            LoadLevel(0, 0);
+            LoadLevel(1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            LoadLevel(0, 1);
+            LoadLevel(1, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            LoadLevel(0, 2);
+            LoadLevel(1, 2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            LoadLevel(0, 3);
+            LoadLevel(1, 3);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            LoadLevel(0, 4);
+            LoadLevel(1, 4);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            LoadLevel(0, 5);
+            LoadLevel(1, 5);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            LoadLevel(0, 6);
+            LoadLevel(1, 6);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            LoadLevel(0, 7);
+            LoadLevel(1, 7);
         }
 
+
+        // // CHAPTER 3
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     LoadLevel(2, 0);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     LoadLevel(2, 1);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     LoadLevel(2, 2);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha4))
+        // {
+        //     LoadLevel(2, 3);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha5))
+        // {
+        //     LoadLevel(2, 4);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha6))
+        // {
+        //     LoadLevel(2, 5);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha7))
+        // {
+        //     LoadLevel(2, 6);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha8))
+        // {
+        //     LoadLevel(2, 7);
+        // }
     }
 
     public void ResetSave()

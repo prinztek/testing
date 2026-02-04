@@ -23,6 +23,9 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private CompletedPermutationsPanel completedPermutationsPanel;
 
+    [Header("Completion UI")]
+    public GameObject explanationPanel;
+
     public UnityEvent OnPuzzleSolved;
     void Start()
     {

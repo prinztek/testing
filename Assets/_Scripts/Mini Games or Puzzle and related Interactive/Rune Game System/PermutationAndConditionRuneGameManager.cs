@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using TexDrawLib;
 using UnityEngine;
 using UnityEngine.Events;
-
+using DG.Tweening;
+using UnityEngine.UI;
 public class PermutationAndConditionRuneGameManager : MonoBehaviour
 {
 
@@ -22,13 +20,18 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     public int runeIndex = -1;
     private string userSequence = ""; // holds the sequence submitted by the player
 
-    [Header("Correct Answer Reasoning")]
-    public TEXDraw correctAnswerExplanation;
+    [Header("Explanation Panel")]
+    [SerializeField] private GameObject explanationPanel;
+    [SerializeField] private Button continueButton;
 
     [Header("Events")]
     public UnityEvent OnPuzzleSolved;
     public bool isSolved = false;
 
+    private void Awake()
+    {
+        continueButton.onClick.AddListener(OnContinuePressed);
+    }
     public void OnSubmit()
     {
         if (isSolved)
@@ -39,9 +42,10 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
 
         if (IsValidSequence(userSequence))
         {
-            isSolved = true;
-            OnPuzzleSolved?.Invoke();
+            // isSolved = true;
+            // OnPuzzleSolved?.Invoke();
             Debug.Log("Correct sequence!");
+            ShowExplanation();
         }
         else
         {
@@ -109,4 +113,18 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
             }
         }
     }
+    // ---------------- EXPLANATION RELATED ----------------
+    public void ShowExplanation()
+    {
+        explanationPanel.SetActive(true);
+        Debug.Log("Explanation shown.");
+    }
+
+    // ---------------- CONTINUE ----------------
+    public void OnContinuePressed()
+    {
+        isSolved = true;
+        OnPuzzleSolved?.Invoke();
+    }
+
 }

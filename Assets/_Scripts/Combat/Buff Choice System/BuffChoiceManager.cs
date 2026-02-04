@@ -47,10 +47,8 @@ public class BuffChoiceManager : MonoBehaviour
             new BuffOption("Cold Infuse", "Attacks slows enemy movement for 5s",
                 Resources.Load<Sprite>("Icons/Cold Infuse"), () => new ColdInfuseBuff(8f, 3)),
 
-             new BuffOption("Bomb", "Attacks places a bomb on enemy that would later explode",
-                Resources.Load<Sprite>("Icons/Cold Infuse"), () => new BombBuff(8f, 3, 3, 25)),
-
-
+            //  new BuffOption("Bomb", "Attacks places a bomb on enemy that would later explode",
+            //     Resources.Load<Sprite>("Icons/Cold Infuse"), () => new BombBuff(8f, 3, 3, 25)),
         };
     }
 

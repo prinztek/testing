@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class FactorialTotemGameManager : MonoBehaviour
 {
     [Header("Factorial")]
-    public int factorialNumber = 4;
+    public int factorialNumber;
 
     [Header("UI")]
     public Totem totemPrefab;
@@ -25,8 +25,10 @@ public class FactorialTotemGameManager : MonoBehaviour
 
     void SpawnTotems()
     {
-        for (int i = 0; i < factorialNumber; i++)
+        // edge case if 0!
+        if (factorialNumber == 0)
         {
+            factorialNumber = 1;
             Totem totem = Instantiate(totemPrefab, totemParent);
 
             RectTransform rect = totem.GetComponent<RectTransform>();
@@ -34,22 +36,54 @@ public class FactorialTotemGameManager : MonoBehaviour
             totem.Initialize(factorialNumber);
             totems.Add(totem);
         }
+
+        if (factorialNumber > 1)
+        {
+            for (int i = 0; i < factorialNumber; i++)
+            {
+                Totem totem = Instantiate(totemPrefab, totemParent);
+
+                RectTransform rect = totem.GetComponent<RectTransform>();
+
+                totem.Initialize(factorialNumber);
+                totems.Add(totem);
+            }
+        }
+
     }
 
     void CheckAnswer()
     {
+        if (factorialNumber == 0)
+        {
+            int expected = 1;
+            if (totems[0].currentValue != expected)
+            {
+                Debug.Log("Incorrect factorial input");
+                return;
+            }
+            else
+            {
+                Debug.Log("Correct! Factorial understood.");
+                isSolved = true;
+                OnPuzzleSolved?.Invoke();
+                return;
+            }
+        }
+
+        // if factorialNumber is n, expected sequence is n, n-1, n-2, ..., 2, 1
         for (int i = 0; i < totems.Count; i++)
         {
             int expected = factorialNumber - i;
 
             if (totems[i].currentValue != expected)
             {
-                Debug.Log("❌ Incorrect factorial input");
+                Debug.Log("Incorrect factorial input");
                 return;
             }
         }
 
-        Debug.Log("✅ Correct! Factorial understood.");
+        Debug.Log("Correct! Factorial understood.");
         // success logic here
         isSolved = true;
         OnPuzzleSolved?.Invoke();

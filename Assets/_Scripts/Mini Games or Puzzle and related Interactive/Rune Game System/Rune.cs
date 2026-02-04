@@ -23,7 +23,7 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // 🔴 CRITICAL: detach from previous slot
+        // detach from previous slot
         if (CurrentSlot != null)
         {
             CurrentSlot.ClearSlot();

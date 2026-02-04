@@ -117,7 +117,14 @@ public class SkeletonSummonerBoss : MonoBehaviour
                         ChangeState(State.Attack);
                     // ChangeState(Random.value < 0.5f ? State.Attack : State.Summon);
                     else
-                        ChangeState(State.Approach);
+                    {
+                        // randomly choose to approach or summon
+                        int choice = UnityEngine.Random.Range(0, 2);
+                        if (choice == 0)
+                            ChangeState(State.Summon);
+                        else
+                            ChangeState(State.Approach);
+                    }
                 }
                 break;
 
@@ -258,6 +265,22 @@ public class SkeletonSummonerBoss : MonoBehaviour
 
     public void ShowMeleeAttackVFX()
     {
+        Animator animator = meleeAttackVFX.GetComponent<Animator>();
+        animator.Play("meleeAttackVFX");
+
+        GameObject fx = Instantiate(
+            meleeAttackVFX,
+            visual.position,
+            Quaternion.identity,
+            visual
+        );
+    }
+
+    public void ShowSummonAttackVFX()
+    {
+        Animator animator = meleeAttackVFX.GetComponent<Animator>();
+        animator.Play("summonAttackVFX");
+
         GameObject fx = Instantiate(
             meleeAttackVFX,
             visual.position,
