@@ -416,6 +416,11 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
     }
 
     private void OnDisable()

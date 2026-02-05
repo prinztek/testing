@@ -1,15 +1,20 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
-
 public class BasicInteractableObject : MonoBehaviour
 {
     // BasicInteractableObject - an interactable that opens up a canvas with the mini game
     public GameObject runeGamePrefab; // Reference to your mini game/ puzzle canvas - assign in inspector - the window that pops up when interacting
+    // List of references to other objects to affect when puzzle is solved
+    // LIFT WALL
     public StoneWall stoneWall; // Reference to the stone wall object - or any gate to be lifted - assign in inspector
+    // ACTIVATE/DEACTIVATE STOMP HAZARDS
     public List<StompHazard> stompHazardsToActivate; // List of stomp hazards to activate when puzzle is solved - assign in inspector
     [SerializeField] private float phaseOffset = 0.25f;
+    // ACTIVATE/DEACTIVATE (FIRE)LIGHTS
+    public List<Fire> fireLightsToActivate; // List of fire lights to activate when puzzle is solved - assign in inspector
+    // ACTIVATE PLATFORM
+    public List<TogglePlatform> togglePlatformsToActivate; // List of platforms to activate when puzzle is solved - assign in inspector
     private GameObject spawnedPuzzle;
     public GameObject spotLight;
     public GameObject visualContext;
@@ -105,6 +110,23 @@ public class BasicInteractableObject : MonoBehaviour
                 hazard.Deactivate();
             }
         }
+
+        if (fireLightsToActivate.Count > 0)
+        {
+            foreach (var fire in fireLightsToActivate)
+            {
+                fire.EnableFire();
+            }
+        }
+
+        if (togglePlatformsToActivate.Count > 0)
+        {
+            foreach (var platform in togglePlatformsToActivate)
+            {
+                platform.Activate();
+            }
+        }
+
         CloseCanvas();
     }
 

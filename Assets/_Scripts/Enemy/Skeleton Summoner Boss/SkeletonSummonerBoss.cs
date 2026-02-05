@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -35,6 +36,9 @@ public class SkeletonSummonerBoss : MonoBehaviour
     [SerializeField] private Transform visual;
     [SerializeField] private Transform centerTransform;
     [SerializeField] private GameObject meleeAttackVFX;
+    [SerializeField] private GameObject summonAttackVFX;
+    [SerializeField] private List<Transform> summonPoints;
+    [SerializeField] private GameObject summonedSkeletonPrefab;
 
     // ========================================
     // TIMING
@@ -177,12 +181,12 @@ public class SkeletonSummonerBoss : MonoBehaviour
 
             case State.Attack:
                 FacePlayer();
-                PlayAnimation(MeleeHash);
+                PlayAttackAnimation();
                 break;
 
             case State.Summon:
                 FacePlayer();
-                PlayAnimation(SummonHash);
+                PlayAttackAnimation();
                 break;
 
             case State.Recovery:
@@ -194,6 +198,30 @@ public class SkeletonSummonerBoss : MonoBehaviour
                 PlayAnimation(DeathHash);
                 break;
         }
+    }
+
+    private void PlayAttackAnimation()
+    {
+        if (currentState == State.Attack)
+        {
+            PlayAnimation(MeleeHash);
+        }
+        else if (currentState == State.Summon)
+        {
+            PlayAnimation(SummonHash);
+        }
+    }
+
+    // called via animation event
+    public void SummonSkeletons()
+    {
+        // pick randomly from the summon points
+        // instantiate a minion prefab to hunt the player
+        Instantiate(
+            summonedSkeletonPrefab,
+            summonPoints[0].position,
+            Quaternion.identity
+        );
     }
 
     // ========================================
@@ -265,32 +293,41 @@ public class SkeletonSummonerBoss : MonoBehaviour
 
     public void ShowMeleeAttackVFX()
     {
-        Animator animator = meleeAttackVFX.GetComponent<Animator>();
-        animator.Play("meleeAttackVFX");
-
         GameObject fx = Instantiate(
             meleeAttackVFX,
             visual.position,
             Quaternion.identity,
             visual
         );
+
+        Animator animator = fx.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false; // Disable first
+            animator.Play("meleeAttackVFX", 0, 0f); // Set animation
+            animator.enabled = true; // Re-enable
+        }
+
+        Destroy(fx, 1.083f);
     }
 
     public void ShowSummonAttackVFX()
     {
-        Animator animator = meleeAttackVFX.GetComponent<Animator>();
-        animator.Play("summonAttackVFX");
-
         GameObject fx = Instantiate(
-            meleeAttackVFX,
+            summonAttackVFX,
             visual.position,
             Quaternion.identity,
             visual
         );
-    }
 
-    public void HideMeleeAttackVFX()
-    {
-        Debug.Log("Destroy Melee Attack VFX");
+        Animator animator = fx.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false; // Disable first
+            animator.Play("summonAttackVFX", 0, 0f); // Set animation
+            animator.enabled = true; // Re-enable
+        }
+
+        Destroy(fx, 1.167f);
     }
 }

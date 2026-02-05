@@ -19,9 +19,8 @@ public class SkeletonSummonerBossAnimationEventRelay : MonoBehaviour
         skeletonSummonerBoss?.ShowSummonAttackVFX();
     }
 
-    public void DisableVFX()
+    public void SummonSkeletons()
     {
-        skeletonSummonerBoss?.HideMeleeAttackVFX();
+        skeletonSummonerBoss?.SummonSkeletons();
     }
-
 }

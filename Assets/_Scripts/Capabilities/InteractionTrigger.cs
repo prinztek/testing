@@ -4,6 +4,7 @@ public class InteractionTrigger : MonoBehaviour
 {
     public KeyCode interactKey = KeyCode.E;
     private BasicInteractableObject currentInteractable;
+    private InfoBoard currentInfoBoard;
 
     void Update()
     {
@@ -30,16 +31,31 @@ public class InteractionTrigger : MonoBehaviour
             currentInteractable.HighlightObject();
             // Debug.Log("Can interact with " + interactable.name);
         }
+
+        if (other.CompareTag("Interactable") && other.TryGetComponent(out InfoBoard interactable2))
+        {
+            currentInfoBoard = interactable2;
+            currentInfoBoard.HighlightObject();
+            // Debug.Log("Can interact with " + interactable2.name);
+        }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         // Clear only if the same interactable
-        if (other.CompareTag("Interactable") && other.GetComponent<BasicInteractableObject>() == currentInteractable)
+        if (currentInteractable != null)
         {
             currentInteractable.RemoveHighlightObject();
             currentInteractable = null;
             // Debug.Log("Left interaction range");
+        }
+
+        if (currentInfoBoard != null)
+        {
+            currentInfoBoard.RemoveHighlightObject();
+            currentInfoBoard = null;
+            // Debug.Log("Left interaction range of info board " + interactable2.name);
         }
     }
 }
