@@ -84,7 +84,7 @@ public class AnimationHandler : MonoBehaviour
             ChangeAnimation(horizontal > 0.1f ? "running" : "idle");
         }
 
-        // ✅ Don't forget to update this!
+        // Don't forget to update this!
         wasOnGround = onGround;
     }
 
@@ -92,6 +92,10 @@ public class AnimationHandler : MonoBehaviour
 
     public void PlayDeadAnimation(float animationLength = 0.33f)
     {
+        // Force clear all animation locks so death plays immediately
+        attackLockTimer = 0f;
+        hurtLockTimer = 0f;
+
         PlayAndLock("dead", animationLength, ref hurtLockTimer);
     }
 
