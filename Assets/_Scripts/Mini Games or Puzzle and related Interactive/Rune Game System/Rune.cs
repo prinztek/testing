@@ -4,12 +4,10 @@ using UnityEngine.EventSystems;
 public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public string runeID; // e.g., "A", "B", "C"
-
     public RuneSlot CurrentSlot { get; set; }
-
     private RectTransform rectTransform;
     private Canvas canvas;
-    private CanvasGroup canvasGroup;
+    private CanvasGroup canvasGroup; // for raycast blocking
     public Transform runePoolParent;
 
     private void Awake()

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class RuneSlot : MonoBehaviour, IDropHandler
 {
     public Rune placedRune;
-    public bool isLocked = false;
+    // public bool isLocked = false;
 
     [SerializeField] private Transform runePoolParent;
 
