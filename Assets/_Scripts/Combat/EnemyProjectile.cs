@@ -72,3 +72,5 @@ public class EnemyProjectile : MonoBehaviour
         }
     }
 }
+
+// used by rat archer enemy's arrow projectile prefab. Moves in a straight line and damages player on hit. Destroyed after a set lifetime or on collision with player.

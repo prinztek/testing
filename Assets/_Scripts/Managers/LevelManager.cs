@@ -206,7 +206,7 @@ public class LevelManager : MonoBehaviour
     {
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
-        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowLevelFailed(true);
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
