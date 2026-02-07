@@ -4,8 +4,8 @@ using UnityEngine;
 public class UI_Fade : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private float defaultFadeDuration = 1f;
-    [SerializeField] private float fastFadeDuration = 0.4f;
+    [SerializeField] private float defaultFadeDuration = 0.4f;
+    [SerializeField] private float fastFadeDuration = 0.2f;
     private Coroutine changeAlphaCo;
 
     public IEnumerator FadeIn()
@@ -43,7 +43,7 @@ public class UI_Fade : MonoBehaviour
 
         while (timePassed < duration)
         {
-            timePassed += Time.deltaTime; // increase time passed
+            timePassed += Time.unscaledDeltaTime; // Changed from Time.deltaTime
             canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timePassed / duration);
             yield return null; // wait for next frame
         }

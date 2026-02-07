@@ -194,19 +194,21 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LevelCompleteSequence()
     {
-        UIManager.Instance.FadeFromBlackFast();
-        yield return new WaitForSeconds(0.4f);
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
         UIManager.Instance.ShowLevelComplete(true);
+
+        yield return GameManager.Instance.uiFade.FastFadeIn();
     }
 
 
     private IEnumerator LevelFailedSequence()
     {
-        UIManager.Instance.FadeFromBlackFast();
-        yield return new WaitForSeconds(0.4f);
-        UIManager.Instance.ShowLevelFailed(true);
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
+        yield return new WaitForSeconds(1f);
+
+        yield return GameManager.Instance.uiFade.FastFadeIn();
     }
-
-
 }
 
