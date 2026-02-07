@@ -5319,12 +5319,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 58e05dd6cb742c14c823f69d8dfa84d4, type: 2}
-  onHitFlashVFX: {fileID: 717712980353668946}
   currentAttackMode: 0
   animationHandler: {fileID: 8431338681835252906}
   buffUIManager: {fileID: 0}
   hurt: {fileID: 0}
   buffAcquireVfxPrefab: {fileID: 1212733191487505664, guid: ab7d12be9dd0dbb4897662d7d4676447, type: 3}
+  shieldVfxPrefab: {fileID: 8375617944552790943, guid: e9f7634b3b887a645883e43a09c8f235, type: 3}
   buffAcquirePopupTextPrefab: {fileID: 2699513903985537067, guid: 272d70161e4de2746b0ed2ee93ca9a0d, type: 3}
   maxHealth: 50
   currentHealth: 0
@@ -5334,6 +5334,7 @@ MonoBehaviour:
   moveSpeedMultiplier: 1
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
+  animationSpeedMultiplier: 1
   equippedMeleeWeapon: {fileID: 0}
   equippedRangedWeapon: {fileID: 0}
 --- !u!114 &6945633715500797709
@@ -5432,6 +5433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  onBurnVfxMat: {fileID: 0}
   flashDuration: 0.15
 --- !u!1 &2214127296572561005
 GameObject:

@@ -21,6 +21,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private Hurt hurt;
 
     [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
+    [SerializeField] private ShieldVFX shieldVfxPrefab;
     [SerializeField] private PopupText buffAcquirePopupTextPrefab;
     [Header("Health")]
     public int maxHealth = 25;
@@ -120,6 +121,7 @@ public class CharacterStats : MonoBehaviour
         {
             activeBuff.Update(Time.deltaTime);
             buffUIManager?.UpdateBuffSlot(activeBuff);
+
             if (activeBuff.isExpired)
             {
                 activeBuff.OnExpire();
@@ -280,6 +282,28 @@ public class CharacterStats : MonoBehaviour
         popup.Setup(buff.buffName + "Acquired");
 
         ApplyBuff(buff);
+
+
+    }
+    public void EnableShieldVFX()
+    {
+        ShieldVFX shieldVfx = Instantiate(
+            shieldVfxPrefab,
+            transform.position,
+            Quaternion.identity,
+            transform
+        );
+
+        // Enable Shield VFX
+        shieldVfx.EnableShield();
+    }
+    public void DisableShieldVFX()
+    {
+        ShieldVFX shieldVfx = GetComponentInChildren<ShieldVFX>();
+        if (shieldVfx != null)
+        {
+            shieldVfx.DisableShield();
+        }
     }
 
     private void ApplyBuff(Buff buff)
