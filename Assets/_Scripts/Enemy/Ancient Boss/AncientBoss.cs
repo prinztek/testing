@@ -69,11 +69,8 @@ public class AncientBoss : MonoBehaviour
     [SerializeField] private float approachSpeed = 3.5f;
     [SerializeField] private float desiredAttackRange = 1.4f;
     [SerializeField] private float maxApproachTime = 1.2f;
-
     [SerializeField] private float turnPauseTime = 0.15f;
     private float lastTurnTime;
-
-
 
     // ========================================
     // ANIMATIONS
