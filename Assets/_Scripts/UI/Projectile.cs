@@ -43,8 +43,6 @@ public class Projectile : MonoBehaviour
         if (other.name.Contains("CameraBounds"))
             return;
 
-        // Debug.Log($"Arrow hit: {other.name} | Tag: {other.tag}");
-
         // Damage enemy if hit Hurtbox
         if (other.CompareTag("Hurtbox"))
         {
@@ -91,6 +89,12 @@ public class Projectile : MonoBehaviour
                 // Optional: Trigger any on-hit effects for the player (DoT, stun, etc.)
                 // playerStats.TriggerAttackHit(enemyDummy.gameObject);
 
+            }
+
+            DestroyableBlock destroyableBlock = other.GetComponent<DestroyableBlock>();
+            if (destroyableBlock != null)
+            {
+                destroyableBlock.TakeDamage(damage);
             }
         }
 

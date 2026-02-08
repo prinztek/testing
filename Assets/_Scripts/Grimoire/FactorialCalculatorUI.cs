@@ -1,6 +1,36 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+public static class MathTables
+{
+    public static readonly long[] Factorials =
+    {
+        1L,                     // 0!
+        1L,                     // 1!
+        2L,                     // 2!
+        6L,                     // 3!
+        24L,                    // 4!
+        120L,                   // 5!
+        720L,                   // 6!
+        5040L,                  // 7!
+        40320L,                 // 8!
+        362880L,                // 9!
+        3628800L,               // 10!
+        39916800L,              // 11!
+        479001600L,             // 12!
+        6227020800L,            // 13!
+        87178291200L,           // 14!
+        1307674368000L          // 15!
+    };
+
+    public static long Factorial(int n)
+    {
+        if (n < 0 || n >= Factorials.Length)
+            return 0;
+
+        return Factorials[n];
+    }
+}
 
 public class FactorialCalculatorUI : MonoBehaviour
 {
@@ -34,6 +64,7 @@ public class FactorialCalculatorUI : MonoBehaviour
     {
         playerInventory = playerObj.GetComponent<PlayerInventory>();
         characterStats = playerObj.GetComponent<CharacterStats>();
+        UpdateUIAccess();
     }
 
     private void Awake()
