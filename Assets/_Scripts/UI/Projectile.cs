@@ -65,6 +65,23 @@ public class Projectile : MonoBehaviour
                 }
             }
 
+            EnemyStats enemyStats = other.GetComponentInParent<EnemyStats>();
+            if (enemyStats != null)
+            {
+                enemyStats.TakeDamage(damage, transform.position, doScreenShake: true);
+                // Debug.Log($"Dealt {damage} damage to {enemyStats.name}");
+
+                // Optional: trigger on-hit effects (e.g., lifesteal, debuffs) from shooter
+                if (source != null)
+                {
+                    CharacterStats stats = source.GetComponent<CharacterStats>();
+                    if (stats != null)
+                    {
+                        stats.TriggerAttackHit(enemyStats.gameObject);
+                    }
+                }
+            }
+
             Boss2 boss = other.GetComponentInParent<Boss2>();
             if (boss != null)
             {

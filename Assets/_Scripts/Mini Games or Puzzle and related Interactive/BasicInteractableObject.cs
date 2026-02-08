@@ -23,6 +23,14 @@ public class BasicInteractableObject : MonoBehaviour
     void Start()
     {
         ActivateWave();
+
+        // if (fireLightsToActivate.Count > 0)
+        // {
+        //     foreach (var fire in fireLightsToActivate)
+        //     {
+        //         fire.EnableFire();
+        //     }
+        // }
     }
 
     public void ActivateWave()

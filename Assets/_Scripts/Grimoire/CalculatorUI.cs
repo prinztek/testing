@@ -1,24 +1,21 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class CalculatorUI : MonoBehaviour
 {
     public PlayerInventory playerInventory;
 
+    [Header("Display")]
+    [SerializeField] private TMP_InputField displayText;
+    [SerializeField] private TMP_Text resultText;
 
-    [Header("Input Fields")]
-    public TMP_InputField inputA;
-    public TMP_InputField inputB;
+    [Header("Cost")]
+    [SerializeField] private int calculationCost = 20;
 
-    [Header("Result")]
-    public TMP_Text resultText;
-    // public TMP_Text selectedOperationText;
-    public int calculationCost = 20; // Gold cost for calculation
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-        // If player already exists when UI enables, connect immediately
+
         if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
         {
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
@@ -34,103 +31,86 @@ public class CalculatorUI : MonoBehaviour
     {
         playerInventory = playerObj.GetComponent<PlayerInventory>();
     }
-    private TMP_InputField activeInput;
-
-    private enum Operation { None, Add, Sub, Mul, Div }
-    private Operation currentOperation = Operation.None;
-
-
-    // Called when Input A is selected
-    public void SelectInputA()
-    {
-        activeInput = inputA;
-    }
-
-    // Called when Input B is selected
-    public void SelectInputB()
-    {
-        activeInput = inputB;
-    }
-
 
     // ==========================
-    //      KEYPAD INPUT
+    //        INPUT
     // ==========================
     public void PressKey(string key)
     {
-        if (activeInput == null)
+        if (string.IsNullOrEmpty(key))
             return;
 
-        activeInput.text += key;
+        string current = displayText.text;
+        bool isOperator = IsOperator(key);
+
+        // Prevent operator as first character
+        if (current.Length == 0 && isOperator)
+            return;
+
+        // Prevent two operators in a row
+        if (current.Length > 0 && isOperator && IsOperator(current[^1].ToString()))
+            return;
+
+        // Prevent operator after complete expression (e.g. "3+4" + → cannot add another operator)
+        if (isOperator && ExpressionAlreadyComplete(current))
+            return;
+
+        // Prevent multiple decimals in the same number
+        if (key == "." && HasDecimalInCurrentNumber(current))
+            return;
+
+        displayText.text += key;
     }
 
-    public void ClearInput()
+    public void Clear()
     {
-        if (activeInput == null)
-            return;
-
-        activeInput.text = "";
+        displayText.text = "";
+        resultText.text = "";
     }
 
     public void Backspace()
     {
-        if (activeInput == null)
-            return;
-
-        if (activeInput.text.Length > 0)
-            activeInput.text = activeInput.text[..^1];
+        if (displayText.text.Length > 0)
+            displayText.text = displayText.text[..^1];
     }
 
-
     // ==========================
-    //   OPERATION SELECTION
-    // ==========================
-    public void SelectAdd() { SetOperation(Operation.Add, "+"); }
-    public void SelectSub() { SetOperation(Operation.Sub, "-"); }
-    public void SelectMul() { SetOperation(Operation.Mul, "x"); }
-    public void SelectDiv() { SetOperation(Operation.Div, "÷"); }
-
-    private void SetOperation(Operation op, string symbol)
-    {
-        currentOperation = op;
-        // selectedOperationText.text = "Operation: " + symbol;
-    }
-
-
-    // ==========================
-    //       CALCULATE
+    //      CALCULATE
     // ==========================
     public void Calculate()
     {
-        if (currentOperation == Operation.None)
-        {
-            resultText.text = "Select an operation!";
-            return;
-        }
-
         if (playerInventory.Gold < calculationCost)
         {
             resultText.text = "Not enough gold!";
             return;
         }
 
-        float a, b;
+        string expression = displayText.text.Replace(" ", "");
 
-        if (!float.TryParse(inputA.text, out a) ||
-            !float.TryParse(inputB.text, out b))
+        // Expression cannot end with operator
+        if (expression.Length == 0 || IsOperator(expression[^1].ToString()))
         {
-            resultText.text = "Invalid numbers!";
+            resultText.text = "Incomplete expression!";
             return;
         }
 
-        float result = 0f;
-
-        switch (currentOperation)
+        if (!TryParseExpression(expression, out float a, out float b, out char op))
         {
-            case Operation.Add: result = a + b; break;
-            case Operation.Sub: result = a - b; break;
-            case Operation.Mul: result = a * b; break;
-            case Operation.Div:
+            resultText.text = "Invalid expression!";
+            return;
+        }
+
+
+        float result;
+
+        switch (op)
+        {
+            case '+': result = a + b; break;
+            case '-': result = a - b; break;
+            case 'x':
+            case '*': result = a * b; break;
+            case '÷':
+            case '/':
                 if (b == 0)
                 {
                     resultText.text = "Cannot divide by 0!";
@@ -138,9 +118,103 @@ public class CalculatorUI : MonoBehaviour
                 }
                 result = a / b;
                 break;
-        }
-        playerInventory.DeductGold(calculationCost);
 
+            default:
+                resultText.text = "Unknown operator!";
+                return;
+        }
+
+        playerInventory.DeductGold(calculationCost);
         resultText.text = "Result: " + result;
     }
+
+    // ==========================
+    //   SIMPLE EXPRESSION PARSER
+    // ==========================
+    private bool TryParseExpression(string expr, out float a, out float b, out char op)
+    {
+        a = b = 0;
+        op = '\0';
+
+        char[] operators = { '+', '-', 'x', '*', '÷', '/' };
+
+        int operatorCount = 0;
+        int operatorIndex = -1;
+
+        for (int i = 0; i < expr.Length; i++)
+        {
+            if (System.Array.Exists(operators, o => o == expr[i]))
+            {
+                operatorCount++;
+                operatorIndex = i;
+            }
+        }
+
+        // Must contain exactly ONE operator
+        if (operatorCount != 1)
+            return false;
+
+        if (!float.TryParse(expr[..operatorIndex], out a))
+            return false;
+
+        if (!float.TryParse(expr[(operatorIndex + 1)..], out b))
+            return false;
+
+        op = expr[operatorIndex];
+        return true;
+    }
+
+
+    // ==========================
+    //      HELPER METHODS
+    // ==========================
+
+    private bool IsOperator(string c)
+    {
+        return c == "+" || c == "-" || c == "x" || c == "*" || c == "÷" || c == "/";
+    }
+
+    private bool HasDecimalInCurrentNumber(string text)
+    {
+        for (int i = text.Length - 1; i >= 0; i--)
+        {
+            if (IsOperator(text[i].ToString()))
+                break;
+
+            if (text[i] == '.')
+                return true;
+        }
+        return false;
+    }
+
+    private bool ExpressionAlreadyComplete(string text)
+    {
+        char[] operators = { '+', '-', 'x', '*', '÷', '/' };
+
+        int operatorIndex = -1;
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            if (System.Array.Exists(operators, o => o == text[i]))
+            {
+                operatorIndex = i;
+                break;
+            }
+        }
+
+        // No operator yet → not complete
+        if (operatorIndex == -1)
+            return false;
+
+        // Operator exists but no second number yet
+        if (operatorIndex == text.Length - 1)
+            return false;
+
+        // Try parsing both sides
+        return
+            float.TryParse(text[..operatorIndex], out _) &&
+            float.TryParse(text[(operatorIndex + 1)..], out _);
+    }
+
+
 }
