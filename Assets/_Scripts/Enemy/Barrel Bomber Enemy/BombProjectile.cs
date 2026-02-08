@@ -109,7 +109,9 @@ public class BombProjectile : MonoBehaviour
         if (calculateLaunch)
         {
             // Launch bomb to target using calculated arc
-            if (gravity == 0) gravity = Physics2D.gravity.y;
+            // if (gravity == 0) gravity = Physics2D.gravity.y;
+            if (gravity == 0) gravity = Mathf.Abs(Physics2D.gravity.y); // updated to use absolute value
+
 
             Vector2 calculatedVelocity = CalculateLaunchVelocity(sourcePosition, targetPosition, height, gravity);
             rb.linearVelocity = calculatedVelocity;
@@ -127,14 +129,24 @@ public class BombProjectile : MonoBehaviour
     private Vector2 CalculateLaunchVelocity(Vector3 source, Vector3 target, float arcHeight, float gravity)
     {
         float displacementY = target.y - source.y;
-        Vector3 displacementXZ = new Vector3(target.x - source.x, 0, 0);
+        float displacementX = target.x - source.x;
 
-        float time = Mathf.Sqrt(-2 * arcHeight / gravity) + Mathf.Sqrt(2 * (displacementY - arcHeight) / gravity);
+        float g = Mathf.Abs(gravity);
 
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * arcHeight);
-        Vector3 velocityXZ = displacementXZ / time;
+        // Calculate initial vertical velocity to reach desired height
+        float velocityY = Mathf.Sqrt(2 * g * arcHeight);
 
-        return velocityXZ + velocityY;
+        // Calculate total flight time
+        float timeToApex = velocityY / g;
+        float totalTime = timeToApex + Mathf.Sqrt(2 * (arcHeight - displacementY) / g);
+
+        // Prevent division by zero
+        if (totalTime < 0.01f) totalTime = 0.01f;
+
+        // Calculate horizontal velocity
+        float velocityX = displacementX / totalTime;
+
+        return new Vector2(velocityX, velocityY);
     }
 
     // ========================================
