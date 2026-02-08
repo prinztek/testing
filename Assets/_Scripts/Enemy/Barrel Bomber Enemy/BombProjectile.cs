@@ -100,8 +100,6 @@ public class BombProjectile : MonoBehaviour
     // 1st case - calculateLaunch = true: velocity is calculated to hit targetPosition
     //            uses kinematic equation with gravity and arc height
     //            (this is for enemy bombers aiming at player)
-    // 2nd case - calculateLaunch = false: uses simple velocity and direction
-    //            (this could be for player throwing bombs straight)
     public void Launch(bool calculateLaunch = true)
     {
         // Make the bomb solid and have a dynamic rigidbody
