@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -23,7 +24,13 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI descriptionText;
     public Button useInventoryItemButton;
 
+    [Header("Selection Visual")]
+    public Color normalColor = Color.white;
+    public Color selectedColor = new Color(1f, 0.9f, 0.5f, 1f); // Light yellow/gold
+
     private GameItem selectedItem;
+    private Button selectedButton;
+    private Dictionary<GameItem, Button> itemButtonMap = new Dictionary<GameItem, Button>();
 
     private void OnEnable()
     {
@@ -70,19 +77,27 @@ public class InventoryUI : MonoBehaviour
         ClearDetails();
         RefreshUI();
         UpdateGoldUI(playerInventory.Gold);
-
-        // Debug.Log("✅ InventoryUI connected to player inventory.");
     }
 
     public void RefreshUI()
     {
         if (playerInventory == null || characterStats == null) return;
 
+        // Store currently selected item to restore selection after refresh
+        GameItem previouslySelected = selectedItem;
+
+        // Clear the item-button mapping
+        itemButtonMap.Clear();
+
         foreach (Transform child in itemListParent)
             Destroy(child.gameObject);
 
+        GameItem firstItem = null;
+
         foreach (InventorySlot slot in playerInventory.OwnedItems)
         {
+            if (firstItem == null) firstItem = slot.item;
+
             GameObject btnGO = Instantiate(itemButtonPrefab, itemListParent);
 
             Transform iconTransform = btnGO.transform.Find("Icon");
@@ -102,9 +117,30 @@ public class InventoryUI : MonoBehaviour
 
             Button btn = btnGO.GetComponent<Button>();
             InventorySlot capturedSlot = slot;
-            btn.onClick.AddListener(() => ShowInventoryItemDetails(capturedSlot.item));
+            btn.onClick.AddListener(() => SelectItem(capturedSlot.item, btn));
+
+            // Store the button reference
+            itemButtonMap[slot.item] = btn;
         }
 
+        // Restore selection or select first item
+        if (previouslySelected != null && itemButtonMap.ContainsKey(previouslySelected))
+        {
+            // Re-select the previously selected item
+            SelectItem(previouslySelected, itemButtonMap[previouslySelected]);
+        }
+        else if (firstItem != null && itemButtonMap.ContainsKey(firstItem))
+        {
+            // Auto-select first item if no previous selection
+            SelectItem(firstItem, itemButtonMap[firstItem]);
+        }
+        else
+        {
+            // No items in inventory
+            ClearDetails();
+        }
+
+        // Update status displays
         healthText.text = $"Health: {characterStats.CurrentHealth}";
         activeBuffText.text = "Buffs: " + (characterStats.activeBuff != null ? characterStats.activeBuff.buffName : "None");
         equippedMeleeText.text = "Melee: " +
@@ -112,12 +148,60 @@ public class InventoryUI : MonoBehaviour
 
         equippedRangedText.text = "Ranged: " +
             (characterStats.equippedRangedWeapon ? characterStats.equippedRangedWeapon.itemName : "None");
-        goldText.text = $"Gold: " + playerInventory._gold;
+        goldText.text = $"Gold: " + playerInventory.Gold;
+    }
+
+    private void SelectItem(GameItem item, Button button)
+    {
+        // // Clear previous selection visual
+        // if (selectedButton != null)
+        // {
+        //     SetButtonColor(selectedButton, normalColor);
+        // }
+
+        // Clear previous selection visual
+        if (selectedButton != null)
+        {
+            SetSelectorActive(selectedButton, false);
+        }
+
+        // Set new selection
+        selectedItem = item;
+        selectedButton = button;
+
+        // // Apply selection visual
+        // SetButtonColor(selectedButton, selectedColor);
+
+        // Apply selection visual
+        SetSelectorActive(selectedButton, true);
+
+        // Show details
+        ShowInventoryItemDetails(item);
+    }
+
+    private void SetSelectorActive(Button button, bool active)
+    {
+        if (button == null) return;
+
+        Transform selector = button.transform.Find("Selector");
+        if (selector != null)
+        {
+            selector.gameObject.SetActive(active);
+        }
+    }
+
+    private void SetButtonColor(Button button, Color color)
+    {
+        if (button == null) return;
+
+        ColorBlock colors = button.colors;
+        colors.normalColor = color;
+        colors.selectedColor = color;
+        button.colors = colors;
     }
 
     private void ShowInventoryItemDetails(GameItem item)
     {
-        selectedItem = item;
         if (item == null) return;
 
         string details = $"{item.itemName}\n{item.description}";
@@ -173,24 +257,27 @@ public class InventoryUI : MonoBehaviour
     {
         if (selectedItem == null || playerInventory == null) return;
 
-        GameItem previouslySelected = selectedItem;
-        bool wasStackable = selectedItem.isStackable;
+        GameItem itemToKeepSelected = selectedItem;
 
         if (selectedItem.itemType == ItemType.Consumable)
+        {
             playerInventory.UseItem(selectedItem);
+            // If item was consumed and no longer exists, selection will be handled in RefreshUI
+        }
         else
+        {
+            // Equipping/Unequipping - keep the item selected
             playerInventory.Equip(selectedItem);
+        }
 
+        // RefreshUI will maintain selection on the same item (toggle behavior)
         RefreshUI();
-
-        if (wasStackable && playerInventory.HasItem(previouslySelected))
-            ShowInventoryItemDetails(previouslySelected);
-        else
-            ClearDetails();
     }
 
     private void ClearDetails()
     {
+        selectedItem = null;
+        selectedButton = null;
         descriptionText.text = "Select an item to see details";
         useInventoryItemButton.interactable = false;
         useInventoryItemButton.onClick.RemoveAllListeners();
@@ -198,7 +285,9 @@ public class InventoryUI : MonoBehaviour
 
     private void UpdateGoldUI(int gold)
     {
-        // Optional: add gold text update here if needed
-        Debug.Log($"Gold updated: {gold}");
+        if (goldText != null)
+        {
+            goldText.text = $"Gold: {gold}";
+        }
     }
 }
