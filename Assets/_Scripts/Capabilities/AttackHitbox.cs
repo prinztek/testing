@@ -81,7 +81,7 @@ public class AttackHitbox : MonoBehaviour
 
         if (destroyableBlock != null)
         {
-            destroyableBlock.TakeDamage(damage);
+            destroyableBlock.TakeDamage(damage, hitPosition);
             alreadyHit.Add(destroyableBlock);
         }
     }

@@ -20,6 +20,11 @@ public class InteractionTrigger : MonoBehaviour
         {
             currentInteractable.Interact();
         }
+
+        if (currentInfoBoard != null)
+        {
+            currentInfoBoard.Interact();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

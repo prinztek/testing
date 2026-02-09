@@ -2,33 +2,34 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class CircularPermutationRuneGameManager : MonoBehaviour
 {
 
     public List<RuneSlot> runeSlots; // Assign in Inspector
-    public List<string> correctSequences = new List<string> { "ABC", "BCA", "CAB", }; // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
-    public List<string> correctSequence2 = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
-    // This will hold either a single sequence or multiple sequences
-    public List<string> userSequences = new List<string>(); // { "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" }
+    public List<string> correctSequences = new List<string> { "ABC", "ACB" }; // Will hold the permutation/s // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
+    public List<string> userSequences = new List<string>(); // { "ABC", "ACB" }
     public bool isSolved = false;
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
     public GameObject runesParentPanel;
-
     private List<string> runes = new List<string>();
-
-    public Canvas runeGameCanvas; // Reference to the Rune Game Canvas
-
     [Header("UI")]
     [SerializeField] private CompletedPermutationsPanel completedPermutationsPanel;
 
     [Header("Completion UI")]
-    public GameObject explanationPanel;
+    [SerializeField] private GameObject explanationPanel;
+    [SerializeField] private Button continueButton;
 
     public UnityEvent OnPuzzleSolved;
+    private void Awake()
+    {
+        continueButton.onClick.AddListener(OnContinuePressed);
+    }
     void Start()
     {
+
         runes.Clear();
 
         if (runesParentPanel == null)
@@ -67,46 +68,39 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
         bool isCorrect = CheckSequence();
         if (isCorrect)
         {
+            // isSolved = true; // Mark puzzle as solved
+            // OnPuzzleSolved?.Invoke();
             Debug.Log("Correct sequence!");
-            // // runeGameCanvas.enabled = false; // Hide the rune game canvas
-            // UIManager.Instance.CloseActivePanel(); // Hide the rune game canvas through the UIManager
-            // stoneWall.Lift(); // Lift the stone wall
-
-            isSolved = true; // Mark puzzle as solved
-            OnPuzzleSolved?.Invoke();
+            ShowExplanation();
         }
-
-        Debug.Log("Incorrect sequence.");
+        else
+        {
+            Debug.Log("Incorrect sequence.");
+        }
     }
     public void OnAddRuneSet()
     {
         if (isSolved)
-        {
             return;
-        }
 
         if (!CanAdd())
-        {
-            return;
-        }
-
-        string currentSequence = GetCurrentSequence();
-
-        // Prevent incomplete sequences
-        if (currentSequence.Contains("_"))
             return;
 
-        // Prevent duplicates
-        // if (userSequences.Contains(currentSequence))
-        //     return;
+        string sequence = GetCurrentSequence();
+        Debug.Log("Attempting to add sequence: " + sequence);
 
-        userSequences.Add(currentSequence);
+        if (sequence.Contains("_"))
+            return;
 
-        // Add a visual entry
-        completedPermutationsPanel.AddPermutation(currentSequence);
+        if (userSequences.Contains(sequence))
+            return;
+
+        userSequences.Add(sequence);
+        completedPermutationsPanel.AddPermutation(sequence);
 
         ResetSlots();
     }
+
 
     public void OnClearLastRuneSet()
     {
@@ -120,7 +114,6 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
 
         // Remove the last added sequence
         int lastIndex = userSequences.Count - 1;
-        string lastSequence = userSequences[lastIndex];
         userSequences.RemoveAt(lastIndex);
 
         // Remove visual entry
@@ -161,7 +154,7 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     {
         foreach (var slot in runeSlots)
         {
-            if (slot.placedRune != null)
+            if (slot.placedRune != null && slot.isLocked == false)
             {
                 Rune rune = slot.placedRune;
 
@@ -181,7 +174,6 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
             // Not enough sequences submitted yet
             return false;
         }
-
         // Check that every correct sequence is included in the user's submissions
         foreach (var correctSeq in correctSequences)
         {
@@ -192,7 +184,7 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
             }
         }
 
-        // Step 3: double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
+        // double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
         foreach (var userSeq in userSequences)
         {
             if (!correctSequences.Contains(userSeq))
@@ -204,6 +196,7 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
 
         return true; // The user submitted all sequences correctly
     }
+
 
     string NormalizeCircular(string s)
     {
@@ -217,6 +210,21 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
         }
 
         return best;
+    }
+
+    // ---------------- EXPLANATION RELATED ----------------
+    public void ShowExplanation()
+    {
+        explanationPanel.SetActive(true);
+        Debug.Log("Explanation shown.");
+    }
+
+    // ---------------- CONTINUE ----------------
+    public void OnContinuePressed()
+    {
+        Debug.Log("Continue pressed. Puzzle solved.");
+        isSolved = true;
+        OnPuzzleSolved?.Invoke();
     }
 
 }

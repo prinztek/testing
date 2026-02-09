@@ -402,7 +402,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        // // CHAPTER 2
+        // CHAPTER 2
         // if (Input.GetKeyDown(KeyCode.Alpha1))
         // {
         //     LoadLevel(1, 0);

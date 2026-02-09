@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class RuneSlot : MonoBehaviour, IDropHandler
 {
     public Rune placedRune;
-    // public bool isLocked = false;
+    public bool isLocked = false;
 
     [SerializeField] private Transform runePoolParent;
 
@@ -18,6 +18,11 @@ public class RuneSlot : MonoBehaviour, IDropHandler
 
     private void PlaceRune(Rune rune)
     {
+        if (isLocked)
+        {
+            return; // Slot is locked, do nothing
+        }
+
         // Replace existing rune
         if (placedRune != null)
         {

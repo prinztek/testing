@@ -113,6 +113,7 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
             }
         }
     }
+
     // ---------------- EXPLANATION RELATED ----------------
     public void ShowExplanation()
     {
@@ -126,5 +127,4 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
         isSolved = true;
         OnPuzzleSolved?.Invoke();
     }
-
 }

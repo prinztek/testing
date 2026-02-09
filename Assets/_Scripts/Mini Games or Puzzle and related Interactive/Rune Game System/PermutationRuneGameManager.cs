@@ -153,8 +153,11 @@ public class PermutationRuneGameManager : MonoBehaviour
             isSolved = true; // Mark puzzle as solved
             OnPuzzleSolved?.Invoke();
         }
+        else
+        {
+            Debug.Log("Incorrect sequence.");
+        }
 
-        Debug.Log("Incorrect sequence.");
     }
     public void OnAddRuneSet()
     {

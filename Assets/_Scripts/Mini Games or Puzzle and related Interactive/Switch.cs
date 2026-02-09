@@ -5,6 +5,7 @@ public class Switch : MonoBehaviour
     [SerializeField] private RisingPlatform[] targets; // Platforms or other targets
     private bool isOn;
     private bool playerInRange;
+    [SerializeField] private GameObject visualContext;
 
     void Update()
     {
@@ -27,12 +28,20 @@ public class Switch : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             playerInRange = true;
+            visualContext.SetActive(true);
+        }
+
+
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             playerInRange = false;
+            visualContext.SetActive(false);
+        }
     }
 }

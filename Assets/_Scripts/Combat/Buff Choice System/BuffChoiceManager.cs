@@ -30,7 +30,7 @@ public class BuffChoiceManager : MonoBehaviour
         allBuffs = new List<BuffOption>()
         {
             new BuffOption("Haste", "Move faster and attack quicker for 8s",
-                Resources.Load<Sprite>("Icons/Haste"), () => new HasteBuff(8f, 3)),
+                Resources.Load<Sprite>("Icons/Haste"), () => new HasteBuff(8f, 1.5f, 1.25f)),
 
             new BuffOption("Fire Infuse", "Attacks deal fire damage for 8s",
                 Resources.Load<Sprite>("Icons/Fire Infuse"), () => new FireInfuseBuff(8f, 3)),

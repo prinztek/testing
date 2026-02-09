@@ -82,6 +82,7 @@ public class BasicInteractableObject : MonoBehaviour
             var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationAndConditionRuneGameManager>();
             var factorialTotemPuzzle = spawnedPuzzle.GetComponentInChildren<FactorialTotemGameManager>();
             var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
+            var circularPermutationPuzzle = spawnedPuzzle.GetComponentInChildren<CircularPermutationRuneGameManager>();
 
             if (permutationAndConditionPuzzle != null)
             {
@@ -94,6 +95,10 @@ public class BasicInteractableObject : MonoBehaviour
             else if (factorialTotemPuzzle != null)
             {
                 factorialTotemPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (circularPermutationPuzzle != null)
+            {
+                circularPermutationPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {

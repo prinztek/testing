@@ -94,7 +94,7 @@ public class Projectile : MonoBehaviour
             DestroyableBlock destroyableBlock = other.GetComponent<DestroyableBlock>();
             if (destroyableBlock != null)
             {
-                destroyableBlock.TakeDamage(damage);
+                destroyableBlock.TakeDamage(damage, transform.root.position);
             }
         }
 

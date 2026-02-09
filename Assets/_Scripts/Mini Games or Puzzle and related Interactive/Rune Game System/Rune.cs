@@ -9,6 +9,7 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     private Canvas canvas;
     private CanvasGroup canvasGroup; // for raycast blocking
     public Transform runePoolParent;
+    public bool isFixed = false; // to indicate if the rune is fixed in place
 
     private void Awake()
     {
@@ -21,6 +22,11 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (isFixed)
+        {
+            return;
+        }
+
         // detach from previous slot
         if (CurrentSlot != null)
         {
