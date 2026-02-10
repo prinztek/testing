@@ -17,7 +17,7 @@ public class LessonManager : MonoBehaviour
         Debug.Log(jsonFile.text);
         if (jsonFile == null)
         {
-            // Debug.LogError($"❌ Lesson file not found: {moduleId}");
+            // Debug.LogError($" Lesson file not found: {moduleId}");
             return;
         }
         // return JsonConvert.DeserializeObject<LessonData>(jsonFile.text);

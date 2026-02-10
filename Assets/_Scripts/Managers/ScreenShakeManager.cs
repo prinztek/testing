@@ -48,5 +48,4 @@ public class ScreenShakeManager : MonoBehaviour
         if (CurrentShakeForce <= 0f || impulseSource == null) return;
         impulseSource.GenerateImpulse();
     }
-
 }

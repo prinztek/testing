@@ -6,6 +6,7 @@ public class InteractionTrigger : MonoBehaviour
     private BasicInteractableObject currentInteractable;
     private InfoBoard currentInfoBoard;
 
+    private Switch switchLever;
     void Update()
     {
         if (Input.GetKeyDown(interactKey))
@@ -44,6 +45,13 @@ public class InteractionTrigger : MonoBehaviour
             // Debug.Log("Can interact with " + interactable2.name);
         }
 
+        if (other.CompareTag("Interactable") && other.TryGetComponent(out Switch lever))
+        {
+            switchLever = lever;
+            switchLever.HighlightObject();
+            // Debug.Log("Can interact with " + interactable2.name);
+        }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -61,6 +69,12 @@ public class InteractionTrigger : MonoBehaviour
             currentInfoBoard.RemoveHighlightObject();
             currentInfoBoard = null;
             // Debug.Log("Left interaction range of info board " + interactable2.name);
+        }
+
+        if (switchLever != null)
+        {
+            switchLever.RemoveHighlightObject();
+            switchLever = null;
         }
     }
 }

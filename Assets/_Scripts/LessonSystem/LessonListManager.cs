@@ -10,8 +10,9 @@ public class LessonListManager : MonoBehaviour
     public GameObject lessonButtonPrefab;
     public LessonManager lessonManager;
     public MathQuestionManager mathQuestionManager;
-
     private Button defaultLessonButton;
+    private Button selectedButton;
+    private GameObject selectedSelector;
 
     void Start()
     {
@@ -36,9 +37,16 @@ public class LessonListManager : MonoBehaviour
             string moduleId = data.id;
             Button buttonComponent = newButton.GetComponent<Button>();
 
+            // Find Selector (sprite indicator to show this button is selected) child (inactive by default)
+            Transform selectedSelector = buttonComponent.transform.Find("Selector");
+            if (selectedSelector != null)
+            {
+                selectedSelector.gameObject.SetActive(false);
+            }
+
             buttonComponent.onClick.AddListener(() =>
             {
-                OnLessonButtonClicked(moduleId);
+                SelectLesson(buttonComponent, selectedSelector?.gameObject, moduleId);
             });
 
             // Add a colorful border to the button that matches the current topic of the question
@@ -50,6 +58,12 @@ public class LessonListManager : MonoBehaviour
                 defaultLessonButton = buttonComponent;
             }
         }
+
+        // click the first button by default to load the first lesson
+        if (defaultLessonButton != null)
+        {
+            defaultLessonButton.onClick.Invoke();
+        }
     }
 
     void OnLessonButtonClicked(string moduleId)
@@ -57,6 +71,27 @@ public class LessonListManager : MonoBehaviour
         lessonManager.LoadLesson(moduleId);
     }
 
+    void SelectLesson(Button button, GameObject selector, string moduleId)
+    {
+        // Turn off previous selection
+        if (selectedSelector != null)
+            selectedSelector.SetActive(false);
+
+        // Activate new selector
+        selectedButton = button;
+        selectedSelector = selector;
+
+        if (selectedSelector != null)
+            selectedSelector.SetActive(true);
+
+        // Load lesson content
+        lessonManager.LoadLesson(moduleId);
+    }
+
+
+    // to give the player a clue about which lesson is relevant to the current math question,
+    // we can add a border to the button that matches the current topic of the question.
+    // This way, players can easily identify which lesson they should review to find the information they need for solving the problem.    
     void AddBorderIfMatchesTopic(string lessonTitle, GameObject buttonObj)
     {
         // Normalize topic name (replace underscores with spaces)

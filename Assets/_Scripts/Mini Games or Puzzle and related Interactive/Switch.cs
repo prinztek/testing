@@ -7,13 +7,13 @@ public class Switch : MonoBehaviour
     private bool playerInRange;
     [SerializeField] private GameObject visualContext;
 
-    void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            Toggle();
-        }
-    }
+    // void Update()
+    // {
+    //     if (playerInRange && Input.GetKeyDown(KeyCode.E))
+    //     {
+    //         Toggle();
+    //     }
+    // }
 
     void Toggle()
     {
@@ -25,23 +25,33 @@ public class Switch : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         playerInRange = true;
+    //     }
+
+
+    // }
+
+    // private void OnTriggerExit2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         playerInRange = false;
+    //     }
+    // }
+
+    public void HighlightObject()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            visualContext.SetActive(true);
-        }
-
-
+        // spotLight.SetActive(true);
+        visualContext.SetActive(true);
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    public void RemoveHighlightObject()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            visualContext.SetActive(false);
-        }
+        // spotLight.SetActive(false);
+        visualContext.SetActive(false);
     }
 }
