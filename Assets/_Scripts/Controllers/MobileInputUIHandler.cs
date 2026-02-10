@@ -13,8 +13,13 @@ public class MobileInputUIHandler : MonoBehaviour
     public Button swapWeaponButton;
     public Sprite meleeSprite;
     public Sprite rangedSprite;
-
     private Image attackButtonImage;
+
+    [Header("Interact Button Visuals")]
+    [SerializeField] private Button interactButton;
+    [SerializeField] private Animator interactAnimator;
+    [SerializeField] private GameObject interactGlowImage;
+
 
     // ------------------------------------------------------
     // INITIALIZATION
@@ -37,7 +42,7 @@ public class MobileInputUIHandler : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-
+        InteractionTrigger.OnInteractionAvailabilityChanged += HandleInteractState;
         // Try linking immediately if player already exists
         TryAssignPlayer();
     }
@@ -45,7 +50,21 @@ public class MobileInputUIHandler : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        InteractionTrigger.OnInteractionAvailabilityChanged -= HandleInteractState;
     }
+
+    private void HandleInteractState(bool canInteract)
+    {
+        if (interactButton != null)
+            interactButton.interactable = canInteract;
+
+        // if (interactAnimator != null)
+        //     interactAnimator.SetBool("CanInteract", canInteract);
+
+        if (interactGlowImage != null)
+            interactGlowImage.SetActive(canInteract);
+    }
+
 
     private IEnumerator Start()
     {

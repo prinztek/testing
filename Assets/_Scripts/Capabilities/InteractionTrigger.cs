@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InteractionTrigger : MonoBehaviour
@@ -5,8 +6,12 @@ public class InteractionTrigger : MonoBehaviour
     public KeyCode interactKey = KeyCode.E;
     private BasicInteractableObject currentInteractable;
     private InfoBoard currentInfoBoard;
-
     private Switch switchLever;
+
+    public static event Action<bool> OnInteractionAvailabilityChanged;
+    [Header("Interaction Availability")]
+    private bool canInteract;
+
     void Update()
     {
         if (Input.GetKeyDown(interactKey))
@@ -15,66 +20,70 @@ public class InteractionTrigger : MonoBehaviour
         }
     }
 
+    private void SetCanInteract(bool value)
+    {
+        if (canInteract == value) return;
+
+        canInteract = value;
+        OnInteractionAvailabilityChanged?.Invoke(canInteract);
+    }
+
     public void TryInteract()
     {
         if (currentInteractable != null)
-        {
             currentInteractable.Interact();
-        }
 
         if (currentInfoBoard != null)
-        {
             currentInfoBoard.Interact();
-        }
+
+        if (switchLever != null)
+            switchLever.Toggle();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if it has the tag and the Interactable component
-        if (other.CompareTag("Interactable") && other.TryGetComponent(out BasicInteractableObject interactable))
+        if (!other.CompareTag("Interactable")) return;
+
+        if (other.TryGetComponent(out BasicInteractableObject interactable))
         {
             currentInteractable = interactable;
-            currentInteractable.HighlightObject();
-            // Debug.Log("Can interact with " + interactable.name);
+            interactable.HighlightObject();
+            SetCanInteract(true);
         }
 
-        if (other.CompareTag("Interactable") && other.TryGetComponent(out InfoBoard interactable2))
+        if (other.TryGetComponent(out InfoBoard info))
         {
-            currentInfoBoard = interactable2;
-            currentInfoBoard.HighlightObject();
-            // Debug.Log("Can interact with " + interactable2.name);
+            currentInfoBoard = info;
+            info.HighlightObject();
+            SetCanInteract(true);
         }
 
-        if (other.CompareTag("Interactable") && other.TryGetComponent(out Switch lever))
+        if (other.TryGetComponent(out Switch lever))
         {
             switchLever = lever;
-            switchLever.HighlightObject();
-            // Debug.Log("Can interact with " + interactable2.name);
+            lever.HighlightObject();
+            SetCanInteract(true);
         }
-
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        // Clear only if the same interactable
-        if (currentInteractable != null)
-        {
-            currentInteractable.RemoveHighlightObject();
-            currentInteractable = null;
-            // Debug.Log("Left interaction range");
-        }
+        if (!other.CompareTag("Interactable")) return;
 
-        if (currentInfoBoard != null)
-        {
-            currentInfoBoard.RemoveHighlightObject();
-            currentInfoBoard = null;
-            // Debug.Log("Left interaction range of info board " + interactable2.name);
-        }
+        currentInteractable?.RemoveHighlightObject();
+        currentInfoBoard?.RemoveHighlightObject();
+        switchLever?.RemoveHighlightObject();
 
-        if (switchLever != null)
-        {
-            switchLever.RemoveHighlightObject();
-            switchLever = null;
-        }
+        currentInteractable = null;
+        currentInfoBoard = null;
+        switchLever = null;
+
+        SetCanInteract(false);
     }
 }
+
+// Any object that uses BasicInteractableObject can be interacted with
+// when the player is nearby and presses the interact key.
+// InteractionTrigger checks what the player can interact with,
+// highlights those objects, and runs their interaction when used.
+// It also lets other systems know when an interaction is available. (UI Onscreen control)

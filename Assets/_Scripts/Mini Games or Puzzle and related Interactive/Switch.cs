@@ -15,7 +15,7 @@ public class Switch : MonoBehaviour
     //     }
     // }
 
-    void Toggle()
+    public void Toggle()
     {
         isOn = !isOn;
 

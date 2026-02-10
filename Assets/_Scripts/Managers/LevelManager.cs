@@ -82,6 +82,9 @@ public class LevelManager : MonoBehaviour
     public void OnEnemyDefeated()
     {
         defeatedEnemies++;
+
+        ResetGrimoireHintState();
+
         if (defeatedEnemies >= totalEnemies)
         {
             UnlockExit();
@@ -210,5 +213,18 @@ public class LevelManager : MonoBehaviour
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
+
+    private void ResetGrimoireHintState()
+    {
+        grimoireTimer = 0f;
+        hitsSinceLastKill = 0;
+
+        if (grimoireHintActive)
+        {
+            grimoireHintActive = false;
+            OnGrimoireHintStateChanged?.Invoke(false);
+        }
+    }
+
 }
 
