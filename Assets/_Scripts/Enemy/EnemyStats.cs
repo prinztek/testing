@@ -132,6 +132,7 @@ public class EnemyStats : MonoBehaviour
         int finalDamage = Mathf.Max(rawDamage - defense, 1);
         CurrentHealth -= finalDamage;
 
+        LevelManager.Instance?.RegisterEnemyHit();
         OnDamageTaken?.Invoke(finalDamage);
         OnHealthChanged?.Invoke(CurrentHealth);
 

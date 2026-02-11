@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using DG.Tweening;
 
 public class MobileInputUIHandler : MonoBehaviour
 {
@@ -17,8 +18,15 @@ public class MobileInputUIHandler : MonoBehaviour
 
     [Header("Interact Button Visuals")]
     [SerializeField] private Button interactButton;
-    [SerializeField] private Animator interactAnimator;
     [SerializeField] private GameObject interactGlowImage;
+    private Tween interactGlowTween;
+    private Tween grimoireGlowTween;
+
+
+    [Header("Grimoire Button Visuals")]
+    [SerializeField] private Button grimoireButton;
+    [SerializeField] private GameObject grimoireGlowImage;
+
 
 
     // ------------------------------------------------------
@@ -43,6 +51,8 @@ public class MobileInputUIHandler : MonoBehaviour
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
         InteractionTrigger.OnInteractionAvailabilityChanged += HandleInteractState;
+        LevelManager.OnGrimoireHintStateChanged += HandleGrimoireHint;
+
         // Try linking immediately if player already exists
         TryAssignPlayer();
     }
@@ -51,6 +61,7 @@ public class MobileInputUIHandler : MonoBehaviour
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
         InteractionTrigger.OnInteractionAvailabilityChanged -= HandleInteractState;
+        LevelManager.OnGrimoireHintStateChanged -= HandleGrimoireHint;
     }
 
     private void HandleInteractState(bool canInteract)
@@ -58,13 +69,25 @@ public class MobileInputUIHandler : MonoBehaviour
         if (interactButton != null)
             interactButton.interactable = canInteract;
 
-        // if (interactAnimator != null)
-        //     interactAnimator.SetBool("CanInteract", canInteract);
-
         if (interactGlowImage != null)
             interactGlowImage.SetActive(canInteract);
+
+        if (canInteract)
+            StartInteractGlowAnimation();
+        else
+            StopInteractGlowAnimation();
     }
 
+    private void HandleGrimoireHint(bool show)
+    {
+        if (grimoireGlowImage != null)
+            grimoireGlowImage.SetActive(show);
+
+        if (show)
+            StartGrimoireGlowAnimation();
+        else
+            StopGrimoireGlowAnimation();
+    }
 
     private IEnumerator Start()
     {
@@ -166,6 +189,9 @@ public class MobileInputUIHandler : MonoBehaviour
     public void OnGrimoirePressed()
     {
         mobileController.uiToggleGrimoirePressed = true;
+
+        // Notify LevelManager so it can start the cooldown (hide the highlight and prevent it from showing again for a while)
+        LevelManager.Instance?.NotifyGrimoireOpened();
     }
 
     public void OnSwapWeaponPressed()
@@ -205,5 +231,50 @@ public class MobileInputUIHandler : MonoBehaviour
     public void OnMenuPressed()
     {
         UIManager.Instance.ShowPauseMenu(true);
+    }
+
+    private void StartInteractGlowAnimation()
+    {
+        if (interactGlowImage == null) return;
+
+        // Prevent stacking tweens
+        interactGlowTween?.Kill();
+
+        interactGlowImage.transform.localScale = Vector3.one;
+
+        interactGlowTween = interactGlowImage.transform
+            .DOScale(1.15f, 0.4f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    private void StopInteractGlowAnimation()
+    {
+        if (interactGlowImage == null) return;
+
+        interactGlowTween?.Kill();
+        interactGlowImage.transform.localScale = Vector3.one;
+    }
+
+    private void StartGrimoireGlowAnimation()
+    {
+        if (grimoireGlowImage == null) return;
+
+        // Prevent stacking tweens
+        grimoireGlowTween?.Kill();
+
+        grimoireGlowImage.transform.localScale = Vector3.one;
+
+        grimoireGlowTween = grimoireGlowImage.transform
+            .DOScale(1.15f, 0.4f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+    private void StopGrimoireGlowAnimation()
+    {
+        if (grimoireGlowImage == null) return;
+
+        grimoireGlowTween?.Kill();
+        grimoireGlowImage.transform.localScale = Vector3.one;
     }
 }

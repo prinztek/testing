@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.UI;
+using System.Collections;
+using Unity.VisualScripting;
 public class PermutationAndConditionRuneGameManager : MonoBehaviour
 {
 
@@ -117,7 +119,7 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     // ---------------- EXPLANATION RELATED ----------------
     public void ShowExplanation()
     {
-        explanationPanel.SetActive(true);
+        StartCoroutine(ShowExplanationSequence());
         Debug.Log("Explanation shown.");
     }
 
@@ -126,5 +128,14 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     {
         isSolved = true;
         OnPuzzleSolved?.Invoke();
+    }
+
+    private IEnumerator ShowExplanationSequence()
+    {
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
+        explanationPanel.SetActive(true);
+
+        yield return GameManager.Instance.uiFade.FastFadeIn();
     }
 }

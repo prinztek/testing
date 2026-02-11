@@ -367,6 +367,7 @@ public class CharacterStats : MonoBehaviour
         }
 
     }
+
     #endregion
 
     #region Death Logic

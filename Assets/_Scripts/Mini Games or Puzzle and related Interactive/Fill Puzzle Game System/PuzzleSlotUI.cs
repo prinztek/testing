@@ -5,11 +5,10 @@ public class PuzzleSlotUI : MonoBehaviour, IDropHandler
 {
     public string correctValue; // expected answer
     public PuzzleBlockUI placedBlock;
-
+    [SerializeField] private Transform puzzleBlockPoolParent;
     public void OnDrop(PointerEventData eventData)
     {
-        PuzzleBlockUI block =
-            eventData.pointerDrag?.GetComponent<PuzzleBlockUI>();
+        PuzzleBlockUI block = eventData.pointerDrag?.GetComponent<PuzzleBlockUI>();
 
         if (block == null) return;
 
@@ -21,7 +20,8 @@ public class PuzzleSlotUI : MonoBehaviour, IDropHandler
         if (placedBlock != null)
         {
             placedBlock.CurrentSlot = null;
-            placedBlock.transform.SetParent(block.transform.parent);
+            placedBlock.transform.SetParent(puzzleBlockPoolParent);
+            placedBlock.transform.localPosition = Vector3.zero;
         }
 
         placedBlock = block;

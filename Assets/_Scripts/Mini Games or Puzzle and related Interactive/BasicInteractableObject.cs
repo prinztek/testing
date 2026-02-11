@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class BasicInteractableObject : MonoBehaviour
     public List<Fire> fireLightsToActivate; // List of fire lights to activate when puzzle is solved - assign in inspector
     // ACTIVATE PLATFORM
     public List<TogglePlatform> togglePlatformsToActivate; // List of platforms to activate when puzzle is solved - assign in inspector
+    // ACTIVATE PLATFORM MOVE BLOCK OR BOULDERS
+    public List<MovableBlock> moveableBlocks;
     private GameObject spawnedPuzzle;
     public GameObject spotLight;
     public GameObject visualContext;
@@ -83,6 +86,7 @@ public class BasicInteractableObject : MonoBehaviour
             var factorialTotemPuzzle = spawnedPuzzle.GetComponentInChildren<FactorialTotemGameManager>();
             var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
             var circularPermutationPuzzle = spawnedPuzzle.GetComponentInChildren<CircularPermutationRuneGameManager>();
+            var fillPuzzle = spawnedPuzzle.GetComponentInChildren<FillPuzzleManager>();
 
             if (permutationAndConditionPuzzle != null)
             {
@@ -99,6 +103,10 @@ public class BasicInteractableObject : MonoBehaviour
             else if (circularPermutationPuzzle != null)
             {
                 circularPermutationPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (fillPuzzle != null)
+            {
+                fillPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {
@@ -137,6 +145,14 @@ public class BasicInteractableObject : MonoBehaviour
             foreach (var platform in togglePlatformsToActivate)
             {
                 platform.Activate();
+            }
+        }
+
+        if (moveableBlocks.Count > 0)
+        {
+            foreach (var block in moveableBlocks)
+            {
+                block.Move();
             }
         }
 

@@ -18,7 +18,7 @@ public class UI_Fade : MonoBehaviour
         yield return FadeEffect(1f, defaultFadeDuration);
     }
 
-    public IEnumerator FastFadeIn()
+    public IEnumerator FastFadeIn() // for quick transitions like puzzle explanations
     {
         yield return FadeEffect(0f, fastFadeDuration);
     }

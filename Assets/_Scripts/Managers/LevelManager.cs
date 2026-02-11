@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class LevelManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private CharacterStats playerStats;
     [SerializeField] private ExitPoint exitPoint; // Exit object
-
     private int totalEnemies;
     private int defeatedEnemies;
 
@@ -17,6 +17,19 @@ public class LevelManager : MonoBehaviour
     private MathQuestionManager mqm;
     public MathTopic levelTopic = MathTopic.Permutation_and_Its_Conditions;
     public QuestionDifficulty levelDifficulty = QuestionDifficulty.Easy;
+
+    [Header("Grimoire Hint")]
+    [SerializeField] private float grimoireHintTimeThreshold = 60f;
+    [SerializeField] private int maxHitsWithoutKill = 6;
+    private float grimoireTimer;
+    private int hitsSinceLastKill;
+    private bool grimoireHintActive;
+    public static event Action<bool> OnGrimoireHintStateChanged;
+
+    [Header("Grimoire Hint Cooldown")]
+    [SerializeField] private float hintCooldownAfterUse = 20f;
+    private bool hintOnCooldown = false;
+
 
     private void Awake()
     {
@@ -66,7 +79,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("⚠️ MathQuestionManager not found under UIManager.");
+                Debug.LogWarning("MathQuestionManager not found under UIManager.");
             }
         }
 
@@ -141,14 +154,14 @@ public class LevelManager : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
         else
-            Debug.LogWarning("⚠️ GameManager.Instance not found during level failure.");
+            Debug.LogWarning("GameManager.Instance not found during level failure.");
 
         if (UIManager.Instance != null)
         {
             StartCoroutine(LevelFailedSequence());
         }
         else
-            Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level failed screen.");
+            Debug.LogWarning("UIManager.Instance not found — cannot show level failed screen.");
     }
 
     private void OnDestroy()
@@ -161,7 +174,7 @@ public class LevelManager : MonoBehaviour
     {
         if (UIManager.Instance == null)
         {
-            Debug.LogWarning("⚠️ UIManager.Instance is null in LevelManager Update.");
+            Debug.LogWarning("UIManager.Instance is null in LevelManager Update.");
         }
         // Pause menu
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -169,6 +182,75 @@ public class LevelManager : MonoBehaviour
             // if (GameManager.Instance != null && GameManager.Instance.GameState == GameState.PLaying)
             //     return; // Do not pause if game is lost
             UIManager.Instance.ShowPauseMenu(true);
+        }
+
+        UpdateGrimoireHint(Time.deltaTime);
+    }
+
+    private void UpdateGrimoireHint(float deltaTime)
+    {
+        // Level already completed — no hint needed
+        if (defeatedEnemies >= totalEnemies)
+            return;
+
+        grimoireTimer += deltaTime;
+
+        // Check if hint should be shown based on cooldown
+        if (hintOnCooldown)
+        {
+            return;
+        }
+
+        if (!grimoireHintActive &&
+            (grimoireTimer >= grimoireHintTimeThreshold ||
+             hitsSinceLastKill >= maxHitsWithoutKill))
+        {
+            grimoireHintActive = true;
+            OnGrimoireHintStateChanged?.Invoke(true);
+        }
+    }
+
+    public void RegisterEnemyHit()
+    {
+        hitsSinceLastKill++;
+    }
+
+    public void NotifyGrimoireOpened()
+    {
+        if (grimoireHintActive)
+        {
+            Debug.Log("Grimoire hint (button indicator) used, starting cooldown.");
+            // Hide the hint immediately
+            grimoireHintActive = false;
+            OnGrimoireHintStateChanged?.Invoke(false);
+
+            // Start cooldown
+            hintOnCooldown = true;
+            StartCoroutine(HintCooldownRoutine());
+
+            // Reset timer so hint doesn't immediately reactivate after cooldown
+            grimoireTimer = 0f;
+            hitsSinceLastKill = 0;
+        }
+    }
+
+    private IEnumerator HintCooldownRoutine()
+    {
+        yield return new WaitForSeconds(hintCooldownAfterUse);
+        hintOnCooldown = false;
+    }
+
+    private void ResetGrimoireHintState()
+    {
+        grimoireTimer = 0f;
+        hitsSinceLastKill = 0;
+
+        if (!grimoireHintActive && !hintOnCooldown &&
+            (grimoireTimer >= grimoireHintTimeThreshold ||
+             hitsSinceLastKill >= maxHitsWithoutKill))
+        {
+            grimoireHintActive = true;
+            OnGrimoireHintStateChanged?.Invoke(true);
         }
 
     }
@@ -203,8 +285,6 @@ public class LevelManager : MonoBehaviour
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
-
-
     private IEnumerator LevelFailedSequence()
     {
         yield return GameManager.Instance.uiFade.FastFadeOut();
@@ -212,18 +292,6 @@ public class LevelManager : MonoBehaviour
         UIManager.Instance.ShowLevelFailed(true);
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
-    }
-
-    private void ResetGrimoireHintState()
-    {
-        grimoireTimer = 0f;
-        hitsSinceLastKill = 0;
-
-        if (grimoireHintActive)
-        {
-            grimoireHintActive = false;
-            OnGrimoireHintStateChanged?.Invoke(false);
-        }
     }
 
 }

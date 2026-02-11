@@ -36,7 +36,7 @@ public class EnemyStatsNew : MonoBehaviour
     public bool canComboAttack = false;
     public int maxComboPhase = 3;
     public int damage = 5;
-    private bool isInvincible = false;
+    public bool isInvincible = false;
     private bool isDead = false;
 
     [Header("Stats Modifiers")]
@@ -88,6 +88,7 @@ public class EnemyStatsNew : MonoBehaviour
     {
         if (isDead || isInvincible) return;
         // Debug.Log($"TakeDamage called with: {amount}");
+        LevelManager.Instance?.RegisterEnemyHit();
 
         currentHealth -= amount;  // Decrease health by the damage amount
         onHitFlashVFX.PlayOnDamageVfx();

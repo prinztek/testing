@@ -10,14 +10,14 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     RectTransform rectTransform;
     Canvas canvas;
     CanvasGroup canvasGroup;
-    Transform poolParent;
+    Transform puzzleBlockPoolParent;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
-        poolParent = transform.parent;
+        puzzleBlockPoolParent = transform.parent; // fixed, permanent
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -34,17 +34,17 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition +=
-            eventData.delta / canvas.scaleFactor;
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
 
+        // If no slot took us, return to pool
         if (CurrentSlot == null)
         {
-            transform.SetParent(poolParent);
+            transform.SetParent(puzzleBlockPoolParent);
             transform.localPosition = Vector3.zero;
         }
     }

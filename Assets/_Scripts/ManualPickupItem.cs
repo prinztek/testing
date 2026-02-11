@@ -9,6 +9,7 @@ public class ManualPickupItem : MonoBehaviour
     public float floatSpeed = 2f;
 
     private Vector3 startPos;
+    public AudioClip pickupSound;
 
     private void Start()
     {
@@ -43,6 +44,11 @@ public class ManualPickupItem : MonoBehaviour
             case ItemType.KeyItem:
                 inventory.AddItem(itemData);
                 break;
+        }
+
+        if (pickupSound != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(pickupSound, transform, 0.7f);
         }
 
         Destroy(gameObject);

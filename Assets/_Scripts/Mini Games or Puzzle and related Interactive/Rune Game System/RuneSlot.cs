@@ -5,9 +5,7 @@ public class RuneSlot : MonoBehaviour, IDropHandler
 {
     public Rune placedRune;
     public bool isLocked = false;
-
     [SerializeField] private Transform runePoolParent;
-
     public void OnDrop(PointerEventData eventData)
     {
         Rune rune = eventData.pointerDrag?.GetComponent<Rune>();

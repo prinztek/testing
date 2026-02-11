@@ -32,7 +32,7 @@ public class SoundFXManager : MonoBehaviour
     public void playOneShotSoundFXClilp(AudioClip clip, Transform spawnTransform, float volume)
     {
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        audioSource.pitch = Random.Range(0.95f, 1.05f);
+        // audioSource.pitch = Random.Range(0.95f, 1.05f);
         audioSource.volume = volume * globalVolume; // apply global volume
         audioSource.PlayOneShot(clip);
         Destroy(audioSource.gameObject, clip.length);
