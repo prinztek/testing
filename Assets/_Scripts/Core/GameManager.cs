@@ -74,8 +74,6 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
-        selectedProfileID = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
-        LoadGame();
     }
 
     private void Start()
@@ -199,16 +197,28 @@ public class GameManager : MonoBehaviour
 
     public void ContinueGame()
     {
-        // when the continue button is pressed, load the specific chapter and level with that profile
-        // find latest unlocked chapter/level
+        // Step 1: Find most recently updated profile
+        string profileId = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
+
+        if (string.IsNullOrEmpty(profileId))
+        {
+            Debug.LogWarning("No save data exists to continue.");
+            return;
+        }
+
+        // Step 2: Select and load that profile
+        selectedProfileID = profileId;
+        LoadGame2();
+
+        // Step 3: Find latest unlocked level
         int latestChapter = 0;
         int latestLevel = 0;
 
-        for (int c = 0; c < gameData.save.chapters.Length; c++)
+        for (int c = 0; c < currentData.chapters.Length; c++)
         {
-            for (int l = 0; l < gameData.save.chapters[c].levels.Length; l++)
+            for (int l = 0; l < currentData.chapters[c].levels.Length; l++)
             {
-                if (gameData.save.chapters[c].levels[l].isUnlocked)
+                if (currentData.chapters[c].levels[l].isUnlocked)
                 {
                     latestChapter = c;
                     latestLevel = l;
@@ -216,8 +226,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Step 4: Load that level
         LoadLevel(latestChapter, latestLevel);
     }
+
 
     public void LoadGame2()
     {

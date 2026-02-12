@@ -181,7 +181,12 @@ public class LevelManager : MonoBehaviour
         {
             // if (GameManager.Instance != null && GameManager.Instance.GameState == GameState.PLaying)
             //     return; // Do not pause if game is lost
-            UIManager.Instance.ShowPauseMenu(true);
+
+            // Only show pause menu if no other UI panel is active
+            if (UIManager.Instance.GetActivePanel() == null)
+            {
+                UIManager.Instance.ShowPauseMenu(true);
+            }
         }
 
         UpdateGrimoireHint(Time.deltaTime);

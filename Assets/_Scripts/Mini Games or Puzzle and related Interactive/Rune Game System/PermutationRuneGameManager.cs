@@ -1,20 +1,22 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PermutationRuneGameManager : MonoBehaviour
 {
     public List<RuneSlot> runeSlots; // Assign in Inspector
-    public List<string> correctSequences = new List<string>(); // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
+    // Will hold the permutations or a single answer // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
     // This will hold either a single sequence or multiple sequences
+    public List<string> correctSequences = new List<string>();
     public List<string> userSequences = new List<string>(); // { "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" }
     public bool isDistinct = false; // If true, only distinct sequences are considered correct
     public bool isSolved = false;
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
     public GameObject runesParentPanel;
-
     private List<string> runes = new List<string>();
 
     public Canvas runeGameCanvas; // Reference to the Rune Game Canvas
@@ -22,7 +24,16 @@ public class PermutationRuneGameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private CompletedPermutationsPanel completedPermutationsPanel;
 
+    [Header("Explanation Panel")]
+    [SerializeField] private GameObject explanationPanel;
+    [SerializeField] private Button continueButton;
+
     public UnityEvent OnPuzzleSolved;
+
+    void Awake()
+    {
+        continueButton.onClick.AddListener(OnContinuePressed);
+    }
     void Start()
     {
         runes.Clear();
@@ -45,11 +56,11 @@ public class PermutationRuneGameManager : MonoBehaviour
         // Debug.Log($"Found {runes.Count} runes from the panel.");
 
         // Clear previous data
-        correctSequences.Clear();
+        // correctSequences.Clear();
         userSequences.Clear();
 
         // Generate correct sequences based on settings
-        correctSequences = isDistinct ? GenerateDistinctPermutations(runes) : GeneratePermutations(runes);
+        // correctSequences = isDistinct ? GenerateDistinctPermutations(runes) : GeneratePermutations(runes);
 
     }
 
@@ -145,13 +156,10 @@ public class PermutationRuneGameManager : MonoBehaviour
         bool isCorrect = CheckSequence();
         if (isCorrect)
         {
+            // isSolved = true; // Mark puzzle as solved
+            // OnPuzzleSolved?.Invoke();
             Debug.Log("Correct sequence!");
-            // // runeGameCanvas.enabled = false; // Hide the rune game canvas
-            // UIManager.Instance.CloseActivePanel(); // Hide the rune game canvas through the UIManager
-            // stoneWall.Lift(); // Lift the stone wall
-
-            isSolved = true; // Mark puzzle as solved
-            OnPuzzleSolved?.Invoke();
+            ShowExplanation();
         }
         else
         {
@@ -201,7 +209,6 @@ public class PermutationRuneGameManager : MonoBehaviour
 
         // Remove the last added sequence
         int lastIndex = userSequences.Count - 1;
-        string lastSequence = userSequences[lastIndex];
         userSequences.RemoveAt(lastIndex);
 
         // Remove visual entry
@@ -284,6 +291,29 @@ public class PermutationRuneGameManager : MonoBehaviour
         }
 
         return true; // The user submitted all sequences correctly
+    }
+
+    // ---------------- EXPLANATION RELATED ----------------
+    public void ShowExplanation()
+    {
+        StartCoroutine(ShowExplanationSequence());
+        Debug.Log("Explanation shown.");
+    }
+
+    // ---------------- CONTINUE ----------------
+    public void OnContinuePressed()
+    {
+        isSolved = true;
+        OnPuzzleSolved?.Invoke();
+    }
+
+    private IEnumerator ShowExplanationSequence()
+    {
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
+        explanationPanel.SetActive(true);
+
+        yield return GameManager.Instance.uiFade.FastFadeIn();
     }
 
 }

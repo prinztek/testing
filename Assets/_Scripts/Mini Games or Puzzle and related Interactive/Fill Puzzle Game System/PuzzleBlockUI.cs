@@ -4,13 +4,12 @@ using UnityEngine.EventSystems;
 public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public string value; // "5040", "2", "9!", "5!" // ANY VALUE representing the block, e.g. "5040", "2", "3!"
-
     public PuzzleSlotUI CurrentSlot { get; set; }
-
     RectTransform rectTransform;
     Canvas canvas;
     CanvasGroup canvasGroup;
     Transform puzzleBlockPoolParent;
+    public bool isSpecialBlock = false; // if false it holds a normal or predefined value, if true open an input field with numbers to manually choose value (numbers only, no factorials or other operations)
 
     void Awake()
     {

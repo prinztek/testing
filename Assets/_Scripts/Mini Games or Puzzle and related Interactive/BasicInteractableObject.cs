@@ -25,7 +25,7 @@ public class BasicInteractableObject : MonoBehaviour
 
     void Start()
     {
-        ActivateWave();
+        // ActivateWave();
 
         // if (fireLightsToActivate.Count > 0)
         // {
@@ -126,10 +126,11 @@ public class BasicInteractableObject : MonoBehaviour
 
         if (stompHazardsToActivate.Count > 0)
         {
-            foreach (var hazard in stompHazardsToActivate)
-            {
-                hazard.Deactivate();
-            }
+            // foreach (var hazard in stompHazardsToActivate)
+            // {
+            //     hazard.ActivateStomp();
+            // }
+            ActivateWave();
         }
 
         if (fireLightsToActivate.Count > 0)

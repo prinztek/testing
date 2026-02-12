@@ -262,4 +262,20 @@ public static class JSONSaveSystem
         }
         return mostRecentProfileId;
     }
+
+    // Delete specific profile through the overwrite save panel, which calls this function in the save slot manager
+    public static void DeleteProfile(string profileId)
+    {
+        string folderPath = Path.Combine(Application.persistentDataPath, profileId);
+
+        if (Directory.Exists(folderPath))
+        {
+            Directory.Delete(folderPath, true);
+            Debug.Log($"Deleted profile '{profileId}' at: {folderPath}");
+        }
+        else
+        {
+            Debug.LogWarning($"No profile found for '{profileId}' to delete.");
+        }
+    }
 }
