@@ -26,11 +26,6 @@ public class ManualPickupItem : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (itemData == null) return;
 
-        if (other.CompareTag("Player") == true)
-        {
-            Debug.Log("Player collided with pickup item: " + itemData.itemName);
-        }
-
         PlayerInventory inventory = other.GetComponent<PlayerInventory>();
         if (inventory == null) return;
 
@@ -48,9 +43,9 @@ public class ManualPickupItem : MonoBehaviour
 
         if (pickupSound != null)
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(pickupSound, transform, 0.7f);
+            SoundFXManager.Instance.playOneShotSoundFXClilp(pickupSound, transform, 0.5f);
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

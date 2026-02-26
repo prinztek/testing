@@ -10,7 +10,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource impulseSource;
     [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
-
+    [SerializeField] private AudioClip hurtSoundClip;
+    [SerializeField] private Rigidbody2D rb; // assign in inspector or via GetComponent
     // only for bosses
     [SerializeField] private GameObject bossHUD;
 
@@ -61,6 +62,7 @@ public class EnemyStats : MonoBehaviour
         CurrentHealth = maxHealth;
         impulseSource = GetComponent<CinemachineImpulseSource>();
         onHitFlashVFX = GetComponent<OnHitFlashVFX>();
+        rb = GetComponent<Rigidbody2D>();
 
         canMove = true;
         canAttack = true;
@@ -136,11 +138,7 @@ public class EnemyStats : MonoBehaviour
         OnDamageTaken?.Invoke(finalDamage);
         OnHealthChanged?.Invoke(CurrentHealth);
 
-
-        if (CurrentHealth <= 0)
-        {
-            Die();
-        }
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.05f);
 
         // Show floating damage
         if (DamageTextSpawner.Instance != null)
@@ -153,6 +151,10 @@ public class EnemyStats : MonoBehaviour
             // vfx for burn status effect damage
             onHitFlashVFX?.PlayOnBurnVfx();
         }
+        else if (activeStatus is SlowStatus && statusDamage == true)
+        {
+            onHitFlashVFX?.PlayOnSlowVfx();
+        }// vfx for burn status effect damage onHitFlashVFX?.PlayOnSlowVfx(); }else { // vfx for normal hit damage onHitFlashV
         else
         {
             // vfx for normal hit damage
@@ -164,9 +166,12 @@ public class EnemyStats : MonoBehaviour
                 ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
             }
         }
-    }
 
-    public void TakeBurnDamage() { }
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
+    }
 
     public void Heal(int amount)
     {
@@ -175,46 +180,59 @@ public class EnemyStats : MonoBehaviour
         CurrentHealth = Mathf.Min(CurrentHealth + amount, maxHealth);
         OnHealthChanged?.Invoke(CurrentHealth);
     }
-
+    #region Death Logic
     private void Die()
     {
         if (IsDead) return;
-        Debug.Log("Enemy Died");
 
-        if (isBoss == true)
-        {
-            bossHUD.SetActive(false);
-        }
+        Debug.Log("Enemy Died");
 
         IsDead = true;
         CurrentHealth = 0;
 
-        if (isBoss != true)
+        // Hide boss HUD if this is a boss
+        if (isBoss && bossHUD != null)
+            bossHUD.SetActive(false);
+
+        OnDeath?.Invoke();
+
+        StopAllCoroutines();
+
+        canMove = false;
+        canAttack = false;
+
+        // Stop physics
+        if (rb != null)
         {
-            OnDeath?.Invoke(); // tell the enemy health bar that the enemy just died
-
-            // Disable all colliders
-            foreach (var col in GetComponents<Collider2D>())
-                col.enabled = false;
-
-            // boss handles his own death
-            if (deathFXPrefab != null)
-            {
-                GameObject fx = Instantiate(deathFXPrefab, transform.position, Quaternion.identity);
-                Destroy(fx, 0.5f);
-            }
-            Destroy(gameObject, 2f);
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
+
+        // Disable colliders
+        foreach (var col in GetComponents<Collider2D>())
+            col.enabled = false;
+
+        // Spawn death FX immediately at current position
+        if (deathFXPrefab != null && !isBoss)
+        {
+            GameObject fx = Instantiate(deathFXPrefab, transform.position, Quaternion.identity);
+            Destroy(fx, 0.5f);
+        }
+
+        // Drop loot ONCE
+        foreach (var dropItem in dropTable)
+        {
+            InstantiateLoot(dropItem);
+        }
+
         // Notify LevelManager
-        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
+        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
 
-        // if not boss
-        //      code here
-
-        // if boss
-        //      code here
+        if (!isBoss)
+            Destroy(gameObject);
     }
-
+    #endregion
     #endregion
 
     #region Getters

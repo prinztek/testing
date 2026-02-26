@@ -85,7 +85,6 @@ public class LevelManager : MonoBehaviour
 
         // --- Count total enemies in the scene ---
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length +
-                       FindObjectsByType<AncientBoss>(FindObjectsSortMode.None).Length +
                        FindObjectsByType<EnemyStats>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
         Debug.Log($"LevelManager initialized. Found {totalEnemies} enemies.");

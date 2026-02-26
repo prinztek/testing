@@ -141,7 +141,7 @@ public class Jump : MonoBehaviour
             _velocity.y += _jumpSpeed;
 
             if (jumpSoundClip != null)
-                SoundFXManager.Instance.playOneShotSoundFXClilp(jumpSoundClip, transform, 0.1f);
+                SoundFXManager.Instance.playOneShotSoundFXClilp(jumpSoundClip, transform, 0.05f);
 
             jumpParticles?.Play();
         }

@@ -36,6 +36,7 @@ public class Attack : MonoBehaviour
     private bool wasGrounded = true;
 
     [Header("Attack Sound Clips")]
+    [SerializeField] private AudioClip fistAttackClip;
     [SerializeField] private AudioClip swordAttack1Clip;
     [SerializeField] private AudioClip swordAttack2Clip;
     [SerializeField] private AudioClip swordAttack3Clip;
@@ -175,6 +176,11 @@ public class Attack : MonoBehaviour
         {
             SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack3Clip, transform, 0.2f);
 
+        }
+
+        if (animWeapon == "Fist")
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(fistAttackClip, transform, 0.2f);
         }
     }
 

@@ -12,6 +12,11 @@ public class DeadZoneHazard : MonoBehaviour
     {
         if (!other.CompareTag(playerTag)) return;
 
+        CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
+        EnemyStatsNew enemyStats = other.GetComponentInParent<EnemyStatsNew>();
+
+        playerStats?.TakeDamage(10, transform.position);
+        enemyStats?.TakeDamage(10, transform.position);
         Respawn(other.gameObject);
     }
 

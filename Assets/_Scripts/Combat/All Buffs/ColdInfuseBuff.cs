@@ -20,8 +20,10 @@ public class ColdInfuseBuff : Buff
     {
         if (enemy.TryGetComponent(out EnemyStats enemyStats))
         {
-            enemyStats.AddStatus(new SlowStatus(5, 0.2f));
+            enemyStats.AddStatus(new SlowStatus(5, 0.2f, 1f, 0f, 2)); // Slow for 5 seconds, 20% slow, ticks every 1 second, 2 damage per tick
         }
+
+
 
         --hitsRemaining;
 

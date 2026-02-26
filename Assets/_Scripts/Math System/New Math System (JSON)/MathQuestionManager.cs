@@ -40,7 +40,7 @@ public class MathQuestionManager : MonoBehaviour
 
     private void Awake()
     {
-        submitButton?.onClick.AddListener(CheckAnswer);
+        // submitButton?.onClick.AddListener(CheckAnswer);
         hintButton?.onClick.AddListener(GenerateNewHint);
     }
 
@@ -121,7 +121,7 @@ public class MathQuestionManager : MonoBehaviour
     {
         int cost = baseHintCost + (baseHintCost * hintUsedCounter);
         if (hintButton != null)
-            hintButton.GetComponentInChildren<TMP_Text>().text = $"Hint (-{cost}g)";
+            hintButton.GetComponentInChildren<TMP_Text>().text = $"(-{cost}g)";
     }
 
     public void GenerateNewHint()
@@ -151,6 +151,8 @@ public class MathQuestionManager : MonoBehaviour
         if (answerInput.text.Trim() == currentQuestion.answer)
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
+            Debug.Log($"Player typed: '{answerInput.text}'");
+            Debug.Log($"Correct answer: '{currentQuestion.answer}'");
 
             // Debug.Log($"✅ Correct! {currentQuestion.answer}");
             GameManager.Instance.MarkQuestionAsUsed(currentQuestion);

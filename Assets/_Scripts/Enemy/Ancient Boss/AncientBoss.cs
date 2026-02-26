@@ -39,6 +39,7 @@ public class AncientBoss : MonoBehaviour
     [SerializeField] private GameObject rockSpikePrefab;
     [SerializeField] private GameObject bossHUD;
     [SerializeField] private CinemachineImpulseSource impulseSource;
+    [SerializeField] private GameObject rangeAttackVFX;
 
     // ========================================
     // TIMING
@@ -111,11 +112,23 @@ public class AncientBoss : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+        // Subscribe to death event from EnemyStats
+        if (enemyStats != null)
+        {
+            enemyStats.OnDeath += HandleDeath;
+        }
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+
+        // Unsubscribe from death event
+        if (enemyStats != null)
+        {
+            enemyStats.OnDeath -= HandleDeath;
+        }
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)
@@ -230,9 +243,23 @@ public class AncientBoss : MonoBehaviour
             case State.Death:
                 PlayAnimation(DeathHash);
                 isDead = true;
-                // bossHUD?.SetActive(false);
+                rb.linearVelocity = Vector2.zero;
+
+                // Stop all coroutines
+                StopAllCoroutines();
+
+                // Optional: Destroy after animation completes
+                // Destroy(gameObject, 2f);
                 break;
         }
+    }
+
+    // ========================================
+    // DEATH HANDLER
+    // ========================================
+    private void HandleDeath()
+    {
+        ChangeState(State.Death);
     }
 
     // ========================================
@@ -446,6 +473,26 @@ public class AncientBoss : MonoBehaviour
         // Far range (Laser)
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(center, farRange);
+    }
+
+    public void ShowRangeAttackVFX()
+    {
+        GameObject fx = Instantiate(
+            rangeAttackVFX,
+            visual.position,
+            Quaternion.identity,
+            visual
+        );
+
+        Animator animator = fx.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false; // Disable first
+            animator.Play("rangeAttackVFX", 0, 0f); // Set animation
+            animator.enabled = true; // Re-enable
+        }
+
+        Destroy(fx, 1f);
     }
 
 }

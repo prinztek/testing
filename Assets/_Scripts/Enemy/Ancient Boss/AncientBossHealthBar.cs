@@ -10,29 +10,32 @@ public class AncientBossHealthBar : MonoBehaviour
     public TMP_Text healthText;
 
     [Header("References")]
-    public AncientBoss boss; // Reference to the AncientBoss script
+    public EnemyStats stats; // Reference to the EnemyStats script
+
     private void Start()
     {
-        if (boss == null)
+        if (stats == null)
         {
-            Debug.LogError("Boss not assigned to HealthBar!");
+            Debug.LogError("Stats not assigned to HealthBar!");
             return;
         }
 
-        // Set the initial values of the health bar from Boss2
-        SetMaxHealth(boss.enemyStats.maxHealth); // Set max health
-        SetHealth(boss.enemyStats.CurrentHealth); // Set the current health
+        // Set the initial values of the health bar
+        SetMaxHealth(stats.maxHealth); // Set max health
+        SetHealth(stats.CurrentHealth); // Set the current health
 
         // Subscribe to health change events
-        // boss.OnDeathStarted += HandleDeath; // When character dies, hide the health bar
+        stats.OnHealthChanged += UpdateHealthBar;
+        stats.OnDeath += HandleDeath; // When enemy dies, hide the health bar
     }
 
     private void OnDisable()
     {
         // Unsubscribe to prevent memory leaks
-        if (boss != null)
+        if (stats != null)
         {
-            // boss.OnDeathStarted -= HandleDeath;
+            stats.OnHealthChanged -= UpdateHealthBar;
+            stats.OnDeath -= HandleDeath;
         }
     }
 
@@ -68,7 +71,6 @@ public class AncientBossHealthBar : MonoBehaviour
     private void HandleDeath()
     {
         Debug.Log("Boss has died, hiding the health bar.");
-        this.gameObject.SetActive(false); // Optionally hide the health bar on death
+        this.gameObject.SetActive(false); // Hide the health bar on death
     }
 }
-

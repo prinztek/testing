@@ -18,6 +18,8 @@ public class BasicInteractableObject : MonoBehaviour
     public List<TogglePlatform> togglePlatformsToActivate; // List of platforms to activate when puzzle is solved - assign in inspector
     // ACTIVATE PLATFORM MOVE BLOCK OR BOULDERS
     public List<MovableBlock> moveableBlocks;
+    // ACTIVATE/ DEACTIVATE BULLET SPANWERS
+    public List<BulletSpawner> bulletSpawnersToDeactivate; // List of bullet spawners to deactivate when puzzle is solved - assign in inspector
     private GameObject spawnedPuzzle;
     public GameObject spotLight;
     public GameObject visualContext;
@@ -81,11 +83,17 @@ public class BasicInteractableObject : MonoBehaviour
         {
             spawnedPuzzle = Instantiate(runeGamePrefab);
 
-            // Try to get either puzzle manager (RuneGameManager (Permutation and its condition) or (Permutation))
+            // get puzzle manager component from children of spawned prefab and add listener to OnPuzzleSolved event
+            // permutation
             var permutationAndConditionPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationAndConditionRuneGameManager>();
             var factorialTotemPuzzle = spawnedPuzzle.GetComponentInChildren<FactorialTotemGameManager>();
             var permutationPuzzle = spawnedPuzzle.GetComponentInChildren<PermutationRuneGameManager>();
             var circularPermutationPuzzle = spawnedPuzzle.GetComponentInChildren<CircularPermutationRuneGameManager>();
+
+            // combination
+            var combinationPuzzle = spawnedPuzzle.GetComponentInChildren<CombinationRuneGameManager>();
+
+            // universal
             var fillPuzzle = spawnedPuzzle.GetComponentInChildren<FillPuzzleManager>();
 
             if (permutationAndConditionPuzzle != null)
@@ -107,6 +115,10 @@ public class BasicInteractableObject : MonoBehaviour
             else if (fillPuzzle != null)
             {
                 fillPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (combinationPuzzle != null)
+            {
+                combinationPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {
@@ -154,6 +166,14 @@ public class BasicInteractableObject : MonoBehaviour
             foreach (var block in moveableBlocks)
             {
                 block.Move();
+            }
+        }
+
+        if (bulletSpawnersToDeactivate.Count > 0)
+        {
+            foreach (var spawner in bulletSpawnersToDeactivate)
+            {
+                spawner.Deactivate();
             }
         }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class FactorialSkill : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private CharacterStats playerStats;
     [SerializeField] private PopupText PopupTextPrefab;
 
@@ -31,6 +30,24 @@ public class FactorialSkill : MonoBehaviour
         playerStats = playerObj.GetComponent<CharacterStats>();
 
         // if the player already learned the skill        
+        if (playerStats != null && playerStats.HasSkill(SkillType.FactorialEngine))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        TryFindPlayer();
+    }
+
+    private void TryFindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        playerStats = player.GetComponent<CharacterStats>();
+
         if (playerStats != null && playerStats.HasSkill(SkillType.FactorialEngine))
         {
             Destroy(gameObject);

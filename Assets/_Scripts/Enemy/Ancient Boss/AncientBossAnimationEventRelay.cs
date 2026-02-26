@@ -10,8 +10,9 @@ public class AncientBossAnimationEventRelay : MonoBehaviour
         // ExecuteScreenShakeForCrystalBarrage();
     }
 
-    // public void ExecuteScreenShakeForCrystalBarrage()
-    // {
-    //     ancientBoss?.StartScreenshakeForAttacking();
-    // }
+    public void ShowRangeAttackVFX()
+    {
+        ancientBoss?.ShowRangeAttackVFX();
+    }
+
 }

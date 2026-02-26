@@ -126,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
   onBurnVfxMat: {fileID: 2100000, guid: 3fdbcf470043db54ab1083254a1805ac, type: 2}
+  onSlowVfxMat: {fileID: 0}
   flashDuration: 0.15
 --- !u!114 &9050923320931951788
 MonoBehaviour:
@@ -195,6 +196,8 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   deathFXPrefab: {fileID: 2452023344832040808, guid: 78816187eb5b807489b7fe0a7af2c6d3, type: 3}
   onHitFlashVFX: {fileID: 0}
+  hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
+  rb: {fileID: 0}
   bossHUD: {fileID: 0}
   groundCheckPoint: {fileID: 9100837968411011663}
   groundCheckY: 0.15
@@ -240,6 +243,7 @@ MonoBehaviour:
   idleDuration: 2.5
   patrolDuration: 4
   detectionRange: 6
+  detectionHeightTolerance: 1.2
   chaseSpeed: 0
   attackRange: 2
   attackRadius: 1.2

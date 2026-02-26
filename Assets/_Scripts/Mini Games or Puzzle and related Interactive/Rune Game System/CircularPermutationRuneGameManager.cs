@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     public List<string> correctSequences = new List<string> { "ABC", "ACB" }; // Will hold the permutation/s // e.g., {"ABC", "ACB", "BAC", "BCA", "CAB", "CBA"}
     public List<string> userSequences = new List<string>(); // { "ABC", "ACB" }
     public bool isSolved = false;
+    public bool isFlip = false;
 
     [Tooltip("Assign the parent panel that holds all the rune GameObjects as children")]
     public GameObject runesParentPanel;
@@ -23,6 +25,10 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     [SerializeField] private Button continueButton;
 
     public UnityEvent OnPuzzleSolved;
+
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
     private void Awake()
     {
         continueButton.onClick.AddListener(OnContinuePressed);
@@ -70,12 +76,14 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
         {
             // isSolved = true; // Mark puzzle as solved
             // OnPuzzleSolved?.Invoke();
+            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
             Debug.Log("Correct sequence!");
             ShowExplanation();
         }
         else
         {
             Debug.Log("Incorrect sequence.");
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
         }
     }
     public void OnAddRuneSet()
@@ -168,6 +176,19 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     }
     public bool CheckSequence()
     {
+        if (isFlip)
+        {
+            // For bracelet mode, only one correct arrangement is required
+            // Check if user submitted at least one valid sequence (ABC or ACB)
+            foreach (var userSeq in userSequences)
+            {
+                if (userSeq == "ABC" || userSeq == "ACB")
+                    return true; // correct
+            }
+            return false; // none of the submissions are correct
+        }
+
+
         // The player has submitted the correct number of sequences
         if (userSequences.Count != correctSequences.Count)
         {
@@ -215,7 +236,7 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
     // ---------------- EXPLANATION RELATED ----------------
     public void ShowExplanation()
     {
-        explanationPanel.SetActive(true);
+        StartCoroutine(ShowExplanationSequence());
         Debug.Log("Explanation shown.");
     }
 
@@ -227,6 +248,14 @@ public class CircularPermutationRuneGameManager : MonoBehaviour
         OnPuzzleSolved?.Invoke();
     }
 
+    private IEnumerator ShowExplanationSequence()
+    {
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
+        explanationPanel.SetActive(true);
+
+        yield return GameManager.Instance.uiFade.FastFadeIn();
+    }
 }
 
 

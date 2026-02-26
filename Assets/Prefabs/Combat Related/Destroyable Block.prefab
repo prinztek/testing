@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3422505288222497402}
   - component: {fileID: 1049519020936683999}
   - component: {fileID: 9054538223100534095}
+  - component: {fileID: 5486132588438683112}
   m_Layer: 3
   m_Name: Destroyable Block
   m_TagString: Hurtbox
@@ -79,8 +80,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1304636877
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f8e3c02418d193548ac2021cea0a0f44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -108,9 +109,11 @@ MonoBehaviour:
   maxHealth: 3
   destroyEffect: {fileID: 0}
   destroySound: {fileID: 0}
-  impulseSource: {fileID: 0}
-  shakeDuration: 0.2
-  shakeMagnitude: 0.1
+  hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
+  hitImpactPrefab: {fileID: 5083904481168151007, guid: a70d60b16bfe24048920c88db53d4e4e, type: 3}
+  impulseSource: {fileID: 5486132588438683112}
+  shakeDuration: 0.1
+  shakeMagnitude: 0.05
 --- !u!61 &9054538223100534095
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -157,6 +160,59 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5486132588438683112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711661961529740934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 1
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.1
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &8223105465175387615
 GameObject:
   m_ObjectHideFlags: 0

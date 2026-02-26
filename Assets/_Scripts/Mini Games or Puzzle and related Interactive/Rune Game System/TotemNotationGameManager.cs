@@ -16,6 +16,10 @@ public class TotemNotationGameManager : MonoBehaviour
     private List<string> runes = new List<string>();
 
     public Canvas runeGameCanvas; // Reference to the Rune Game Canvas
+
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
     void Start()
     {
         runes.Clear();
@@ -25,12 +29,6 @@ public class TotemNotationGameManager : MonoBehaviour
             Debug.LogError("Runes Parent Panel is not assigned!");
             return;
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 
@@ -115,6 +113,7 @@ public class TotemNotationGameManager : MonoBehaviour
         if (userSequences.Count != correctSequences.Count)
         {
             // Not enough sequences submitted yet
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
             return false;
         }
 
@@ -124,6 +123,7 @@ public class TotemNotationGameManager : MonoBehaviour
             if (!userSequences.Contains(correctSeq))
             {
                 // The user is missing at least one required sequence
+                SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
                 return false;
             }
         }
@@ -134,10 +134,11 @@ public class TotemNotationGameManager : MonoBehaviour
             if (!correctSequences.Contains(userSeq))
             {
                 // The user submitted an invalid sequence
+                SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
                 return false;
             }
         }
-
+        SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
         return true; // The user submitted all sequences correctly
     }
 }

@@ -9,22 +9,16 @@
         {
           "type": "Text",
           "lines": [
-            "How many possible three-letter arrangements are there in the word MOM? Using the permutation 3P3 = 3! = 6 then, by tree diagram these are the results;\n",
-            "M \n",
-            "|-- O \n",
-            "| \\quad |-- M ---- MOM\n",
-            "|-- M\n",
-            "| \\quad |-- O ---- MMO\n",
-            "O \n",
-            "|-- M \n",
-            "| \\quad |-- M ---- OMM\n",
-            "|-- M\n",
-            "| \\quad |-- M ---- OMM\n",
-            "M \n",
-            "|-- O \n",
-            "| \\quad |-- M ---- MOM\n",
-            "|-- M\n",
-            "| \\quad |-- O ---- MMO\n",
+            "How many possible three-letter arrangements are there in the word MOM? Using the permutation 3P3 = 3! = 6 then, by tree diagram these are the results;\n"
+          ]
+        },
+        {
+          "type": "Image",
+          "imagePath": "Modules Images/distinguishable-permutation"
+        },
+        {
+          "type": "Text",
+          "lines": [
             "As shown in the diagram above there are 6 arrangements. What did you observe about the three-letter arrangements? There are 2-MOM, 2-OMM, and 2- MMO. We know that the permutations of 3 letters of the word MOM are 3!, we must take into consideration that we cannot distinguish between the two M;s in any of the permutation but the two M's can be permuted in 2! ways and do not produce a different result. Hence, the number of distinguishable permutations P is given by",
             "\\[ P = \\frac{3!}{2!} = 3 \\]"
           ]

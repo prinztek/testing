@@ -123,7 +123,7 @@ public class EnemyStatsNew : MonoBehaviour
             ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
         }
 
-        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.2f);
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.05f);
 
         fsm.lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
         if (fsm != null && !IsDead)
@@ -192,38 +192,6 @@ public class EnemyStatsNew : MonoBehaviour
     #endregion
     #region Death Logic
 
-    /// ***********************************************************************************************************************
-    /// <summary>
-    /// Handles death without FSM (fallback).
-    /// </summary>
-    // private void Die()
-    // {
-
-    //     StopAllCoroutines();   // stop any ongoing coroutines
-
-    //     if (isDead) return;
-
-    //     isDead = true;
-    //     FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
-
-    //     if (animator != null)
-    //         animator.CrossFade("enemydead", 0.1f);
-
-    //     // death VFX animations
-    //     if (hitImpactPrefab != null)
-    //     {
-    //         GameObject deathFX = Instantiate(deathFXPrefab, transform.position, Quaternion.identity, transform);
-    //         Destroy(deathFX, 0.5f); // clean up after
-    //     }
-    //     // Spawn Drop Item
-    //     // Debug.Log("Spawn Drop Item");
-    //     foreach (DropItem dropItem in dropTable)
-    //     {
-    //         InstantiateLoot(dropItem);
-    //     }
-    //     StartCoroutine(DestroyAfterDelay(1f));
-    // }
-
     private void Die()
     {
         if (isDead) return;
@@ -262,15 +230,9 @@ public class EnemyStatsNew : MonoBehaviour
         // Notify LevelManager
         UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated(); // convert these to an event call?
 
-        Destroy(gameObject, 2f);
-    }
-
-
-    private IEnumerator DestroyAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }
+
     #endregion
 
     #region Drop Item Logic

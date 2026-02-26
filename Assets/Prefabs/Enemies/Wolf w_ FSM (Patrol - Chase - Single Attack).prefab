@@ -477,6 +477,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 3755346876267009839}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
   hitImpactPrefab: {fileID: 5083904481168151007, guid: a70d60b16bfe24048920c88db53d4e4e, type: 3}
+  deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
   maxHealth: 20
   moveSpeed: 3
@@ -492,6 +493,12 @@ MonoBehaviour:
   canComboAttack: 0
   maxComboPhase: 3
   damage: 10
+  isInvincible: 0
+  tempDamageMultiplier: 1
+  shieldHitsRemaining: 0
+  moveSpeedMultiplier: 1
+  attackSpeedMultiplier: 1
+  guaranteedCrits: 0
   dropTable:
   - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
   pickupPrefab: {fileID: 6123459713730238132, guid: 06f78f16ef6f6274294556099e439348, type: 3}
@@ -511,6 +518,7 @@ MonoBehaviour:
   wallCheck: {fileID: 8061878607361393964}
   groundCheckDistance: 0.3
   wallCheckDistance: 0.3
+  groundCheckX: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -542,6 +550,9 @@ MonoBehaviour:
   showChaseRange: 1
   showAttackRange: 1
   sensor: {fileID: 0}
+  leftLimit: {fileID: 0}
+  rightLimit: {fileID: 0}
+  homePosition: {x: 0, y: 0}
 --- !u!114 &4044854098511531633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,4 +619,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
+  onBurnVfxMat: {fileID: 0}
+  onSlowVfxMat: {fileID: 0}
   flashDuration: 0.15

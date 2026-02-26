@@ -16,6 +16,10 @@ public class FillPuzzleManager : MonoBehaviour
     public UnityEvent OnPuzzleSolved;
     public bool isSolved = false;
 
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
+
     void Awake()
     {
         checkAnswerButton.onClick.AddListener(OnSubmit);
@@ -32,10 +36,12 @@ public class FillPuzzleManager : MonoBehaviour
             if (!slot.IsCorrect())
             {
                 Debug.Log("INCORRECT — try again");
+                SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
                 return;
             }
         }
 
+        SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
         Debug.Log("CORRECT CORRECT CORRECT");
         ShowExplanation();
         // unlock next step / close puzzle / give reward

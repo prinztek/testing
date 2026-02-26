@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public static class MathTables
 {
     public static readonly long[] Factorials =
@@ -37,17 +38,20 @@ public class FactorialCalculatorUI : MonoBehaviour
     public PlayerInventory playerInventory;
     public CharacterStats characterStats;
 
-    [Header("Calculate Button")]
-    public Button[] buttons;
     [Header("Input Field")]
     public TMP_InputField input;
     [Header("Result")]
     public TMP_Text resultText;
+    [Header("Canvas Group")]
+    public CanvasGroup canvasGroup;
 
     public int calculationCost = 20; // Gold cost for calculation
+    private bool wasLocked = true;
+
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
         // If player already exists when UI enables, connect immediately
         if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
         {
@@ -69,27 +73,12 @@ public class FactorialCalculatorUI : MonoBehaviour
 
     private void Awake()
     {
-        // Make sure UI starts locked
-
-        if (input != null)
-        {
-            input.interactable = false;
-        }
-
-        if (buttons != null)
-        {
-            foreach (Button button in buttons)
-            {
-                if (button != null)
-                    button.interactable = false;
-            }
-        }
+        // Start locked
+        SetLockedState(true);
 
         if (resultText != null)
             resultText.text = "Requires Factorial Engine skill";
     }
-
-    private bool wasLocked = true;
 
     private void Update()
     {
@@ -100,8 +89,6 @@ public class FactorialCalculatorUI : MonoBehaviour
 
         if (hasSkill && wasLocked)
         {
-            Debug.Log("HASSKILLLLLLLLLLLLLLLLLLLL & WASLLLLLLLLLLLL:" + hasSkill);
-
             UpdateUIAccess();
             wasLocked = false;
         }
@@ -116,8 +103,10 @@ public class FactorialCalculatorUI : MonoBehaviour
         {
             input.text += key;
         }
-
-        Debug.Log("Input limit reached!");
+        else
+        {
+            Debug.Log("Input limit reached!");
+        }
     }
 
     public void ClearInput()
@@ -132,6 +121,7 @@ public class FactorialCalculatorUI : MonoBehaviour
     {
         if (input == null || resultText == null)
             return;
+
         if (playerInventory.Gold < calculationCost)
         {
             resultText.text = "Not enough gold!";
@@ -145,6 +135,7 @@ public class FactorialCalculatorUI : MonoBehaviour
             {
                 factorial *= i;
             }
+
             resultText.text = $"Result: {factorial}";
             playerInventory.DeductGold(calculationCost);
         }
@@ -159,25 +150,19 @@ public class FactorialCalculatorUI : MonoBehaviour
         bool hasSkill = characterStats != null &&
                         characterStats.HasSkill(SkillType.FactorialEngine);
 
-        Debug.Log("INSIDE UPDATEUIACCESS:" + hasSkill);
+        SetLockedState(!hasSkill);
 
-        // Manually enable/disable the input and button
-        if (input != null)
-            input.interactable = hasSkill;
-
-        if (buttons != null)
-        {
-            foreach (Button button in buttons)
-            {
-                if (button != null)
-                    button.interactable = hasSkill;
-            }
-        }
-
-        // Update the result text if the skill is missing
         if (resultText != null)
             resultText.text = hasSkill ? "" : "Requires Factorial Engine skill";
     }
 
+    private void SetLockedState(bool locked)
+    {
+        if (canvasGroup == null)
+            return;
 
+        canvasGroup.interactable = !locked;
+        canvasGroup.blocksRaycasts = !locked;
+        canvasGroup.alpha = locked ? 0.6f : 1f; // dim when locked
+    }
 }

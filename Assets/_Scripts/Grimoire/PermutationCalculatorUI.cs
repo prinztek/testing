@@ -11,6 +11,13 @@ public class PermutationCalculatorUI : MonoBehaviour
     public TMP_InputField inputN;
     public TMP_InputField inputR;
 
+    [Header("Selector Visuals")]
+    [SerializeField] private Image selectorN;
+    [SerializeField] private Image selectorR;
+
+    [Header("Canvas Group")]
+    [SerializeField] private CanvasGroup canvasGroup;
+
     [Header("Buttons")]
     public Button[] buttons;
 
@@ -20,32 +27,40 @@ public class PermutationCalculatorUI : MonoBehaviour
     [Header("Cost")]
     public int calculationCost = 20;
 
-    private const int MAX_N = 15;
+    private const int MAX_N = 20; // Extended to 20
     private bool wasLocked = true;
-    [Header("Selection")]
-    [SerializeField] private Image selectorN;
-    [SerializeField] private Image selectorR;
 
-    private enum SelectedInput
-    {
-        None,
-        N,
-        R
-    }
-
+    private enum SelectedInput { None, N, R }
     private SelectedInput currentSelectedInput = SelectedInput.None;
 
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-
-        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        if (GameManager.Instance?.CurrentPlayer != null)
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    private void Awake()
+    {
+        SetLockedState(true);
+        UpdateSelectionVisuals();
+    }
+
+    private void Update()
+    {
+        if (characterStats == null) return;
+
+        bool hasSkill = characterStats.HasSkill(SkillType.PermutationEngine);
+        if (hasSkill && wasLocked)
+        {
+            UpdateUIAccess();
+            wasLocked = false;
+        }
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)
@@ -55,67 +70,9 @@ public class PermutationCalculatorUI : MonoBehaviour
         UpdateUIAccess();
     }
 
-    private void Awake()
-    {
-        LockUI();
-    }
-
-    private void Update()
-    {
-        if (characterStats == null)
-            return;
-
-        bool hasSkill = characterStats.HasSkill(SkillType.PermutationEngine);
-
-        if (hasSkill && wasLocked)
-        {
-            UpdateUIAccess();
-            wasLocked = false;
-        }
-    }
-
     // ==========================
-    //        INPUT
+    // INPUT SELECTION & KEYPAD
     // ==========================
-    public void PressKey(string key)
-    {
-        if (currentSelectedInput == SelectedInput.None)
-            return;
-
-        TMP_InputField target = GetActiveInput();
-        if (target == null || !target.interactable)
-            return;
-
-        target.text += key;
-
-        // Clamp values immediately
-        if (int.TryParse(target.text, out int value))
-        {
-            if (currentSelectedInput == SelectedInput.N && value > MAX_N)
-                target.text = MAX_N.ToString();
-
-            if (currentSelectedInput == SelectedInput.R)
-            {
-                if (int.TryParse(inputN.text, out int n) && value > n)
-                    target.text = n.ToString();
-            }
-        }
-        else
-        {
-            target.text = "";
-        }
-    }
-
-    private TMP_InputField GetActiveInput()
-    {
-        return currentSelectedInput switch
-        {
-            SelectedInput.N => inputN,
-            SelectedInput.R => inputR,
-            _ => null
-        };
-    }
-
     public void SelectInputN()
     {
         currentSelectedInput = SelectedInput.N;
@@ -130,25 +87,37 @@ public class PermutationCalculatorUI : MonoBehaviour
 
     private void UpdateSelectionVisuals()
     {
-        if (selectorN != null)
-            selectorN.gameObject.SetActive(currentSelectedInput == SelectedInput.N);
-
-        if (selectorR != null)
-            selectorR.gameObject.SetActive(currentSelectedInput == SelectedInput.R);
+        if (selectorN != null) selectorN.gameObject.SetActive(currentSelectedInput == SelectedInput.N);
+        if (selectorR != null) selectorR.gameObject.SetActive(currentSelectedInput == SelectedInput.R);
     }
 
-    public void ClearInputs()
+    public void PressKey(string key)
     {
-        inputN.text = "";
-        inputR.text = "";
-        resultText.text = "";
+        if (currentSelectedInput == SelectedInput.None) return;
+        TMP_InputField target = currentSelectedInput == SelectedInput.N ? inputN : inputR;
+        if (target == null || !target.interactable) return;
+
+        target.text += key;
+
+        // Clamp values immediately
+        if (int.TryParse(target.text, out int value))
+        {
+            if (currentSelectedInput == SelectedInput.N && value > MAX_N) target.text = MAX_N.ToString();
+            if (currentSelectedInput == SelectedInput.R &&
+                int.TryParse(inputN.text, out int n) && value > n) target.text = n.ToString();
+        }
+        else
+        {
+            target.text = "";
+        }
     }
+
     public void ClearSelectedInput()
     {
-        TMP_InputField target = GetActiveInput();
-        if (target != null)
-            target.text = "";
+        TMP_InputField target = currentSelectedInput == SelectedInput.N ? inputN : inputR;
+        if (target != null) target.text = "";
     }
+
     public void ClearAll()
     {
         inputN.text = "";
@@ -159,7 +128,7 @@ public class PermutationCalculatorUI : MonoBehaviour
     }
 
     // ==========================
-    //      CALCULATE
+    // CALCULATE
     // ==========================
     public void CalculatePermutation()
     {
@@ -169,73 +138,38 @@ public class PermutationCalculatorUI : MonoBehaviour
             return;
         }
 
-        if (!int.TryParse(inputN.text, out int n) ||
-            !int.TryParse(inputR.text, out int r))
+        if (!int.TryParse(inputN.text, out int n) || !int.TryParse(inputR.text, out int r))
         {
             resultText.text = "Invalid input!";
             return;
         }
 
-        if (n < 0 || r < 0)
+        if (n < 0 || r < 0 || n > MAX_N || r > n)
         {
-            resultText.text = "n and r must be ≥ 0";
+            resultText.text = $"Invalid range! n: 0–{MAX_N}, r ≤ n";
             return;
         }
 
-        if (n > MAX_N)
-        {
-            resultText.text = $"n must be ≤ {MAX_N}";
-            return;
-        }
-
-        if (r > n)
-        {
-            resultText.text = "r must be ≤ n";
-            return;
-        }
-
-        long result = Factorial(n) / Factorial(n - r);
-
+        long result = MathTables.Factorial(n) / MathTables.Factorial(n - r);
         playerInventory.DeductGold(calculationCost);
         resultText.text = $"Result: {result}";
     }
 
     // ==========================
-    //      FACTORIAL
+    // UI LOCK
     // ==========================
-    private long Factorial(int value)
-    {
-        long result = 1;
-        for (int i = 1; i <= value; i++)
-            result *= i;
-        return result;
-    }
-
-    // ==========================
-    //        UI LOCK
-    // ==========================
-    private void LockUI()
-    {
-        if (inputN != null) inputN.interactable = false;
-        if (inputR != null) inputR.interactable = false;
-
-        foreach (Button button in buttons)
-            button.interactable = false;
-
-        resultText.text = "Requires Permutation Engine skill";
-    }
-
     private void UpdateUIAccess()
     {
-        bool hasSkill = characterStats != null &&
-                        characterStats.HasSkill(SkillType.PermutationEngine);
-
-        if (inputN != null) inputN.interactable = hasSkill;
-        if (inputR != null) inputR.interactable = hasSkill;
-
-        foreach (Button button in buttons)
-            button.interactable = hasSkill;
-
+        bool hasSkill = characterStats != null && characterStats.HasSkill(SkillType.PermutationEngine);
+        SetLockedState(!hasSkill);
         resultText.text = hasSkill ? "" : "Requires Permutation Engine skill";
+    }
+
+    private void SetLockedState(bool locked)
+    {
+        if (canvasGroup == null) return;
+        canvasGroup.interactable = !locked;
+        canvasGroup.blocksRaycasts = !locked;
+        canvasGroup.alpha = locked ? 0.6f : 1f;
     }
 }

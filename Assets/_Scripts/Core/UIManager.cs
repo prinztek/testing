@@ -80,11 +80,11 @@ public class UIManager : MonoBehaviour
         }
 
         // allow on screen controls to show in editor for testing
-        if (onScreenControlsPrefab != null)
-        {
-            onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
-            onScreenControlsInstance.SetActive(false); // hide until player spawns and only show in gameplay scenes
-        }
+        // if (onScreenControlsPrefab != null)
+        // {
+        //     onScreenControlsInstance = Instantiate(onScreenControlsPrefab, transform);
+        //     onScreenControlsInstance.SetActive(false); // hide until player spawns and only show in gameplay scenes
+        // }
 
         if (levelCompletePrefab != null)
             levelCompletePanel = Instantiate(levelCompletePrefab, transform);
@@ -155,16 +155,16 @@ public class UIManager : MonoBehaviour
 
         textDamageInstance.SetActive(true);
 
-        // if (onScreenControlsInstance != null)
-        // {
-        //     onScreenControlsInstance.SetActive(Application.isMobilePlatform);
-        // }
-
-        // allow on screen controls to show in editor for testing
         if (onScreenControlsInstance != null)
         {
-            onScreenControlsInstance.SetActive(true);
+            onScreenControlsInstance.SetActive(Application.isMobilePlatform);
         }
+
+        // allow on screen controls to show in editor for testing
+        // if (onScreenControlsInstance != null)
+        // {
+        //     onScreenControlsInstance.SetActive(true);
+        // }
     }
 
     // ===========================

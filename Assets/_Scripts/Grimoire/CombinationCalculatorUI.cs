@@ -15,6 +15,9 @@ public class CombinationCalculatorUI : MonoBehaviour
     [SerializeField] private Image selectorN;
     [SerializeField] private Image selectorR;
 
+    [Header("Canvas Group")]
+    [SerializeField] private CanvasGroup canvasGroup;
+
     [Header("Buttons")]
     [SerializeField] private Button[] buttons;
 
@@ -24,29 +27,19 @@ public class CombinationCalculatorUI : MonoBehaviour
     [Header("Cost")]
     [SerializeField] private int calculationCost = 20;
 
-    private const int MAX_N = 15;
+    private const int MAX_N = 20; // extended limit
     private bool wasLocked = true;
 
-    // ==========================
-    //      INPUT SELECTION
-    // ==========================
-    private enum SelectedInput
-    {
-        None,
-        N,
-        R
-    }
-
+    private enum SelectedInput { None, N, R }
     private SelectedInput currentSelectedInput = SelectedInput.None;
 
     // ==========================
-    //      LIFECYCLE
+    // LIFECYCLE
     // ==========================
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
-
-        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        if (GameManager.Instance?.CurrentPlayer != null)
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
     }
 
@@ -57,17 +50,15 @@ public class CombinationCalculatorUI : MonoBehaviour
 
     private void Awake()
     {
-        LockUI();
+        SetLockedState(true);
         UpdateSelectionVisuals();
     }
 
     private void Update()
     {
-        if (characterStats == null)
-            return;
+        if (characterStats == null) return;
 
         bool hasSkill = characterStats.HasSkill(SkillType.CombinationEngine);
-
         if (hasSkill && wasLocked)
         {
             UpdateUIAccess();
@@ -83,7 +74,7 @@ public class CombinationCalculatorUI : MonoBehaviour
     }
 
     // ==========================
-    //   INPUT FIELD SELECTION
+    // INPUT SELECTION & KEYPAD
     // ==========================
     public void SelectInputN()
     {
@@ -99,21 +90,14 @@ public class CombinationCalculatorUI : MonoBehaviour
 
     private void UpdateSelectionVisuals()
     {
-        if (selectorN != null)
-            selectorN.gameObject.SetActive(currentSelectedInput == SelectedInput.N);
-
-        if (selectorR != null)
-            selectorR.gameObject.SetActive(currentSelectedInput == SelectedInput.R);
+        if (selectorN != null) selectorN.gameObject.SetActive(currentSelectedInput == SelectedInput.N);
+        if (selectorR != null) selectorR.gameObject.SetActive(currentSelectedInput == SelectedInput.R);
     }
 
-    // ==========================
-    //        KEYPAD INPUT
-    // ==========================
     public void PressKey(string key)
     {
-        TMP_InputField target = GetActiveInput();
-        if (target == null || !target.interactable)
-            return;
+        TMP_InputField target = currentSelectedInput == SelectedInput.N ? inputN : inputR;
+        if (target == null || !target.interactable) return;
 
         target.text += key;
 
@@ -123,34 +107,15 @@ public class CombinationCalculatorUI : MonoBehaviour
             return;
         }
 
-        // Clamp N
-        if (currentSelectedInput == SelectedInput.N && value > MAX_N)
-            target.text = MAX_N.ToString();
-
-        // Clamp R ≤ N
+        if (currentSelectedInput == SelectedInput.N && value > MAX_N) target.text = MAX_N.ToString();
         if (currentSelectedInput == SelectedInput.R &&
-            int.TryParse(inputN.text, out int n) &&
-            value > n)
-        {
-            target.text = n.ToString();
-        }
-    }
-
-    private TMP_InputField GetActiveInput()
-    {
-        return currentSelectedInput switch
-        {
-            SelectedInput.N => inputN,
-            SelectedInput.R => inputR,
-            _ => null
-        };
+            int.TryParse(inputN.text, out int n) && value > n) target.text = n.ToString();
     }
 
     public void ClearSelectedInput()
     {
-        TMP_InputField target = GetActiveInput();
-        if (target != null)
-            target.text = "";
+        TMP_InputField target = currentSelectedInput == SelectedInput.N ? inputN : inputR;
+        if (target != null) target.text = "";
     }
 
     public void ClearAll()
@@ -163,7 +128,7 @@ public class CombinationCalculatorUI : MonoBehaviour
     }
 
     // ==========================
-    //        CALCULATE
+    // CALCULATE
     // ==========================
     public void CalculateCombination()
     {
@@ -173,64 +138,38 @@ public class CombinationCalculatorUI : MonoBehaviour
             return;
         }
 
-        if (!int.TryParse(inputN.text, out int n) ||
-            !int.TryParse(inputR.text, out int r))
+        if (!int.TryParse(inputN.text, out int n) || !int.TryParse(inputR.text, out int r))
         {
             resultText.text = "Invalid input!";
             return;
         }
 
-        if (n < 0 || r < 0)
+        if (n < 0 || r < 0 || n > MAX_N || r > n)
         {
-            resultText.text = "n and r must be ≥ 0";
+            resultText.text = $"Invalid range! n: 0–{MAX_N}, r ≤ n";
             return;
         }
 
-        if (n > MAX_N)
-        {
-            resultText.text = $"n must be ≤ {MAX_N}";
-            return;
-        }
-
-        if (r > n)
-        {
-            resultText.text = "r must be ≤ n";
-            return;
-        }
-
-        long result =
-            MathTables.Factorial(n) /
-            (MathTables.Factorial(r) * MathTables.Factorial(n - r));
-
+        long result = MathTables.Factorial(n) / (MathTables.Factorial(r) * MathTables.Factorial(n - r));
         playerInventory.DeductGold(calculationCost);
         resultText.text = $"Result: {result}";
     }
 
     // ==========================
-    //        UI LOCK
+    // UI LOCK
     // ==========================
-    private void LockUI()
-    {
-        if (inputN != null) inputN.interactable = false;
-        if (inputR != null) inputR.interactable = false;
-
-        foreach (Button button in buttons)
-            if (button != null) button.interactable = false;
-
-        resultText.text = "Requires Combination Engine skill";
-    }
-
     private void UpdateUIAccess()
     {
-        bool hasSkill = characterStats != null &&
-                        characterStats.HasSkill(SkillType.CombinationEngine);
-
-        if (inputN != null) inputN.interactable = hasSkill;
-        if (inputR != null) inputR.interactable = hasSkill;
-
-        foreach (Button button in buttons)
-            if (button != null) button.interactable = hasSkill;
-
+        bool hasSkill = characterStats != null && characterStats.HasSkill(SkillType.CombinationEngine);
+        SetLockedState(!hasSkill);
         resultText.text = hasSkill ? "" : "Requires Combination Engine skill";
+    }
+
+    private void SetLockedState(bool locked)
+    {
+        if (canvasGroup == null) return;
+        canvasGroup.interactable = !locked;
+        canvasGroup.blocksRaycasts = !locked;
+        canvasGroup.alpha = locked ? 0.6f : 1f;
     }
 }

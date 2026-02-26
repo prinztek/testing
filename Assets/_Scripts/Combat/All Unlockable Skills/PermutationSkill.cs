@@ -36,6 +36,24 @@ public class PermutationSkill : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void Start()
+    {
+        TryFindPlayer();
+    }
+
+    private void TryFindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        playerStats = player.GetComponent<CharacterStats>();
+
+        if (playerStats != null && playerStats.HasSkill(SkillType.FactorialEngine))
+        {
+            Destroy(gameObject);
+        }
+    }
     void Update()
     {
         AnimateBobbing();

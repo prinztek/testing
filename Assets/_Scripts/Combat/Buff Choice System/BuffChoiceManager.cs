@@ -29,23 +29,23 @@ public class BuffChoiceManager : MonoBehaviour
     {
         allBuffs = new List<BuffOption>()
         {
-            new BuffOption("Haste", "Move faster and attack quicker for 8s",
-                Resources.Load<Sprite>("Icons/Haste"), () => new HasteBuff(8f, 1.5f, 1.25f)),
+            new BuffOption("Haste", "Move faster and attack quicker with a small damage boost for 15s",
+                Resources.Load<Sprite>("Icons/Haste"), () => new HasteBuff(15f, 1.5f, 1.25f, 1.2f)),
 
-            new BuffOption("Fire Infuse", "Attacks deal fire damage for 8s",
-                Resources.Load<Sprite>("Icons/Fire Infuse"), () => new FireInfuseBuff(8f, 3)),
+            new BuffOption("Fire Infuse", "Attacks deal fire damage for 15s",
+                Resources.Load<Sprite>("Icons/Fire Infuse"), () => new FireInfuseBuff(15f, 8)),
 
-            new BuffOption("Power Surge", "Massive damage boost for 8s",
-                Resources.Load<Sprite>("Icons/Power Surge"), () => new PowerSurgeBuff(8f, 5)),
+            new BuffOption("Power Surge", "Massive damage boost for 15s",
+                Resources.Load<Sprite>("Icons/Power Surge"), () => new PowerSurgeBuff(15f, 5)),
 
-            new BuffOption("Shield Bloom", "Gain a shield that deflects attack for 8s",
-                Resources.Load<Sprite>("Icons/Shield Bloom"), () => new ShieldBloomBuff(8f, 99)),
+            new BuffOption("Shield Bloom", "Gain a shield that deflects attack for 15s",
+                Resources.Load<Sprite>("Icons/Shield Bloom"), () => new ShieldBloomBuff(15f, 99)),
 
-            new BuffOption("Precision Strike", "Critical hits guaranteed 3 times",
-                Resources.Load<Sprite>("Icons/Precision Strike"), () => new PrecisionStrikeBuff(8f, 50, 3)),
+            new BuffOption("Precision Strike", "Critical hits guaranteed 3 times within 15s",
+                Resources.Load<Sprite>("Icons/Precision Strike"), () => new PrecisionStrikeBuff(15f, 50, 3)),
 
-            new BuffOption("Cold Infuse", "Attacks slows enemy movement for 5s",
-                Resources.Load<Sprite>("Icons/Cold Infuse"), () => new ColdInfuseBuff(8f, 3)),
+            // new BuffOption("Cold Infuse", "Attacks slows enemy movement for 5s",
+            //     Resources.Load<Sprite>("Icons/Cold Infuse"), () => new ColdInfuseBuff(8f, 3)),
 
             //  new BuffOption("Bomb", "Attacks places a bomb on enemy that would later explode",
             //     Resources.Load<Sprite>("Icons/Cold Infuse"), () => new BombBuff(8f, 3, 3, 25)),

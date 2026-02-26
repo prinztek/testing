@@ -17,7 +17,7 @@ public class PickupItem : MonoBehaviour
     private bool canBeMagnetized = false;
     private bool isFlying = false;
     public RuntimeAnimatorController animationController;
-
+    public AudioClip pickupSound;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -110,6 +110,11 @@ public class PickupItem : MonoBehaviour
             }
 
             // Future: handle other item types here
+        }
+
+        if (pickupSound != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(pickupSound, transform, 0.5f);
         }
 
         Destroy(gameObject);

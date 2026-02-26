@@ -30,6 +30,10 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     public UnityEvent OnPuzzleSolved;
     public bool isSolved = false;
 
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
+
     private void Awake()
     {
         continueButton.onClick.AddListener(OnContinuePressed);
@@ -44,8 +48,8 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
 
         if (IsValidSequence(userSequence))
         {
-            // isSolved = true;
-            // OnPuzzleSolved?.Invoke();
+            // Play correct sound
+            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
             Debug.Log("Correct sequence!");
             ShowExplanation();
         }
@@ -54,6 +58,8 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
             userSequence = "";
             ResetSlots();
             Debug.Log("Incorrect sequence. Try again.");
+            // Play wrong sound
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
         }
     }
 

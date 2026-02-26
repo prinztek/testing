@@ -52,7 +52,7 @@
     },
     {
       "id": 5,
-      "questionString": "How many three-letter arrangements of the word 'EAR' can be made if the first letter is E?",
+      "questionString": "How many different three-letter arrangements can be formed using the letters E, A, and R if the first letter must be E?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "How many ways can you arrange 'EAR' if E is first?",
@@ -192,13 +192,17 @@
     },
     {
       "id": 18,
-      "questionString": "How many ways can 4 people be seated such that two specific people must always sit together?",
-      "type": "Permutation_and_Its_Conditions",
+      "questionString": "In how many ways can 3 people sit in a row if two particular people must sit next to each other?",
+      "type": "Permutation_with_Condition",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Arrange 4 with 2 always together",
-      "formulaNeeded": "Group permutations",
-      "hints": ["Treat 2 people as a unit", "Then permute within unit"],
-      "answer": 12
+      "simplifiedQuestionString": "3 people, 2 must sit together",
+      "formulaNeeded": "Group method (treat as one unit)",
+      "hints": [
+        "Treat the two people as one unit",
+        "Arrange the unit and the third person",
+        "Then arrange the two within the unit"
+      ],
+      "answer": 4
     },
     {
       "id": 19,
@@ -217,12 +221,12 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Assign 3 tasks to 5 employees",
       "formulaNeeded": "nPr",
-      "hints": ["5P3 = 60"],
+      "hints": ["nPr = n! / (n-r)! for 5P3"],
       "answer": 60
     },
     {
       "id": 21,
-      "questionString": "How many three-letter arrangements of the word 'EAR' can be made if the first letter is R?",
+      "questionString": "How many different three-letter arrangements can be formed using the letters E, A, and R if the first letter must be R?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "How many ways can you arrange 'EAR' if R is first?",
@@ -326,14 +330,15 @@
     },
     {
       "id": 30,
-      "questionString": "In how many different ways can a family of 4 sit around a table if they may sit in any way? ",
+      "questionString": "In how many different ways can a family of 4 sit around a table if they may sit in any way?",
       "type": "Circular_Permutation",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "",
+      "simplifiedQuestionString": "Circular arrangement of 4 distinct people",
       "formulaNeeded": "(n-1)!",
-      "hints": ["Fix one person and arrange the rest"],
-      "answer": 864
+      "hints": ["Fix one person and arrange the remaining 3"],
+      "answer": 6
     },
+
     {
       "id": 31,
       "questionString": "How many bracelets with no lock can be formed from 7 different colored beads? ",
@@ -378,7 +383,7 @@
         "Treat each color as a block necklace to get the number of circular arrangements",
         "And then arrange beads within each block or colors to get the total arrangements"
       ],
-      "answer": 864
+      "answer": 248
     },
     {
       "id": 35,
@@ -405,6 +410,764 @@
         "How many ways can you arrange O and G after it?"
       ],
       "answer": 2
+    },
+    {
+      "id": 37,
+      "questionString": "How many ways can the letters A, B, C be arranged?",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Arrange 3 distinct letters",
+      "formulaNeeded": "n!",
+      "hints": [
+        "The number of arrangements of n distinct objects is n factorial.",
+        "For 3 letters, that's 3! = 3 x 2 x 1 = 6."
+      ],
+      "answer": 6
+    },
+    {
+      "id": 38,
+      "questionString": "Evaluate: 0!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 0 factorial",
+      "formulaNeeded": "0! = 1 by definition",
+      "hints": [" By definition, the factorial of 0 is 1."],
+      "answer": 1
+    },
+    {
+      "id": 39,
+      "questionString": "Evaluate: 4!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 4 factorial",
+      "formulaNeeded": "n! = n * (n-1) * ... * 1",
+      "hints": ["4! = 4 * 3 * ... * 1"],
+      "answer": 24
+    },
+    {
+      "id": 40,
+      "questionString": "Evaluate: 3! + 2!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 3 factorial plus 2 factorial",
+      "formulaNeeded": "n! = n * (n-1) * ... * 1",
+      "hints": ["3! = 3 * 2 * 1", "2! = 2 * 1"],
+      "answer": 8
+    },
+    {
+      "id": 41,
+      "questionString": "Evaluate: 1! + 2! + 3!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 1 factorial plus 2 factorial plus 3 factorial",
+      "formulaNeeded": "n! = n * (n-1) * ... * 1",
+      "hints": ["1! = 1", "2! = 2 * 1", "3! = 3 * 2 * 1"],
+      "answer": 9
+    },
+    {
+      "id": 42,
+      "questionString": "Simplify: 6!/4!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Simplify 6 factorial over 4 factorial",
+      "formulaNeeded": "n! = n * (n-1) * ... * 1",
+      "hints": ["6! = 6 * 5 * 4!", "4! cancels out"],
+      "answer": 30
+    },
+    {
+      "id": 43,
+      "questionString": " Evaluate 6P2 ",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 6 permute 2",
+      "formulaNeeded": "nPr = n! / (n-r)!",
+      "hints": ["6P2 = 6! / (6-2)! = 6! / 4!"],
+      "answer": 30
+    },
+    {
+      "id": 44,
+      "questionString": " Evaluate 8P3",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Evaluate 8 permute 3",
+      "formulaNeeded": "nPr = n! / (n-r)!",
+      "hints": ["8P3 = 8! / (8-3)! = 8! / 5!"],
+      "answer": 336
+    },
+    {
+      "id": 45,
+      "questionString": "How many distinguishable permutations can be made from the word 'MOM'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Distinguishable permutations of 'MOM'",
+      "formulaNeeded": "n! / (n1! * n2! * ... * nk!)",
+      "hints": [
+        "The word 'MOM' has 3 letters with 2 M's and 1 O.",
+        "So, the number of distinguishable permutations is 3! / (2! * 1!) = 6 / (2 * 1) = 3."
+      ],
+      "answer": 3
+    },
+    {
+      "id": 46,
+      "questionString": "How many distinguishable permutations are there in the word 'NOON'?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Distinguishable permutations of 'NOON'",
+      "formulaNeeded": "n! / (n1! * n2! * ... * nk!)",
+      "hints": [
+        "The word 'NOON' has 4 letters with 2 N's and 2 O's.",
+        "So, the number of distinguishable permutations is 4! / (2! * 2!) = 24 / (2 * 2) = 6."
+      ],
+      "answer": 6
+    },
+    {
+      "id": 47,
+      "questionString": "Malou owns five different blouses. If she cannot wear the same blouse on two consecutive days, how many different ways can she dress on Wednesday and Thursday??",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Different ways to dress on Wednesday and Thursday",
+      "formulaNeeded": "n * (n-1) for consecutive days",
+      "hints": [
+        "Malou has 5 different blouses.",
+        "On Wednesday, she can choose any of the 5 blouses.",
+        "On Thursday, she can choose any of the remaining 4 blouses (since she cannot wear the same blouse).",
+        "So, the number of different ways is 5 * 4 = 20."
+      ],
+      "answer": 20
+    },
+    {
+      "id": 48,
+      "questionString": "Bobby has 5 textbooks on his shelf. If math must always be in the middle, how many ways can he arrange the books?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Different ways to arrange 5 textbooks with math in the middle",
+      "formulaNeeded": "n! / (n1! * n2! * ... * nk!) where n is total books and n1, n2, etc. are counts of each type",
+      "hints": [
+        "Bobby has 5 textbooks.",
+        "If math must always be in the middle, there is only 1 way to place the math textbook (in the middle position).",
+        "The remaining 4 textbooks can be arranged in any order.",
+        "So, the number of different ways is 4! = 24."
+      ],
+      "answer": 24
+    },
+    {
+      "id": 49,
+      "questionString": "Twenty students join a contest in the school. The contest offers first, second, and third prizes. How many different ways can 1st, 2nd, and 3rd place winners be chosen?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to award 1st, 2nd, and 3rd places out of 20 students.",
+      "formulaNeeded": "nPr = n! / (n - r)!",
+      "hints": [
+        "There are 20 students competing.",
+        "The prizes are 1st, 2nd, and 3rd place, so order matters.",
+        "Use permutations: 20P3.",
+        "20P3 = 20 x 19 x 18 = 6840."
+      ],
+      "answer": 6840
+    },
+    {
+      "id": 51,
+      "questionString": "In how many ways can seats be chosen for 12 couples on a Ferris wheel that has 12 double seats?",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Find the number of ways to seat 12 couples on 12 double seats arranged in a circle.",
+      "formulaNeeded": "(n - 1)!",
+      "hints": [
+        "There are 12 couples and 12 double seats.",
+        "Each couple occupies one double seat.",
+        "Since the Ferris wheel is circular, rotations are considered the same.",
+        "Use circular permutation formula: (n - 1)!",
+        "So the number of arrangements is 11! = 39,916,800."
+      ],
+      "answer": 39916800
+    },
+    {
+      "id": 52,
+      "questionString": "In how many ways can Jane, Liza, Karen, Lea, Jamie, Andrea, Nicole, and Jazz be seated at a round table such that all names starting with J are seated next to each other?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Find the number of ways to seat 8 people in a circle with Jane, Jamie, and Jazz seated together.",
+      "formulaNeeded": "(n - 1)! × k!",
+      "solution": [
+        "Identify the names starting with J: Jane, Jamie, Jazz (3 people).",
+        "Treat these 3 people as one block.",
+        "Now we have 6 units (1 block + 5 other individuals).",
+        "Arrange the 6 units in a circle: (6 - 1)! = 5! = 120.",
+        "Arrange the 3 J’s within their block: 3! = 6."
+      ],
+      "answer": 720
+    },
+    {
+      "id": 53,
+      "questionString": "Cardo has six different jackets. If he cannot wear the same jacket on two consecutive days, how many different ways can he dress on Wednesday and Thursday?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to choose jackets for two consecutive days from 6 different jackets, without repeating the same jacket.",
+      "formulaNeeded": "n x (n - 1)",
+      "solution": [
+        "Step 1: Choose a jacket for Wednesday. There are 6 choices.",
+        "Step 2: Choose a jacket for Thursday. Since he cannot repeat the same jacket, there are 5 remaining choices.",
+        "Step 3: Multiply the choices: 6 × 5 = 30."
+      ],
+      "answer": 30
+    },
+    {
+      "id": 54,
+      "questionString": "A team of 8 basketball players needs to choose a captain and co-captain. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to choose a captain and co-captain from 8 players. Is this a combination problem?",
+      "formulaNeeded": "",
+      "solution": [
+        "Does the order of selection matter? Yes, because the roles of captain and co-captain are different."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 55,
+      "questionString": "There are 45 applicants for three Computer Programmer Positions. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to choose 3 programmers from 45 applicants. Is this a combination problem?",
+      "formulaNeeded": "",
+      "solution": [
+        "Does the order of selection matter? No, because the positions are identical."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 56,
+      "questionString": "Five badminton players chosen from a group of nine. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to choose 5 badminton players from 9 applicants. Is this a combination problem?",
+      "formulaNeeded": "",
+      "solution": [
+        "Does the order of selection matter? No, because the players are chosen for identical positions."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 57,
+      "questionString": "Five badminton players chosen from a group of nine. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the number of ways to choose 5 badminton players from 9 applicants. Is this a combination problem?",
+      "formulaNeeded": "",
+      "solution": [
+        "Does the order of selection matter? No, because the players are chosen for identical positions."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 58,
+      "questionString": "In how many ways can a coach choose three swimmers from among five swimmers? (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": ["Are the swimmers chosen for identical positions?"],
+      "answer": 1
+    },
+    {
+      "id": 59,
+      "questionString": "How many 4 digit numbers can we make using the digits 2, 5, 7, and 9 without repetitions? (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 60,
+      "questionString": "How many triangles can you make using 7 non collinear points an a plane? (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 61,
+      "questionString": "How many 5 letter words can we make using the letters in the word LIBERTY without repetitions? (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 62,
+      "questionString": "Arranging 7 visitors in a circular table. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 63,
+      "questionString": "Assigning telephone numbers for the subscribers. (1 for True or 0 for False) Is this a combination problem?",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 64,
+      "questionString": "Forming a committee of five from twenty members of the club. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": ["Are the positions in the committee identical?"],
+      "answer": 1
+    },
+    {
+      "id": 65,
+      "questionString": "Creating a password for an account. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": ["Are the positions in the password identical?"],
+      "answer": 0
+    },
+    {
+      "id": 66,
+      "questionString": "Answering four questions from ten questions. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 67,
+      "questionString": "Arranging books on a shelf. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": ["Are the positions in the arrangement identical?"],
+      "answer": 0
+    },
+    {
+      "id": 68,
+      "questionString": "Selecting 7 from 10 available fruits in making fruit salad. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1
+    },
+    {
+      "id": 69,
+      "questionString": "Choosing 3 students from 10 students in a class who will represent the Math, Science, and English contests. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 70,
+      "questionString": "Selecting 10 students from 25 students who auditioned to join the school's dance club (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 71,
+      "questionString": "Choosing 3 distinct flavors of ice cream from 6 flavors and placing them on an ice cream cone. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 72,
+      "questionString": "The order of the names called is very important. If the first to be called is the third prize winner, therefore, there are lots of possible arrangements of winners; (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 73,
+      "questionString": "solation prize, the order of calling the names of the winners is not important since they have the same prize. (1 for Combination or 0 for Permutation)",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 74,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 75,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 76,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 77,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 78,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 79,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 80,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 81,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 82,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 83,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 84,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 85,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 86,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 87,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 88,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 89,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 90,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 91,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 92,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 93,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 94,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 95,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 96,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 97,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 98,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 0
+    },
+    {
+      "id": 99,
+      "questionString": "In how many ways can 3 couples be seated in a round table?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 120
+    },
+    {
+      "id": 100,
+      "questionString": "How many distinguishable permutations are possible with all the letters of the word SEQUENCE?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 6720
+    },
+    {
+      "id": 101,
+      "questionString": "In how many ways can 3 Bicolano books, 4 Cebuano books, and 2 Ilocano books be arranged on a shelf so that all books in the same dialects are to be together?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1728
+    },
+    {
+      "id": 102,
+      "questionString": "From a group of 7 men and 6 women, five persons are to be selected to form a committee so that at least 3 men are in the committee. In how many ways can the five persons be selected?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 756
+    },
+    {
+      "id": 103,
+      "questionString": "Out of 5 mathematicians and 7 engineers, a committee consisting of 2 mathematicians and 3 engineers is to be formed. In how many ways can this be done if any mathematician and any engineer can be included in the committee?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 756
+    },
+    {
+      "id": 104,
+      "questionString": "In a meeting, it is required to seat 4 women and 5 men in a row so that the women occupy the even places. How many arrangements are possible?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 2880
+    },
+    {
+      "id": 105,
+      "questionString": "In a department store, 8 jackets of different styles need to be displayed. In how many ways can the 8 jackets be hung on a circular rack?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 5040
+    },
+    {
+      "id": 106,
+      "questionString": "Out of 5 mathematicians and 7 engineers, a committee consisting of 2 mathematicians and 3 engineers is to be formed. In how many ways can this be done if one particular engineer must be in the committee?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 150
+    },
+    {
+      "id": 107,
+      "questionString": "If there are 10 points on a plane, 4 of them are collinear and no other 3 points are collinear, how many lines are formed? ",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 45
+    },
+    {
+      "id": 108,
+      "questionString": "Suppose the expression a^3 b^2 c^4 is rewritten without exponents. In how many ways can this be done?",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "solution": [""],
+      "answer": 1260
     }
   ]
 }

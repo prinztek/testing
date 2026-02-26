@@ -8,7 +8,8 @@ public class DestroyableBlock : MonoBehaviour
 
     public GameObject destroyEffect; // optional particle effect
     public AudioClip destroySound;   // optional sound
-
+    [SerializeField] private AudioClip hurtSoundClip;
+    [SerializeField] private GameObject hitImpactPrefab;
     [SerializeField] CinemachineImpulseSource impulseSource;
 
     [Header("Shake Settings")]
@@ -36,8 +37,21 @@ public class DestroyableBlock : MonoBehaviour
             DestroyBlock();
         }
 
-        // Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
-        // ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+        // VFX hit impact animations
+        if (hitImpactPrefab != null)
+        {
+            GameObject impact = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity, transform);
+            Destroy(impact, 0.417f); // clean up after
+        }
+
+        // Screenshake direction
+        if (impulseSource != null)
+        {
+            Vector2 direction = ((Vector2)transform.position - attackerPosition).normalized;
+            ScreenShakeManager.Instance.ScreenShake(direction, impulseSource);
+        }
+
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.05f);
     }
 
     private System.Collections.IEnumerator Shake()

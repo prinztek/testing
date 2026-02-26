@@ -30,6 +30,10 @@ public class PermutationRuneGameManager : MonoBehaviour
 
     public UnityEvent OnPuzzleSolved;
 
+    [Header("Sound Clip References")]
+    [SerializeField] private AudioClip correctAnswerSoundClip;
+    [SerializeField] private AudioClip wrongAnswerSoundClip;
+
     void Awake()
     {
         continueButton.onClick.AddListener(OnContinuePressed);
@@ -158,11 +162,13 @@ public class PermutationRuneGameManager : MonoBehaviour
         {
             // isSolved = true; // Mark puzzle as solved
             // OnPuzzleSolved?.Invoke();
+            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
             Debug.Log("Correct sequence!");
             ShowExplanation();
         }
         else
         {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
             Debug.Log("Incorrect sequence.");
         }
 

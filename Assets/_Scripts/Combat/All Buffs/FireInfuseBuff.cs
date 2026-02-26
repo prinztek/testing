@@ -18,6 +18,7 @@ public class FireInfuseBuff : Buff
 
     public override void OnAttackHit(GameObject enemy)
     {
+        // old enemy to enemystatsnew
         if (enemy.TryGetComponent(out EnemyStatsNew anyEnemy))
         {
             anyEnemy.ApplyDot(damagePerTick: 3, duration: 5f, interval: 0.5f);

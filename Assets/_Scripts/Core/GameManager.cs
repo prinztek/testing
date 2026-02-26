@@ -357,6 +357,14 @@ public class GameManager : MonoBehaviour
         // Instantiate player prefab
         currentPlayerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
         currentPlayerInstance.name = "Player";
+
+        // LOAD PLAYER DATA
+        var handler = currentPlayerInstance.GetComponent<PlayerDataHandler>();
+        if (handler != null)
+        {
+            handler.LoadPlayerFromData(playerData);
+        }
+
         OnPlayerSpawned?.Invoke(currentPlayerInstance);
     }
 
@@ -380,73 +388,73 @@ public class GameManager : MonoBehaviour
     {
         // ------------------ LEVEL LOADING TESTING ------------------
         // CHAPTER 1
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            LoadLevel(0, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            LoadLevel(0, 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            LoadLevel(0, 2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            LoadLevel(0, 3);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            LoadLevel(0, 4);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            LoadLevel(0, 5);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            LoadLevel(0, 6);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            LoadLevel(0, 7);
-        }
-
-
-        // CHAPTER 2
         // if (Input.GetKeyDown(KeyCode.Alpha1))
         // {
-        //     LoadLevel(1, 0);
+        //     LoadLevel(0, 0);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha2))
         // {
-        //     LoadLevel(1, 1);
+        //     LoadLevel(0, 1);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha3))
         // {
-        //     LoadLevel(1, 2);
+        //     LoadLevel(0, 2);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha4))
         // {
-        //     LoadLevel(1, 3);
+        //     LoadLevel(0, 3);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha5))
         // {
-        //     LoadLevel(1, 4);
+        //     LoadLevel(0, 4);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha6))
         // {
-        //     LoadLevel(1, 5);
+        //     LoadLevel(0, 5);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha7))
         // {
-        //     LoadLevel(1, 6);
+        //     LoadLevel(0, 6);
         // }
         // else if (Input.GetKeyDown(KeyCode.Alpha8))
         // {
-        //     LoadLevel(1, 7);
+        //     LoadLevel(0, 7);
         // }
+
+
+        // CHAPTER 2
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            LoadLevel(1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            LoadLevel(1, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            LoadLevel(1, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            LoadLevel(1, 3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            LoadLevel(1, 4);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            LoadLevel(1, 5);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            LoadLevel(1, 6);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            LoadLevel(1, 7);
+        }
 
 
         // // CHAPTER 3

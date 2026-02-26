@@ -5,6 +5,8 @@ public class CompletedPermutationsPanel : MonoBehaviour
     [SerializeField] private Transform contentParent; // ScrollView > Content
     [SerializeField] private PermutationEntry permutationEntryPrefab;
 
+    // Adds a new permutation entry to the panel or;
+    // Adds a new combination entry to the panel
     public void AddPermutation(string sequence)
     {
         // Create new row

@@ -8,9 +8,11 @@ public class OnHitFlashVFX : MonoBehaviour
 
     [SerializeField] private Material onDamageVfxMat;
     [SerializeField] private Material onBurnVfxMat;
+    [SerializeField] private Material onSlowVfxMat;
     [SerializeField] private float flashDuration = 0.15f;
     private Coroutine onDamageVfxCoroutine;
     private Coroutine onBurnVfxCoroutine;
+    private Coroutine onSlowVfxCoroutine;
 
     void Awake()
     {
@@ -36,6 +38,15 @@ public class OnHitFlashVFX : MonoBehaviour
         onBurnVfxCoroutine = StartCoroutine(OnBurnVfxCoroutine());
     }
 
+    public void PlayOnSlowVfx()
+    {
+        if (onSlowVfxCoroutine != null)
+        {
+            StopCoroutine(onSlowVfxCoroutine);
+        }
+        onSlowVfxCoroutine = StartCoroutine(OnSlowVfxCoroutine());
+    }
+
     private IEnumerator OnDamageVfxCoroutine()
     {
         sr.material = onDamageVfxMat;
@@ -46,6 +57,13 @@ public class OnHitFlashVFX : MonoBehaviour
     private IEnumerator OnBurnVfxCoroutine()
     {
         sr.material = onBurnVfxMat;
+        yield return new WaitForSeconds(flashDuration);
+        sr.material = originalMaterial;
+    }
+
+    private IEnumerator OnSlowVfxCoroutine()
+    {
+        sr.material = onSlowVfxMat;
         yield return new WaitForSeconds(flashDuration);
         sr.material = originalMaterial;
     }

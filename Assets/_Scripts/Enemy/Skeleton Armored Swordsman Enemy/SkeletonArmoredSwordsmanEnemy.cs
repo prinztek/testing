@@ -51,6 +51,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     // ========================================
     [Header("Combat")]
     [SerializeField] private float detectionRange = 6f;     // How far skeleton can see
+    [SerializeField] private float detectionHeightTolerance = 1.2f; // vertical window
     [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
@@ -74,7 +75,7 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     [SerializeField] private bool canFallOffLedges = false; // Whether skeleton walks off edges
 
     [Header("Attack Nudge")]
-    [SerializeField] private float attackNudgeForce = 2.5f;
+    [SerializeField] private float attackNudgeForce = 0f;
     private bool attackNudgeApplied;
 
     // ========================================
@@ -223,14 +224,14 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentState == State.Attack && !attackNudgeApplied)
-        {
-            if (enemyStats.IsStunned() == false) return;
+        // if (currentState == State.Attack && !attackNudgeApplied)
+        // {
+        //     if (enemyStats.IsStunned() == false) return;
 
-            int dir = facingRight == true ? 1 : -1;
-            rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
-            attackNudgeApplied = true;
-        }
+        //     int dir = facingRight == true ? 1 : -1;
+        //     rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
+        //     attackNudgeApplied = true;
+        // }
     }
 
     // ========================================
@@ -264,10 +265,10 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
                 break;
 
             case State.Attack:
-                // rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
                 FacePlayer();
                 PlayAnimation(AttackHash);
-                attackNudgeApplied = false;
+                // attackNudgeApplied = false;
                 break;
 
             case State.Recovery:
@@ -353,9 +354,9 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     private bool PlayerDetected()
     {
         if (player == null) return false;
-
-        float distance = Mathf.Abs(player.position.x - transform.position.x);
-        return distance <= detectionRange;
+        float dx = Mathf.Abs(player.position.x - transform.position.x);
+        float dy = Mathf.Abs(player.position.y - transform.position.y);
+        return dx <= detectionRange && dy <= detectionHeightTolerance;
     }
 
     private bool InAttackRange()
@@ -439,7 +440,9 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
 
         // Detection range (YELLOW)
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(pos, detectionRange);
+        Vector3 center = transform.position;
+        Vector3 size = new Vector3(detectionRange * 2f, detectionHeightTolerance * 2f, 0f);
+        Gizmos.DrawWireCube(center, size);
 
         // Attack range (RED)
         Gizmos.color = Color.red;
@@ -452,12 +455,12 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
 
-        // Give up distance (CYAN)
-        if (!aggressive)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(pos, giveUpDistance);
-        }
+        // // Give up distance (CYAN)
+        // if (!aggressive)
+        // {
+        //     Gizmos.color = Color.cyan;
+        //     Gizmos.DrawWireSphere(pos, giveUpDistance);
+        // }
 
         // Ground check
         if (enemyStats != null && enemyStats.groundCheckPoint != null)

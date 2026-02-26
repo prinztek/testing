@@ -19,7 +19,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] public AnimationHandler animationHandler;
     public BuffUIManager buffUIManager;
     [SerializeField] private Hurt hurt;
-
+    [SerializeField] private AudioClip hurtSoundClip;
     [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
     [SerializeField] private ShieldVFX shieldVfxPrefab;
     [SerializeField] private PopupText buffAcquirePopupTextPrefab;
@@ -345,6 +345,8 @@ public class CharacterStats : MonoBehaviour
         currentHealth -= damage;
         // onHitFlashVFX.PlayOnDamageVfx();
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event
+
+        SoundFXManager.Instance.playSoundFXClilpRandomPitch(hurtSoundClip, transform, 0.05f);
 
         // Screenshake direction
         if (impulseSource != null)

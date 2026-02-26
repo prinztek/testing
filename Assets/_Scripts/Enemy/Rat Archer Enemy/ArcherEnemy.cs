@@ -79,7 +79,6 @@ public class ArcherEnemy : MonoBehaviour
     private static readonly int IdleHash = Animator.StringToHash("enemyidle");
     private static readonly int MoveHash = Animator.StringToHash("enemyrunning");
     private static readonly int AttackHash = Animator.StringToHash("enemyattack1");
-    private static readonly int DeathHash = Animator.StringToHash("dead");
 
     // ========================================
     // STATE DATA
@@ -94,6 +93,14 @@ public class ArcherEnemy : MonoBehaviour
     // ========================================
     // UNITY
     // ========================================
+    private void HandleOnDeath()
+    {
+        Debug.Log("Archer Enemy died, dropping loot and playing death effects.");
+        // Play death effects
+        // ChangeState(State.Death);
+        // Destroy(gameObject);  // Delay to allow death animation/effects to play
+    }
+
     private void Awake()
     {
         enemyStats ??= GetComponent<EnemyStats>();
@@ -102,7 +109,7 @@ public class ArcherEnemy : MonoBehaviour
         visual ??= spriteRenderer.transform;
         rb = GetComponent<Rigidbody2D>();
 
-        currentHealth = maxHealth;
+        currentHealth = enemyStats.GetMaxHealth();
         ChangeState(State.Patrol);
     }
 
@@ -216,7 +223,6 @@ public class ArcherEnemy : MonoBehaviour
 
             case State.Death:
                 rb.linearVelocity = Vector2.zero;
-                PlayAnimation(DeathHash);
                 isDead = true;
                 break;
         }
@@ -410,11 +416,13 @@ public class ArcherEnemy : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        enemyStats.OnDeath += HandleOnDeath;
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        enemyStats.OnDeath -= HandleOnDeath;
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)

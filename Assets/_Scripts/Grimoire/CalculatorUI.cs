@@ -65,7 +65,7 @@ public class CalculatorUI : MonoBehaviour
     public void Clear()
     {
         displayText.text = "";
-        resultText.text = "";
+        // resultText.text = "";
     }
 
     public void Backspace()
