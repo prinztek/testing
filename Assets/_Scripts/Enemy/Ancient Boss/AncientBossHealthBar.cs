@@ -68,8 +68,9 @@ public class AncientBossHealthBar : MonoBehaviour
     }
 
     // Handle death event: Hide the health bar
-    private void HandleDeath()
+    private void HandleDeath(EnemyStats enemyStats)
     {
+        // ignore the parameter
         Debug.Log("Boss has died, hiding the health bar.");
         this.gameObject.SetActive(false); // Hide the health bar on death
     }

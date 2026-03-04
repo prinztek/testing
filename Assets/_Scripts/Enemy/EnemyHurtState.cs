@@ -16,7 +16,7 @@ public class EnemyHurtState : EnemyBaseState
         stateStartTime = Time.time;
         transitionScheduled = false;
 
-        // 🧱 Zero out current movement before knockback
+        // Zero out current movement before knockback
         enemy.rb.linearVelocity = Vector2.zero;
 
         // Apply knockback using last hit direction  (where the enemy was hit from)

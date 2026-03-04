@@ -93,9 +93,10 @@ public class RangeEnemy : MonoBehaviour
     // ========================================
     // UNITY
     // ========================================
-    private void HandleOnDeath()
+    private void HandleOnDeath(EnemyStats enemyStats)
     {
-        Debug.Log("Archer Enemy died, dropping loot and playing death effects.");
+        // ignore the parameter
+        Debug.Log(" Enemy died, dropping loot and playing death effects.");
         // Play death effects
         // ChangeState(State.Death);
         // Destroy(gameObject);  // Delay to allow death animation/effects to play

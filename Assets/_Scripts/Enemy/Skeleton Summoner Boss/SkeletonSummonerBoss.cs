@@ -1,244 +1,288 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class SkeletonSummonerBoss : MonoBehaviour
 {
-    // ========================================
-    // STATES
-    // ========================================
-    public enum State
+    // ========================
+    // STATES / PHASES
+    // ========================
+    public enum BossPhase
     {
-        Dormant,
         Idle,
-        Approach,
-        Attack,
         Summon,
-        Recovery,
+        Combat,
+        Rage,
+        Vulnerable,
         Death
     }
 
-    public enum BossAttackType
-    {
-        GroundSmash,      // ground spikes
-        Summon,      // mid-range punish
-    }
-
-    // ========================================
-    // REFERENCES
-    // ========================================
     [Header("References")]
-    [SerializeField] public EnemyStats enemyStats;
-    [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Transform visual;
-    [SerializeField] private Transform centerTransform;
+    public EnemyStats enemyStats;
+    public Animator animator;
+    public Rigidbody2D rb;
+    public Transform visual;
+    public Transform centerTransform;
+    public GameObject summonedSkeletonPrefab;
+    public Transform summonPoint;
     [SerializeField] private GameObject meleeAttackVFX;
     [SerializeField] private GameObject summonAttackVFX;
-    [SerializeField] private List<Transform> summonPoints;
-    [SerializeField] private GameObject summonedSkeletonPrefab;
 
-    // ========================================
-    // TIMING
-    // ========================================
     [Header("Timing")]
-    [SerializeField] private float idleTime = 1f;
-    [SerializeField] private float attackDuration = 1.2f;
-    [SerializeField] private float summonDuration = 1.5f;
-    [SerializeField] private float recoveryTime = 0.8f;
+    public float idleTime = 3f;
+    public float summonDuration = 1.333f;
+    public float rageDuration = 5f;
+    public float vulnerableDuration = 5f;
+    public float meleeDuration = 1.583f;
+    public float meleeAttackCooldown = 2f; // FIX: separate cooldown so phaseTimer isn't corrupted
 
-    // ========================================
-    // MOVEMENT
-    // ========================================
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float attackRange = 1.5f;
+    public float moveSpeed = 2f;
+    public float rageMoveSpeed = 5f;
+    public float attackRange = 1.5f;
 
-    // ========================================
-    // ANIMATION HASHES
-    // ========================================
-    private static readonly int IdleHash = Animator.StringToHash("idle");
-    private static readonly int RunHash = Animator.StringToHash("run");
-    private static readonly int MeleeHash = Animator.StringToHash("meleeAttack");
-    private static readonly int SummonHash = Animator.StringToHash("summon");
-    private static readonly int DeathHash = Animator.StringToHash("dead");
+    [Header("Combat")]
+    public float minCombatDistance = 2f;
 
-    // ========================================
+    [Header("Summon")]
+    public int maxMinions = 3;
+    private List<GameObject> activeMinions = new List<GameObject>();
+
+    // ========================
     // STATE DATA
-    // ========================================
-    private State currentState;
-    public BossAttackType currentAttack;
-    private float stateTimer;
+    // ========================
+    private BossPhase currentPhase;
+    private float phaseTimer;
+    private float attackCooldownTimer; // FIX: dedicated attack timer, decoupled from phaseTimer
     private bool facingRight = true;
     private bool isDead;
+    private bool isAttacking; // FIX: guard flag to prevent coroutine stacking
 
-    // ========================================
-    // TARGET
-    // ========================================
-    private Transform player;
-    private CharacterStats playerStats;
+    [Header("Target")]
+    [SerializeField] private Transform player; // FIX: added [SerializeField] so [Header] works and field is inspectable
 
-    // ========================================
-    // UNITY
-    // ========================================
+    // ========================
+    // Unity Methods
+    // ========================
+
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+
+        if (enemyStats != null)
+            enemyStats.OnDeath += Die;
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+
+        if (enemyStats != null)
+            enemyStats.OnDeath -= Die;
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)
     {
         player = playerObj.transform;
-        playerStats = player.GetComponent<CharacterStats>();
     }
+
     private void Awake()
     {
         enemyStats ??= GetComponent<EnemyStats>();
         animator ??= GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        ChangeState(State.Idle);
+        rb ??= GetComponent<Rigidbody2D>();
+
+        ChangePhase(BossPhase.Idle);
     }
 
     private void Update()
     {
         if (isDead || player == null) return;
 
-        stateTimer += Time.deltaTime;
+        phaseTimer += Time.deltaTime;
+        attackCooldownTimer += Time.deltaTime; // FIX: always tick the dedicated attack cooldown
 
-        switch (currentState)
+        switch (currentPhase)
         {
-            case State.Idle:
-                if (stateTimer >= idleTime)
-                {
-                    if (InAttackRange())
-                        ChangeState(State.Attack);
-                    // ChangeState(Random.value < 0.5f ? State.Attack : State.Summon);
-                    else
-                    {
-                        // randomly choose to approach or summon
-                        int choice = UnityEngine.Random.Range(0, 2);
-                        if (choice == 0)
-                            ChangeState(State.Summon);
-                        else
-                            ChangeState(State.Approach);
-                    }
-                }
+            case BossPhase.Idle:
+                if (phaseTimer >= idleTime)
+                    ChangePhase(BossPhase.Summon);
                 break;
 
-            case State.Approach:
-                MoveTowardPlayer();
-                if (InAttackRange())
-                    ChangeState(State.Attack);
+            case BossPhase.Summon:
+                if (phaseTimer >= summonDuration)
+                    ChangePhase(BossPhase.Combat);
                 break;
 
-            case State.Attack:
-                if (stateTimer >= attackDuration)
-                    ChangeState(State.Recovery);
+            case BossPhase.Combat:
+                CombatBehavior();
+                activeMinions.RemoveAll(m => m == null);
+                if (activeMinions.Count == 0)
+                    ChangePhase(BossPhase.Rage);
                 break;
 
-            case State.Summon:
-                if (stateTimer >= summonDuration)
-                    ChangeState(State.Recovery);
+            case BossPhase.Rage:
+                RageBehavior();
+                if (phaseTimer >= rageDuration)
+                    ChangePhase(BossPhase.Vulnerable);
                 break;
 
-            case State.Recovery:
-                if (stateTimer >= recoveryTime)
-                    ChangeState(State.Idle);
+            case BossPhase.Vulnerable:
+                if (phaseTimer >= vulnerableDuration)
+                    ChangePhase(BossPhase.Idle);
+                break;
+
+            case BossPhase.Death:
                 break;
         }
     }
 
-    // ========================================
-    // STATE MACHINE
-    // ========================================
-    private void ChangeState(State newState)
+    // ========================
+    // Phase Management
+    // ========================
+    private void ChangePhase(BossPhase newPhase)
     {
-        currentState = newState;
-        stateTimer = 0f;
+        currentPhase = newPhase;
+        phaseTimer = 0f;
 
         rb.linearVelocity = Vector2.zero;
 
-        switch (newState)
+        switch (newPhase)
         {
-            case State.Dormant:
-                PlayAnimation(IdleHash);
+            case BossPhase.Idle:
+                ResetSpriteColor(); // FIX: clear rage tint when leaving Rage
+                PlayAnimation("idle");
                 break;
 
-            case State.Idle:
-                PlayAnimation(IdleHash);
+            case BossPhase.Summon:
+                PlayAnimation("summon");
+                // SummonMinions(); // FIX: was commented out — minions were never spawned
                 break;
 
-            case State.Approach:
-                PlayAnimation(RunHash);
+            case BossPhase.Combat:
+                attackCooldownTimer = 0f; // FIX: reset attack cooldown on phase entry
                 break;
 
-            case State.Attack:
-                FacePlayer();
-                PlayAttackAnimation();
+            case BossPhase.Rage:
+                attackCooldownTimer = 0f;
+                PlayAnimation("run");
                 break;
 
-            case State.Summon:
-                FacePlayer();
-                PlayAttackAnimation();
+            case BossPhase.Vulnerable:
+                ResetSpriteColor(); // FIX: also clear tint when entering Vulnerable directly
+                PlayAnimation("vulnerable");
                 break;
 
-            case State.Recovery:
-                PlayAnimation(IdleHash);
-                break;
-
-            case State.Death:
+            case BossPhase.Death:
+                ResetSpriteColor();
+                PlayAnimation("dead");
                 isDead = true;
-                PlayAnimation(DeathHash);
+                rb.linearVelocity = Vector2.zero;
                 break;
         }
     }
 
-    private void PlayAttackAnimation()
+    // ========================
+    // Combat Behaviors
+    // ========================
+    private void CombatBehavior()
     {
-        if (currentState == State.Attack)
+        // Lock all movement and facing during attack animation
+        if (isAttacking)
         {
-            PlayAnimation(MeleeHash);
+            rb.linearVelocity = Vector2.zero;
+            return;
         }
-        else if (currentState == State.Summon)
+
+        FacePlayer();
+
+        float distance = Vector2.Distance(player.position, centerTransform.position);
+
+        if (distance <= attackRange)
         {
-            PlayAnimation(SummonHash);
+            rb.linearVelocity = Vector2.zero;
+
+            if (attackCooldownTimer >= meleeAttackCooldown)
+            {
+                attackCooldownTimer = 0f;
+                StartCoroutine(PlayMeleeAnimation());
+            }
+        }
+        else if (distance > minCombatDistance)
+        {
+            MoveTowardPlayer(moveSpeed);
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+            PlayAnimation("idle");
         }
     }
 
-    // called via animation event
-    public void SummonSkeletons()
+    private void RageBehavior()
     {
-        // pick randomly from the summon points
-        // instantiate a minion prefab to hunt the player
-        Instantiate(
-            summonedSkeletonPrefab,
-            summonPoints[0].position,
-            Quaternion.identity
-        );
+        SpriteRenderer sr = visual.GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.color = Color.Lerp(Color.white, Color.red, Mathf.PingPong(Time.time * 5f, 1f));
+
+        // Lock all movement and facing during attack animation
+        if (isAttacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        FacePlayer();
+
+        float distance = Vector2.Distance(player.position, centerTransform.position);
+
+        if (distance > minCombatDistance)
+            MoveTowardPlayer(rageMoveSpeed);
+
+        if (distance <= attackRange && attackCooldownTimer >= meleeAttackCooldown)
+        {
+            attackCooldownTimer = 0f;
+            StartCoroutine(DoubleMelee());
+        }
     }
 
-    // ========================================
-    // MOVEMENT & DIRECTION
-    // ========================================
-    private void MoveTowardPlayer()
+    private IEnumerator DoubleMelee()
+    {
+        yield return StartCoroutine(PlayMeleeAnimation());
+        yield return StartCoroutine(PlayMeleeAnimation());
+    }
+
+    private IEnumerator PlayMeleeAnimation()
+    {
+        if (isAttacking) yield break;
+        isAttacking = true;
+
+        rb.linearVelocity = Vector2.zero;
+        animator.Play("meleeAttack", 0, 0f); // force restart
+        yield return new WaitForSeconds(meleeDuration);
+
+        isAttacking = false;
+    }
+
+    // ========================
+    // Movement & Facing
+    // ========================
+    private void MoveTowardPlayer(float speed)
     {
         int dir = player.position.x < centerTransform.position.x ? -1 : 1;
         FaceDirection(dir);
 
-        rb.linearVelocity = new Vector2(dir * enemyStats.GetMoveSpeed(), rb.linearVelocity.y);
-    }
-
-    private bool InAttackRange()
-    {
         float distance = Mathf.Abs(player.position.x - centerTransform.position.x);
-        return distance <= attackRange;
+        if (distance > minCombatDistance)
+        {
+            rb.linearVelocity = new Vector2(dir * speed, rb.linearVelocity.y);
+            PlayAnimation("run");
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+            PlayAnimation("idle");
+        }
     }
 
     private void FacePlayer()
@@ -253,6 +297,7 @@ public class SkeletonSummonerBoss : MonoBehaviour
         if (facingRight == shouldFaceRight) return;
 
         facingRight = shouldFaceRight;
+
         Vector3 scale = visual.localScale;
         scale.x *= -1f;
         visual.localScale = scale;
@@ -262,35 +307,69 @@ public class SkeletonSummonerBoss : MonoBehaviour
         visual.localPosition = pos;
     }
 
-    // ========================================
-    // PUBLIC
-    // ========================================
+    // ========================
+    // Summoning
+    // ========================
+    public void SummonMinions()
+    {
+        activeMinions.RemoveAll(m => m == null);
 
-    public void Die()
+        for (int i = 0; i < maxMinions - activeMinions.Count; i++)
+        {
+            GameObject minion = Instantiate(
+                summonedSkeletonPrefab,
+                summonPoint.position,
+                Quaternion.identity
+            );
+
+            activeMinions.Add(minion);
+
+            EnemyStats stats = minion.GetComponent<EnemyStats>();
+            if (stats != null)
+                stats.OnDeath += HandleMinionDeath; // FIX: subscription is kept, unsubscribed on death below
+        }
+    }
+
+    // FIX: unsubscribe from the dead minion's event to prevent memory leaks
+    private void HandleMinionDeath(EnemyStats deadMinion)
+    {
+        deadMinion.OnDeath -= HandleMinionDeath;
+        activeMinions.RemoveAll(m => m == null);
+    }
+
+    // ========================
+    // Utilities
+    // ========================
+    private void PlayAnimation(string animName)
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(animName))
+        {
+            animator.Play(animName);
+        }
+    }
+
+    // FIX: helper to cleanly reset the rage tint on phase exit
+    private void ResetSpriteColor()
+    {
+        SpriteRenderer sr = visual.GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.color = Color.white;
+    }
+
+    public void SetPlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+    }
+
+    public void Die(EnemyStats stats)
     {
         if (isDead) return;
-        ChangeState(State.Death);
+        ChangePhase(BossPhase.Death);
     }
 
     // ========================================
-    // HELPERS
+    // VFX
     // ========================================
-    private void PlayAnimation(int hash)
-    {
-        animator.CrossFade(hash, 0f, 0);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (centerTransform == null) return;
-
-        Vector3 center = centerTransform.position;
-
-        // Close range (Spin)
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(center, attackRange);
-    }
-
     public void ShowMeleeAttackVFX()
     {
         GameObject fx = Instantiate(
@@ -300,12 +379,12 @@ public class SkeletonSummonerBoss : MonoBehaviour
             visual
         );
 
-        Animator animator = fx.GetComponent<Animator>();
-        if (animator != null)
+        Animator fxAnimator = fx.GetComponent<Animator>(); // FIX: renamed to avoid shadowing class field
+        if (fxAnimator != null)
         {
-            animator.enabled = false; // Disable first
-            animator.Play("meleeAttackVFX", 0, 0f); // Set animation
-            animator.enabled = true; // Re-enable
+            fxAnimator.enabled = false;
+            fxAnimator.Play("meleeAttackVFX", 0, 0f);
+            fxAnimator.enabled = true;
         }
 
         Destroy(fx, 1.083f);
@@ -320,12 +399,12 @@ public class SkeletonSummonerBoss : MonoBehaviour
             visual
         );
 
-        Animator animator = fx.GetComponent<Animator>();
-        if (animator != null)
+        Animator fxAnimator = fx.GetComponent<Animator>(); // FIX: renamed to avoid shadowing class field
+        if (fxAnimator != null)
         {
-            animator.enabled = false; // Disable first
-            animator.Play("summonAttackVFX", 0, 0f); // Set animation
-            animator.enabled = true; // Re-enable
+            fxAnimator.enabled = false;
+            fxAnimator.Play("summonAttackVFX", 0, 0f);
+            fxAnimator.enabled = true;
         }
 
         Destroy(fx, 1.167f);

@@ -41,8 +41,8 @@ public class BuffChoiceManager : MonoBehaviour
             new BuffOption("Shield Bloom", "Gain a shield that deflects attack for 15s",
                 Resources.Load<Sprite>("Icons/Shield Bloom"), () => new ShieldBloomBuff(15f, 99)),
 
-            new BuffOption("Precision Strike", "Critical hits guaranteed 3 times within 15s",
-                Resources.Load<Sprite>("Icons/Precision Strike"), () => new PrecisionStrikeBuff(15f, 50, 3)),
+            new BuffOption("Precision Strike", "Critical hits guaranteed 1 times within 15s",
+                Resources.Load<Sprite>("Icons/Precision Strike"), () => new PrecisionStrikeBuff(15f, 50, 1)),
 
             // new BuffOption("Cold Infuse", "Attacks slows enemy movement for 5s",
             //     Resources.Load<Sprite>("Icons/Cold Infuse"), () => new ColdInfuseBuff(8f, 3)),

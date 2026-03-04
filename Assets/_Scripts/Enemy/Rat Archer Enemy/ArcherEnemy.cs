@@ -93,8 +93,9 @@ public class ArcherEnemy : MonoBehaviour
     // ========================================
     // UNITY
     // ========================================
-    private void HandleOnDeath()
+    private void HandleOnDeath(EnemyStats enemyStats)
     {
+        // ignore the parameter
         Debug.Log("Archer Enemy died, dropping loot and playing death effects.");
         // Play death effects
         // ChangeState(State.Death);

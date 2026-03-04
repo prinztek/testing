@@ -383,6 +383,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
   pickupPrefab: {fileID: 6123459713730238132, guid: 06f78f16ef6f6274294556099e439348, type: 3}
   IsDead: 0
+  isHurt: 0
+  lastHitDirection: {x: 0, y: 0}
 --- !u!1 &80565523
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,7 +838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ff0e91611e44a4884868d22f9cdccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  roomLocks: []
+  roomLocks:
+  - {fileID: 1751742808}
   ancientBoss: {fileID: 28463942}
 --- !u!1 &317206643
 GameObject:
@@ -1906,6 +1909,8 @@ MonoBehaviour:
   dropTable: []
   pickupPrefab: {fileID: 0}
   IsDead: 0
+  isHurt: 0
+  lastHitDirection: {x: 0, y: 0}
 --- !u!114 &1583726209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2620,7 +2625,7 @@ Transform:
   m_GameObject: {fileID: 1751742808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.5, y: -3.5, z: 0}
+  m_LocalPosition: {x: 15.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2844,15 +2849,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.08645834
+    x: 0.0671875
     y: 0
     width: 0.16666667
-    height: 0.2712963
+    height: 0.37870368
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 4.578125
+  orthographic size: 6.390625
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

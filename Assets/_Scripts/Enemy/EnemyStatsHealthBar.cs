@@ -68,8 +68,9 @@ public class EnemyStatsHealthBar : MonoBehaviour
         }
     }
 
-    private void HandleDeath()
+    private void HandleDeath(EnemyStats enemyStats)
     {
+        // ignore the parameter
         Destroy(gameObject); // optional: add fade-out here
     }
 

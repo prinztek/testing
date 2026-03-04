@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class EnemyStats : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class EnemyStats : MonoBehaviour
 
     // Events (FSM, UI, effects can subscribe)
     public event Action<int> OnHealthChanged;
-    public event Action OnDeath;
+    public event Action<EnemyStats> OnDeath;
     public event Action<int> OnDamageTaken;
 
     [Header("Status Effect and Buff Related")]
@@ -56,6 +57,10 @@ public class EnemyStats : MonoBehaviour
     private Queue<StatusEffect> statusQueue = new Queue<StatusEffect>();
     internal bool canMove;
     internal bool canAttack;
+
+    [Header("Hurt")]
+    public bool isHurt;
+    [HideInInspector] public Vector2 lastHitDirection;
 
     private void Awake()
     {
@@ -129,12 +134,15 @@ public class EnemyStats : MonoBehaviour
             bossHUD.SetActive(true);
         }
 
+        isHurt = true;
+        lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
+
         Debug.Log("Taken Damage: " + rawDamage);
 
         int finalDamage = Mathf.Max(rawDamage - defense, 1);
         CurrentHealth -= finalDamage;
 
-        LevelManager.Instance?.RegisterEnemyHit();
+        LevelManager.Instance?.RegisterEnemyHit(); // this is for onscreen control grimoire highlight
         OnDamageTaken?.Invoke(finalDamage);
         OnHealthChanged?.Invoke(CurrentHealth);
 
@@ -194,7 +202,7 @@ public class EnemyStats : MonoBehaviour
         if (isBoss && bossHUD != null)
             bossHUD.SetActive(false);
 
-        OnDeath?.Invoke();
+        OnDeath?.Invoke(this);
 
         StopAllCoroutines();
 
@@ -236,7 +244,9 @@ public class EnemyStats : MonoBehaviour
     #endregion
 
     #region Getters
+    public Vector2 GetLastHitDirection() => lastHitDirection;
     public bool IsStunned() => !canMove || !canAttack;
+    public bool IsHurt() => isHurt;
     public int GetAttackDamage() => Mathf.RoundToInt(attackDamage * damageMultiplier);
     public int GetDefense() => defense;
     public float GetMoveSpeed() => moveSpeed * moveSpeedMultiplier;

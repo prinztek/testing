@@ -9,7 +9,6 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     Canvas canvas;
     CanvasGroup canvasGroup;
     Transform puzzleBlockPoolParent;
-    public bool isSpecialBlock = false; // if false it holds a normal or predefined value, if true open an input field with numbers to manually choose value (numbers only, no factorials or other operations)
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip onDragSoundClip;

@@ -257,8 +257,9 @@ public class AncientBoss : MonoBehaviour
     // ========================================
     // DEATH HANDLER
     // ========================================
-    private void HandleDeath()
+    private void HandleDeath(EnemyStats enemyStats)
     {
+        // ignore the parameter
         ChangeState(State.Death);
     }
 

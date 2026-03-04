@@ -21,6 +21,6 @@ public class SkeletonSummonerBossAnimationEventRelay : MonoBehaviour
 
     public void SummonSkeletons()
     {
-        skeletonSummonerBoss?.SummonSkeletons();
+        skeletonSummonerBoss?.SummonMinions();
     }
 }

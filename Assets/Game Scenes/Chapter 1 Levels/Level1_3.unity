@@ -21970,6 +21970,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
   pickupPrefab: {fileID: 6123459713730238132, guid: 06f78f16ef6f6274294556099e439348, type: 3}
   IsDead: 0
+  isHurt: 0
+  lastHitDirection: {x: 0, y: 0}
 --- !u!114 &159957043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24508,11 +24510,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4216537682484330552, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4216537682484330552, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4216537682484330552, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_SizeDelta.y
@@ -24520,7 +24522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4216537682484330552, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 159.99998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4216537682484330552, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -24932,11 +24934,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8258283538546058105, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8258283538546058105, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8258283538546058105, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_SizeDelta.y
@@ -24944,7 +24946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8258283538546058105, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 159.99998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8258283538546058105, guid: 0222a1b4f9c504f4cb194ba535c119ea, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -30499,7 +30501,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 4.578125
+  orthographic size: 6.390625
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

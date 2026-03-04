@@ -14,6 +14,7 @@ public class MeleeEnemy : MonoBehaviour
         Attack,         // Melee attack
         Recovery,       // After attack cooldown
         Stunned,        // Hit reaction (optional)
+        Hurt,           // the player gets hit (pushed back a bit or stop moving forward)
         Death
     }
 
@@ -37,6 +38,11 @@ public class MeleeEnemy : MonoBehaviour
     private int currentHealth;
     private bool isDead;
 
+    // ========================================
+    // HURT
+    // ========================================
+    [Header("Hurt")]
+    [SerializeField] private float hurtDuration = 0.5f;
     // ========================================
     // PATROL & IDLE
     // ========================================
@@ -70,7 +76,6 @@ public class MeleeEnemy : MonoBehaviour
     // BEHAVIOR
     // ========================================
     [Header("Behavior")]
-    [SerializeField] private bool aggressive = true;        // If true, chases relentlessly
     [SerializeField] private float giveUpDistance = 12f;    // Stop chasing if player this far
     [SerializeField] private bool canFallOffLedges = false; // Whether skeleton walks off edges
 
@@ -124,6 +129,14 @@ public class MeleeEnemy : MonoBehaviour
                 ChangeState(State.Stunned);
         }
 
+        if (enemyStats.isHurt == true)
+        {
+            if (currentState != State.Hurt)
+            {
+                ChangeState(State.Hurt);
+            }
+        }
+
         stateTimer += Time.deltaTime;
 
         switch (currentState)
@@ -167,7 +180,7 @@ public class MeleeEnemy : MonoBehaviour
                 {
                     ChangeState(State.Attack);
                 }
-                else if (!aggressive && PlayerTooFar())
+                else if (PlayerTooFar())
                 {
                     // Give up chase if not aggressive
                     ChangeState(State.Patrol);
@@ -202,6 +215,23 @@ public class MeleeEnemy : MonoBehaviour
                         ChangeState(State.Patrol);
                     }
                 }
+                break;
+
+            case State.Hurt:
+                if (stateTimer >= hurtDuration)
+                {
+                    enemyStats.isHurt = false;
+                    // Return to combat after stun
+                    if (PlayerDetected())
+                    {
+                        ChangeState(State.Chase);
+                    }
+                    else
+                    {
+                        ChangeState(State.Patrol);
+                    }
+                }
+
                 break;
 
             case State.Stunned:
@@ -274,6 +304,17 @@ public class MeleeEnemy : MonoBehaviour
             case State.Recovery:
                 rb.linearVelocity = Vector2.zero;
                 PlayAnimation(IdleHash);
+                break;
+
+            case State.Hurt:
+                // rb.linearVelocity = Vector2.zero;
+                PlayAnimation(IdleHash);
+                rb.linearVelocity = Vector2.zero;
+
+                // Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
+                // float knockbackStrength = 5f;
+
+                // rb.linearVelocity = new Vector2(knockbackDir.x * knockbackStrength, rb.linearVelocity.y);
                 break;
 
             case State.Stunned:
@@ -448,19 +489,9 @@ public class MeleeEnemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pos, attackRange);
 
-        // Attack hitbox (MAGENTA)
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
-        }
-
-        // // Give up distance (CYAN)
-        // if (!aggressive)
-        // {
-        //     Gizmos.color = Color.cyan;
-        //     Gizmos.DrawWireSphere(pos, giveUpDistance);
-        // }
+        Gizmos.color = Color.purple;
+        Vector3 giveUpDistanceSize = new Vector3(giveUpDistance * 2f, detectionHeightTolerance * 2f, 0f);
+        Gizmos.DrawWireCube(center, giveUpDistanceSize);
 
         // Ground check
         if (enemyStats != null && enemyStats.groundCheckPoint != null)
