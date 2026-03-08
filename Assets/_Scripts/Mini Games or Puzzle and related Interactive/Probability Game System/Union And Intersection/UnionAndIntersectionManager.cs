@@ -25,7 +25,10 @@ public class UnionAndIntersectionManager : MonoBehaviour
     [SerializeField] private AudioClip wrongAnswerSoundClip;
     void Start()
     {
-        panel2.SetActive(false);
+        if (panel2 != null)
+        {
+            panel2.SetActive(false);
+        }
     }
     public void OnSubmit()
     {
@@ -58,14 +61,18 @@ public class UnionAndIntersectionManager : MonoBehaviour
         if (panel1.activeSelf)
         {
             panel1.SetActive(false);
-            panel2.SetActive(true);
-            nextOrPreviousButton.GetComponentInChildren<TextMeshProUGUI>().text = "Previous";
+            if (panel2 != null)
+                panel2.SetActive(true);
+            if (nextOrPreviousButton != null)
+                nextOrPreviousButton.GetComponentInChildren<TextMeshProUGUI>().text = "Previous";
         }
         else
         {
-            panel2.SetActive(false);
+            if (panel2 != null)
+                panel2.SetActive(false);
             panel1.SetActive(true);
-            nextOrPreviousButton.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
+            if (nextOrPreviousButton != null)
+                nextOrPreviousButton.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
         }
     }
 
@@ -92,3 +99,6 @@ public class UnionAndIntersectionManager : MonoBehaviour
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
 }
+
+
+// also used for mutually and non-mutually exclusive puzzles

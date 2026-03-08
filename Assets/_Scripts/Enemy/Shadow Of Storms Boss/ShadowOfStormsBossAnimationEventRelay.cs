@@ -13,4 +13,39 @@ public class ShadowOfStormsBossAnimationEventRelay : MonoBehaviour
     {
         shadowOfStormsBoss?.ShowAttacksVFX();
     }
+
+    public void ShowChargeVFX()
+    {
+        shadowOfStormsBoss?.ShowChargeVFX();
+    }
+
+    public void ShowChargeExplosionVFX()
+    {
+        shadowOfStormsBoss?.ShowChargeExplosionVFX();
+    }
+
+    public void ShowChargeBeamVFX()
+    {
+        shadowOfStormsBoss?.ShowChargeBeamVFX();
+    }
+
+    public void GenerateBeam()
+    {
+        shadowOfStormsBoss?.GenerateBeam();
+    }
+
+    public void OnChargeExplosionFinished()
+    {
+        shadowOfStormsBoss?.OnChargeExplosionFinished();
+    }
+
+    public void OnChargeBeamFinished()
+    {
+        shadowOfStormsBoss?.OnChargeBeamFinished();
+    }
+
+    public void OnComboFinished()
+    {
+        shadowOfStormsBoss?.OnComboFinished();
+    }
 }

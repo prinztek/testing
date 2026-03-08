@@ -26,7 +26,6 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
     [SerializeField] private Transform visual;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private EnemyStats enemyStats;
-    [SerializeField] private Transform attackPoint;        // Where to check for hits
 
     // ========================================
     // STATS
@@ -447,13 +446,6 @@ public class SkeletonArmoredSwordsmanEnemy : MonoBehaviour
         // Attack range (RED)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pos, attackRange);
-
-        // Attack hitbox (MAGENTA)
-        if (attackPoint != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
-        }
 
         // // Give up distance (CYAN)
         // if (!aggressive)

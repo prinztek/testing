@@ -27,7 +27,6 @@ public class MeleeEnemy : MonoBehaviour
     [SerializeField] private Transform visual;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private EnemyStats enemyStats;
-    [SerializeField] private Transform attackPoint;        // Where to check for hits
 
     // ========================================
     // STATS
@@ -115,7 +114,7 @@ public class MeleeEnemy : MonoBehaviour
         currentHealth = maxHealth;
 
         // Start randomly between Idle and Patrol
-        ChangeState(Random.value > 0.5f ? State.Idle : State.Patrol);
+        ChangeState(State.Idle);
     }
 
     private void Update()

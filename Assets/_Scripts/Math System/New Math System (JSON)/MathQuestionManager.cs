@@ -113,7 +113,16 @@ public class MathQuestionManager : MonoBehaviour
         hintText.text = "";
         hintUsedCounter = 0;
         ResetHintButtonText();
-        hintButton.interactable = true;
+
+        // Disable if there are no hints
+        if (currentQuestion.hints == null || currentQuestion.hints.Length == 0)
+        {
+            hintButton.interactable = false;
+        }
+        else
+        {
+            hintButton.interactable = true;
+        }
     }
 
 
@@ -126,8 +135,6 @@ public class MathQuestionManager : MonoBehaviour
 
     public void GenerateNewHint()
     {
-        Debug.Log("Hint button clicked");
-
         if (playerInventory == null || currentQuestion == null) return;
 
         int cost = baseHintCost + (baseHintCost * hintUsedCounter);

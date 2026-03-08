@@ -96,6 +96,9 @@ public class BasicInteractableObject : MonoBehaviour
             // universal
             var fillPuzzle = spawnedPuzzle.GetComponentInChildren<FillPuzzleManager>();
 
+            // probability
+            var vennDiagramPuzzle = spawnedPuzzle.GetComponentInChildren<UnionAndIntersectionManager>();
+
             if (permutationAndConditionPuzzle != null)
             {
                 permutationAndConditionPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
@@ -119,6 +122,10 @@ public class BasicInteractableObject : MonoBehaviour
             else if (combinationPuzzle != null)
             {
                 combinationPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (vennDiagramPuzzle != null)
+            {
+                vennDiagramPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {

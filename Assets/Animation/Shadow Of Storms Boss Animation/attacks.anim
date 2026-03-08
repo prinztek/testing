@@ -55,18 +55,22 @@ AnimationClip:
     - time: 1.3333334
       value: {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.4166666
-      value: {fileID: -27700963, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.5
-      value: {fileID: -1925736282, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.5833334
-      value: {fileID: 1630784035, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: -27700963, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.6666666
-      value: {fileID: 446995781, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: -1925736282, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.75
-      value: {fileID: -2122579262, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: 1630784035, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.8333334
-      value: {fileID: 991275767, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+      value: {fileID: 446995781, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - time: 1.9166666
+      value: {fileID: -2122579262, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+    - time: 2
+      value: {fileID: 991275767, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+    - time: 2.0833333
       value: {fileID: -1418654385, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     attribute: m_Sprite
     path: 
@@ -107,6 +111,8 @@ AnimationClip:
     - {fileID: 1567168548, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - {fileID: 195564565, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+    - {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
+    - {fileID: 495611254, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - {fileID: -27700963, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - {fileID: -1925736282, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
     - {fileID: 1630784035, guid: 58b30a6634f394f44bd9abcae6198cd9, type: 3}
@@ -119,7 +125,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2
+    m_StopTime: 2.1666665
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -141,6 +147,13 @@ AnimationClip:
   m_Events:
   - time: 0.6666667
     functionName: ShowAttacksVFX
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.0833333
+    functionName: OnComboFinished
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

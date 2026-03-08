@@ -27,6 +27,8 @@ public class SkeletonSummonerBoss : MonoBehaviour
     public Transform summonPoint;
     [SerializeField] private GameObject meleeAttackVFX;
     [SerializeField] private GameObject summonAttackVFX;
+    public Canvas healthBarCanvas; // reference to health bar for summonedHealthBarPrefab to set as parent when instantiated
+    public GameObject summonedHealthBarPrefab; // reference to summoned minion health bar prefab
 
     [Header("Timing")]
     public float idleTime = 3f;
@@ -150,17 +152,17 @@ public class SkeletonSummonerBoss : MonoBehaviour
         switch (newPhase)
         {
             case BossPhase.Idle:
-                ResetSpriteColor(); // FIX: clear rage tint when leaving Rage
+                ResetSpriteColor();
                 PlayAnimation("idle");
                 break;
 
             case BossPhase.Summon:
                 PlayAnimation("summon");
-                // SummonMinions(); // FIX: was commented out — minions were never spawned
+                // SummonMinions(); 
                 break;
 
             case BossPhase.Combat:
-                attackCooldownTimer = 0f; // FIX: reset attack cooldown on phase entry
+                attackCooldownTimer = 0f;
                 break;
 
             case BossPhase.Rage:
@@ -169,7 +171,7 @@ public class SkeletonSummonerBoss : MonoBehaviour
                 break;
 
             case BossPhase.Vulnerable:
-                ResetSpriteColor(); // FIX: also clear tint when entering Vulnerable directly
+                ResetSpriteColor();
                 PlayAnimation("vulnerable");
                 break;
 
@@ -313,21 +315,23 @@ public class SkeletonSummonerBoss : MonoBehaviour
     public void SummonMinions()
     {
         activeMinions.RemoveAll(m => m == null);
+        // summon a single minion
+        GameObject minion = Instantiate(
+            summonedSkeletonPrefab,
+            summonPoint.position,
+            Quaternion.identity
+        );
 
-        for (int i = 0; i < maxMinions - activeMinions.Count; i++)
-        {
-            GameObject minion = Instantiate(
-                summonedSkeletonPrefab,
-                summonPoint.position,
-                Quaternion.identity
-            );
+        activeMinions.Add(minion);
 
-            activeMinions.Add(minion);
+        GameObject healthBar = Instantiate(summonedHealthBarPrefab, healthBarCanvas.transform);
+        var enemyStatsHealthBar = healthBar.GetComponent<EnemyStatsHealthBar>();
+        enemyStatsHealthBar.enemyStats = minion.GetComponent<EnemyStats>();
+        enemyStatsHealthBar.target = minion.transform;
 
-            EnemyStats stats = minion.GetComponent<EnemyStats>();
-            if (stats != null)
-                stats.OnDeath += HandleMinionDeath; // FIX: subscription is kept, unsubscribed on death below
-        }
+        EnemyStats stats = minion.GetComponent<EnemyStats>();
+        if (stats != null)
+            stats.OnDeath += HandleMinionDeath; // FIX: subscription is kept, unsubscribed on death below
     }
 
     // FIX: unsubscribe from the dead minion's event to prevent memory leaks

@@ -11,6 +11,10 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
     Transform elementPoolParent;
     [SerializeField] private UnionAndIntersectionElement prefabReference;
 
+    public bool isFromPool = true; // to track whether this element is a copy from the pool or an original prefab in the bank
+
+    // public bool canOnlyBeUsedOnce = true; // if true, the player can't place the same element twice (like how you can't have two of the same item in a set)
+
     [Header("Audio Clips")]
     [SerializeField] private AudioClip onDragSoundClip;
     [SerializeField] private AudioClip onDropSoundClip;
@@ -41,7 +45,8 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
         // If this object came from pool, refill it
         if (transform.parent == elementPoolParent)
         {
-            Instantiate(prefabReference, elementPoolParent);
+            var instance = Instantiate(prefabReference, elementPoolParent);
+            instance.GetComponent<UnionAndIntersectionElement>().isFromPool = false; // the new instance is not from the pool, it's an original prefab in the bank
         }
 
         transform.SetParent(canvas.transform);

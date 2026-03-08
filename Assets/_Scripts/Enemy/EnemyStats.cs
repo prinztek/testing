@@ -39,6 +39,8 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
+    public bool isSummon = false; // flag to indicate if this enemy is a summon
+
     [Header("Drop Item")]
     [SerializeField] public List<DropItem> dropTable;
     [SerializeField] public GameObject pickupPrefab;
@@ -235,7 +237,11 @@ public class EnemyStats : MonoBehaviour
         }
 
         // Notify LevelManager
-        UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+        if (isSummon != true)
+        {
+            UnityEngine.Object.FindFirstObjectByType<LevelManager>()?.OnEnemyDefeated();
+        }
+
 
         if (!isBoss)
             Destroy(gameObject);

@@ -8,11 +8,11 @@ public class ShadowOfStormsBoss : MonoBehaviour
     // ========================================
     public enum State
     {
-        Dormant,
         Idle,
-        Approach,
-        Attack,
-        Recovery,
+        ChargeExplosion,
+        ChargeBeam,
+        ComboAttack,
+        Vulnerable,
         Death
     }
 
@@ -25,51 +25,50 @@ public class ShadowOfStormsBoss : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform visual;
     [SerializeField] private Transform centerTransform;
-    [SerializeField] private GameObject healVFX;
+
+    [Header("VFX")]
     [SerializeField] private GameObject attacksVFX;
-    [SerializeField] private GameObject chargeVFX; // dash like
-    [SerializeField] private GameObject chargeBeamVFX; // charging to shoot the beam
-    [SerializeField] private GameObject chargeExplosionVFX; // charging to do the explosion
+    [SerializeField] private GameObject chargeVFX;
+    [SerializeField] private GameObject chargeBeamVFX;
+    [SerializeField] private GameObject chargeExplosionVFX;
+    [SerializeField] private GameObject beam;
 
     // ========================================
     // TIMING
     // ========================================
     [Header("Timing")]
     [SerializeField] private float idleTime = 1f;
-    [SerializeField] private float recoveryTime = 0.8f;
-
-    // ========================================
-    // MOVEMENT
-    // ========================================
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float smallVulnerableTime = 0.4f;
+    [SerializeField] private float bigVulnerableTime = 1f;
 
     // ========================================
     // ANIMATION HASHES
     // ========================================
     private static readonly int IdleHash = Animator.StringToHash("idle");
-    private static readonly int RunHash = Animator.StringToHash("run");
     private static readonly int DeathHash = Animator.StringToHash("dead");
-    private static readonly int ChargeHash = Animator.StringToHash("charge"); // charging like a dash
-    private static readonly int ChargeBeamHash = Animator.StringToHash("chargeBeam"); // charging to shoot the beam (CALL A BEAM VFX THROUGH ANIMATION EVENT)
-    private static readonly int ChargeExplosionHash = Animator.StringToHash("chargeExplosion"); // charging to do the explosion
-    private static readonly int TransitionHash = Animator.StringToHash("transition"); // for transition to charge
-    private static readonly int AttacksHash = Animator.StringToHash("attacks"); // for attack variations
+    private static readonly int ChargeExplosionHash = Animator.StringToHash("chargeExplosion");
+    private static readonly int ChargeBeamHash = Animator.StringToHash("chargeBeam");
+    private static readonly int AttacksHash = Animator.StringToHash("attacks");
 
     // ========================================
-    // STATE DATA
+    // INTERNAL
     // ========================================
     private State currentState;
     private float stateTimer;
-    private bool facingRight = true;
+    private int patternIndex;
     private bool isDead;
+    private bool facingRight = true;
 
-    // ========================================
-    // TARGET
-    // ========================================
     private Transform player;
     private CharacterStats playerStats;
+
+    // ========================================
+    // MOVEMENT SETTINGS
+    // ========================================
+    [Header("Movement")]
+    [SerializeField] private float chargeExplosionSpeed = 10f;
+    [SerializeField] private float chargeBeamSpeed = 5f;
+    [SerializeField] private float comboAttackSpeed = 7f;
 
     // ========================================
     // UNITY
@@ -94,13 +93,14 @@ public class ShadowOfStormsBoss : MonoBehaviour
     {
         enemyStats ??= GetComponent<EnemyStats>();
         animator ??= GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        rb ??= GetComponent<Rigidbody2D>();
+
         ChangeState(State.Idle);
     }
 
     private void Update()
     {
-        if (isDead || player == null) return;
+        if (isDead) return;
 
         stateTimer += Time.deltaTime;
 
@@ -108,31 +108,88 @@ public class ShadowOfStormsBoss : MonoBehaviour
         {
             case State.Idle:
                 if (stateTimer >= idleTime)
-                {
-                    if (InAttackRange())
-                    {
-                        // For now, just go back to idle when in range
-                        // You can add attack state later
-                        ChangeState(State.Attack);
-                    }
-                    else
-                    {
-                        ChangeState(State.Approach);
-                    }
-                }
+                    StartNextPatternAttack();
                 break;
 
-            case State.Approach:
-                MoveTowardPlayer();
-                if (InAttackRange())
-                    ChangeState(State.Attack);
-                break;
+            case State.Vulnerable:
+                float duration = (patternIndex == 2) ? bigVulnerableTime : smallVulnerableTime;
 
-            case State.Recovery:
-                if (stateTimer >= recoveryTime)
-                    ChangeState(State.Idle);
+                if (stateTimer >= duration)
+                    AdvancePattern();
                 break;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead) return;
+
+        switch (currentState)
+        {
+            case State.ChargeExplosion:
+                MoveTowardsPlayer(chargeExplosionSpeed);
+                break;
+
+            case State.ChargeBeam:
+                // CHARGE FOR A SPELL CAST ATTACK (STATIONARY)
+                // GRAB THE PLAYERS LAST POSITION
+                // INSTANTIATE A BEAM IN THAT LAST POSITION
+                // THIS IS CALLED THROUGH AN ANIMATION EVENT IN THE CHARGE BEAM ANIMATION
+                break;
+
+            case State.ComboAttack:
+                MoveTowardsPlayer(comboAttackSpeed);
+                break;
+
+            default:
+                // Stop movement for Idle, Vulnerable, Death
+                rb.linearVelocity = Vector2.zero;
+                break;
+        }
+    }
+
+    private void MoveTowardsPlayer(float speed)
+    {
+        if (player == null) return;
+
+        float dir = player.position.x < centerTransform.position.x ? -1f : 1f;
+
+        // Set velocity
+        rb.linearVelocity = new Vector2(dir * speed, rb.linearVelocity.y);
+
+        // Optional: flip visuals while moving
+        FacePlayer();
+    }
+
+    // ========================================
+    // PATTERN CONTROL
+    // ========================================
+    private void StartNextPatternAttack()
+    {
+        switch (patternIndex)
+        {
+            case 0:
+                ChangeState(State.ChargeExplosion);
+                break;
+
+            case 1:
+                ChangeState(State.ChargeBeam);
+                break;
+
+            case 2:
+                ChangeState(State.ComboAttack);
+                break;
+        }
+    }
+
+    private void AdvancePattern()
+    {
+        patternIndex++;
+
+        if (patternIndex > 2)
+            patternIndex = 0;
+
+        ChangeState(State.Idle);
     }
 
     // ========================================
@@ -143,60 +200,75 @@ public class ShadowOfStormsBoss : MonoBehaviour
         currentState = newState;
         stateTimer = 0f;
 
-        rb.linearVelocity = Vector2.zero;
+        // Only stop movement when Idle or Vulnerable
+        if (newState == State.Idle || newState == State.Vulnerable)
+            rb.linearVelocity = Vector2.zero;
 
         switch (newState)
         {
-            case State.Dormant:
-                PlayAnimation(IdleHash);
-                break;
-
             case State.Idle:
                 PlayAnimation(IdleHash);
                 break;
 
-            case State.Approach:
-                PlayAnimation(ChargeHash);
+            case State.ChargeExplosion:
+                FacePlayer();
+                PlayAnimation(ChargeExplosionHash);
                 break;
 
-            case State.Attack:
+            case State.ChargeBeam:
+                FacePlayer();
+                PlayAnimation(ChargeBeamHash);
+                break;
+
+            case State.ComboAttack:
+                FacePlayer();
                 PlayAnimation(AttacksHash);
                 break;
 
-            case State.Recovery:
+            case State.Vulnerable:
                 PlayAnimation(IdleHash);
                 break;
 
             case State.Death:
                 isDead = true;
+                rb.linearVelocity = Vector2.zero;
                 PlayAnimation(DeathHash);
                 break;
         }
     }
 
     // ========================================
-    // MOVEMENT & DIRECTION
+    // ANIMATION EVENT CALLBACKS
     // ========================================
-    private void MoveTowardPlayer()
+    public void OnChargeExplosionFinished()
     {
+        ChangeState(State.Vulnerable);
+    }
+
+    public void OnChargeBeamFinished()
+    {
+        ChangeState(State.Vulnerable);
+    }
+
+    public void OnComboFinished()
+    {
+        ChangeState(State.Vulnerable);
+    }
+
+    // ========================================
+    // VISUAL FLIP
+    // ========================================
+    private void FacePlayer()
+    {
+        if (player == null) return;
+
         int dir = player.position.x < centerTransform.position.x ? -1 : 1;
-        FaceDirection(dir);
-
-        rb.linearVelocity = new Vector2(dir * enemyStats.GetMoveSpeed(), rb.linearVelocity.y);
-    }
-
-    private bool InAttackRange()
-    {
-        float distance = Mathf.Abs(player.position.x - centerTransform.position.x);
-        return distance <= attackRange;
-    }
-
-    private void FaceDirection(int dir)
-    {
         bool shouldFaceRight = dir > 0;
+
         if (facingRight == shouldFaceRight) return;
 
         facingRight = shouldFaceRight;
+
         Vector3 scale = visual.localScale;
         scale.x *= -1f;
         visual.localScale = scale;
@@ -207,15 +279,6 @@ public class ShadowOfStormsBoss : MonoBehaviour
     }
 
     // ========================================
-    // PUBLIC
-    // ========================================
-    public void Die()
-    {
-        if (isDead) return;
-        ChangeState(State.Death);
-    }
-
-    // ========================================
     // HELPERS
     // ========================================
     private void PlayAnimation(int hash)
@@ -223,37 +286,70 @@ public class ShadowOfStormsBoss : MonoBehaviour
         animator.CrossFade(hash, 0f, 0);
     }
 
-    private void OnDrawGizmosSelected()
+    public void Die()
     {
-        if (centerTransform == null) return;
-
-        Vector3 center = centerTransform.position;
-
-        // Attack range
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(center, attackRange);
+        if (isDead) return;
+        ChangeState(State.Death);
     }
 
     // ========================================
-    // VFX & ANIMATION EVENTS
+    // YOUR ORIGINAL VFX (UNTOUCHED)
     // ========================================
+
     public void ShowAttacksVFX()
     {
-        GameObject fx = Instantiate(
-            attacksVFX,
-            visual.position,
-            Quaternion.identity,
-            visual
-        );
-
-        Animator animator = fx.GetComponent<Animator>();
-        if (animator != null)
+        GameObject fx = Instantiate(attacksVFX, visual.position, Quaternion.identity, visual);
+        Animator anim = fx.GetComponent<Animator>();
+        if (anim != null)
         {
-            animator.enabled = false; // Disable first
-            animator.Play("attacks", 0, 0f); // Set animation
-            animator.enabled = true; // Re-enable
+            anim.enabled = false;
+            anim.Play("attacks", 0, 0f);
+            anim.enabled = true;
         }
-
         Destroy(fx, 1.167f);
+    }
+
+    public void ShowChargeVFX()
+    {
+        GameObject fx = Instantiate(chargeVFX, visual.position, Quaternion.identity, visual);
+        Animator anim = fx.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = false;
+            anim.Play("charge", 0, 0f);
+            anim.enabled = true;
+        }
+        Destroy(fx, 1.167f);
+    }
+
+    public void ShowChargeExplosionVFX()
+    {
+        GameObject fx = Instantiate(chargeExplosionVFX, visual.position, Quaternion.identity, visual);
+        Animator anim = fx.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = false;
+            anim.Play("chargeExplosion", 0, 0f);
+            anim.enabled = true;
+        }
+        Destroy(fx, 1.167f);
+    }
+
+    public void ShowChargeBeamVFX()
+    {
+        GameObject fx = Instantiate(chargeBeamVFX, visual.position, Quaternion.identity, visual);
+        Animator anim = fx.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = false;
+            anim.Play("chargeBeam", 0, 0f);
+            anim.enabled = true;
+        }
+        Destroy(fx, 1.167f);
+    }
+
+    public void GenerateBeam()
+    {
+        Instantiate(beam, new Vector2(player.position.x, -2.2f), Quaternion.identity);
     }
 }
