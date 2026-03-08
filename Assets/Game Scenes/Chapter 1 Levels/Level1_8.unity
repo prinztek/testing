@@ -375,6 +375,7 @@ MonoBehaviour:
   moveSpeedMultiplier: 1
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
+  isSummon: 0
   dropTable:
   - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
   - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
@@ -840,7 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   roomLocks:
   - {fileID: 1751742808}
-  ancientBoss: {fileID: 28463942}
+  boss: {fileID: 28463939}
 --- !u!1 &317206643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,6 +1907,7 @@ MonoBehaviour:
   moveSpeedMultiplier: 1
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
+  isSummon: 0
   dropTable: []
   pickupPrefab: {fileID: 0}
   IsDead: 0
@@ -2087,17 +2089,24 @@ MonoBehaviour:
   rb: {fileID: 1583726212}
   visual: {fileID: 1376522575}
   centerTransform: {fileID: 1062066050}
+  summonedSkeletonPrefab: {fileID: 0}
+  summonPoint: {fileID: 0}
   meleeAttackVFX: {fileID: 3846046830363884647, guid: 33232a5083b2a5f40a390920ae497d16, type: 3}
   summonAttackVFX: {fileID: 3846046830363884647, guid: 571bdfdb55bbb594da2cd2a5890f561d, type: 3}
-  summonPoints: []
-  summonedSkeletonPrefab: {fileID: 0}
+  healthBarCanvas: {fileID: 0}
+  summonedHealthBarPrefab: {fileID: 0}
   idleTime: 1
-  attackDuration: 1.583
   summonDuration: 1.333
-  recoveryTime: 0.8
+  rageDuration: 5
+  vulnerableDuration: 5
+  meleeDuration: 1.583
+  meleeAttackCooldown: 2
   moveSpeed: 5
+  rageMoveSpeed: 5
   attackRange: 5
-  currentAttack: 0
+  minCombatDistance: 2
+  maxMinions: 3
+  player: {fileID: 0}
 --- !u!1 &1607739352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,15 +2858,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0671875
+    x: 0
     y: 0
-    width: 0.16666667
-    height: 0.37870368
+    width: 1
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 6.390625
+  orthographic size: 5.625
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

@@ -38,15 +38,39 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
     //     canvasGroup.blocksRaycasts = false;
     // }
 
+    // public void OnBeginDrag(PointerEventData eventData)
+    // {
+    //     CurrentSlot = null;
+
+    //     // If this object came from pool, refill it
+    //     if (transform.parent == elementPoolParent)
+    //     {
+    //         var instance = Instantiate(prefabReference, elementPoolParent);
+    //         instance.GetComponent<UnionAndIntersectionElement>().isFromPool = false; // the new instance is not from the pool, it's an original prefab in the bank
+    //     }
+
+    //     transform.SetParent(canvas.transform);
+    //     canvasGroup.blocksRaycasts = false;
+
+    //     if (onDragSoundClip != null)
+    //     {
+    //         SoundFXManager.Instance.playOneShotSoundFXClilp(onDragSoundClip, transform, 0.2f);
+    //     }
+    // }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        CurrentSlot = null;
+        // Properly detach from current slot
+        if (CurrentSlot != null)
+        {
+            CurrentSlot.RemoveElement(this);
+        }
 
         // If this object came from pool, refill it
         if (transform.parent == elementPoolParent)
         {
             var instance = Instantiate(prefabReference, elementPoolParent);
-            instance.GetComponent<UnionAndIntersectionElement>().isFromPool = false; // the new instance is not from the pool, it's an original prefab in the bank
+            instance.GetComponent<UnionAndIntersectionElement>().isFromPool = false;
         }
 
         transform.SetParent(canvas.transform);

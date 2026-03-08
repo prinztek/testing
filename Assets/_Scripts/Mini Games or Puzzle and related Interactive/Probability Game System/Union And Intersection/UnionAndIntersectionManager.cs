@@ -6,7 +6,8 @@ using TMPro;
 
 public class UnionAndIntersectionManager : MonoBehaviour
 {
-    public ElementsSlot[] slots; // manually assign in inspector    
+    public ElementsSlot[] slots; // manually assign in inspector (venn diagram slots)
+    public ElementsSlot[] slots2; // manually assign in inspector (eg. union, intersection, complement slots A, B, AUB, AnB, etc.)
 
     [Header("Explanation Panel")]
     [SerializeField] private GameObject explanationPanel;
@@ -23,11 +24,18 @@ public class UnionAndIntersectionManager : MonoBehaviour
     [Header("Sound Clip References")]
     [SerializeField] private AudioClip correctAnswerSoundClip;
     [SerializeField] private AudioClip wrongAnswerSoundClip;
+    void Awake()
+    {
+        continueButton.onClick.AddListener(OnContinuePressed);
+    }
     void Start()
     {
         if (panel2 != null)
         {
-            panel2.SetActive(false);
+            if (panel1 != null)
+            {
+                panel2.SetActive(false);
+            }
         }
     }
     public void OnSubmit()
@@ -47,10 +55,12 @@ public class UnionAndIntersectionManager : MonoBehaviour
                 return;
             }
         }
+
         if (correctAnswerSoundClip != null)
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
         }
+
         Debug.Log("CORRECT CORRECT CORRECT");
         ShowExplanation();
     }
@@ -58,9 +68,19 @@ public class UnionAndIntersectionManager : MonoBehaviour
     // display the next panel where we are asking for the union, intersections, or complements
     public void OnNext()
     {
-        if (panel1.activeSelf)
+
+        if (panel1 == null)
         {
-            panel1.SetActive(false);
+            return;
+        }
+
+        if (panel1 != null && panel1.activeSelf)
+        {
+            if (panel1 != null)
+            {
+                panel1.SetActive(false);
+            }
+
             if (panel2 != null)
                 panel2.SetActive(true);
             if (nextOrPreviousButton != null)
@@ -68,9 +88,12 @@ public class UnionAndIntersectionManager : MonoBehaviour
         }
         else
         {
-            if (panel2 != null)
+            if (panel2 != null && panel2.activeSelf)
                 panel2.SetActive(false);
-            panel1.SetActive(true);
+            if (panel1 != null)
+            {
+                panel1.SetActive(true);
+            }
             if (nextOrPreviousButton != null)
                 nextOrPreviousButton.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
         }
