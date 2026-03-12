@@ -12,6 +12,15 @@ public class OutcomeSlot : MonoBehaviour
     public List<string> userSelectedValues = new List<string>();
 
     // ============================
+    // Clear All Values
+    // ============================
+    public void ClearSlot()
+    {
+        userSelectedValues.Clear();
+        UpdateUI();
+    }
+
+    // ============================
     // Add Value
     // ============================
     public void Add(string value)

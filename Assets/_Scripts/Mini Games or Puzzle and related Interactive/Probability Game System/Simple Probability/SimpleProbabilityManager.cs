@@ -13,9 +13,9 @@ public class SimpleProbabilityManager : MonoBehaviour
     [Header("Outcome Slots")]
     [SerializeField] private OutcomeSlot numeratorSlot;
     [SerializeField] private OutcomeSlot denominatorSlot;
+    public OutcomeItem[] outcomeItems;
 
-    [Header("Fraction Display")]
-    [SerializeField] private TextMeshProUGUI fractionText;
+    [SerializeField] private Button resetButton;
 
     private enum SelectedInput
     {
@@ -37,11 +37,39 @@ public class SimpleProbabilityManager : MonoBehaviour
     [SerializeField] private AudioClip correctAnswerSoundClip;
     [SerializeField] private AudioClip wrongAnswerSoundClip;
 
+    private void Awake()
+    {
+        if (resetButton != null)
+        {
+            resetButton.onClick.AddListener(ResetAll);
+        }
+
+        continueButton.onClick.AddListener(OnContinuePressed);
+    }
     private void Start()
     {
         SetSelection(SelectedInput.Numerator);
         numeratorSelectorUI.enabled = true;
         denominatorSelectorUI.enabled = false;
+    }
+
+    public void ResetAll()
+    {
+        numeratorSlot.ResetSlot();
+        denominatorSlot.ResetSlot();
+
+        foreach (var item in outcomeItems)
+        {
+            item.ResetSelection();
+        }
+    }
+
+    void ResetPuzzle()
+    {
+        numeratorSlot.ClearSlot();
+        denominatorSlot.ClearSlot();
+        isSolved = false;
+        explanationPanel.SetActive(false);
     }
 
     // ============================

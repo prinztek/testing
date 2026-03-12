@@ -1344,276 +1344,1284 @@
       "hints": ["Prime: {2,3,5}", "Odd: {1,3,5}", "Intersection: {3,5}", "2/6"],
       "answer": 0.3333
     },
-
     {
-      "id": 52,
-      "questionString": "A fair coin is tossed. What is the probability of getting heads?",
+      "id": 126,
+      "questionString": "A single die is rolled. What is the probability of getting a 4?",
       "type": "Simple_Probability",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of heads when tossing a coin",
-      "formulaNeeded": "P(E) = favorable outcomes / total outcomes",
+      "simplifiedQuestionString": "Probability of 4 on a die",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
       "hints": [
-        "A fair coin has 2 possible outcomes.",
-        "Only 1 outcome is heads."
+        "There is only one 4 on a die.",
+        "Total outcomes on a die are 6."
       ],
-      "answer": "1/2"
+      "answer": 0.1667
     },
     {
-      "id": 53,
-      "questionString": "A fair die is rolled. What is the probability of getting a number greater than 4?",
+      "id": 127,
+      "questionString": "A coin is tossed. What is the probability of getting heads?",
       "type": "Simple_Probability",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of rolling a number greater than 4",
-      "formulaNeeded": "P(E) = favorable outcomes / total outcomes",
-      "hints": ["Numbers greater than 4 are 5 and 6.", "A die has 6 sides."],
-      "answer": "1/3"
+      "simplifiedQuestionString": "Probability of heads",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": [
+        "A coin has two sides: heads and tails.",
+        "Only one side is heads."
+      ],
+      "answer": 0.5
     },
     {
-      "id": 54,
-      "questionString": "A card is drawn from a standard deck. What is the probability of drawing a heart?",
+      "id": 128,
+      "questionString": "A bag contains 5 red balls and 3 green balls. One ball is drawn at random. What is the probability it is green?",
       "type": "Simple_Probability",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of drawing a heart",
-      "formulaNeeded": "P(E) = favorable outcomes / total outcomes",
-      "hints": ["There are 4 suits in a deck.", "Each suit has 13 cards."],
-      "answer": "1/4"
+      "simplifiedQuestionString": "Probability of green ball",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": [
+        "Count the number of green balls.",
+        "Divide by total balls in the bag."
+      ],
+      "answer": 0.375
     },
     {
-      "id": 55,
-      "questionStri ng": "A bag contains 3 red balls and 7 blue balls. What is the probability of selecting a red ball?",
+      "id": 129,
+      "questionString": "A deck of 52 cards is shuffled and one card is drawn. What is the probability of drawing a heart?",
       "type": "Simple_Probability",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of selecting a red ball",
-      "formulaNeeded": "P(E) = favorable outcomes / total outcomes",
-      "hints": ["Total balls = 10.", "Red balls = 3."],
-      "answer": "3/10"
-    },
-    {
-      "id": 56,
-      "questionString": "A die is rolled. What is the probability of getting an even number or a number less than 3?",
-      "type": "Probability_of_Two_Events",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability of even or less than 3",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
+      "simplifiedQuestionString": "Probability of heart",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
       "hints": [
-        "Even numbers are 2, 4, 6.",
-        "Numbers less than 3 are 1, 2.",
-        "Do not double count 2."
+        "There are 13 hearts in a deck.",
+        "Total number of cards is 52."
       ],
-      "answer": "2/3"
+      "answer": 0.25
     },
     {
-      "id": 57,
-      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a diamond?",
-      "type": "Probability_of_Two_Events",
+      "id": 130,
+      "questionString": "A die is rolled. What is the probability of getting an odd number?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of odd number",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": ["Odd numbers on a die: 1, 3, 5.", "Total outcomes: 6."],
+      "answer": 0.5
+    },
+    {
+      "id": 131,
+      "questionString": "A bag contains 4 blue balls, 5 red balls, and 1 yellow ball. One ball is drawn at random. What is the probability of not getting yellow?",
+      "type": "Simple_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability of king or diamond",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
+      "simplifiedQuestionString": "Probability of not yellow ball",
+      "formulaNeeded": "P(not A) = 1 - P(A)",
       "hints": [
-        "There are 4 kings.",
-        "There are 13 diamonds.",
-        "One card is both king and diamond."
+        "Only 1 yellow ball out of 10 total balls.",
+        "Subtract probability of yellow from 1."
       ],
-      "answer": "4/13"
+      "answer": 0.9
     },
     {
-      "id": 58,
-      "questionString": "A number from 1 to 10 is chosen at random. What is the probability that it is divisible by 2 or divisible by 5?",
-      "type": "Probability_of_Two_Events",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability divisible by 2 or 5",
-      "formulaNeeded": "P(A ∪ B)",
+      "id": 132,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a red card?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of red card",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
       "hints": [
-        "Divisible by 2: 2,4,6,8,10.",
-        "Divisible by 5: 5,10.",
-        "Avoid double counting 10."
+        "Half the deck is red (hearts and diamonds).",
+        "Divide by total cards."
       ],
-      "answer": "3/5"
+      "answer": 0.5
     },
     {
-      "id": 59,
-      "questionString": "A single card is drawn. What is the probability of drawing a 7 or a queen?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of 7 or queen",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": ["There are 4 sevens.", "There are 4 queens."],
-      "answer": "2/13"
-    },
-    {
-      "id": 60,
-      "questionString": "A die is rolled. What is the probability of getting a 2 or a 5?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of 2 or 5",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Each outcome has probability 1/6.",
-        "There are 2 favorable outcomes."
-      ],
-      "answer": "1/3"
-    },
-    {
-      "id": 61,
-      "questionString": "A class has 12 students. If 3 students are chosen to present in order (1st, 2nd, 3rd), what is the probability that Alex, Ben, and Carla are chosen in that exact order?",
-      "type": "Probability Using Permutations and Combinations",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of 3 or 7",
-      "formulaNeeded": "P(A ∪ B)",
-      "hints": [
-        "There are 8 total outcomes.",
-        "There are 2 favorable outcomes."
-      ],
-      "answer": "1/4"
-    },
-    {
-      "id": 62,
-      "questionString": "From a deck of 52 playing cards, 5 cards are chosen at random. What is the probability that all 5 cards are hearts?",
-      "type": "Probability_Using_Combinations",
+      "id": 133,
+      "questionString": "A coin is tossed twice. What is the probability of getting two tails?",
+      "type": "Simple_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability 5 cards are hearts",
-      "formulaNeeded": "C(n,r)",
-      "hints": ["Total ways: 52C5.", "Favorable ways: 13C5."],
-      "answer": "33/16660"
-    },
-    {
-      "id": 63,
-      "questionString": "A committee of 4 people is chosen from 10 students. What is the probability that two specific students are included in the committee?",
-      "type": "Probability_Using_Combinations",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability two specific students included",
-      "formulaNeeded": "C(n,r)",
-      "hints": ["Total ways: 10C4.", "Favorable ways: 8C2."],
-      "answer": "2/15"
-    },
-    {
-      "id": 64,
-      "questionString": "A password consists of 4 different letters chosen from A–Z. What is the probability that the password starts with a vowel?",
-      "type": "Probability_Using_Permutations",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability password starts with vowel",
-      "formulaNeeded": "Permutation probability",
-      "hints": ["There are 5 vowels.", "Total possible first letters are 26."],
-      "answer": "5/26"
-    },
-    {
-      "id": 65,
-      "questionString": "From a group of 8 boys and 6 girls, 3 students are selected at random. What is the probability that exactly 2 girls are selected?",
-      "type": "Probability_Using_Combinations",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Probability exactly 2 girls selected",
-      "formulaNeeded": "C(n,r)",
-      "hints": ["Choose 2 girls from 6.", "Choose 1 boy from 8."],
-      "answer": "20/91"
-    },
-    {
-      "id": 66,
-      "questionString": "A coin is tossed twice. What is the probability of getting two heads?",
-      "type": "Independent_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of two heads",
-      "formulaNeeded": "P(A and B) = P(A) × P(B)",
-      "hints": ["Each head has probability 1/2.", "Multiply probabilities."],
-      "answer": "1/4"
-    },
-    {
-      "id": 67,
-      "questionString": "A die is rolled two times. What is the probability that both rolls show a number greater than 4?",
-      "type": "Independent_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability both rolls greater than 4",
+      "simplifiedQuestionString": "Two tails in two flips",
       "formulaNeeded": "P(A and B) = P(A) × P(B)",
       "hints": [
-        "Numbers greater than 4 are 5 and 6.",
-        "Probability each roll is 2/6."
+        "Each coin toss has a probability 1/2 for tails.",
+        "Multiply probabilities for two independent events."
       ],
-      "answer": "1/9"
+      "answer": 0.25
     },
     {
-      "id": 68,
-      "questionString": "A bag contains 5 red balls and 7 blue balls. Two balls are drawn without replacement. What is the probability that both balls are red?",
-      "type": "Dependent_Events",
+      "id": 134,
+      "questionString": "A die is rolled twice. What is the probability of getting a sum of 7?",
+      "type": "Simple_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability both balls are red",
+      "simplifiedQuestionString": "Sum of 7 in two dice",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": [
+        "List all pairs of dice that sum to 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1).",
+        "Total outcomes: 36."
+      ],
+      "answer": 0.1667
+    },
+    {
+      "id": 135,
+      "questionString": "A bag contains 3 white, 2 black, and 5 red balls. One ball is drawn at random. What is the probability it is black or red?",
+      "type": "Simple_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Black or red ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Count black balls: 2, red balls: 5.",
+        "They are mutually exclusive, add probabilities."
+      ],
+      "answer": 0.7
+    },
+    {
+      "id": 136,
+      "questionString": "A card is drawn from a deck. What is the probability of getting a face card?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Face card probability",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": [
+        "Face cards: Jack, Queen, King in each suit, total 12.",
+        "Total cards: 52."
+      ],
+      "answer": 0.2308
+    },
+    {
+      "id": 137,
+      "questionString": "A die is rolled. What is the probability of not getting a 3?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Not 3 on a die",
+      "formulaNeeded": "P(not A) = 1 - P(A)",
+      "hints": ["Probability of 3 is 1/6.", "Subtract from 1."],
+      "answer": 0.8333
+    },
+    {
+      "id": 138,
+      "questionString": "Two coins are tossed. What is the probability of getting at least one head?",
+      "type": "Simple_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "At least one head in two tosses",
+      "formulaNeeded": "P(at least one) = 1 - P(none)",
+      "hints": [
+        "Probability of no heads (both tails) = 1/4.",
+        "Subtract from 1."
+      ],
+      "answer": 0.75
+    },
+    {
+      "id": 139,
+      "questionString": "A bag contains 5 red and 7 blue balls. One ball is drawn. What is the probability it is red?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of red ball",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": ["Red balls: 5, total balls: 12.", "Divide favorable by total."],
+      "answer": 0.4167
+    },
+    {
+      "id": 140,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing an ace?",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of ace",
+      "formulaNeeded": "P(A) = favorable outcomes / total outcomes",
+      "hints": [
+        "There are 4 aces in a 52-card deck.",
+        "Divide favorable by total."
+      ],
+      "answer": 0.0769
+    },
+    {
+      "id": 141,
+      "questionString": "A coin is flipped twice. What is the probability of getting heads on both flips?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two heads in two flips",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Coin flips are independent events.",
+        "Each flip has a probability of 1/2 for heads."
+      ],
+      "answer": 0.25
+    },
+    {
+      "id": 142,
+      "questionString": "A die is rolled twice. What is the probability of getting a 5 on both rolls?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two 5s in two rolls",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Each roll is independent.",
+        "Probability of 5 on one roll is 1/6."
+      ],
+      "answer": 0.0278
+    },
+    {
+      "id": 143,
+      "questionString": "A bag contains 5 red balls and 5 blue balls. Two balls are drawn with replacement. What is the probability both are red?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two red balls with replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Replacement makes the events independent.",
+        "Probability of red each time is 5/10."
+      ],
+      "answer": 0.25
+    },
+    {
+      "id": 144,
+      "questionString": "A bag contains 5 red balls and 5 blue balls. Two balls are drawn without replacement. What is the probability both are red?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two red balls without replacement",
       "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
-      "hints": ["First red: 5/12.", "Second red: 4/11."],
-      "answer": "5/33"
+      "hints": [
+        "Without replacement, the second probability changes.",
+        "First probability is 5/10, second is 4/9."
+      ],
+      "answer": 0.2222
     },
     {
-      "id": 69,
-      "questionString": "A bag contains 3 green, 4 yellow, and 5 black marbles. Two marbles are drawn with replacement. What is the probability that both marbles are green?",
-      "type": "Independent_Events",
+      "id": 145,
+      "questionString": "A card is drawn from a deck, replaced, and another card is drawn. What is the probability of drawing two queens?",
+      "type": "Probability_of_Two_Events",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability both marbles green",
-      "formulaNeeded": "P(A and B) = P(A) × P(B)",
-      "hints": ["Total marbles: 12.", "Probability green each draw: 3/12."],
-      "answer": "1/16"
-    },
-    {
-      "id": 70,
-      "questionString": "A card is drawn from a standard deck, replaced, and another card is drawn. What is the probability that both cards are kings?",
-      "type": "Independent_Events",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability both cards are kings",
+      "simplifiedQuestionString": "Two queens with replacement",
       "formulaNeeded": "P(A and B) = P(A) × P(B)",
       "hints": [
-        "Probability of king: 4/52.",
-        "Replacement keeps probability same."
+        "There are 4 queens in 52 cards.",
+        "Replacement keeps the probability the same."
       ],
-      "answer": "1/169"
+      "answer": 0.0059
     },
     {
-      "id": 71,
-      "questionString": "In a class of 30 students, 18 like Math and 12 like Science. If 10 students like both, what is the probability that a student likes Science given that they like Math?",
+      "id": 146,
+      "questionString": "A card is drawn from a deck and not replaced. Another card is drawn. What is the probability both are kings?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two kings without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "First probability is 4/52.",
+        "Second probability is 3/51 after one king is removed."
+      ],
+      "answer": 0.0045
+    },
+    {
+      "id": 147,
+      "questionString": "A coin is flipped and a die is rolled. What is the probability of getting heads and a 4?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Head and 4",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Coin flip and die roll are independent.",
+        "Multiply probabilities of each event."
+      ],
+      "answer": 0.0833
+    },
+    {
+      "id": 148,
+      "questionString": "A bag contains 3 green balls and 2 yellow balls. Two balls are drawn without replacement. What is the probability both are green?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two green balls without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "First probability is 3/5.",
+        "Second probability is 2/4 after first green is drawn."
+      ],
+      "answer": 0.3
+    },
+    {
+      "id": 149,
+      "questionString": "A die is rolled and a card is drawn. What is the probability of rolling a 6 and drawing an ace?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "6 and ace",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Die roll and card draw are independent.",
+        "Multiply probabilities: 1/6 × 4/52."
+      ],
+      "answer": 0.0128
+    },
+    {
+      "id": 150,
+      "questionString": "Two cards are drawn from a deck without replacement. What is the probability that both are hearts?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two hearts without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First probability: 13/52.", "Second probability: 12/51."],
+      "answer": 0.0588
+    },
+    {
+      "id": 151,
+      "questionString": "A bag contains 4 red balls and 6 blue balls. Two balls are drawn with replacement. What is the probability both are blue?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two blue balls with replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Probability of blue each draw: 6/10.",
+        "Multiply probabilities since events are independent."
+      ],
+      "answer": 0.36
+    },
+    {
+      "id": 152,
+      "questionString": "Two students are selected from a group of 5 boys and 5 girls without replacement. What is the probability that both selected students are girls?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two girls selected without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First probability: 5/10.", "Second probability: 4/9."],
+      "answer": 0.2222
+    },
+    {
+      "id": 153,
+      "questionString": "A coin is flipped three times. What is the probability of getting three heads?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Three heads in three flips",
+      "formulaNeeded": "P(A and B and C) = P(A) × P(B) × P(C)",
+      "hints": [
+        "Probability of head on each flip: 1/2.",
+        "Multiply for all three flips."
+      ],
+      "answer": 0.125
+    },
+    {
+      "id": 154,
+      "questionString": "A bag contains 2 red balls and 3 blue balls. Two balls are drawn without replacement. What is the probability that the first is red and the second is blue?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Red then blue without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "First probability: 2/5 for red.",
+        "Second probability: 3/4 for blue after red drawn."
+      ],
+      "answer": 0.3
+    },
+    {
+      "id": 155,
+      "questionString": "Two cards are drawn from a deck without replacement. What is the probability that the first card is a king and the second card is a queen?",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "King then queen without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "First probability: 4/52 for king.",
+        "Second probability: 4/51 for queen after king drawn."
+      ],
+      "answer": 0.006
+    },
+    {
+      "id": 156,
+      "questionString": "A single die is rolled. What is the probability of getting a 3 or a 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of 3 or 5",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "3 and 5 cannot occur at the same time.",
+        "Add their individual probabilities."
+      ],
+      "answer": 0.3333
+    },
+    {
+      "id": 157,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a heart or a spade?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Heart or spade",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both a heart and a spade.",
+        "Each suit has 13 cards out of 52."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 158,
+      "questionString": "A bag contains 4 red and 6 blue balls. One ball is drawn. What is the probability of getting red or blue?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Red or blue ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Balls cannot be both colors.",
+        "Add probabilities of red and blue."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 159,
+      "questionString": "A die is rolled. What is the probability of getting a 1 or a 6?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "1 or 6 on a die",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": ["1 and 6 cannot occur together.", "Probability of each = 1/6."],
+      "answer": 0.3333
+    },
+    {
+      "id": 160,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a queen?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "King or queen",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both king and queen.",
+        "There are 4 kings and 4 queens."
+      ],
+      "answer": 0.1538
+    },
+    {
+      "id": 161,
+      "questionString": "A bag contains 3 white, 2 black, and 5 red balls. One ball is drawn. What is the probability it is black or red?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Black or red ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Black and red cannot occur at the same time.",
+        "Add probabilities."
+      ],
+      "answer": 0.7
+    },
+    {
+      "id": 162,
+      "questionString": "A single die is rolled. What is the probability of getting an even number or an odd number?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Even or odd",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Even and odd are mutually exclusive.",
+        "All numbers are either even or odd."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 163,
+      "questionString": "A coin is tossed. What is the probability of getting heads or tails?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Heads or tails",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Coin shows either heads or tails, not both.",
+        "Add probabilities: 1/2 + 1/2."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 164,
+      "questionString": "From a deck, what is the probability of drawing a spade or a club?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Spade or club",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Spade and club cannot happen at the same time.",
+        "Each suit has 13/52 probability."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 165,
+      "questionString": "A bag contains 6 green balls and 4 yellow balls. One ball is drawn. What is the probability of green or yellow?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Green or yellow ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Green and yellow cannot occur simultaneously.",
+        "Add individual probabilities."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 166,
+      "questionString": "A die is rolled. What is the probability of getting 2 or 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "2 or 5",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Events are mutually exclusive.",
+        "Add probabilities: 1/6 + 1/6."
+      ],
+      "answer": 0.3333
+    },
+    {
+      "id": 167,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a jack or a 10?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Jack or 10",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both jack and 10.",
+        "There are 4 of each in a deck."
+      ],
+      "answer": 0.1538
+    },
+    {
+      "id": 168,
+      "questionString": "A bag contains 5 red and 7 blue balls. One ball is drawn. What is the probability of getting red or blue?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Red or blue",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Red and blue cannot occur together.",
+        "Add probabilities: 5/12 + 7/12."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 169,
+      "questionString": "A coin is tossed twice. What is the probability of getting heads on the first toss or tails on the second toss?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Head first or tail second",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)",
+      "hints": [
+        "Events are not mutually exclusive if considered carefully.",
+        "Subtract intersection if necessary."
+      ],
+      "answer": 0.75
+    },
+    {
+      "id": 170,
+      "questionString": "A die is rolled. What is the probability of getting 1, 3, or 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Odd numbers on a die",
+      "formulaNeeded": "P(A ∪ B ∪ C) = P(A) + P(B) + P(C)",
+      "hints": [
+        "1,3,5 are Mutually_Exclusive_Events.",
+        "Add probabilities: 1/6 each."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 171,
+      "questionString": "A single die is rolled. What is the probability of getting a 3 or a 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Probability of 3 or 5",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "3 and 5 cannot occur at the same time.",
+        "Add their individual probabilities."
+      ],
+      "answer": 0.3333
+    },
+    {
+      "id": 172,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a heart or a spade?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Heart or spade",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both a heart and a spade.",
+        "Each suit has 13 cards out of 52."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 173,
+      "questionString": "A bag contains 4 red and 6 blue balls. One ball is drawn. What is the probability of getting red or blue?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Red or blue ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Balls cannot be both colors.",
+        "Add probabilities of red and blue."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 174,
+      "questionString": "A die is rolled. What is the probability of getting a 1 or a 6?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "1 or 6 on a die",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": ["1 and 6 cannot occur together.", "Probability of each = 1/6."],
+      "answer": 0.3333
+    },
+    {
+      "id": 175,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a queen?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "King or queen",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both king and queen.",
+        "There are 4 kings and 4 queens."
+      ],
+      "answer": 0.1538
+    },
+    {
+      "id": 176,
+      "questionString": "A bag contains 3 white, 2 black, and 5 red balls. One ball is drawn. What is the probability it is black or red?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Black or red ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Black and red cannot occur at the same time.",
+        "Add probabilities."
+      ],
+      "answer": 0.7
+    },
+    {
+      "id": 177,
+      "questionString": "A single die is rolled. What is the probability of getting an even number or an odd number?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Even or odd",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Even and odd are mutually exclusive.",
+        "All numbers are either even or odd."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 178,
+      "questionString": "A coin is tossed. What is the probability of getting heads or tails?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Heads or tails",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Coin shows either heads or tails, not both.",
+        "Add probabilities: 1/2 + 1/2."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 179,
+      "questionString": "From a deck, what is the probability of drawing a spade or a club?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Spade or club",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Spade and club cannot happen at the same time.",
+        "Each suit has 13/52 probability."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 180,
+      "questionString": "A bag contains 6 green balls and 4 yellow balls. One ball is drawn. What is the probability of green or yellow?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Green or yellow ball",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Green and yellow cannot occur simultaneously.",
+        "Add individual probabilities."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 181,
+      "questionString": "A die is rolled. What is the probability of getting 2 or 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "2 or 5",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Events are mutually exclusive.",
+        "Add probabilities: 1/6 + 1/6."
+      ],
+      "answer": 0.3333
+    },
+    {
+      "id": 182,
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a jack or a 10?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Jack or 10",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "A card cannot be both jack and 10.",
+        "There are 4 of each in a deck."
+      ],
+      "answer": 0.1538
+    },
+    {
+      "id": 183,
+      "questionString": "A bag contains 5 red and 7 blue balls. One ball is drawn. What is the probability of getting red or blue?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Red or blue",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "hints": [
+        "Red and blue cannot occur together.",
+        "Add probabilities: 5/12 + 7/12."
+      ],
+      "answer": 1
+    },
+    {
+      "id": 184,
+      "questionString": "A coin is tossed twice. What is the probability of getting heads on the first toss or tails on the second toss?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Head first or tail second",
+      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)",
+      "hints": [
+        "Events are not mutually exclusive if considered carefully.",
+        "Subtract intersection if necessary."
+      ],
+      "answer": 0.75
+    },
+    {
+      "id": 185,
+      "questionString": "A die is rolled. What is the probability of getting 1, 3, or 5?",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Odd numbers on a die",
+      "formulaNeeded": "P(A ∪ B ∪ C) = P(A) + P(B) + P(C)",
+      "hints": [
+        "1,3,5 are Mutually_Exclusive_Events.",
+        "Add probabilities: 1/6 each."
+      ],
+      "answer": 0.5
+    },
+    {
+      "id": 186,
+      "questionString": "From 5 boys and 3 girls, a committee of 3 is to be formed. What is the probability that all members are boys?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "All boys in committee of 3",
+      "formulaNeeded": "P = C(favorable) / C(total)",
+      "hints": [
+        "Total ways to choose 3 from 8: C(8,3).",
+        "Ways to choose 3 boys: C(5,3)."
+      ],
+      "answer": 0.3571
+    },
+    {
+      "id": 187,
+      "questionString": "From 4 men and 6 women, a team of 2 is selected. What is the probability that one man and one woman are selected?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "One man and one woman",
+      "formulaNeeded": "P = C(men,1) * C(women,1) / C(total,2)",
+      "hints": [
+        "Multiply combinations for men and women, then divide by total combinations."
+      ],
+      "answer": 0.5333
+    },
+    {
+      "id": 188,
+      "questionString": "A box contains 10 bulbs, 3 defective. Two bulbs are selected at random. What is the probability that both are non-defective?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two non-defective bulbs",
+      "formulaNeeded": "P = C(non-defective,2)/C(total,2)",
+      "hints": [
+        "Non-defective bulbs: 7.",
+        "Total ways to choose 2 bulbs: C(10,2)."
+      ],
+      "answer": 0.4667
+    },
+    {
+      "id": 189,
+      "questionString": "From 6 players, a captain and a vice-captain are to be selected. What is the probability that a particular player becomes captain?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Specific player as captain",
+      "formulaNeeded": "P = favorable arrangements / total arrangements",
+      "hints": [
+        "Total arrangements for captain and vice: 6 × 5.",
+        "Favorable: 1 × 5 (specific captain)."
+      ],
+      "answer": 0.2
+    },
+    {
+      "id": 190,
+      "questionString": "From a deck of 52 cards, 2 cards are drawn. What is the probability that both are aces?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two aces drawn",
+      "formulaNeeded": "P = C(4,2)/C(52,2)",
+      "hints": [
+        "Ways to choose 2 aces: C(4,2).",
+        "Total ways to choose 2 cards: C(52,2)."
+      ],
+      "answer": 0.0045
+    },
+    {
+      "id": 191,
+      "questionString": "From 10 students, a group of 4 is to be formed. What is the probability that two particular students are in the group?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two specific students in group",
+      "formulaNeeded": "P = C(remaining,2)/C(total,4)",
+      "hints": [
+        "Two specific students already chosen, choose 2 more from 8 remaining.",
+        "Total combinations: C(10,4)."
+      ],
+      "answer": 0.3714
+    },
+    {
+      "id": 192,
+      "questionString": "A box has 5 red, 4 blue, and 3 green balls. Three balls are drawn. What is the probability that all are red?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "All red balls drawn",
+      "formulaNeeded": "P = C(5,3)/C(12,3)",
+      "hints": ["Total balls: 12.", "Ways to choose 3 red: C(5,3)."],
+      "answer": 0.1515
+    },
+    {
+      "id": 193,
+      "questionString": "From 7 men and 5 women, a committee of 3 is to be formed. What is the probability that it has at least 1 woman?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Committee with at least 1 woman",
+      "formulaNeeded": "P = 1 - C(men,3)/C(total,3)",
+      "hints": ["Find probability of no women and subtract from 1."],
+      "answer": 0.8571
+    },
+    {
+      "id": 194,
+      "questionString": "A box has 8 bulbs, 3 are defective. Two bulbs are selected without replacement. What is the probability that one is defective and one is not?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "One defective, one non-defective",
+      "formulaNeeded": "P = [C(defective,1)*C(non-defective,1)]/C(total,2)",
+      "hints": [
+        "Choose one defective and one non-defective.",
+        "Divide by total combinations."
+      ],
+      "answer": 0.5357
+    },
+    {
+      "id": 195,
+      "questionString": "From 5 men and 4 women, a pair is selected randomly. What is the probability the pair consists of a man and a woman?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "One man and one woman",
+      "formulaNeeded": "P = [C(5,1)*C(4,1)]/C(9,2)",
+      "hints": ["Choose 1 man and 1 woman, divide by total pairs."],
+      "answer": 0.5556
+    },
+    {
+      "id": 196,
+      "questionString": "From 6 students, a president and secretary are selected. What is the probability that a particular student becomes secretary?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Specific student as secretary",
+      "formulaNeeded": "P = favorable / total",
+      "hints": [
+        "Total arrangements: 6 × 5.",
+        "Favorable: 5 arrangements with specific secretary."
+      ],
+      "answer": 0.8333
+    },
+    {
+      "id": 197,
+      "questionString": "A deck has 52 cards. What is the probability of drawing two face cards?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two face cards drawn",
+      "formulaNeeded": "P = C(12,2)/C(52,2)",
+      "hints": ["Face cards: 12 in deck.", "Total combinations: C(52,2)."],
+      "answer": 0.0533
+    },
+    {
+      "id": 198,
+      "questionString": "From 8 men and 6 women, a group of 4 is to be formed. What is the probability it consists of 2 men and 2 women?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Group of 2 men and 2 women",
+      "formulaNeeded": "P = [C(8,2)*C(6,2)]/C(14,4)",
+      "hints": ["Choose 2 men and 2 women, divide by total combinations."],
+      "answer": 0.4762
+    },
+    {
+      "id": 199,
+      "questionString": "From 10 bulbs, 4 are defective. Two bulbs are selected at random. What is the probability that exactly one is defective?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Exactly one defective bulb",
+      "formulaNeeded": "P = [C(defective,1)*C(non-defective,1)]/C(total,2)",
+      "hints": [
+        "Select 1 defective and 1 non-defective, divide by total pairs."
+      ],
+      "answer": 0.5333
+    },
+    {
+      "id": 200,
+      "questionString": "From 6 men and 4 women, a committee of 3 is to be formed. What is the probability that all members are women?",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "All women in committee",
+      "formulaNeeded": "P = C(4,3)/C(10,3)",
+      "hints": [
+        "Ways to choose 3 women from 4.",
+        "Total ways to choose 3 from 10."
+      ],
+      "answer": 0.0667
+    },
+    {
+      "id": 201,
+      "questionString": "A coin is tossed twice. What is the probability of getting heads on both tosses?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two heads in two tosses",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Coin tosses are independent events.",
+        "Probability of head each toss is 1/2."
+      ],
+      "answer": 0.25
+    },
+    {
+      "id": 202,
+      "questionString": "A die is rolled twice. What is the probability of getting a 4 on both rolls?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Two 4s in two rolls",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Die rolls are independent.",
+        "Probability of 4 on one roll: 1/6."
+      ],
+      "answer": 0.0278
+    },
+    {
+      "id": 203,
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn with replacement. What is the probability both are blue?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two blue balls with replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Replacement makes events independent.",
+        "Probability of blue each draw: 5/10."
+      ],
+      "answer": 0.25
+    },
+    {
+      "id": 204,
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. What is the probability both are blue?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two blue balls without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "Without replacement, the second probability changes.",
+        "First probability: 5/10, second: 4/9."
+      ],
+      "answer": 0.2222
+    },
+    {
+      "id": 205,
+      "questionString": "A card is drawn from a deck and replaced. Another card is drawn. What is the probability of drawing two aces?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two aces with replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Replacement keeps events independent.",
+        "Probability of ace each draw: 4/52."
+      ],
+      "answer": 0.0059
+    },
+    {
+      "id": 206,
+      "questionString": "A card is drawn from a deck and not replaced. Another card is drawn. What is the probability both are kings?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two kings without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": [
+        "First probability: 4/52.",
+        "Second probability: 3/51 after removing one king."
+      ],
+      "answer": 0.0045
+    },
+    {
+      "id": 207,
+      "questionString": "A die is rolled twice. What is the probability of getting a 2 first and a 5 second?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "2 then 5 on die",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": ["Rolls are independent events.", "Probability: 1/6 × 1/6."],
+      "answer": 0.0278
+    },
+    {
+      "id": 208,
+      "questionString": "A bag has 4 red and 6 blue balls. Two balls are drawn without replacement. What is the probability that first is red and second is blue?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Red then blue without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First probability: 4/10.", "Second probability: 6/9."],
+      "answer": 0.2667
+    },
+    {
+      "id": 209,
+      "questionString": "A coin is tossed twice. What is the probability of getting at least one head?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "At least one head",
+      "formulaNeeded": "P(at least one) = 1 - P(none)",
+      "hints": [
+        "Probability of no heads (both tails) = 1/4.",
+        "Subtract from 1."
+      ],
+      "answer": 0.75
+    },
+    {
+      "id": 300,
+      "questionString": "A bag contains 3 green and 2 yellow balls. Two balls are drawn without replacement. What is the probability that both are green?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two green balls without replacement",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First probability: 3/5.", "Second probability: 2/4."],
+      "answer": 0.3
+    },
+    {
+      "id": 301,
+      "questionString": "Two cards are drawn from a deck without replacement. What is the probability the first is a king and second is a queen?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "King then queen",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First probability: 4/52.", "Second probability: 4/51."],
+      "answer": 0.006
+    },
+    {
+      "id": 302,
+      "questionString": "A die is rolled and a coin is tossed. What is the probability of rolling a 6 and tossing a head?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "6 on die and head",
+      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "hints": [
+        "Die and coin are independent.",
+        "Multiply probabilities: 1/6 × 1/2."
+      ],
+      "answer": 0.0833
+    },
+    {
+      "id": 303,
+      "questionString": "A bag contains 2 red and 3 blue balls. Two balls are drawn without replacement. What is the probability of drawing one red and one blue?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "One red and one blue",
+      "formulaNeeded": "P = [P(R then B) + P(B then R)]",
+      "hints": [
+        "Consider both orders: red-blue and blue-red.",
+        "Compute each and add probabilities."
+      ],
+      "answer": 0.6667
+    },
+    {
+      "id": 304,
+      "questionString": "A coin is tossed three times. What is the probability of getting exactly two heads?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Exactly two heads in three tosses",
+      "formulaNeeded": "P = C(3,2)*(1/2)^2*(1/2)^1",
+      "hints": [
+        "Use combination for number of ways to arrange 2 heads in 3 tosses.",
+        "Multiply by probability of each outcome."
+      ],
+      "answer": 0.375
+    },
+    {
+      "id": 305,
+      "questionString": "A deck of cards: two cards drawn without replacement. What is the probability both are red?",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Two red cards",
+      "formulaNeeded": "P(A and B) = P(A) × P(B|A)",
+      "hints": ["First red: 26/52.", "Second red: 25/51."],
+      "answer": 0.2451
+    },
+    {
+      "id": 306,
+      "questionString": "A bag contains 3 red and 2 blue balls. One ball is drawn. Given that it is red, what is the probability that another red ball is drawn without replacement?",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability Science given Math",
-      "formulaNeeded": "P(A|B) = P(A ∩ B) / P(B)",
-      "hints": ["Students who like both: 10.", "Students who like Math: 18."],
-      "answer": "5/9"
+      "simplifiedQuestionString": "Second red given first red",
+      "formulaNeeded": "P(B|A) = P(A and B)/P(A)",
+      "hints": [
+        "First red is drawn, only 2 red balls left.",
+        "Total remaining balls: 4."
+      ],
+      "answer": 0.5
     },
     {
-      "id": 72,
-      "questionString": "A box contains 6 red balls and 4 blue balls. One ball is drawn and not replaced, then another ball is drawn. What is the probability that the second ball is red given that the first ball was blue?",
+      "id": 307,
+      "questionString": "From a deck, a card is drawn. Given that it is a face card, what is the probability that it is a king?",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability second red given first blue",
-      "formulaNeeded": "Conditional probability",
-      "hints": ["After removing blue, 9 balls remain.", "6 of them are red."],
-      "answer": "2/3"
+      "simplifiedQuestionString": "King given face card",
+      "formulaNeeded": "P(King|Face) = P(King ∩ Face)/P(Face)",
+      "hints": ["There are 4 kings among 12 face cards."],
+      "answer": 0.3333
     },
     {
-      "id": 73,
-      "questionString": "From a deck of 52 cards, one card is drawn. What is the probability that the card is a queen given that it is a face card?",
+      "id": 308,
+      "questionString": "A die is rolled. Given that the outcome is even, what is the probability that it is 4?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "4 given even",
+      "formulaNeeded": "P(4|Even) = P(4 ∩ Even)/P(Even)",
+      "hints": ["Even numbers: 2,4,6.", "Only one favorable outcome: 4."],
+      "answer": 0.3333
+    },
+    {
+      "id": 309,
+      "questionString": "A bag has 5 red and 3 green balls. One ball is drawn. Given that it is red, what is the probability it was the first ball drawn in two draws without replacement?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "First red in two draws",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
+      "hints": ["Consider total probability of drawing red in any draw."],
+      "answer": 0.625
+    },
+    {
+      "id": 310,
+      "questionString": "Two cards are drawn from a deck without replacement. Given that the first card is an ace, what is the probability that the second card is also an ace?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Second ace given first ace",
+      "formulaNeeded": "P(A2|A1) = P(A1 ∩ A2)/P(A1)",
+      "hints": ["After first ace, 3 aces left out of 51 remaining cards."],
+      "answer": 0.0588
+    },
+    {
+      "id": 311,
+      "questionString": "A bag contains 4 white and 6 black balls. One ball is drawn. Given that it is white, what is the probability that another white ball is drawn without replacement?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Second white given first white",
+      "formulaNeeded": "P(B|A) = P(A ∩ B)/P(A)",
+      "hints": ["First white drawn, 3 white balls left, total 9 balls remain."],
+      "answer": 0.3333
+    },
+    {
+      "id": 312,
+      "questionString": "Two dice are rolled. Given that the sum is 8, what is the probability that one die shows 5?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "One die 5 given sum 8",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
+      "hints": [
+        "List all pairs that sum to 8: (2,6),(3,5),(4,4),(5,3),(6,2).",
+        "Count favorable outcomes."
+      ],
+      "answer": 0.4
+    },
+    {
+      "id": 313,
+      "questionString": "A card is drawn from a deck. Given that it is red, what is the probability it is a heart?",
       "type": "Conditional_Probability",
       "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability queen given face card",
-      "formulaNeeded": "P(A|B) = P(A ∩ B) / P(B)",
-      "hints": ["There are 12 face cards.", "There are 4 queens."],
-      "answer": "1/3"
+      "simplifiedQuestionString": "Heart given red",
+      "formulaNeeded": "P(Heart|Red) = P(Heart ∩ Red)/P(Red)",
+      "hints": ["Red cards: hearts and diamonds.", "Favorable: hearts."],
+      "answer": 0.5
     },
     {
-      "id": 74,
-      "questionString": "In a survey, 60% of students play sports, and 25% both play sports and are in the music club. What is the probability that a student is in the music club given that they play sports?",
+      "id": 314,
+      "questionString": "From a group of 6 boys and 4 girls, one student is selected. Given that the student is a girl, what is the probability that she is one of two particular girls?",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability music club given sports",
-      "formulaNeeded": "P(A|B) = P(A ∩ B) / P(B)",
-      "hints": ["P(Sports and Music) = 0.25.", "P(Sports) = 0.60."],
-      "answer": "5/12"
+      "simplifiedQuestionString": "Specific girl given girl",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
+      "hints": ["Two particular girls out of 4 total girls."],
+      "answer": 0.5
     },
     {
-      "id": 75,
-      "questionString": "A jar contains 5 white and 3 black balls. Two balls are drawn without replacement. What is the probability that the second ball is white given that the first ball was white?",
+      "id": 315,
+      "questionString": "Two cards are drawn from a deck. Given that at least one is an ace, what is the probability that both are aces?",
+      "type": "Conditional_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "Both aces given at least one ace",
+      "formulaNeeded": "P(A ∩ B|A ∪ B) = P(A ∩ B)/P(at least one ace)",
+      "hints": ["Use probability of at least one ace = 1 - P(no aces)."],
+      "answer": 0.0588
+    },
+    {
+      "id": 316,
+      "questionString": "A die is rolled twice. Given that the first roll is even, what is the probability that the second roll is greater than 3?",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Probability second white given first white",
-      "formulaNeeded": "Conditional probability",
+      "simplifiedQuestionString": "Second roll >3 given first even",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
       "hints": [
-        "After one white is removed, 7 balls remain.",
-        "4 of them are white."
+        "Second roll probabilities independent of first roll.",
+        "Second roll >3: 4,5,6 → 3/6 probability."
       ],
-      "answer": "4/7"
+      "answer": 0.5
+    },
+    {
+      "id": 317,
+      "questionString": "A bag contains 3 red and 2 green balls. Two balls are drawn without replacement. Given that the second ball is green, what is the probability that the first ball was red?",
+      "type": "Conditional_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "First red given second green",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
+      "hints": ["Use cases: first red then green vs first green then green."],
+      "answer": 0.6
+    },
+    {
+      "id": 318,
+      "questionString": "A card is drawn from a deck. Given that it is a spade, what is the probability that it is a king?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "King given spade",
+      "formulaNeeded": "P(King|Spade) = P(King ∩ Spade)/P(Spade)",
+      "hints": ["Only 1 king of spades among 13 spades."],
+      "answer": 0.0769
+    },
+    {
+      "id": 319,
+      "questionString": "Two dice are rolled. Given that the sum is even, what is the probability that both dice show the same number?",
+      "type": "Conditional_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "Both dice same given sum even",
+      "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
+      "hints": [
+        "Even sum: 18 outcomes.",
+        "Favorable: (1,1),(2,2),(3,3),(4,4),(5,5),(6,6)."
+      ],
+      "answer": 0.3333
+    },
+    {
+      "id": 320,
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. Given that the first is red, what is the probability that the second is blue?",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Second blue given first red",
+      "formulaNeeded": "P(B|A) = P(A ∩ B)/P(A)",
+      "hints": ["After first red drawn, 5 blue left out of 9 remaining balls."],
+      "answer": 0.5556
     }
   ]
 }

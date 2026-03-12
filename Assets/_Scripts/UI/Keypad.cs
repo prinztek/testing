@@ -17,6 +17,7 @@ public class Keypad : MonoBehaviour
     public GameObject buttonClear;
     public GameObject buttonBackspace;
     public GameObject buttonPeriod;
+    public GameObject buttonSlash;
 
 
     public void b1()
@@ -92,5 +93,10 @@ public class Keypad : MonoBehaviour
     {
         // Debug.Log("Button Period pressed");
         inputField.text += ".";
+    }
+    public void bSlash()
+    {
+        // Debug.Log("Button Slash pressed");
+        inputField.text += "/";
     }
 }

@@ -10,6 +10,8 @@ public class OutcomeItem : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private SimpleProbabilityManager manager;
+    [SerializeField] private ProbabilityTwoEventsManager twoEventManager;
+
 
     public string value = "";
 
@@ -25,7 +27,18 @@ public class OutcomeItem : MonoBehaviour
     // Called by Button component
     public void OnClick()
     {
-        manager.HandleOutcomeItemClick(this);
+        if (twoEventManager != null)
+        {
+            twoEventManager.HandleOutcomeItemClick(this);
+        }
+        else if (manager != null)
+        {
+            manager.HandleOutcomeItemClick(this);
+        }
+        else
+        {
+            Debug.LogWarning("No probability manager assigned to " + gameObject.name);
+        }
     }
 
     // ============================
@@ -62,5 +75,17 @@ public class OutcomeItem : MonoBehaviour
             slot.Add(value);
         else
             slot.Remove(value);
+    }
+
+    public void ResetSelection()
+    {
+        selectedForNumerator = false;
+        selectedForDenominator = false;
+
+        if (numeratorSelector != null)
+            numeratorSelector.enabled = false;
+
+        if (denominatorSelector != null)
+            denominatorSelector.enabled = false;
     }
 }

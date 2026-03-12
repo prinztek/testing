@@ -98,6 +98,8 @@ public class BasicInteractableObject : MonoBehaviour
 
             // probability
             var vennDiagramPuzzle = spawnedPuzzle.GetComponentInChildren<UnionAndIntersectionManager>();
+            var simpleProbabilityPuzzle = spawnedPuzzle.GetComponentInChildren<SimpleProbabilityManager>();
+            var probabilityTwoEventsPuzzle = spawnedPuzzle.GetComponentInChildren<ProbabilityTwoEventsManager>();
 
             if (permutationAndConditionPuzzle != null)
             {
@@ -126,6 +128,14 @@ public class BasicInteractableObject : MonoBehaviour
             else if (vennDiagramPuzzle != null)
             {
                 vennDiagramPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (simpleProbabilityPuzzle != null)
+            {
+                simpleProbabilityPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
+            }
+            else if (probabilityTwoEventsPuzzle != null)
+            {
+                probabilityTwoEventsPuzzle.OnPuzzleSolved.AddListener(OnPuzzleSolved);
             }
             else
             {
