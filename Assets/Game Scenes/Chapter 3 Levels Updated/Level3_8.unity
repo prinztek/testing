@@ -2833,7 +2833,7 @@ Transform:
   m_GameObject: {fileID: 542937936}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 3.375, z: -10}
+  m_LocalPosition: {x: -3, y: 3.375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2974,15 +2974,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.043750003
     y: 0
-    width: 1
-    height: 1
+    width: 0.16666667
+    height: 0.41111112
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 6.9375
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -10805,7 +10805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee89c24693b46419b84bdce647a2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  impulseSource: {fileID: 0}
+  impulseSource: {fileID: 1398186107}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
@@ -10828,8 +10828,13 @@ MonoBehaviour:
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
   isSummon: 0
-  dropTable: []
-  pickupPrefab: {fileID: 0}
+  dropTable:
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  - {fileID: 11400000, guid: 80525b5bfcee869438061a6cccb85174, type: 2}
+  pickupPrefab: {fileID: 6123459713730238132, guid: 06f78f16ef6f6274294556099e439348, type: 3}
   IsDead: 0
   isHurt: 0
   lastHitDirection: {x: 0, y: 0}
@@ -10899,8 +10904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnHitFlashVFX
   onDamageVfxMat: {fileID: 2100000, guid: a2378bf6e0909b8468604bb1474f3581, type: 2}
-  onBurnVfxMat: {fileID: 0}
-  onSlowVfxMat: {fileID: 0}
+  onBurnVfxMat: {fileID: 2100000, guid: 3fdbcf470043db54ab1083254a1805ac, type: 2}
+  onSlowVfxMat: {fileID: 2100000, guid: 63c82f1857a3f454c84c3ad110023cd8, type: 2}
   flashDuration: 0.15
 --- !u!61 &1398186109
 BoxCollider2D:

@@ -130,10 +130,12 @@ public class FactorialCalculatorUI : MonoBehaviour
 
         if (int.TryParse(input.text, out int number) && number >= 0)
         {
-            long factorial = 1;
-            for (int i = 1; i <= number; i++)
+            long factorial = MathTables.Factorial(number);
+
+            if (factorial == 0)
             {
-                factorial *= i;
+                resultText.text = "Out of range (0–15)";
+                return;
             }
 
             resultText.text = $"Result: {factorial}";

@@ -261,6 +261,13 @@ public class InventoryUI : MonoBehaviour
 
         if (selectedItem.itemType == ItemType.Consumable)
         {
+            //  If this is a heath potion, return if the player is already at full health to prevent waste
+            if (selectedItem.healAmount > 0 && characterStats.CurrentHealth >= characterStats.maxHealth)
+            {
+                Debug.Log("Health is already full. Cannot use health potion.");
+                return;
+            }
+
             playerInventory.UseItem(selectedItem);
             // If item was consumed and no longer exists, selection will be handled in RefreshUI
         }
