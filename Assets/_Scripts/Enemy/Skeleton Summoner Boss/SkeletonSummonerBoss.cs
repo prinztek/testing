@@ -414,3 +414,11 @@ public class SkeletonSummonerBoss : MonoBehaviour
         Destroy(fx, 1.167f);
     }
 }
+
+// Skeleton summoner boss pattern
+// idle
+// -> summon
+// -> combat
+// -> rage
+// -> vulnerable
+// repeat

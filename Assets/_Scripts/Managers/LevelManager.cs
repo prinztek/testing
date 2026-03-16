@@ -121,10 +121,20 @@ public class LevelManager : MonoBehaviour
         // Debug.Log("Level completed!");
 
         string sceneName = SceneManager.GetActiveScene().name;
+
+
         if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
         {
+            // Debug.Log($"Parsed scene name '{sceneName}' as Chapter {chapterIndex + 1}, Level {levelIndex + 1}.");
             if (GameManager.Instance != null)
             {
+                // if this is chapter 3 level 8 or 2_7, this is the last level and we should trigger the true ending instead of just a victory screen
+                if (chapterIndex == 2 && levelIndex == 7)
+                {
+                    GameManager.Instance.TriggerTrueEnding();
+                    return;
+                }
+                // normal level completion
                 GameManager.Instance.CompleteLevel(chapterIndex, levelIndex, 0);
                 GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);
             }

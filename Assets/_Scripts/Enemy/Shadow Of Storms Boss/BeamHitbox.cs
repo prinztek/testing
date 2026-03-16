@@ -4,13 +4,21 @@ public class BeamHitbox : MonoBehaviour
 {
     [SerializeField] private int damage = 10;
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Hurtbox"))
+        // Check if the collider belongs to a "Hurtbox" (likely the player or another enemy)
+        if (other.CompareTag("Hurtbox"))
         {
-            CharacterStats playerStats = collision.GetComponentInParent<CharacterStats>();
+            // Try to get the CharacterStats component from the parent of the other object
+            CharacterStats playerStats = other.GetComponentInParent<CharacterStats>();
 
-            playerStats?.TakeDamage(damage, transform.position);
+            if (playerStats != null)
+            {
+                // Apply damage to the player
+                playerStats.TakeDamage(damage, transform.root.position);
+                // Optional: Apply additional effects like knockback or status effects
+            }
+
         }
     }
 }
