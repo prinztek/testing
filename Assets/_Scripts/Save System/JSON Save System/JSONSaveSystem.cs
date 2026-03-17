@@ -117,6 +117,9 @@ public static class JSONSaveSystem
 
 
     // Wrapper to combine all 3 into 1 file
+    // game data (chapters, levels)
+    // player data (inventory, unlocked skills)
+    // used math questions (to prevent repeats)
 
     public static void SaveSlot(GameData gameData, string profileId)
     {
@@ -134,7 +137,10 @@ public static class JSONSaveSystem
         string fullPath = Path.Combine(folderPath, "game_data.json");
 
         string json = JsonConvert.SerializeObject(gameData, Formatting.Indented);
-        File.WriteAllText(fullPath, json);
+        string encrypted = EncryptDecrypt(json);
+        string safe = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(encrypted));
+
+        File.WriteAllText(fullPath, safe);
 
         Debug.Log($"Saved profile '{profileId}' to: {fullPath}");
     }
@@ -153,8 +159,26 @@ public static class JSONSaveSystem
 
         if (File.Exists(fullPath))
         {
-            string json = File.ReadAllText(fullPath);
-            return JsonConvert.DeserializeObject<GameData>(json);
+            // string json = File.ReadAllText(fullPath);
+            // return JsonConvert.DeserializeObject<GameData>(json);
+
+            string safe = File.ReadAllText(fullPath);
+
+            try
+            {
+                // Decode Base64
+                string encrypted = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(safe));
+
+                // Decrypt XOR
+                string decrypted = EncryptDecrypt(encrypted);
+
+                return JsonConvert.DeserializeObject<GameData>(decrypted);
+            }
+            catch
+            {
+                Debug.LogWarning("Save not encrypted. Loading raw JSON.");
+                return JsonConvert.DeserializeObject<GameData>(safe);
+            }
         }
 
         Debug.LogWarning($"No save found for profile '{profileId}', creating empty GameData.");
@@ -277,5 +301,18 @@ public static class JSONSaveSystem
         {
             Debug.LogWarning($"No profile found for '{profileId}' to delete.");
         }
+    }
+
+
+    private static string EncryptDecrypt(string input)
+    {
+        char[] key = { 'K', 'C', 'Q' };
+        // Any chars will work, in an actual game you should use a more secure key and method
+        char[] output = new char[input.Length];
+        for (int i = 0; i < input.Length; i++)
+        {
+            output[i] = (char)(input[i] ^ key[i % key.Length]);
+        }
+        return new string(output);
     }
 }

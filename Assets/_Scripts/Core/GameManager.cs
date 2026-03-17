@@ -61,6 +61,10 @@ public class GameManager : MonoBehaviour
     [Header("Fade Settings")]
     [SerializeField] public UI_Fade uiFade;
 
+    // Level Stage 
+    [SerializeField] public AudioClip levelStageMusic;
+
+
     private void Awake()
     {
         if (instance != null && instance != this)

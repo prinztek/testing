@@ -203,6 +203,8 @@ PlayableDirector:
     value: {fileID: 533566178}
   - key: {fileID: -1648075055007106976, guid: c6a7b00a17b81064fb10b351037cf4aa, type: 2}
     value: {fileID: 1203921810}
+  - key: {fileID: 129666368445753687, guid: c6a7b00a17b81064fb10b351037cf4aa, type: 2}
+    value: {fileID: 2083978035}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &94795333
@@ -285,6 +287,7 @@ RectTransform:
   - {fileID: 27760991}
   - {fileID: 1910505800}
   - {fileID: 1203921812}
+  - {fileID: 2083978036}
   - {fileID: 533566180}
   - {fileID: 1308829201}
   m_Father: {fileID: 0}
@@ -1628,6 +1631,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965875979}
   m_CullTransparentMesh: 1
+--- !u!1 &2083978035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2083978036}
+  - component: {fileID: 2083978037}
+  m_Layer: 0
+  m_Name: StoryUIFader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2083978036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083978035}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -159.99997, y: -89.999985, z: 0}
+  m_LocalScale: {x: 0.16666664, y: 0.16666664, z: 0.16666664}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 94795336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083978037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083978035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad4fe5d306330f498e1a9ac609ac91e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

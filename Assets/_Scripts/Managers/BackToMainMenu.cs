@@ -9,6 +9,4 @@ public class BackToMainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-
 }

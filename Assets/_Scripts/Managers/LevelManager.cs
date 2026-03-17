@@ -131,7 +131,8 @@ public class LevelManager : MonoBehaviour
                 // if this is chapter 3 level 8 or 2_7, this is the last level and we should trigger the true ending instead of just a victory screen
                 if (chapterIndex == 2 && levelIndex == 7)
                 {
-                    GameManager.Instance.TriggerTrueEnding();
+                    // GameManager.Instance.TriggerTrueEnding();
+                    StartCoroutine(GameCompleteSequence());
                     return;
                 }
                 // normal level completion
@@ -306,6 +307,13 @@ public class LevelManager : MonoBehaviour
         UIManager.Instance.ShowLevelFailed(true);
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
+    }
+
+    private IEnumerator GameCompleteSequence()
+    {
+        yield return GameManager.Instance.uiFade.FastFadeOut();
+
+        GameManager.Instance.TriggerTrueEnding();
     }
 
 }
