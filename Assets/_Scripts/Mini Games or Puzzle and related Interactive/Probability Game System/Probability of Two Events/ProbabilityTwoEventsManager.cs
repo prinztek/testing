@@ -102,6 +102,9 @@ public class ProbabilityTwoEventsManager : MonoBehaviour
         if (sampleSpaces.Length > 1)
             sampleSpaces[1].SetActive(false);
 
+        if (continueButton != null)
+            continueButton.onClick.AddListener(OnContinuePressed);
+
         UpdateNextButtonText();
     }
 
@@ -195,7 +198,7 @@ public class ProbabilityTwoEventsManager : MonoBehaviour
         if (nextButtonText == null) return;
 
         nextButtonText.text =
-            currentEventIndex == 0 ? "To Event B" : "To Event A";
+            currentEventIndex == 0 ? "Event B" : "Event A";
     }
 
     private void SetEventVisualState(int index)

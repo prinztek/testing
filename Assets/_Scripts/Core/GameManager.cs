@@ -532,10 +532,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Intro and Outro sequences can call these functions to ensure the game is in the correct state
-    public void StartIntro()
+    public void TriggerIntro()
     {
         // this scene is played first before the first level
-        // this is the storytelling intro, so we want to block player input and hide the UI
+        SceneManager.LoadScene("Intro");
     }
 
     // ----------------- True Ending Trigger -------------------------------
@@ -544,7 +544,7 @@ public class GameManager : MonoBehaviour
         // This function can be called when the player completes the final level (2-7 or 3-8) to trigger the true ending instead of just a victory screen
         Debug.Log("True Ending Triggered!");
         // Implement your true ending logic here, such as loading a special true ending scene or showing unique UI
-        SceneManager.LoadScene("TrueEnding");
+        SceneManager.LoadScene("Outro");
     }
 
 

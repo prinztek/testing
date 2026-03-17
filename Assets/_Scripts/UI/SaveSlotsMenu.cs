@@ -90,8 +90,12 @@ public class SaveSlotsMenu : MonoBehaviour
         // Save immediately
         GameManager.Instance.SaveGame();
 
+        // Load story intro scene (from this scene it will auto load the first level)
+
+        GameManager.Instance.TriggerIntro();
+
         // Load first level
-        GameManager.Instance.LoadLevel(0, 0);
+        // GameManager.Instance.LoadLevel(0, 0);
     }
 
     private void LoadExistingGame()
