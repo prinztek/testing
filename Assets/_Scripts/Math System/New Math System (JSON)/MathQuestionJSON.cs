@@ -14,14 +14,24 @@ public class MathQuestionJSON
     public string simplifiedQuestionString;
     public string formulaNeeded;
     public string[] hints;
-    public string answer;
-
-    // 🔹 Convenience property (so existing code using "prompt" still works)
+    public float answer;
     public string prompt => questionString;
+
+    public MathQuestionJSON(int id, MathTopic topic, QuestionDifficulty difficulty, string prompt, float answer, string[] hints)
+    {
+        this.id = id;
+        this.type = topic.ToString();
+        this.difficulty = difficulty.ToString();
+        this.questionString = prompt;
+        this.answer = answer;
+        this.hints = hints;
+    }
 }
 
 [System.Serializable]
 public class MathQuestionDatabaseJSON
 {
     public MathQuestionJSON[] questions;
+
+
 }

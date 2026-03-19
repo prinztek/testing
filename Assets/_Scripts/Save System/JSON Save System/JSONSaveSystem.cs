@@ -307,12 +307,14 @@ public static class JSONSaveSystem
     private static string EncryptDecrypt(string input)
     {
         char[] key = { 'K', 'C', 'Q' };
-        // Any chars will work, in an actual game you should use a more secure key and method
+
         char[] output = new char[input.Length];
+
         for (int i = 0; i < input.Length; i++)
         {
             output[i] = (char)(input[i] ^ key[i % key.Length]);
         }
+
         return new string(output);
     }
 }

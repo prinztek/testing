@@ -98,7 +98,6 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        // Optionally: play impact effect here before destroying
 
         // Destroy projectile on any hit
         Destroy(gameObject);

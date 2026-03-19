@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using TexDrawLib;
+using System.Collections;
 
 public class MathQuestionManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class MathQuestionManager : MonoBehaviour
     [SerializeField] private GameObject grimoirePanel;
     [SerializeField] private TEXDraw expandedQuestionText;
     [SerializeField] private TMP_InputField answerInput;
+    [SerializeField] private CanvasGroup errorBorder;
+    [SerializeField] private float duration = 1f;
+    private Coroutine flashCoroutine;
     [SerializeField] private Button submitButton;
     [SerializeField] private TMP_Text hintText;
     [SerializeField] private Button hintButton;
@@ -28,9 +32,9 @@ public class MathQuestionManager : MonoBehaviour
     private int hintUsedCounter = 0;
     private int maxHints = 0;
 
-    private List<MathQuestion> questionQueue = new();
+    private List<MathQuestionJSON> questionQueue = new();
     private int currentIndex = 0;
-    private MathQuestion currentQuestion;
+    private MathQuestionJSON currentQuestion;
 
     public Action OnQuestionBatchCompleted;
 
@@ -154,14 +158,14 @@ public class MathQuestionManager : MonoBehaviour
     public void CheckAnswer()
     {
         if (currentQuestion == null) return;
+        // normalize answers by trimming whitespace and ignoring case
 
-        if (answerInput.text.Trim() == currentQuestion.answer)
+        if (answerInput.text.Trim() == currentQuestion.answer.ToString())
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
             Debug.Log($"Player typed: '{answerInput.text}'");
             Debug.Log($"Correct answer: '{currentQuestion.answer}'");
 
-            // Debug.Log($"✅ Correct! {currentQuestion.answer}");
             GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
 
             // Give player a buff
@@ -185,6 +189,7 @@ public class MathQuestionManager : MonoBehaviour
         else
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
+            TriggerError();
             Debug.Log($"Wrong. Expected: {currentQuestion.answer}");
         }
     }
@@ -192,5 +197,33 @@ public class MathQuestionManager : MonoBehaviour
     public string GetNormalizedTopicName()
     {
         return topic.ToString().Replace('_', ' ');
+    }
+
+    public void TriggerError()
+    {
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+        }
+
+        flashCoroutine = StartCoroutine(FlashError());
+    }
+
+    IEnumerator FlashError()
+    {
+        if (errorBorder == null) yield break;
+
+        // Make it visible
+        errorBorder.gameObject.SetActive(true);
+        errorBorder.alpha = 1f;
+
+        // Wait for duration
+        yield return new WaitForSeconds(duration);
+
+        // Hide it
+        errorBorder.alpha = 0f;
+        errorBorder.gameObject.SetActive(false);
+
+        flashCoroutine = null;
     }
 }

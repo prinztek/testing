@@ -505,7 +505,7 @@ public class GameManager : MonoBehaviour
     }
 
     // ------------------ Math Question Helper ------------------
-    public List<MathQuestion> GetUnusedQuestions(MathTopic topic, QuestionDifficulty difficulty)
+    public List<MathQuestionJSON> GetUnusedQuestions(MathTopic topic, QuestionDifficulty difficulty)
     {
         return MathQuestionLoaderJSON.LoadByTopic(
             topic,
@@ -513,7 +513,7 @@ public class GameManager : MonoBehaviour
         );
     }
 
-    public void MarkQuestionAsUsed(MathQuestion question)
+    public void MarkQuestionAsUsed(MathQuestionJSON question)
     {
         if (!usedMathQuestionData.UsedMathQuestionIds.Contains(question.id))
         {

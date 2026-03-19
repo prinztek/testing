@@ -67,16 +67,17 @@ public class EnemyProjectile : MonoBehaviour
                 //     }
                 // }
             }
-
-            Destroy(gameObject);
         }
 
-        // Destroy the object if it hits the ground layer
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // // Destroy the object if it hits the ground layer
+        // if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
+
+        // Destroy projectile on any hit
+        Destroy(gameObject);
     }
 }
 
