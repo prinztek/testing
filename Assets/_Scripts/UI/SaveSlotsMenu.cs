@@ -86,6 +86,8 @@ public class SaveSlotsMenu : MonoBehaviour
         // Tell GameManager which slot to save into
         GameManager.Instance.ChangeSelectedProfileId(selectedSlot.GetProfileId());
 
+        GameManager.Instance.ResetSave();
+
         // Create a new GameData with playerName
         GameManager.Instance.NewGame(name);
 

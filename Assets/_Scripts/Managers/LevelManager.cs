@@ -63,6 +63,37 @@ public class LevelManager : MonoBehaviour
             playerStats.OnDeathFinished += OnLevelFailed; // subscribe properly
             Debug.Log("LevelManager subscribed to player death event.");
         }
+
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
+        {
+            // Only trigger for the first level in each chapter
+            if (levelIndex == 0)
+            {
+                switch (chapterIndex)
+                {
+                    case 0:
+                        if (!GameManager.Instance.badgeManager.IsUnlocked("PERM_START"))
+                        {
+                            GameManager.Instance.badgeManager.ChapterStart(0); // unlock PERM_START
+                        }
+                        break;
+                    case 1:
+                        if (!GameManager.Instance.badgeManager.IsUnlocked("COMB_START"))
+                        {
+                            GameManager.Instance.badgeManager.ChapterStart(1); // unlock COMB_START
+                        }
+                        break;
+                    case 2:
+                        if (!GameManager.Instance.badgeManager.IsUnlocked("PROB_START"))
+                        {
+                            GameManager.Instance.badgeManager.ChapterStart(2); // unlock PROB_START
+                        }
+                        break;
+                }
+            }
+        }
     }
 
     private void Start()
@@ -138,6 +169,25 @@ public class LevelManager : MonoBehaviour
 
         if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
         {
+            // if this is the first time completing a level
+            // if (chapterIndex == 0 && levelIndex == 0)
+            // {
+            //     GameManager.Instance.badgeManager.FirstLevelComplete();
+            // }
+
+            // if (GameManager.Instance.badgeManager.IsUnlocked("PERM_MASTER") && chapterIndex == 0 && levelIndex == 7)
+            // {
+            //     GameManager.Instance.badgeManager.ChapterComplete(0);
+            // }
+            // else if (GameManager.Instance.badgeManager.IsUnlocked("COMBO_MASTER") && chapterIndex == 1 && levelIndex == 7)
+            // {
+            //     GameManager.Instance.badgeManager.ChapterComplete(1);
+            // }
+            // else if (GameManager.Instance.badgeManager.IsUnlocked("PROB_MASTER") && chapterIndex == 2 && levelIndex == 7)
+            // {
+            //     GameManager.Instance.badgeManager.ChapterComplete(2);
+            // }
+
             // Debug.Log($"Parsed scene name '{sceneName}' as Chapter {chapterIndex + 1}, Level {levelIndex + 1}.");
             if (GameManager.Instance != null)
             {
@@ -154,12 +204,12 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("⚠️ GameManager.Instance not found during level completion.");
+                Debug.LogWarning("GameManager.Instance not found during level completion.");
             }
         }
         else
         {
-            Debug.LogWarning($"⚠️ LevelManager: Could not parse scene name '{sceneName}'. Expected format 'LevelX_Y'.");
+            Debug.LogWarning($"LevelManager: Could not parse scene name '{sceneName}'. Expected format 'LevelX_Y'.");
         }
 
         if (UIManager.Instance != null)
@@ -167,7 +217,7 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(LevelCompleteSequence());
         }
         else
-            Debug.LogWarning("⚠️ UIManager.Instance not found — cannot show level complete screen.");
+            Debug.LogWarning("UIManager.Instance not found — cannot show level complete screen.");
     }
 
     public void OnLevelFailed()
@@ -307,9 +357,33 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LevelCompleteSequence()
     {
+        string sceneName = SceneManager.GetActiveScene().name;
+
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
         UIManager.Instance.ShowLevelComplete(true);
+
+        if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
+        {
+            // if this is the first time completing a level
+            if (chapterIndex == 0 && levelIndex == 0)
+            {
+                GameManager.Instance.badgeManager.FirstLevelComplete();
+            }
+
+            if (GameManager.Instance.badgeManager.IsUnlocked("PERM_MASTER") && chapterIndex == 0 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(0);
+            }
+            else if (GameManager.Instance.badgeManager.IsUnlocked("COMBO_MASTER") && chapterIndex == 1 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(1);
+            }
+            else if (GameManager.Instance.badgeManager.IsUnlocked("PROB_MASTER") && chapterIndex == 2 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(2);
+            }
+        }
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }

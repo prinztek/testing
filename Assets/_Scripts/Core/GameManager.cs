@@ -421,11 +421,11 @@ public class GameManager : MonoBehaviour
         {
             handler.SavePlayerToData(playerData);
             // JSONSaveSystem.SavePlayer(playerData);// write JSON to file
-            // Debug.Log("💾 Player state saved.");
+            // Debug.Log("Player state saved.");
         }
         else
         {
-            Debug.LogWarning("⚠️ PlayerDataHandler component not found on player instance.");
+            Debug.LogWarning("PlayerDataHandler component not found on player instance.");
         }
     }
 
