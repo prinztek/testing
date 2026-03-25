@@ -61,7 +61,7 @@ public class ChapterSelectUI : MonoBehaviour
         levelSelectPanel.SetActive(true);
 
         // -------------------------------
-        // 1. Update Chapter Title Image
+        // Update Chapter Title Image
         // -------------------------------
         if (chapterTitleSprites != null &&
             chapterIndex >= 0 &&
@@ -77,7 +77,7 @@ public class ChapterSelectUI : MonoBehaviour
         }
 
         // -------------------------------
-        // 2. Setup Level Buttons
+        // Setup Level Buttons
         // -------------------------------
         var chapter = GameManager.Instance.currentData.chapters[currentChapterIndex];
 

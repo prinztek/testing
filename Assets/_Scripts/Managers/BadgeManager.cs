@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class BadgeManager : MonoBehaviour
 {
-    private JSONSaveData saveData;
-    [SerializeField] private GameObject badgeUIPrefab; // assign in inspector
-    [SerializeField] private Transform badgeCanvas; // assign in inspector
+    [Header("Badge Setup")]
+    [SerializeField] public BadgeDatabase badgeDatabase; // assign in inspector
+    [SerializeField] private GameObject badgeUIPrefab;     // assign in inspector
+    [SerializeField] private Transform badgeCanvas;        // assign in inspector
+
+    private JSONSaveData saveData; // Your save data
 
     public void Initialize(JSONSaveData data)
     {
@@ -15,27 +18,37 @@ public class BadgeManager : MonoBehaviour
     // CORE
     // =========================
 
-    bool IsUnlocked(string id)
+    public bool IsUnlocked(string badgeId)
     {
-        return saveData.unlockedBadges.Contains(id);
+        return saveData.unlockedBadges.Contains(badgeId);
     }
 
-    // additional function is to add a badge prefab to display
-    void Unlock(string id, string debugName)
+    public void UnlockBadge(string badgeId)
     {
-        if (IsUnlocked(id)) return;
+        // Already unlocked
+        if (IsUnlocked(badgeId)) return;
 
-        saveData.unlockedBadges.Add(id);
-        Debug.Log($"Badge Unlocked: {debugName}");
+        // Get badge data from database
+        BadgeData badgeData = badgeDatabase.Get(badgeId);
+        if (badgeData == null)
+        {
+            Debug.LogWarning($"Badge not found in database: {badgeId}");
+            return;
+        }
 
-        GameManager.Instance.SaveGame(); // auto-save on unlock
+        // Add to save data
+        saveData.unlockedBadges.Add(badgeId);
+        Debug.Log($"Badge Unlocked: {badgeData.displayName}");
 
-        // Instantiate badge UI (optional)
+        // Auto-save
+        GameManager.Instance.SaveGame();
+
+        // Show UI
         if (badgeUIPrefab != null)
         {
             GameObject badgeUI = Instantiate(badgeUIPrefab, badgeCanvas);
+            badgeUI.GetComponent<Badge>().Setup(badgeData);
             Destroy(badgeUI, 3f); // auto-destroy after 3 seconds
-            // badgeUI.GetComponent<BadgeUI>().Setup(debugName); // assuming you have a BadgeUI script to set up the display
         }
     }
 
@@ -48,10 +61,11 @@ public class BadgeManager : MonoBehaviour
         if (saveData.firstLevelCompleted) return;
 
         saveData.firstLevelCompleted = true;
-        Unlock("FIRST_STEP", "First Step");
+        UnlockBadge("FIRST_STEP");
+        // UnlockBadge("FIRST_STEP", "First Step");
     }
 
-    public void FirstKill()
+    public void FirstKill() // first enemy kill, not necessarily first level
     {
         // if (saveData.firstKillDone) return;
         if (saveData.firstKillDone)
@@ -62,26 +76,26 @@ public class BadgeManager : MonoBehaviour
         ;
 
         saveData.firstKillDone = true;
-        Unlock("FIRST_KILL", "First Blood");
+        UnlockBadge("FIRST_KILL");
     }
 
-    public void ChapterStart(int chapterIndex)
+    public void ChapterStart(int chapterIndex) // 0-based index for chapters unlock every time a chapter starts
     {
         switch (chapterIndex)
         {
-            case 0: Unlock("PERM_START", "Pattern Seeker"); break;
-            case 1: Unlock("COMBO_START", "Strategic Thinker"); break;
-            case 2: Unlock("PROB_START", "Risk Taker"); break;
+            case 0: UnlockBadge("PERM_START"); break;
+            case 1: UnlockBadge("COMBO_START"); break;
+            case 2: UnlockBadge("PROB_START"); break;
         }
     }
 
-    public void ChapterComplete(int chapterIndex)
+    public void ChapterComplete(int chapterIndex) // 0-based index for chapters unlock every time a chapter is completed
     {
         switch (chapterIndex)
         {
-            case 0: Unlock("PERM_MASTER", "Permutation Master"); break;
-            case 1: Unlock("COMBO_MASTER", "Combination Master"); break;
-            case 2: Unlock("PROB_MASTER", "Probability Master"); break;
+            case 0: UnlockBadge("PERM_MASTER"); break;
+            case 1: UnlockBadge("COMBO_MASTER"); break;
+            case 2: UnlockBadge("PROB_MASTER"); break;
         }
 
         CheckGameComplete();
@@ -95,7 +109,9 @@ public class BadgeManager : MonoBehaviour
 
         if (c1 && c2 && c3)
         {
-            Unlock("GAME_COMPLETE", "Arithmos Champion");
+            UnlockBadge("GAME_COMPLETE");
+            // "GAME_COMPLETE", "Arithmos Champion"
         }
     }
+
 }

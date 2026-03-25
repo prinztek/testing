@@ -256,6 +256,24 @@ public class GameManager : MonoBehaviour
         // this loads the latest save data, so the chapter selection screen can display the correct unlocked levels for that profile.
     }
 
+    public void ViewBadges()
+    {
+        // Find most recently updated or used profile
+        string profileId = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
+
+        if (string.IsNullOrEmpty(profileId))
+        {
+            Debug.LogWarning("No save data exists to continue.");
+            return;
+        }
+
+        // Select and load that profile
+        selectedProfileID = profileId;
+        LoadGame2();
+
+        // this loads the latest save data, so the badge panel can display the correct unlocked badges for that profile.
+    }
+
 
     public void LoadGame2()
     {

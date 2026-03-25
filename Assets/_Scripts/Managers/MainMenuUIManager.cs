@@ -10,6 +10,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject chapterSelectionPanel;
     public GameObject levelSelectionPanel;
     public GameObject gameSettingsPanel;
+    public GameObject badgesPanel;
     public Button continueButton;
     public Button chapterSelectButton;
     void Start()
@@ -41,6 +42,7 @@ public class MainMenuUIManager : MonoBehaviour
         chapterSelectionPanel.SetActive(false);
         levelSelectionPanel.SetActive(false);
         gameSettingsPanel.SetActive(false);
+        badgesPanel.SetActive(false);
         // Activate the selected panel
         panelToShow.SetActive(true);
     }
@@ -62,11 +64,17 @@ public class MainMenuUIManager : MonoBehaviour
         GameManager.Instance.SelectChapter();
         ShowPanel(chapterSelectionPanel);
     }
+
     public void OnSettingsButtonClicked()
     {
         ShowPanel(gameSettingsPanel);
     }
 
+    public void OnBadgesButtonClicked()
+    {
+        GameManager.Instance.ViewBadges();
+        ShowPanel(badgesPanel);
+    }
     public void QuitGame()
     {
         Application.Quit(); // This will quit the application when running in a build
