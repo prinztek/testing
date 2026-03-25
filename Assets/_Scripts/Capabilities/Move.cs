@@ -23,9 +23,9 @@ public class Move : MonoBehaviour
     private bool _onGround;
     private bool _wasMoving = false;
 
-    private Rigidbody2D _platformRb;
-    private Vector2 _lastPlatformPosition;
-    private Vector2 _lastPlatformVelocity;
+    // private Rigidbody2D _platformRb;
+    // private Vector2 _lastPlatformPosition;
+    // private Vector2 _lastPlatformVelocity;
 
     // [SerializeField] private float platformVelocityThreshold = 1.5f; // tweak as needed
     private Rigidbody2D activePlatformRb;
@@ -50,11 +50,11 @@ public class Move : MonoBehaviour
 
     private void Update()
     {
-        // 1️⃣ Block all input if the game is paused / a modal is open
+        // Block all input if the game is paused / a modal is open
         if (!InputGate.CanAcceptInput)
             return;
 
-        // 2️⃣ Block input if clicking/touching UI elements (mobile or PC)
+        // Block input if clicking/touching UI elements (mobile or PC)
         if (UnityEngine.EventSystems.EventSystem.current != null &&
             UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;

@@ -9,7 +9,7 @@ public class PulsatingOutline : MonoBehaviour
     public float pulseSpeed = 2f;          // how fast the pulse is
     public float minAlpha = 0.3f;          // minimum opacity
     public float maxAlpha = 1f;            // maximum opacity
-    public bool useColorShift = true;      // optional shimmer effect
+    public bool useColorShift = true;
 
     private Color baseColor;
 

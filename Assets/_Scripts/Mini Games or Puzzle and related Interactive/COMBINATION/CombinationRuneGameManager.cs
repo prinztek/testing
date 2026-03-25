@@ -185,7 +185,6 @@ public class CombinationRuneGameManager : MonoBehaviour
         if (userCombinations.Count != correctCombinations.Count)
             return false;
 
-        // Normalize correct answers too (safety)
         List<string> normalizedCorrect = correctCombinations
             .Select(c => Normalize(c))
             .ToList();

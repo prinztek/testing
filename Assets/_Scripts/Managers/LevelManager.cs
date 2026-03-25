@@ -14,7 +14,8 @@ public class LevelManager : MonoBehaviour
     private int defeatedEnemies;
 
     [Header("Math Settings")]
-    private MathQuestionManager mqm;
+    private MathQuestionManager mqm; // Reference to MathQuestionManager to set topic/difficulty
+    private LessonListManager lessonListManager; // Reference to LessonListManager to trigger lesson button outline to hint the user that the question is related to this topic
     public MathTopic levelTopic = MathTopic.Permutation_and_Its_Conditions;
     public QuestionDifficulty levelDifficulty = QuestionDifficulty.Easy;
 
@@ -70,6 +71,7 @@ public class LevelManager : MonoBehaviour
         if (UIManager.Instance != null)
         {
             mqm = UIManager.Instance.GetComponentInChildren<MathQuestionManager>(true);
+            lessonListManager = UIManager.Instance.GetComponentInChildren<LessonListManager>(true);
 
             if (mqm != null)
             {
@@ -80,6 +82,17 @@ public class LevelManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("MathQuestionManager not found under UIManager.");
+            }
+
+            if (lessonListManager != null)
+            {
+                // Pass normalized topic name to LessonListManager so it can highlight the relevant lesson button
+                lessonListManager.normalizedTopicName = mqm.GetNormalizedTopicName();
+                // Debug.Log("LessonListManager found and topic name set.");
+            }
+            else
+            {
+                Debug.LogWarning("LessonListManager not found under UIManager.");
             }
         }
 

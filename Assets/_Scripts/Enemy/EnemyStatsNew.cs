@@ -221,6 +221,12 @@ public class EnemyStatsNew : MonoBehaviour
             Destroy(fx, 0.5f);
         }
 
+        // badge unlock trigger (if not already unlocked)
+        if (!GameManager.Instance.currentData.firstKillDone)
+        {
+            GameManager.Instance.badgeManager.FirstKill();
+        }
+
         // Drop loot ONCE
         foreach (var dropItem in dropTable)
         {

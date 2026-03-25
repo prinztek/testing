@@ -137,7 +137,7 @@ public class ElementsSlot : MonoBehaviour, IDropHandler
             }
         }
 
-        // Step 3: double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
+        // double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
         foreach (var userElement in userElements)
         {
             if (!correctElements.Contains(userElement))

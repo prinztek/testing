@@ -57,7 +57,7 @@ public class AttackHitbox : MonoBehaviour
             enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true, statusDamage: false);
             // 5% chance to stun
             if (Random.value < 0.05f)
-                enemyStats.AddStatus(new StunStatus(1.5f));
+                enemyStats.AddStatus(new StunStatus(1.5f)); // can only apply to enemystats
 
             playerStats.TriggerAttackHit(enemyStats.gameObject); // enemy stats new way of applying dot
             alreadyHit.Add(enemyStats);

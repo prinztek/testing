@@ -59,6 +59,7 @@ public class MainMenuUIManager : MonoBehaviour
 
     public void OnChapterSelectClicked()
     {
+        GameManager.Instance.SelectChapter();
         ShowPanel(chapterSelectionPanel);
     }
     public void OnSettingsButtonClicked()

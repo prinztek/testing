@@ -2,7 +2,7 @@ using Unity.Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum SkillType // this is supposed to be something that player can unlock by defeating bosses
+public enum SkillType // this is supposed to help the player solve math problems easier
 {
     FactorialEngine,
     PermutationEngine,
@@ -68,27 +68,16 @@ public class CharacterStats : MonoBehaviour
         return unlockedSkills.Contains(skill);
     }
     private bool isChanneling = false;
-    // private float channelDuration = 0.417f; // <- length of your animation buff acquiring
+    // private float channelDuration = 0.417f; //
 
     // ====================================================================================================================
     private void Awake()
     {
         // onHitFlashVFX = GetComponent<OnHitFlashVFX>();
-
         currentHealth = maxHealth;
-        // Immediately fire health change event so UI gets correct starting value
-        OnHealthChanged?.Invoke(currentHealth);
-
-
-        // UnlockSkill(SkillType.PermutationPulse); // Should be calculator related
-        // UnlockSkill(SkillType.FactorialEngine); // Should be calculator related
-        // UnlockSkill(SkillType.IceShield);
-        // UnlockSkill(SkillType.LightningDash);
-
+        OnHealthChanged?.Invoke(currentHealth);         // Immediately fire health change event so UI gets correct starting value
         buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
-
         hurt = GetComponent<Hurt>();
-
     }
     private void Start()
     {
@@ -96,11 +85,11 @@ public class CharacterStats : MonoBehaviour
     }
     private void Update()
     {
-        // 1️. Block all input if the game is paused / a modal is open
+        // Block all input if the game is paused / a modal is open
         if (!InputGate.CanAcceptInput)
             return;
 
-        // 2. Block input if clicking/touching UI elements (mobile or PC)
+        // Block input if clicking/touching UI elements (mobile or PC)
         if (UnityEngine.EventSystems.EventSystem.current != null &&
             UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
@@ -113,7 +102,7 @@ public class CharacterStats : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("⚠️ UIManager.Instance not found — cannot toggle grimoire.");
+                Debug.LogWarning("UIManager.Instance not found — cannot toggle grimoire.");
             }
         }
         // Buff system
@@ -241,21 +230,16 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    private IEnumerator ChannelBuffRoutine(Buff buff)
-    {
-        isChanneling = true;
-
-        // 1. Play & lock animation for EXACT time of animation
-        yield return StartCoroutine(animationHandler.PlayAndLockCoroutine("buff_acquiring"));
-
-        GameManager.Instance.BlockInput();
-
-        ApplyBuff(buff);
-
-        GameManager.Instance.AllowInput();
-
-        isChanneling = false;
-    }
+    // private IEnumerator ChannelBuffRoutine(Buff buff)
+    // {
+    //     isChanneling = true;
+    //     // 1. Play & lock animation for EXACT time of animation
+    //     yield return StartCoroutine(animationHandler.PlayAndLockCoroutine("buff_acquiring"));
+    //     GameManager.Instance.BlockInput();
+    //     ApplyBuff(buff);
+    //     GameManager.Instance.AllowInput();
+    //     isChanneling = false;
+    // }
 
 
     public void OnBuffAcquired(Buff buff)
@@ -266,7 +250,6 @@ public class CharacterStats : MonoBehaviour
             Quaternion.identity
         );
 
-        // Optional: attach to character so it follows
         vfx.transform.SetParent(transform);
         vfx.transform.localPosition = Vector3.zero;
 
@@ -374,7 +357,7 @@ public class CharacterStats : MonoBehaviour
 
     #region Death Logic
     // ******************************** Death Handling ********************************
-    public System.Action OnDeathStarted; // → fires immediately (e.g., disable input, play anim).
+    public System.Action OnDeathStarted; // fires immediately (disable input, play anim).
     public System.Action OnDeathFinished; // fires after death animation (UI + game over logic).
     public void Die()
     {

@@ -14,6 +14,8 @@ public class LessonListManager : MonoBehaviour
     private Button selectedButton;
     private GameObject selectedSelector;
 
+    public string normalizedTopicName;
+
     void Start()
     {
         GenerateLessonButtons();
@@ -92,10 +94,10 @@ public class LessonListManager : MonoBehaviour
     // to give the player a clue about which lesson is relevant to the current math question,
     // we can add a border to the button that matches the current topic of the question.
     // This way, players can easily identify which lesson they should review to find the information they need for solving the problem.    
-    void AddBorderIfMatchesTopic(string lessonTitle, GameObject buttonObj)
+    public void AddBorderIfMatchesTopic(string lessonTitle, GameObject buttonObj)
     {
         // Normalize topic name (replace underscores with spaces)
-        string normalizedTopic = mathQuestionManager.GetNormalizedTopicName();
+        string normalizedTopic = this.normalizedTopicName;
 
         if (lessonTitle.Equals(normalizedTopic, System.StringComparison.OrdinalIgnoreCase))
         {

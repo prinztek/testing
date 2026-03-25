@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -36,11 +34,12 @@ public class GameManager : MonoBehaviour
     public static event Action<GameObject> OnPlayerSpawned;
 
     // SEPARATE SAVE DATA MANAGEMENT
-    public JSONSaveData currentData;
+    public JSONSaveData currentData; // now includes badges and one-time triggers
     public JSONPlayerData playerData;
     public JSONUsedMathQuestionData usedMathQuestionData;
     public PlayerDataHandler playerDataHandler;
 
+    public BadgeManager badgeManager;
     // CLASS WRAPPER GAME DATA (HOLDS SAVE DATA, PLAYER DATA, QUESTION DATA)
     public GameData gameData;
     public JSONSettingsGlobalData settingsGlobalData; // saved separately non specific to save slot
@@ -76,6 +75,11 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
+
+        if (badgeManager != null && currentData != null)
+        {
+            badgeManager.Initialize(currentData);
+        }
 
         settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
     }
@@ -201,7 +205,7 @@ public class GameManager : MonoBehaviour
 
     public void ContinueGame()
     {
-        // Step 1: Find most recently updated profile
+        // Find most recently updated profile
         string profileId = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
 
         if (string.IsNullOrEmpty(profileId))
@@ -210,11 +214,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Step 2: Select and load that profile
+        // Select and load that profile
         selectedProfileID = profileId;
         LoadGame2();
 
-        // Step 3: Find latest unlocked level
+        // Find latest unlocked level
         int latestChapter = 0;
         int latestLevel = 0;
 
@@ -230,8 +234,26 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Step 4: Load that level
+        // Load that level
         LoadLevel(latestChapter, latestLevel);
+    }
+
+    public void SelectChapter()
+    {
+        // Find most recently updated or used profile
+        string profileId = JSONSaveSystem.GetMostRecentlyUpdatedProfileId();
+
+        if (string.IsNullOrEmpty(profileId))
+        {
+            Debug.LogWarning("No save data exists to continue.");
+            return;
+        }
+
+        // Select and load that profile
+        selectedProfileID = profileId;
+        LoadGame2();
+
+        // this loads the latest save data, so the chapter selection screen can display the correct unlocked levels for that profile.
     }
 
 
@@ -246,6 +268,7 @@ public class GameManager : MonoBehaviour
 
         // push combined data back into your old separate system
         currentData = gameData.save ?? new JSONSaveData();
+        badgeManager.Initialize(currentData);
         playerData = gameData.player ?? new JSONPlayerData();
         usedMathQuestionData = gameData.questions ?? new JSONUsedMathQuestionData();
 
@@ -321,7 +344,7 @@ public class GameManager : MonoBehaviour
         while (!load.isDone)
         {
             // Update progress slider value
-            float realProgress = Mathf.Clamp01(load.progress / 0.9f); // SceneManager.progress max value is 0.9
+            float realProgress = Mathf.Clamp01(load.progress / 0.9f);
 
             // Smoothly move fake progress toward real progress
             fakeProgress = Mathf.MoveTowards(fakeProgress, realProgress, Time.deltaTime * 0.5f);
@@ -391,7 +414,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // ------------------ LEVEL LOADING TESTING ------------------
-        // CHAPTER 1
+        //  CHAPTER 1
         // if (Input.GetKeyDown(KeyCode.Alpha1))
         // {
         //     LoadLevel(0, 0);

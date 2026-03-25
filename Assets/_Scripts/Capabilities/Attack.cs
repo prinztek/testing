@@ -77,7 +77,7 @@ public class Attack : MonoBehaviour
         if (hurt != null && (hurt.IsHurt())) return;
         // if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
 
-        if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for now
+        if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for fist
 
         if (input.RetrieveAttackInput())
         {
@@ -121,9 +121,6 @@ public class Attack : MonoBehaviour
                 StartAirAttack();
                 lastBufferedInputTime = -1f;
             }
-
-
-
         }
     }
 
@@ -191,7 +188,7 @@ public class Attack : MonoBehaviour
         isAirAttacking = true;
 
         string animWeapon = GetWeaponAnimType();
-        float duration = 0.333f; // Or get from animationHandler if needed
+        float duration = 0.333f; // animation duraction
         duration /= stats.attackSpeedMultiplier;
 
         animationHandler.PlayAttackAnimation(1, animWeapon, true);
@@ -213,7 +210,6 @@ public class Attack : MonoBehaviour
         }
 
     }
-
     private void EndAirAttack()
     {
         isAirAttacking = false;
@@ -278,7 +274,7 @@ public class Attack : MonoBehaviour
     {
         int direction = move.FacingRight ? 1 : -1;
 
-        // // Optional: zero out vertical velocity to avoid weird jumps
+        // zero out vertical velocity to avoid weird jumps
         rb.linearVelocity = new Vector2(0, 0);
         Vector2 newVelocity = rb.linearVelocity;
         newVelocity.y = rb.linearVelocity.y;
@@ -287,7 +283,7 @@ public class Attack : MonoBehaviour
         rb.linearVelocity = newVelocity;
     }
 
-    // 🧠 Infer melee animation weapon type
+    // Infer melee animation weapon type
     private string GetWeaponAnimType()
     {
         return IsSwordEquipped() ? "Sword" : "Fist";

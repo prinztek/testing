@@ -12,9 +12,11 @@ public class MathQuestionManager : MonoBehaviour
     [SerializeField] private GameObject grimoirePanel;
     [SerializeField] private TEXDraw expandedQuestionText;
     [SerializeField] private TMP_InputField answerInput;
-    [SerializeField] private CanvasGroup errorBorder;
-    [SerializeField] private float duration = 1f;
+    [SerializeField] private RectTransform answerInputTransform;
+    [SerializeField] private GameObject errorBorder;
+    [SerializeField] private float duration = 0.5f;
     private Coroutine flashCoroutine;
+    private Coroutine shakeCoroutine;
     [SerializeField] private Button submitButton;
     [SerializeField] private TMP_Text hintText;
     [SerializeField] private Button hintButton;
@@ -199,31 +201,68 @@ public class MathQuestionManager : MonoBehaviour
         return topic.ToString().Replace('_', ' ');
     }
 
+
     public void TriggerError()
     {
+        // prevent submit button by disabling it temporarily
+        submitButton.interactable = false;
+
         if (flashCoroutine != null)
-        {
             StopCoroutine(flashCoroutine);
-        }
+
+        if (shakeCoroutine != null)
+            StopCoroutine(shakeCoroutine);
 
         flashCoroutine = StartCoroutine(FlashError());
+        shakeCoroutine = StartCoroutine(ShakeInputField());
     }
 
     IEnumerator FlashError()
     {
-        if (errorBorder == null) yield break;
+        Debug.Log("FlashError START");
 
-        // Make it visible
-        errorBorder.gameObject.SetActive(true);
-        errorBorder.alpha = 1f;
+        if (errorBorder == null)
+        {
+            Debug.Log("errorBorder is NULL");
+            yield break;
+        }
 
-        // Wait for duration
-        yield return new WaitForSeconds(duration);
+        // errorBorder.gameObject.SetActive(true);
 
-        // Hide it
-        errorBorder.alpha = 0f;
-        errorBorder.gameObject.SetActive(false);
+        CanvasGroup cg = errorBorder.GetComponent<CanvasGroup>();
+        cg.alpha = 1f;
+
+        Debug.Log("Before Wait");
+
+        yield return new WaitForSecondsRealtime(duration);
+
+        cg.alpha = 0f;
+        // errorBorder.gameObject.SetActive(false);
 
         flashCoroutine = null;
+    }
+
+    IEnumerator ShakeInputField(float duration = 0.3f, float magnitude = 5f)
+    {
+        if (answerInputTransform == null) yield break;
+
+        Vector3 originalPos = answerInputTransform.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            answerInputTransform.anchoredPosition = originalPos + new Vector3(x, y, 0);
+
+            yield return null;
+        }
+
+        // Reset position
+        answerInputTransform.anchoredPosition = originalPos;
+        submitButton.interactable = true;
     }
 }

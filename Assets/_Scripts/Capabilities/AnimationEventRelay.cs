@@ -14,5 +14,4 @@ public class AnimationEventRelay : MonoBehaviour
     {
         projectileLauncher?.FireProjectile();
     }
-
 }

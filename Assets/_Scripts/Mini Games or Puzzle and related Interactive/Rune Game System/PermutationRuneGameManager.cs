@@ -68,84 +68,6 @@ public class PermutationRuneGameManager : MonoBehaviour
 
     }
 
-
-    // Generates all permutations of a list of strings
-    List<string> GeneratePermutations(List<string> list)
-    {
-        List<string> permutations = new List<string>();
-        Permute(list, 0, permutations);
-        return permutations;
-    }
-
-    // Helper function to generate permutations recursively
-    void Permute(List<string> list, int startIndex, List<string> result)
-    {
-        if (startIndex == list.Count - 1)
-        {
-            // Join the current list of runes into a single string and add to result
-            result.Add(string.Join("", list.ToArray()));
-            return;
-        }
-
-        for (int i = startIndex; i < list.Count; i++)
-        {
-            // Swap the elements to create a new permutation
-            Swap(list, startIndex, i);
-
-            // Recursively permute the rest of the list
-            Permute(list, startIndex + 1, result);
-
-            // Swap back to undo the previous swap (backtrack)
-            Swap(list, startIndex, i);
-        }
-    }
-
-    // Swaps two elements in a list
-    void Swap(List<string> list, int i, int j)
-    {
-        string temp = list[i];
-        list[i] = list[j];
-        list[j] = temp;
-    }
-
-    // Generate distinct permutations for a list that may have duplicates
-    List<string> GenerateDistinctPermutations(List<string> items)
-    {
-        List<string> results = new List<string>();
-        items.Sort(); // Sort to handle duplicates properly
-        bool[] used = new bool[items.Count];
-        List<string> current = new List<string>();
-
-        Backtrack(items, used, current, results);
-        return results;
-    }
-
-    void Backtrack(List<string> items, bool[] used, List<string> current, List<string> results)
-    {
-        if (current.Count == items.Count)
-        {
-            results.Add(string.Join("", current));
-            return;
-        }
-
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (used[i]) continue;
-
-            // Skip duplicates: if same as previous and previous is not used in this path
-            if (i > 0 && items[i] == items[i - 1] && !used[i - 1]) continue;
-
-            used[i] = true;
-            current.Add(items[i]);
-
-            Backtrack(items, used, current, results);
-
-            used[i] = false;
-            current.RemoveAt(current.Count - 1);
-        }
-    }
-
-    // ******************************************************************************
     // Public methods to be called by UI buttons or other scripts
     public void OnSubmit()
     {
@@ -272,7 +194,7 @@ public class PermutationRuneGameManager : MonoBehaviour
         // The player has submitted the correct number of sequences
         if (userSequences.Count != correctSequences.Count)
         {
-            // Not enough sequences submitted yet
+            // Not enough sequences or too many submitted
             return false;
         }
 
@@ -286,7 +208,7 @@ public class PermutationRuneGameManager : MonoBehaviour
             }
         }
 
-        // Step 3: double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
+        // double-check that all user sequences are valid (the user didn't add any extra invalid sequences)
         foreach (var userSeq in userSequences)
         {
             if (!correctSequences.Contains(userSeq))

@@ -21,14 +21,16 @@ public class EnemyHurtState : EnemyBaseState
 
         // Apply knockback using last hit direction  (where the enemy was hit from)
         Vector2 knockbackDir = (enemy.lastHitDirection + Vector2.up * 0.2f).normalized;
-        Vector2 force = new Vector2(knockbackDir.x * knockbackForce, verticalForce);
-        enemy.rb.AddForce(force, ForceMode2D.Impulse);
+        // enemy.rb.AddForce(force, ForceMode2D.Impulse);
+        enemy.rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, verticalForce);
 
         // Apply vertical damping over time to avoid continuous upward force
-        verticalForce -= verticalDamping * Time.deltaTime;
+        // verticalForce -= verticalDamping * Time.deltaTime;
 
-        if (verticalForce <= 0)
-            verticalForce = 0;
+        // if (verticalForce <= 0)
+        // {
+        //     verticalForce = 0;
+        // }
 
 
         enemy.animator.CrossFade("enemyhurt", 0.1f, 0, 0f);
@@ -51,6 +53,8 @@ public class EnemyHurtState : EnemyBaseState
 
     public override void ExitState(EnemyStateMachine enemy)
     {
-        // Debug.Log("Exiting Enemy Hurt State");
+        Vector2 linearVelocity = enemy.rb.linearVelocity;
+        linearVelocity.x = 0f;
+        enemy.rb.linearVelocity = linearVelocity;
     }
 }

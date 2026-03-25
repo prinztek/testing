@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class SaveSlotsMenu : MonoBehaviour
     [SerializeField] private EnterNamePanel enterNamePanel;
     [SerializeField] private OverwriteSavePanel overwriteSavePanel;
     [SerializeField] private GameObject chapterSelectScreen;
+    [SerializeField] private TextMeshProUGUI BannerText; // Load or New Game banner text
 
     [Header("Menu Buttons")]
     [SerializeField] private Button backButton;
@@ -89,6 +91,7 @@ public class SaveSlotsMenu : MonoBehaviour
 
         // Save immediately
         GameManager.Instance.SaveGame();
+        GameManager.Instance.LoadGame2();
 
         // Load story intro scene (from this scene it will auto load the first level)
 
@@ -109,6 +112,8 @@ public class SaveSlotsMenu : MonoBehaviour
     public void ActivateMenu(bool isLoadingGame)
     {
         this.isLoadingGame = isLoadingGame;
+
+        BannerText.text = isLoadingGame ? "Load Game" : "New Game";
 
         // load all of the profiles that exist
         Dictionary<string, GameData> profilesGameData = GameManager.Instance.GetAllProfilesGameData();

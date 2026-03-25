@@ -74,10 +74,10 @@ public class BasicInteractableObject : MonoBehaviour
     {
 
         // If already solved, do nothing
-        if (isPuzzleSolved == true)
-        {
-            return;
-        }
+        // if (isPuzzleSolved == true)
+        // {
+        //     return;
+        // }
 
         if (spawnedPuzzle == null)
         {
@@ -146,6 +146,13 @@ public class BasicInteractableObject : MonoBehaviour
     }
     public void OnPuzzleSolved()
     {
+        // if puzzle is already solve don't interact with the environment 
+        if (isPuzzleSolved == true)
+        {
+            CloseCanvas();
+            return;
+        }
+
         isPuzzleSolved = true;
 
         if (stoneWall != null)

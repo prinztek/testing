@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using DG.Tweening;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
 public class PermutationAndConditionRuneGameManager : MonoBehaviour
 {
 
@@ -132,7 +130,11 @@ public class PermutationAndConditionRuneGameManager : MonoBehaviour
     // ---------------- CONTINUE ----------------
     public void OnContinuePressed()
     {
-        isSolved = true;
+        // if puzzle is already solve don't invoke onPu
+        if (isSolved != true)
+        {
+            isSolved = true;
+        }
         OnPuzzleSolved?.Invoke();
     }
 

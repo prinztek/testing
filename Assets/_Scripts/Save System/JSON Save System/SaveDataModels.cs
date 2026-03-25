@@ -35,6 +35,13 @@ public class JSONSaveData
         // unlock first
         chapters[0].levels[0].isUnlocked = true;
     }
+
+    // for trcking unlocked badges
+    public List<string> unlockedBadges = new List<string>();
+
+    // (for one-time triggers)
+    public bool firstLevelCompleted = false;
+    public bool firstKillDone = false;
 }
 
 [Serializable]
@@ -80,7 +87,7 @@ public class GameData
 {
     public string playerName;
     public long lastUpdated;
-    public JSONSaveData save;
+    public JSONSaveData save; // combines level progress, badges, and one-time triggers
     public JSONPlayerData player;
     public JSONUsedMathQuestionData questions;
 
