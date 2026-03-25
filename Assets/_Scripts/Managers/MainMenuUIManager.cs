@@ -26,7 +26,8 @@ public class MainMenuUIManager : MonoBehaviour
         else
         {
             continueButton.gameObject.SetActive(true);
-            chapterSelectButton.gameObject.SetActive(true);
+            chapterSelectButton.gameObject.SetActive(false);
+            // remove chapter select button redundant 
         }
 
         // Ensure the New Player Main Menu Panel is active when the game starts
