@@ -11,13 +11,19 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public Transform runePoolParent;
     public bool isFixed = false; // to indicate if the rune is fixed in place
 
+    public Vector3 dragScale = new Vector3(1.4f, 1.4f, 1.4f); // scale when dragging
+    private Vector3 originalScale;
+
+    // drag and drop sound clips
+    public AudioClip selectSound;
+    private AudioClip dropSound;
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
         runePoolParent = transform.parent; // fixed, permanent
-
+        originalScale = rectTransform.localScale; // save original size
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -36,6 +42,9 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         transform.SetParent(canvas.transform);
         canvasGroup.blocksRaycasts = false;
+
+        // Increase size
+        rectTransform.localScale = dragScale;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -46,6 +55,9 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
+
+        // Reset size
+        rectTransform.localScale = originalScale;
 
         // If no slot took us, return to pool
         if (CurrentSlot == null)

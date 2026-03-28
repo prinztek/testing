@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BadgeDatabase", menuName = "Inventory/BadgeDatabase")]
+[CreateAssetMenu(fileName = "BadgeDatabase", menuName = "BadgeDatabase")]
 public class BadgeDatabase : ScriptableObject
 {
     public List<BadgeData> badgeDataList = new List<BadgeData>();
@@ -18,7 +18,7 @@ public class BadgeDatabase : ScriptableObject
         }
     }
 
-    public BadgeData Get(string id)
+    public BadgeData GetBadgeData(string id)
     {
         var badge = badgeDataList.Find(i => i.displayName == id);
         if (badge == null)

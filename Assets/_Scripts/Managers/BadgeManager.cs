@@ -29,7 +29,7 @@ public class BadgeManager : MonoBehaviour
         if (IsUnlocked(badgeId)) return;
 
         // Get badge data from database
-        BadgeData badgeData = badgeDatabase.Get(badgeId);
+        BadgeData badgeData = badgeDatabase.GetBadgeData(badgeId);
         if (badgeData == null)
         {
             Debug.LogWarning($"Badge not found in database: {badgeId}");

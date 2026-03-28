@@ -15,6 +15,7 @@ public class MathQuestionJSON
     public string formulaNeeded;
     public string[] hints;
     public float answer;
+    public float[] answers; // used for union and intersection questions
     public string prompt => questionString;
 
     public MathQuestionJSON(int id, MathTopic topic, QuestionDifficulty difficulty, string prompt, float answer, string[] hints)

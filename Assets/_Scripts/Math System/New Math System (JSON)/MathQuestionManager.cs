@@ -192,6 +192,7 @@ public class MathQuestionManager : MonoBehaviour
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
             TriggerError();
+            Debug.Log($"Player typed: '{answerInput.text}'");
             Debug.Log($"Wrong. Expected: {currentQuestion.answer}");
         }
     }
