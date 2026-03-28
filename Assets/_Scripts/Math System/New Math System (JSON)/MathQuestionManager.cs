@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TexDrawLib;
 using System.Collections;
+using System.Linq;
 
 public class MathQuestionManager : MonoBehaviour
 {
@@ -107,7 +108,7 @@ public class MathQuestionManager : MonoBehaviour
         // Check if we've answered all questions
         if (currentIndex >= questionQueue.Count)
         {
-            GenerateNewQuestions(); // 🔁 restart immediately
+            GenerateNewQuestions(); // restart immediately
             return;
         }
 
@@ -162,39 +163,132 @@ public class MathQuestionManager : MonoBehaviour
         if (currentQuestion == null) return;
         // normalize answers by trimming whitespace and ignoring case
 
-        if (answerInput.text.Trim() == currentQuestion.answer.ToString())
+        // check first whether the answer is single or multiple(for union and intersection)
+        if (currentQuestion.answers == null || currentQuestion.answers.Length == 0)
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
-            Debug.Log($"Player typed: '{answerInput.text}'");
-            Debug.Log($"Correct answer: '{currentQuestion.answer}'");
-
-            GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
-
-            // Give player a buff
-            if (characterStats != null)
+            // single-answer question
+            float userValue;
+            if (float.TryParse(answerInput.text.Trim(), out userValue))
             {
-                UIManager.Instance.CloseActivePanel(); // close the grimoire
-                // generates the random buffs
-                var choices = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
-                // pass the choices to Choosing Buff Canvas
-                BuffChoiceManager.Instance.ShowChoices(choices, selectedBuff =>
+                if (Mathf.Abs(userValue - currentQuestion.answer) < 0.0001f)
                 {
-                    characterStats.AddBuff(selectedBuff);
-                });
-                // displays the ui for choosing the generated random buffs
-                UIManager.Instance.ShowBuffChoiceCanvas(true);
+                    HandleCorrect();
+                }
+                else
+                {
+                    HandleWrong();
+                }
             }
-
-            currentIndex++;
-            LoadCurrentQuestion();
         }
         else
         {
-            SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
-            TriggerError();
-            Debug.Log($"Player typed: '{answerInput.text}'");
+            // multiple-answer question
+            var userAnswers = ParseInputToArray(answerInput.text.Trim());
+            if (CompareSets(userAnswers, currentQuestion.answers))
+            {
+                HandleCorrect();
+            }
+            else
+            {
+                HandleWrong();
+            }
+        }
+
+        // if (answerInput.text.Trim() == currentQuestion.answer.ToString())
+        // {
+        //     SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
+        //     Debug.Log($"Player typed: '{answerInput.text}'");
+        //     Debug.Log($"Correct answer: '{currentQuestion.answer}'");
+
+        //     GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
+
+        //     // Give player a buff
+        //     if (characterStats != null)
+        //     {
+        //         UIManager.Instance.CloseActivePanel(); // close the grimoire
+        //                                                // generates the random buffs
+        //         var choices = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
+        //         // pass the choices to Choosing Buff Canvas
+        //         BuffChoiceManager.Instance.ShowChoices(choices, selectedBuff =>
+        //         {
+        //             characterStats.AddBuff(selectedBuff);
+        //         });
+        //         // displays the ui for choosing the generated random buffs
+        //         UIManager.Instance.ShowBuffChoiceCanvas(true);
+        //     }
+
+        //     currentIndex++;
+        //     LoadCurrentQuestion();
+        // }
+        // else // if the answer is wrong
+        // {
+        //     SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
+        //     TriggerError();
+        //     Debug.Log($"Player typed: '{answerInput.text}'");
+        //     Debug.Log($"Wrong. Expected: {currentQuestion.answer}");
+        // }
+    }
+
+    public void HandleCorrect()
+    {
+        SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
+        Debug.Log($"Player typed: '{answerInput.text}'");
+        Debug.Log($"Correct answer: '{currentQuestion.answer}'");
+
+        GameManager.Instance.MarkQuestionAsUsed(currentQuestion);
+
+        // Give player a buff
+        if (characterStats != null)
+        {
+            UIManager.Instance.CloseActivePanel(); // close the grimoire
+                                                   // generates the random buffs
+            var choices = BuffChoiceManager.Instance.GetRandomBuffChoices(3);
+            // pass the choices to Choosing Buff Canvas
+            BuffChoiceManager.Instance.ShowChoices(choices, selectedBuff =>
+            {
+                characterStats.AddBuff(selectedBuff);
+            });
+            // displays the ui for choosing the generated random buffs
+            UIManager.Instance.ShowBuffChoiceCanvas(true);
+        }
+
+        currentIndex++;
+        LoadCurrentQuestion();
+    }
+    public void HandleWrong()
+    {
+        SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
+        TriggerError();
+        // Debug.Log($"Player typed: '{answerInput.text}'");
+
+
+        if (currentQuestion.answers == null || currentQuestion.answers.Length == 0)
+        {
+            // single-answer question
+            // Debug shows the correct single answer
             Debug.Log($"Wrong. Expected: {currentQuestion.answer}");
         }
+        else
+        {
+            // multiple-answer question
+            // Debug shows the correct multiple answers
+            var userAnswers = ParseInputToArray(answerInput.text.Trim());
+            Debug.Log("Answers: " + string.Join(", ", userAnswers));
+        }
+    }
+
+    // multiple-answer question helpers
+    public float[] ParseInputToArray(string input)
+    {
+        return input
+            .Split(new char[] { '.', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => float.Parse(x.Trim()))
+            .ToArray();
+    }
+
+    public bool CompareSets(float[] userAnswers, float[] correctAnswers)
+    {
+        return userAnswers.OrderBy(x => x).SequenceEqual(correctAnswers.OrderBy(x => x));
     }
 
     public string GetNormalizedTopicName()
@@ -202,7 +296,7 @@ public class MathQuestionManager : MonoBehaviour
         return topic.ToString().Replace('_', ' ');
     }
 
-
+    // UI Feedback
     public void TriggerError()
     {
         // prevent submit button by disabling it temporarily

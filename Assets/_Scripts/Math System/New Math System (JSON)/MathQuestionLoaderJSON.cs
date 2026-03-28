@@ -51,7 +51,7 @@ public static class MathQuestionLoaderJSON
         }
 
         return filtered
-            .Select(q => new MathQuestionJSON(q.id, topic, difficulty, q.questionString, q.answer, q.hints))
+            .Select(q => new MathQuestionJSON(q.id, topic, difficulty, q.questionString, q.answer, q.answers, q.hints))
             .ToList();
     }
 
@@ -91,7 +91,8 @@ public static class MathQuestionLoaderJSON
                     parsedTopic,
                     parsedDiff,
                     q.questionString,
-                    q.answer,
+                    q.answer, // single answer
+                    q.answers, // multiple answers
                     q.hints
                 );
             })
@@ -130,7 +131,8 @@ public static class MathQuestionLoaderJSON
                     parsedTopic,
                     parsedDiff,
                     q.questionString,
-                    q.answer,
+                    q.answer, // single answer
+                    q.answers, // multiple answers
                     q.hints
                 );
             })

@@ -1244,13 +1244,16 @@
     },
     {
       "id": 111,
-      "questionString": "In a class, 60\\% of students like Mathematics, 45\\% like Physics, and 25\\% like both. What is the probability that a randomly selected student likes Mathematics or Physics?",
+      "questionString": "Given: Q = {x: x is an odd number, x <10} and T = {x: x is a multiple of 3, x < 15}. Find Q \\cap T",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Find P(M ∪ P) given P(M)=0.60, P(P)=0.45, P(M ∩ P)=0.25.",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.60 + 0.45 - 0.25 = 0.80"],
-      "answer": 0.8
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Q = odd numbers less than 10 → {1, 3, 5, 7, 9}",
+        "T = multiples of 3 less than 15 → {3, 6, 9, 12}"
+      ],
+      "answers": [3, 9]
     },
     {
       "id": 112,
@@ -1266,7 +1269,7 @@
       "id": 113,
       "questionString": "If P(A)=0.5, P(B)=0.4, and P(A ∩ B)=0.2, find P(A \\cup B).",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
+      "difficulty": "Easy",
       "simplifiedQuestionString": "Compute P(A ∪ B).",
       "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
       "hints": ["0.5 + 0.4 - 0.2 = 0.7"],

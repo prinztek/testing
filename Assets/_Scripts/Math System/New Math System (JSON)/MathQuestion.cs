@@ -21,6 +21,7 @@ public enum MathTopic
 }
 public enum QuestionDifficulty { Easy = 1, Medium = 2, Hard = 3 }
 
+// not used
 public class MathQuestion
 {
     public int id;  // Unique ID for tracking
