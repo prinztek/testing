@@ -34,6 +34,7 @@ public class MeleeEnemy : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private int maxHealth = 50;
     [SerializeField] private int damage = 15;
+    private float knockbackForce = 0.5f; // how far the enemy is knocked back
     private int currentHealth;
     private bool isDead;
 
@@ -41,7 +42,7 @@ public class MeleeEnemy : MonoBehaviour
     // HURT
     // ========================================
     [Header("Hurt")]
-    [SerializeField] private float hurtDuration = 0.5f;
+    [SerializeField] private float hurtDuration = 0.333f;
     // ========================================
     // PATROL & IDLE
     // ========================================
@@ -220,6 +221,10 @@ public class MeleeEnemy : MonoBehaviour
                 if (stateTimer >= hurtDuration)
                 {
                     enemyStats.isHurt = false;
+                    // zero out knockback
+                    Vector2 linearVelocity = rb.linearVelocity;
+                    linearVelocity.x = 0f;
+                    rb.linearVelocity = linearVelocity;
                     // Return to combat after stun
                     if (PlayerDetected())
                     {
@@ -310,10 +315,10 @@ public class MeleeEnemy : MonoBehaviour
                 PlayAnimation(IdleHash);
                 rb.linearVelocity = Vector2.zero;
 
-                // Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
+                Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
                 // float knockbackStrength = 5f;
 
-                // rb.linearVelocity = new Vector2(knockbackDir.x * knockbackStrength, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, rb.linearVelocity.y);
                 break;
 
             case State.Stunned:

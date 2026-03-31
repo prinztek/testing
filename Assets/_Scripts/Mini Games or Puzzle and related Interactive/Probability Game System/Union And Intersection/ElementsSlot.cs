@@ -9,6 +9,9 @@ public class ElementsSlot : MonoBehaviour, IDropHandler
     public List<int> userElements = new List<int>(); // record of elements placed by the user
     public List<UnionAndIntersectionElement> placedElements = new List<UnionAndIntersectionElement>();
     [SerializeField] private Transform puzzleBlockPoolParent;
+
+    [SerializeField] private AudioClip onDropSoundClip;
+
     public void OnDrop(PointerEventData eventData)
     {
         UnionAndIntersectionElement block = eventData.pointerDrag?.GetComponent<UnionAndIntersectionElement>();
@@ -92,6 +95,11 @@ public class ElementsSlot : MonoBehaviour, IDropHandler
         element.transform.localPosition = Vector3.zero;
 
         placedElements.Add(element);
+
+        if (onDropSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onDropSoundClip, transform, 0.2f);
+        }
     }
 
     public void RemoveElement(UnionAndIntersectionElement element)

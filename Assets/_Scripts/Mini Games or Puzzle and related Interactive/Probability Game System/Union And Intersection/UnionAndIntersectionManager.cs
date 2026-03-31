@@ -56,6 +56,19 @@ public class UnionAndIntersectionManager : MonoBehaviour
             }
         }
 
+        foreach (var slot in slots2)
+        {
+            if (!slot.IsCorrect())
+            {
+                Debug.Log("INCORRECT — try again");
+                if (wrongAnswerSoundClip != null)
+                {
+                    SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.3f);
+                }
+                return;
+            }
+        }
+
         if (correctAnswerSoundClip != null)
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);

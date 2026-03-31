@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     // Level Stage 
     [SerializeField] public AudioClip levelStageMusic;
+    [SerializeField] public AudioClip mainMenuMusic;
 
 
     private void Awake()
@@ -82,10 +83,12 @@ public class GameManager : MonoBehaviour
         }
 
         settingsGlobalData = JSONSaveSystem.LoadSettingsGlobal();
+
     }
 
     private void Start()
     {
+        PlayMainMenuMusic();
         // Try to register to existing UIManager
         if (UIManager.Instance != null)
             RegisterUIManager(UIManager.Instance);
@@ -381,6 +384,8 @@ public class GameManager : MonoBehaviour
         // Fade loader → black
         yield return uiFade.FadeOut();
 
+        PlayLevelMusic();
+
         // Spawn player once the scene is fully loaded
         SpawnPlayer();
         loaderCanvas.SetActive(false); // hide the loading screen once the scene is loaded
@@ -502,7 +507,7 @@ public class GameManager : MonoBehaviour
         // }
 
 
-        // // CHAPTER 3
+        // CHAPTER 3
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             LoadLevel(2, 0);
@@ -614,5 +619,21 @@ public class GameManager : MonoBehaviour
     public void AllowInput()
     {
         InputGate.AllowInput();
+    }
+
+    public void PlayMainMenuMusic()
+    {
+        MusicManager.Instance.PlayMusic(mainMenuMusic, true);
+    }
+
+    // For Level or Stage Music
+    public void PlayLevelMusic()
+    {
+        MusicManager.Instance.PlayMusic(levelStageMusic, true);
+    }
+
+    public void StopLevelMusic()
+    {
+        MusicManager.Instance.StopMusic();
     }
 }

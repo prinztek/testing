@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
+        GameManager.Instance.PlayLevelMusic();
     }
 
     private void OnDisable()
