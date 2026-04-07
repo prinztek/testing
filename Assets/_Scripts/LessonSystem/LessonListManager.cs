@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
 
 public class LessonListManager : MonoBehaviour
 {
@@ -13,9 +14,8 @@ public class LessonListManager : MonoBehaviour
     private Button defaultLessonButton;
     private Button selectedButton;
     private GameObject selectedSelector;
-
-    public string normalizedTopicName;
-
+    public MathTopic topic = MathTopic.Permutation_and_Its_Conditions;
+    private List<(string title, GameObject obj)> lessonButtons = new List<(string, GameObject)>();
     void Start()
     {
         GenerateLessonButtons();
@@ -40,19 +40,22 @@ public class LessonListManager : MonoBehaviour
             Button buttonComponent = newButton.GetComponent<Button>();
 
             // Find Selector (sprite indicator to show this button is selected) child (inactive by default)
-            Transform selectedSelector = buttonComponent.transform.Find("Selector");
-            if (selectedSelector != null)
+            Transform selectorTransform = buttonComponent.transform.Find("Selector");
+            if (selectorTransform != null)
             {
-                selectedSelector.gameObject.SetActive(false);
+                selectorTransform.gameObject.SetActive(false);
             }
 
             buttonComponent.onClick.AddListener(() =>
             {
-                SelectLesson(buttonComponent, selectedSelector?.gameObject, moduleId);
+                SelectLesson(buttonComponent, selectorTransform?.gameObject, moduleId);
             });
 
             // Add a colorful border to the button that matches the current topic of the question
-            AddBorderIfMatchesTopic(data.title, newButton);
+            // AddBorderIfMatchesTopic(data.title, newButton);
+
+            // STORE for later highlighting when topic changes
+            lessonButtons.Add((data.title, newButton));
 
             if (isFirst)
             {
@@ -66,6 +69,9 @@ public class LessonListManager : MonoBehaviour
         {
             defaultLessonButton.onClick.Invoke();
         }
+
+        // APPLY TOPIC AFTER UI IS BUILT
+        RefreshTopicHighlight();
     }
 
     void OnLessonButtonClicked(string moduleId)
@@ -75,6 +81,10 @@ public class LessonListManager : MonoBehaviour
 
     void SelectLesson(Button button, GameObject selector, string moduleId)
     {
+        // If the same button is clicked again, do nothing
+        if (selectedButton == button)
+            return;
+
         // Turn off previous selection
         if (selectedSelector != null)
             selectedSelector.SetActive(false);
@@ -90,9 +100,29 @@ public class LessonListManager : MonoBehaviour
         lessonManager.LoadLesson(moduleId);
     }
 
-    public void SetTopicName(string topic)
+
+    public void SetTopic(MathTopic newTopic)
     {
-        this.normalizedTopicName = topic;
+        topic = newTopic;
+        RefreshTopicHighlight();
+    }
+
+    public void RefreshTopicHighlight()
+    {
+        foreach (var (title, obj) in lessonButtons)
+        {
+            // Disable existing visuals safely
+            var pulser = obj.GetComponent<PulsatingOutline>();
+            if (pulser != null)
+                pulser.enabled = false;
+
+            var outline = obj.GetComponent<Outline>();
+            if (outline != null)
+                outline.enabled = false;
+
+            // Apply highlight if match
+            AddBorderIfMatchesTopic(title, obj);
+        }
     }
 
 
@@ -102,23 +132,27 @@ public class LessonListManager : MonoBehaviour
     public void AddBorderIfMatchesTopic(string lessonTitle, GameObject buttonObj)
     {
         // Normalize topic name (replace underscores with spaces)
-        string normalizedTopic = this.normalizedTopicName;
+        string normalizedTopic = topic.ToString().Replace("_", " ");
+
+        // Debug.Log($"Checking lesson '{lessonTitle}' against topic '{normalizedTopic}'");
 
         if (lessonTitle.Equals(normalizedTopic, System.StringComparison.OrdinalIgnoreCase))
         {
+            // OUTLINE
             Outline border = buttonObj.GetComponent<Outline>();
             if (border == null)
                 border = buttonObj.AddComponent<Outline>();
 
-            // Set base color (green)
+            border.enabled = true;
             border.effectColor = new Color(0.3f, 0.9f, 0.3f);
             border.effectDistance = new Vector2(0.5f, 0.5f);
 
-            // Add a pulsing effect
+            // PULSING EFFECT
             PulsatingOutline pulser = buttonObj.GetComponent<PulsatingOutline>();
             if (pulser == null)
                 pulser = buttonObj.AddComponent<PulsatingOutline>();
 
+            pulser.enabled = true;
             pulser.targetOutline = border;
         }
     }

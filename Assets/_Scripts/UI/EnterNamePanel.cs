@@ -24,6 +24,7 @@ public class EnterNamePanel : MonoBehaviour
     private void Start()
     {
         nameInput.shouldHideMobileInput = true;
+        nameInput.keyboardType = (TouchScreenKeyboardType)(-1);
     }
 
     public void Open(Action<string> callback)

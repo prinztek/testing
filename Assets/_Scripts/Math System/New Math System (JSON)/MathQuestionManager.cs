@@ -69,6 +69,7 @@ public class MathQuestionManager : MonoBehaviour
     private void Start()
     {
         answerInput.shouldHideMobileInput = true;
+        answerInput.keyboardType = (TouchScreenKeyboardType)(-1);
         GenerateNewQuestions();
         ResetHintButtonText();
     }
