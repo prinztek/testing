@@ -90,6 +90,11 @@ public class LessonListManager : MonoBehaviour
         lessonManager.LoadLesson(moduleId);
     }
 
+    public void SetTopicName(string topic)
+    {
+        this.normalizedTopicName = topic;
+    }
+
 
     // to give the player a clue about which lesson is relevant to the current math question,
     // we can add a border to the button that matches the current topic of the question.

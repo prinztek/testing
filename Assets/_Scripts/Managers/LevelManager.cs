@@ -119,7 +119,9 @@ public class LevelManager : MonoBehaviour
             if (lessonListManager != null)
             {
                 // Pass normalized topic name to LessonListManager so it can highlight the relevant lesson button
-                lessonListManager.normalizedTopicName = mqm.GetNormalizedTopicName();
+                // lessonListManager.normalizedTopicName = mqm.GetNormalizedTopicName();
+                lessonListManager.SetTopicName(mqm.GetNormalizedTopicName());
+                // lessonListManager.RefreshTopicHighlight(levelTopic.ToString());
                 // Debug.Log("LessonListManager found and topic name set.");
             }
             else
