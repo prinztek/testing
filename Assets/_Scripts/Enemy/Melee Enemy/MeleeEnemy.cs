@@ -313,12 +313,12 @@ public class MeleeEnemy : MonoBehaviour
             case State.Hurt:
                 // rb.linearVelocity = Vector2.zero;
                 PlayAnimation(IdleHash);
-                rb.linearVelocity = Vector2.zero;
+                // rb.linearVelocity = Vector2.zero;
 
-                Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
-                // float knockbackStrength = 5f;
+                // Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
+                // // float knockbackStrength = 5f;
 
-                rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, rb.linearVelocity.y);
+                // rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, rb.linearVelocity.y);
                 break;
 
             case State.Stunned:

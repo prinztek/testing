@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +13,19 @@ public class OutcomeItem : MonoBehaviour
     [SerializeField] private SimpleProbabilityManager manager;
     [SerializeField] private ProbabilityTwoEventsManager twoEventManager;
 
-
+    private RectTransform rectTransform;
+    public Vector3 dragScale = new Vector3(1.1f, 1.1f, 1.1f); // scale when dragging
+    private Vector3 originalScale;
     public string value = "";
 
     private bool selectedForNumerator = false;
     private bool selectedForDenominator = false;
 
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        originalScale = rectTransform.localScale; // save original size
+    }
     public void Start()
     {
         numeratorSelector.enabled = false;
@@ -39,6 +47,15 @@ public class OutcomeItem : MonoBehaviour
         {
             Debug.LogWarning("No probability manager assigned to " + gameObject.name);
         }
+
+        StartCoroutine(ClickAnimation());
+    }
+
+    private IEnumerator ClickAnimation()
+    {
+        rectTransform.localScale = dragScale;
+        yield return new WaitForSeconds(0.1f); // adjust timing
+        rectTransform.localScale = originalScale;
     }
 
     // ============================

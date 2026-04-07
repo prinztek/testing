@@ -12,6 +12,9 @@ public class Totem : MonoBehaviour
     public int currentValue;
     private int maxValue;
 
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip onClickSoundClip;
+
     public void Initialize(int maxValue)
     {
         this.maxValue = maxValue;
@@ -31,6 +34,12 @@ public class Totem : MonoBehaviour
             currentValue = 0;
 
         UpdateUI();
+
+        // Play click sound
+        if (onClickSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onClickSoundClip, transform, 0.3f);
+        }
     }
 
     void UpdateUI()

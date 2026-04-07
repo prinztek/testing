@@ -14,9 +14,10 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public Vector3 dragScale = new Vector3(1.4f, 1.4f, 1.4f); // scale when dragging
     private Vector3 originalScale;
 
-    // drag and drop sound clips
-    public AudioClip selectSound;
-    private AudioClip dropSound;
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip onDragSoundClip;
+    [SerializeField] private AudioClip onDropSoundClip;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -45,6 +46,12 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         // Increase size
         rectTransform.localScale = dragScale;
+
+        // Play drag sound
+        if (onDragSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onDragSoundClip, transform, 0.3f);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -64,6 +71,12 @@ public class Rune : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         {
             transform.SetParent(runePoolParent);
             transform.localPosition = Vector3.zero;
+        }
+
+        // Play drop sound
+        if (onDropSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onDropSoundClip, transform, 0.3f);
         }
     }
 }

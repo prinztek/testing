@@ -70,7 +70,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Make 3-letter password from 5 letters",
       "formulaNeeded": "nPr",
-      "hints": ["Order matters", "5P3 = 60"],
+      "hints": ["5P3"],
       "answer": 60
     },
     {
@@ -80,7 +80,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Place 3 people in 8 chairs",
       "formulaNeeded": "nPr",
-      "hints": ["8P3 = 336"],
+      "hints": ["8P3"],
       "answer": 336
     },
     {
@@ -89,7 +89,7 @@
       "type": "Distinguishable_Permutation",
       "difficulty": "Hard",
       "simplifiedQuestionString": "Arrange letters in 'BALLOON'",
-      "formulaNeeded": "\frac{n!}{(p1! * p2! * ...)}",
+      "formulaNeeded": "",
       "hints": ["Repeated letters: L, O", "7! / (2!2!)"],
       "answer": 1260
     },
@@ -100,7 +100,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Arrange 6 people in a circle",
       "formulaNeeded": "(n-1)!",
-      "hints": ["(6-1)! = 120"],
+      "hints": ["(6-1)!"],
       "answer": 120
     },
     {
@@ -145,7 +145,10 @@
       "difficulty": "Hard",
       "simplifiedQuestionString": "Arrange letters in 'MISSISSIPPI'",
       "formulaNeeded": "n! / (p1! * p2! * ...)",
-      "hints": ["Repeated letters: S, I, P", "11! / (4!4!2!)"],
+      "hints": [
+        "Repeated letters: S, I, P",
+        "Total Number of Letters! / (4!4!2!)"
+      ],
       "answer": 34650
     },
     {
@@ -155,7 +158,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Arrange 7 in circle",
       "formulaNeeded": "(n-1)!",
-      "hints": ["Fix one seat", "Arrange others", "6! = 720"],
+      "hints": ["Fix one seat", "Arrange others", "6!"],
       "answer": 720
     },
     {
@@ -165,7 +168,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Assign top 3 ranks from 8 runners",
       "formulaNeeded": "nPr",
-      "hints": ["8P3 = 336"],
+      "hints": ["8P3"],
       "answer": 336
     },
     {
@@ -182,12 +185,12 @@
     },
     {
       "id": 17,
-      "questionString": "How many 3-digit numbers can be formed using digits 1–5 without repetition?",
+      "questionString": "How many 3-digit numbers can be formed using digits 1-5 without repetition?",
       "type": "Permutation_Formula",
       "difficulty": "Medium",
-      "simplifiedQuestionString": "Form 3-digit numbers from 1–5",
+      "simplifiedQuestionString": "Form 3-digit numbers from 1-5",
       "formulaNeeded": "nPr",
-      "hints": ["5P3 = 60"],
+      "hints": ["5P3"],
       "answer": 60
     },
     {
@@ -221,7 +224,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Assign 3 tasks to 5 employees",
       "formulaNeeded": "nPr",
-      "hints": ["nPr = n! / (n-r)! for 5P3"],
+      "hints": ["nPr = n! / (n-r)!"],
       "answer": 60
     },
     {
@@ -284,7 +287,7 @@
       "simplifiedQuestionString": "How many distinct arrangements can you make with the word 'DRAGON'?",
       "formulaNeeded": "P(n, r) with repetitions",
       "hints": [
-        "All letters in 'DRAGON' are unique, so just calculate n!.",
+        "All letters in 'DRAGON' are unique.",
         "Use the formula for distinct permutations: n!"
       ],
       "answer": 720
@@ -387,7 +390,7 @@
     },
     {
       "id": 35,
-      "questionString": "How many three-letter arrangements of the word 'SUN' can be made if the middle letter must be U?",
+      "questionString": "How many distinct three-letter arrangements can be formed using the letters of the word 'SUN' if the middle letter is required to be 'U'?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "Arrange 'SUN' if U is in the middle",
@@ -441,7 +444,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Evaluate 4 factorial",
       "formulaNeeded": "n! = n * (n-1) * ... * 1",
-      "hints": ["4! = 4 * 3 * ... * 1"],
+      "hints": ["4! = 4 * 3 * ..."],
       "answer": 24
     },
     {
@@ -451,7 +454,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Evaluate 3 factorial plus 2 factorial",
       "formulaNeeded": "n! = n * (n-1) * ... * 1",
-      "hints": ["3! = 3 * 2 * 1", "2! = 2 * 1"],
+      "hints": ["3! = 3 * 2 * ...", "2! = 2 * ..."],
       "answer": 8
     },
     {
@@ -461,7 +464,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Evaluate 1 factorial plus 2 factorial plus 3 factorial",
       "formulaNeeded": "n! = n * (n-1) * ... * 1",
-      "hints": ["1! = 1", "2! = 2 * 1", "3! = 3 * 2 * 1"],
+      "hints": ["1! = 1", "2! = 2 * ...", "3! = 3 * 2 * ..."],
       "answer": 9
     },
     {
@@ -481,7 +484,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Evaluate 6 permute 2",
       "formulaNeeded": "nPr = n! / (n-r)!",
-      "hints": ["6P2 = 6! / (6-2)! = 6! / 4!"],
+      "hints": ["6P2 = 6! / (6-2)!"],
       "answer": 30
     },
     {
@@ -491,7 +494,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "Evaluate 8 permute 3",
       "formulaNeeded": "nPr = n! / (n-r)!",
-      "hints": ["8P3 = 8! / (8-3)! = 8! / 5!"],
+      "hints": ["8P3 = 8! / (8-3)!"],
       "answer": 336
     },
     {
@@ -530,8 +533,7 @@
       "hints": [
         "Malou has 5 different blouses.",
         "On Wednesday, she can choose any of the 5 blouses.",
-        "On Thursday, she can choose any of the remaining 4 blouses (since she cannot wear the same blouse).",
-        "So, the number of different ways is 5 * 4 = 20."
+        "On Thursday, she can choose any of the remaining 4 blouses (since she cannot wear the same blouse)."
       ],
       "answer": 20
     },
@@ -545,8 +547,7 @@
       "hints": [
         "Bobby has 5 textbooks.",
         "If math must always be in the middle, there is only 1 way to place the math textbook (in the middle position).",
-        "The remaining 4 textbooks can be arranged in any order.",
-        "So, the number of different ways is 4! = 24."
+        "The remaining 4 textbooks can be arranged in any order."
       ],
       "answer": 24
     },
@@ -561,7 +562,7 @@
         "There are 20 students competing.",
         "The prizes are 1st, 2nd, and 3rd place, so order matters.",
         "Use permutations: 20P3.",
-        "20P3 = 20 x 19 x 18 = 6840."
+        "20P3 = 20 x 19 x 18 = ?."
       ],
       "answer": 6840
     },
@@ -575,9 +576,7 @@
       "hints": [
         "There are 12 couples and 12 double seats.",
         "Each couple occupies one double seat.",
-        "Since the Ferris wheel is circular, rotations are considered the same.",
-        "Use circular permutation formula: (n - 1)!",
-        "So the number of arrangements is 11! = 39,916,800."
+        "Since the Ferris wheel is circular, rotations are considered the same."
       ],
       "answer": 39916800
     },
@@ -593,7 +592,7 @@
         "Treat these 3 people as one block.",
         "Now we have 6 units (1 block + 5 other individuals).",
         "Arrange the 6 units in a circle: (6 - 1)! = 5! = 120.",
-        "Arrange the 3 J’s within their block: 3! = 6."
+        "Arrange the 3 J's within their block: 3! = 6."
       ],
       "answer": 720
     },
@@ -605,9 +604,8 @@
       "simplifiedQuestionString": "Find the number of ways to choose jackets for two consecutive days from 6 different jackets, without repeating the same jacket.",
       "formulaNeeded": "n x (n - 1)",
       "hints": [
-        "Step 1: Choose a jacket for Wednesday. There are 6 choices.",
-        "Step 2: Choose a jacket for Thursday. Since he cannot repeat the same jacket, there are 5 remaining choices.",
-        "Step 3: Multiply the choices: 6 × 5 = 30."
+        "Choose a jacket for Wednesday. There are 6 choices.",
+        "Choose a jacket for Thursday. Since he cannot repeat the same jacket, there are 5 remaining choices."
       ],
       "answer": 30
     },
@@ -766,7 +764,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": ["Are the positions in the selection identical?"],
       "answer": 1
     },
     {
@@ -776,7 +774,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": ["Are the students selected for identical positions?"],
       "answer": 0
     },
     {
@@ -786,7 +784,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": ["Are the students selected for identical positions?"],
       "answer": 0
     },
     {
@@ -806,7 +804,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": ["Does the order matter?"],
       "answer": 0
     },
     {
@@ -816,8 +814,8 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
-      "answer": 0
+      "hints": ["Does the order matter?"],
+      "answer": 1
     },
     {
       "id": 74,
@@ -826,7 +824,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": [
+        "Use the combination formula, Substitute n = 10 and r = 5 into the formula"
+      ],
       "answer": 10
     },
     {
@@ -1002,7 +1002,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": [
+        "Use the combination formula, Substitute n = 9 and r = 6 into the formula"
+      ],
       "answer": 84
     },
     {
@@ -1012,7 +1014,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": [
+        "Use the combination formula, Substitute n = 12 and r = 8 into the formula"
+      ],
       "answer": 495
     },
     {
@@ -1022,7 +1026,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": [
+        "Use the combination formula, Substitute n = 5 and r = 5 into the formula"
+      ],
       "answer": 1
     },
     {
@@ -1032,7 +1038,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [""],
+      "hints": [
+        "Use the combination formula, Substitute n = 5 and r = 4 into the formula"
+      ],
       "answer": 5
     },
     {
@@ -1257,148 +1265,96 @@
     },
     {
       "id": 112,
-      "questionString": "A card is drawn from a standard deck. Let A be drawing a heart and B be drawing a face card. What is P(A \\cap B)? Write upto 4 decimal places.",
+      "questionString": "There are 15 chips numbered 1 to 15. Let A be multiples of 3 and B be odd numbers. How many outcomes are in A \\cap B?,",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
+      "difficulty": "Easy",
       "simplifiedQuestionString": "Find probability of drawing a card that is both a heart and a face card.",
       "formulaNeeded": "P(A ∩ B) = number of favorable outcomes / total outcomes",
-      "hints": ["Heart face cards: J♥, Q♥, K♥ (3 cards)", "3 / 52"],
-      "answer": 0.0577
+      "hints": [
+        "Multiples of 3: {3,6,9,12,15}",
+        "Odd numbers: {1,3,5,7,9,11,13,15}",
+        "Intersection: {3,9,15}"
+      ],
+      "answer": 3
     },
     {
       "id": 113,
-      "questionString": "If P(A)=0.5, P(B)=0.4, and P(A ∩ B)=0.2, find P(A \\cup B).",
+      "questionString": "Given: Q = {x: x is an odd number, x <10} and T = {x: x is a multiple of 3, x < 15}. Find Q \\cup T.",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "Compute P(A ∪ B).",
       "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.5 + 0.4 - 0.2 = 0.7"],
-      "answer": 0.7
+      "hints": [
+        "Q = odd numbers less than 10 → {1, 3, 5, 7, 9}",
+        "T = multiples of 3 less than 15 → {3, 6, 9, 12}"
+      ],
+      "answers": [1, 3, 5, 6, 7, 9, 12]
     },
     {
       "id": 114,
-      "questionString": "In a survey, 70% watch Netflix, 55% watch YouTube, and 40% watch both. What is the probability a person watches at least one of them?",
+      "questionString": "A die is thrown once and the number obtained is recorded. The sample space S = {1, 2, 3, 4, 5, 6}. Let A = {1, 2, 3}, B = {3, 6}. Find A'. Write your answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Find P(N ∪ Y).",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.70 + 0.55 - 0.40 = 0.85"],
-      "answer": 0.85
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Find the complement of event A.",
+      "formulaNeeded": "",
+      "hints": ["Remove the elements of A from S"],
+      "answers": [4, 5, 6]
     },
     {
       "id": 115,
-      "questionString": "If two events A and B are mutually exclusive and P(A)=0.35 and P(B)=0.25, find P(A \\cup B).",
+      "questionString": "A class adviser surveys 35 of his students on the kind of pets they have at home. He found that 15 have dogs, 12 have cats, and 8 have birds. Five have dogs and cats, 4 have dogs and birds, and 2 have cats and birds. If no one has all three kinds of pets, how many students have none of these pets?",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
+      "difficulty": "Easy",
       "simplifiedQuestionString": "Events are mutually exclusive.",
       "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": ["0.35 + 0.25 = 0.60"],
-      "answer": 0.6
+      "hints": [
+        "Start by adding the sizes of all three sets",
+        "Fix the overcounting by subtracting the overlaps",
+        "Then subtract from the total to find those with none"
+      ],
+      "answer": 11
     },
     {
       "id": 116,
-      "questionString": "Given P(A)=0.7, P(B)=0.6, and P(A \\cup B)=0.9, find P(A \\cap B).",
+      "questionString": "There are 12 chips numbered from 11 to 22 in a bag. A chip is drawn at random from the bag. Let A be the event that the number is smaller than 16, B be the event that a number is a composite number. Find A \\cap B. Write your answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
+      "difficulty": "Easy",
       "simplifiedQuestionString": "Find intersection probability.",
-      "formulaNeeded": "P(A \\cap B) = P(A) + P(B) − P(A \\cup B)",
-      "hints": ["0.7 + 0.6 - 0.9 = 0.4"],
-      "answer": 0.4
+      "formulaNeeded": "",
+      "hints": ["A={11,12,13,14,15}", "B={12,14,15,16,18,20,21,22}"],
+      "answers": [12, 14, 15]
     },
     {
       "id": 117,
-      "questionString": "In a group of students, P(A)=0.65, P(B)=0.5, and P(A \\cup B)=0.8. Find P(A \\cap B).",
+      "questionString": "There are 10 chips numbered from 1 to 10 in a bag. A chip is drawn at random from the bag. Let A be the event that the number is multiple of 3, B be the event that a number is a prime number. Find A \\cap B.",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
+      "difficulty": "Medium",
       "simplifiedQuestionString": "Find overlap of A and B.",
-      "formulaNeeded": "P(A \\cap B) = P(A) + P(B) − P(A \\cup B)",
-      "hints": ["0.65 + 0.5 - 0.8 = 0.35"],
-      "answer": 0.35
+      "formulaNeeded": "",
+      "hints": ["A = {3, 6, 9}", "B = {2, 3, 5, 7}"],
+      "answer": 3
     },
     {
       "id": 118,
-      "questionString": "A die is rolled. Let A be getting an even number and B be getting a number greater than 3. Find P(A \\cap B). Write upto 4 decimal places.",
+      "questionString": "There are 8 chips numbered from 1 to 8 in a bag. A chip is drawn at random. Let A be the event that the number is even, B be the event that the number is greater than 5. Find A \\cap B. Write your answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Even numbers and numbers greater than 3.",
-      "formulaNeeded": "Intersection of outcomes",
-      "hints": [
-        "Even numbers: {2,4,6}",
-        "Numbers >3: {4,5,6}",
-        "Intersection: {4,6}",
-        "2/6"
-      ],
-      "answer": 0.3333
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["Even numbers: {2,4,6}", "Numbers > 5 = {6, 7, 8}"],
+      "answers": [6, 8]
     },
     {
       "id": 119,
-      "questionString": "In a school, 48% play basketball, 52% play volleyball, and 30% play both. What is the probability a student plays at least one of the sports?",
+      "questionString": "A small adventuring party has 8 heroes. Let A be the heroes who can cast fire spells, and Bbe the heroes who can cast water spells. There are 5 heroes who can cast fire spells, 4 who can cast water spells, and 2 who can cast both fire and water spells. Find A \\cap B",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Hard",
-      "simplifiedQuestionString": "Find P(B ∪ V).",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.48 + 0.52 - 0.30 = 0.70"],
-      "answer": 0.7
-    },
-    {
-      "id": 120,
-      "questionString": "If P(A)=0.55, P(B)=0.45, and P(A ∩ B)=0.15, find P(A ∪ B).",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Compute union.",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.55 + 0.45 - 0.15 = 0.85"],
-      "answer": 0.85
-    },
-    {
-      "id": 121,
-      "questionString": "A card is drawn. Let A be a red card and B be a king. Find P(A ∩ B). Write upto 4 decimal places.",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Find probability of red king.",
-      "formulaNeeded": "Favorable outcomes / total outcomes",
-      "hints": ["Red kings: K♥ and K♦", "2/52"],
-      "answer": 0.0385
-    },
-    {
-      "id": 122,
-      "questionString": "Given P(A)=0.3, P(B)=0.6, and P(A ∪ B)=0.75, find P(A ∩ B).",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Find intersection.",
-      "formulaNeeded": "P(A ∩ B) = P(A) + P(B) − P(A ∪ B)",
-      "hints": ["0.3 + 0.6 - 0.75 = 0.15"],
-      "answer": 0.15
-    },
-    {
-      "id": 123,
-      "questionString": "In a company, 62% drink coffee, 54% drink tea, and 28% drink both. Find the probability an employee drinks coffee or tea.",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Find union probability.",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
-      "hints": ["0.62 + 0.54 - 0.28 = 0.88"],
-      "answer": 0.88
-    },
-    {
-      "id": 124,
-      "questionString": "If P(A)=0.8, P(B)=0.5, and events are independent, find P(A ∩ B).",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Independent events.",
-      "formulaNeeded": "P(A ∩ B) = P(A)P(B)",
-      "hints": ["0.8 x 0.5 = 0.4"],
-      "answer": 0.4
-    },
-    {
-      "id": 125,
-      "questionString": "A die is rolled. Let A be getting a prime number and B be getting an odd number. Find P(A ∩ B). Write upto 4 decimal places.",
-      "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "Prime numbers and odd numbers.",
-      "formulaNeeded": "Intersection of sets",
-      "hints": ["Prime: {2,3,5}", "Odd: {1,3,5}", "Intersection: {3,5}", "2/6"],
-      "answer": 0.3333
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "A \\cap B means heroes who can cast both fire and water spells."
+      ],
+      "answer": 2
     },
     {
       "id": 126,
@@ -1776,200 +1732,8 @@
       "answer": 0.006
     },
     {
-      "id": 156,
-      "questionString": "A single die is rolled. What is the probability of getting a 3 or a 5? Write upto 4 decimal places.",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Probability of 3 or 5",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "3 and 5 cannot occur at the same time.",
-        "Add their individual probabilities."
-      ],
-      "answer": 0.3333
-    },
-    {
-      "id": 157,
-      "questionString": "A card is drawn from a deck. What is the probability of drawing a heart or a spade?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Heart or spade",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "A card cannot be both a heart and a spade.",
-        "Each suit has 13 cards out of 52."
-      ],
-      "answer": 0.5
-    },
-    {
-      "id": 158,
-      "questionString": "A bag contains 4 red and 6 blue balls. One ball is drawn. What is the probability of getting red or blue?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Red or blue ball",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Balls cannot be both colors.",
-        "Add probabilities of red and blue."
-      ],
-      "answer": 1
-    },
-    {
-      "id": 159,
-      "questionString": "A die is rolled. What is the probability of getting a 1 or a 6? Write upto 4 decimal places.",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "1 or 6 on a die",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": ["1 and 6 cannot occur together.", "Probability of each = 1/6."],
-      "answer": 0.3333
-    },
-    {
-      "id": 160,
-      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a queen? Write upto 4 decimal places.",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "King or queen",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "A card cannot be both king and queen.",
-        "There are 4 kings and 4 queens."
-      ],
-      "answer": 0.1538
-    },
-    {
-      "id": 161,
-      "questionString": "A bag contains 3 white, 2 black, and 5 red balls. One ball is drawn. What is the probability it is black or red?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Black or red ball",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Black and red cannot occur at the same time.",
-        "Add probabilities."
-      ],
-      "answer": 0.7
-    },
-    {
-      "id": 162,
-      "questionString": "A single die is rolled. What is the probability of getting an even number or an odd number?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Even or odd",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Even and odd are mutually exclusive.",
-        "All numbers are either even or odd."
-      ],
-      "answer": 1
-    },
-    {
-      "id": 163,
-      "questionString": "A coin is tossed. What is the probability of getting heads or tails?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Heads or tails",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Coin shows either heads or tails, not both.",
-        "Add probabilities: 1/2 + 1/2."
-      ],
-      "answer": 1
-    },
-    {
-      "id": 164,
-      "questionString": "From a deck, what is the probability of drawing a spade or a club?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Spade or club",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Spade and club cannot happen at the same time.",
-        "Each suit has 13/52 probability."
-      ],
-      "answer": 0.5
-    },
-    {
-      "id": 165,
-      "questionString": "A bag contains 6 green balls and 4 yellow balls. One ball is drawn. What is the probability of green or yellow?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Green or yellow ball",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Green and yellow cannot occur simultaneously.",
-        "Add individual probabilities."
-      ],
-      "answer": 1
-    },
-    {
-      "id": 166,
-      "questionString": "A die is rolled. What is the probability of getting 2 or 5? Write upto 4 decimal places.",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "2 or 5",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Events are mutually exclusive.",
-        "Add probabilities: 1/6 + 1/6."
-      ],
-      "answer": 0.3333
-    },
-    {
-      "id": 167,
-      "questionString": "A card is drawn from a deck. What is the probability of drawing a jack or a 10? Write upto 4 decimal places.",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Jack or 10",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "A card cannot be both jack and 10.",
-        "There are 4 of each in a deck."
-      ],
-      "answer": 0.1538
-    },
-    {
-      "id": 168,
-      "questionString": "A bag contains 5 red and 7 blue balls. One ball is drawn. What is the probability of getting red or blue?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Red or blue",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
-      "hints": [
-        "Red and blue cannot occur together.",
-        "Add probabilities: 5/12 + 7/12."
-      ],
-      "answer": 1
-    },
-    {
-      "id": 169,
-      "questionString": "A coin is tossed twice. What is the probability of getting heads on the first toss or tails on the second toss?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Medium",
-      "simplifiedQuestionString": "Head first or tail second",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)",
-      "hints": [
-        "Events are not mutually exclusive if considered carefully.",
-        "Subtract intersection if necessary."
-      ],
-      "answer": 0.75
-    },
-    {
-      "id": 170,
-      "questionString": "A die is rolled. What is the probability of getting 1, 3, or 5?",
-      "type": "Mutually_Exclusive_Events",
-      "difficulty": "Easy",
-      "simplifiedQuestionString": "Odd numbers on a die",
-      "formulaNeeded": "P(A ∪ B ∪ C) = P(A) + P(B) + P(C)",
-      "hints": [
-        "1,3,5 are Mutually_Exclusive_Events.",
-        "Add probabilities: 1/6 each."
-      ],
-      "answer": 0.5
-    },
-    {
       "id": 171,
-      "questionString": "A single die is rolled. What is the probability of getting a 3 or a 5? Write upto 4 decimal places.",
+      "questionString": "A single die is rolled. What is the probability of getting a 3 or a 5? Round up to 4 decimal places.",
       "type": "Mutually_Exclusive_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "Probability of 3 or 5",
@@ -2008,7 +1772,7 @@
     },
     {
       "id": 174,
-      "questionString": "A die is rolled. What is the probability of getting a 1 or a 6? Write upto 4 decimal places.",
+      "questionString": "A die is rolled. What is the probability of getting a 1 or a 6? Round up to 4 decimal places.",
       "type": "Mutually_Exclusive_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "1 or 6 on a die",
@@ -2018,7 +1782,7 @@
     },
     {
       "id": 175,
-      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a queen? Write upto 4 decimal places.",
+      "questionString": "A card is drawn from a deck. What is the probability of drawing a king or a queen? Round up to 4 decimal places.",
       "type": "Mutually_Exclusive_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "King or queen",
@@ -2154,7 +1918,7 @@
       "simplifiedQuestionString": "Odd numbers on a die",
       "formulaNeeded": "P(A ∪ B ∪ C) = P(A) + P(B) + P(C)",
       "hints": [
-        "1,3,5 are Mutually_Exclusive_Events.",
+        "1, 3, 5 are Mutually_Exclusive_Events.",
         "Add probabilities: 1/6 each."
       ],
       "answer": 0.5
@@ -2170,7 +1934,7 @@
         "Total ways to choose 3 from 8: C(8,3).",
         "Ways to choose 3 boys: C(5,3)."
       ],
-      "answer": 0.3571
+      "answer": 0.1786
     },
     {
       "id": 187,
@@ -2186,7 +1950,7 @@
     },
     {
       "id": 188,
-      "questionString": "A box contains 10 bulbs, 3 defective. Two bulbs are selected at random. What is the probability that both are non-defective? Write upto 4 decimal places.",
+      "questionString": "A box contains 10 bulbs, 3 defective. Two bulbs are selected at random. What is the probability that both are non-defective? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two non-defective bulbs",
@@ -2199,7 +1963,7 @@
     },
     {
       "id": 189,
-      "questionString": "From 6 players, a captain and a vice-captain are to be selected. What is the probability that a particular player becomes captain?",
+      "questionString": "From 6 players, a captain and a vice-captain are to be selected. What is the probability that a particular player becomes captain? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Specific player as captain",
@@ -2208,15 +1972,15 @@
         "Total arrangements for captain and vice: 6 x 5.",
         "Favorable: 1 x 5 (specific captain)."
       ],
-      "answer": 0.2
+      "answer": 0.1667
     },
     {
       "id": 190,
-      "questionString": "From a deck of 52 cards, 2 cards are drawn. What is the probability that both are aces? Write upto 4 decimal places.",
+      "questionString": "From a deck of 52 cards, 2 cards are drawn. What is the probability that both are aces? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two aces drawn",
-      "formulaNeeded": "P = C(4,2)/C(52,2)",
+      "formulaNeeded": "",
       "hints": [
         "Ways to choose 2 aces: C(4,2).",
         "Total ways to choose 2 cards: C(52,2)."
@@ -2225,7 +1989,7 @@
     },
     {
       "id": 191,
-      "questionString": "From 10 students, a group of 4 is to be formed. What is the probability that two particular students are in the group? Write upto 4 decimal places.",
+      "questionString": "From 10 students, a group of 4 is to be formed. What is the probability that two particular students are in the group? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two specific students in group",
@@ -2234,44 +1998,50 @@
         "Two specific students already chosen, choose 2 more from 8 remaining.",
         "Total combinations: C(10,4)."
       ],
-      "answer": 0.3714
+      "answer": 0.1333
     },
     {
       "id": 192,
-      "questionString": "A box has 5 red, 4 blue, and 3 green balls. Three balls are drawn. What is the probability that all are red? Write upto 4 decimal places.",
+      "questionString": "A box has 5 red, 4 blue, and 3 green balls. Three balls are drawn. What is the probability that all are red? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "All red balls drawn",
       "formulaNeeded": "P = C(5,3)/C(12,3)",
-      "hints": ["Total balls: 12.", "Ways to choose 3 red: C(5,3)."],
-      "answer": 0.1515
+      "hints": [
+        "Total ways to choose 3 balls: C(12,3).",
+        "Ways to choose 3 red: C(5,3)."
+      ],
+      "answer": 0.0455
     },
     {
       "id": 193,
-      "questionString": "From 7 men and 5 women, a committee of 3 is to be formed. What is the probability that it has at least 1 woman? Write upto 4 decimal places.",
+      "questionString": "From 7 men and 5 women, a committee of 3 is to be formed. What is the probability that it has at least 1 woman? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Committee with at least 1 woman",
       "formulaNeeded": "P = 1 - C(men,3)/C(total,3)",
-      "hints": ["Find probability of no women and subtract from 1."],
-      "answer": 0.8571
+      "hints": [
+        "Total ways to choose 3 people: C(12,3)",
+        "Ways to choose no women: C(7,3)"
+      ],
+      "answer": 0.8409
     },
     {
       "id": 194,
-      "questionString": "A box has 8 bulbs, 3 are defective. Two bulbs are selected without replacement. What is the probability that one is defective and one is not? Write upto 4 decimal places. Write upto 4 decimal places.",
+      "questionString": "A box has 8 bulbs, 3 are defective. Two bulbs are selected without replacement. What is the probability that one is defective and one is not? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "One defective, one non-defective",
       "formulaNeeded": "P = [C(defective,1)*C(non-defective,1)]/C(total,2)",
       "hints": [
-        "Choose one defective and one non-defective.",
-        "Divide by total combinations."
+        "Total ways to choose 2 bulbs: C(8,2).",
+        "Choose one defective C(3,1) and one non-defective C(5,1)."
       ],
       "answer": 0.5357
     },
     {
       "id": 195,
-      "questionString": "From 5 men and 4 women, a pair is selected randomly. What is the probability the pair consists of a man and a woman? Write upto 4 decimal places.",
+      "questionString": "From 5 men and 4 women, a pair is selected randomly. What is the probability the pair consists of a man and a woman? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "One man and one woman",
@@ -2281,7 +2051,7 @@
     },
     {
       "id": 196,
-      "questionString": "From 6 students, a president and secretary are selected. What is the probability that a particular student becomes secretary? Write upto 4 decimal places.",
+      "questionString": "From 6 students, a president and secretary are selected. What is the probability that a particular student becomes secretary? Round up to 4 decimal places.",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Specific student as secretary",
@@ -2290,7 +2060,7 @@
         "Total arrangements: 6 x 5.",
         "Favorable: 5 arrangements with specific secretary."
       ],
-      "answer": 0.8333
+      "answer": 0.1667
     },
     {
       "id": 197,
@@ -2299,8 +2069,11 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two face cards drawn",
       "formulaNeeded": "P = C(12,2)/C(52,2)",
-      "hints": ["Face cards: 12 in deck.", "Total combinations: C(52,2)."],
-      "answer": 0.0533
+      "hints": [
+        "Total combinations: C(52,2).",
+        "Face cards: 12 in deck. Choose 2: C(12,2)."
+      ],
+      "answer": 0.0498
     },
     {
       "id": 198,
@@ -2309,8 +2082,11 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Group of 2 men and 2 women",
       "formulaNeeded": "P = [C(8,2)*C(6,2)]/C(14,4)",
-      "hints": ["Choose 2 men and 2 women, divide by total combinations."],
-      "answer": 0.4762
+      "hints": [
+        "Total ways to choose 4 people: C(14,4).",
+        "Choose 2 men C(8,2) and 2 women C(6,2)."
+      ],
+      "answer": 0.4196
     },
     {
       "id": 199,
@@ -2320,6 +2096,7 @@
       "simplifiedQuestionString": "Exactly one defective bulb",
       "formulaNeeded": "P = [C(defective,1)*C(non-defective,1)]/C(total,2)",
       "hints": [
+        "Total ways to choose 2 bulbs: C(10,2).",
         "Select 1 defective and 1 non-defective, divide by total pairs."
       ],
       "answer": 0.5333
@@ -2332,10 +2109,10 @@
       "simplifiedQuestionString": "All women in committee",
       "formulaNeeded": "P = C(4,3)/C(10,3)",
       "hints": [
-        "Ways to choose 3 women from 4.",
-        "Total ways to choose 3 from 10."
+        "Total ways to choose 3 from 10.",
+        "Ways to choose 3 women from 4."
       ],
-      "answer": 0.0667
+      "answer": 0.0333
     },
     {
       "id": 201,
@@ -2352,7 +2129,7 @@
     },
     {
       "id": 202,
-      "questionString": "A die is rolled twice. What is the probability of getting a 4 on both rolls? Write upto 4 decimal places.",
+      "questionString": "A die is rolled twice. What is the probability of getting a 4 on both rolls? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "Two 4s in two rolls",
@@ -2378,7 +2155,7 @@
     },
     {
       "id": 204,
-      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. What is the probability both are blue? Write upto 4 decimal places.",
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. What is the probability both are blue? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two blue balls without replacement",
@@ -2391,7 +2168,7 @@
     },
     {
       "id": 205,
-      "questionString": "A card is drawn from a deck and replaced. Another card is drawn. What is the probability of drawing two aces? Write upto 4 decimal places.",
+      "questionString": "A card is drawn from a deck and replaced. Another card is drawn. What is the probability of drawing two aces? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two aces with replacement",
@@ -2404,7 +2181,7 @@
     },
     {
       "id": 206,
-      "questionString": "A card is drawn from a deck and not replaced. Another card is drawn. What is the probability both are kings? Write upto 4 decimal places.",
+      "questionString": "A card is drawn from a deck and not replaced. Another card is drawn. What is the probability both are kings? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two kings without replacement",
@@ -2417,12 +2194,12 @@
     },
     {
       "id": 207,
-      "questionString": "A die is rolled twice. What is the probability of getting a 2 first and a 5 second? Write upto 4 decimal places. Write upto 4 decimal places.",
+      "questionString": "A die is rolled twice. What is the probability of getting a 2 first and a 5 second? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "2 then 5 on die",
       "formulaNeeded": "P(A and B) = P(A) x P(B)",
-      "hints": ["Rolls are independent events.", "Probability: 1/6 x 1/6."],
+      "hints": ["Rolls are independent events.", "Probability: A x B."],
       "answer": 0.0278
     },
     {
@@ -2460,7 +2237,7 @@
     },
     {
       "id": 301,
-      "questionString": "Two cards are drawn from a deck without replacement. What is the probability the first is a king and second is a queen? Write upto 3 decimal places.",
+      "questionString": "Two cards are drawn from a deck without replacement. What is the probability the first is a king and second is a queen? Round up to 3 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "King then queen",
@@ -2470,7 +2247,7 @@
     },
     {
       "id": 302,
-      "questionString": "A die is rolled and a coin is tossed. What is the probability of rolling a 6 and tossing a head? Write upto 4 decimal places.",
+      "questionString": "A die is rolled and a coin is tossed. What is the probability of rolling a 6 and tossing a head? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "6 on die and head",
@@ -2483,7 +2260,7 @@
     },
     {
       "id": 303,
-      "questionString": "A bag contains 2 red and 3 blue balls. Two balls are drawn without replacement. What is the probability of drawing one red and one blue? Write upto 4 decimal places.",
+      "questionString": "A bag contains 2 red and 3 blue balls. Two balls are drawn without replacement. What is the probability of drawing one red and one blue?",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "One red and one blue",
@@ -2492,11 +2269,11 @@
         "Consider both orders: red-blue and blue-red.",
         "Compute each and add probabilities."
       ],
-      "answer": 0.6667
+      "answer": 0.6
     },
     {
       "id": 304,
-      "questionString": "A coin is tossed three times. What is the probability of getting exactly two heads? Write upto 3 decimal places.",
+      "questionString": "A coin is tossed three times. What is the probability of getting exactly two heads? Round up to 3 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Exactly two heads in three tosses",
@@ -2509,7 +2286,7 @@
     },
     {
       "id": 305,
-      "questionString": "A deck of cards: two cards drawn without replacement. What is the probability both are red? Write upto 4 decimal places.",
+      "questionString": "A deck of cards: two cards drawn without replacement. What is the probability both are red? Round up to 4 decimal places.",
       "type": "Probability_of_Independent_and_Dependent_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two red cards",
@@ -2532,7 +2309,7 @@
     },
     {
       "id": 307,
-      "questionString": "From a deck, a card is drawn. Given that it is a face card, what is the probability that it is a king? Write upto 4 decimal places.",
+      "questionString": "From a deck, a card is drawn. Given that it is a face card, what is the probability that it is a king? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "King given face card",
@@ -2542,7 +2319,7 @@
     },
     {
       "id": 308,
-      "questionString": "A die is rolled. Given that the outcome is even, what is the probability that it is 4? Write upto 4 decimal places.",
+      "questionString": "A die is rolled. Given that the outcome is even, what is the probability that it is 4? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "4 given even",
@@ -2552,17 +2329,17 @@
     },
     {
       "id": 309,
-      "questionString": "A bag has 5 red and 3 green balls. One ball is drawn. Given that it is red, what is the probability it was the first ball drawn in two draws without replacement? Write upto 3 decimal places.",
+      "questionString": "A bag has 5 red and 3 green balls. One ball is drawn. Given that it is red, what is the probability it was the first ball drawn in two draws without replacement?",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "First red in two draws",
       "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
       "hints": ["Consider total probability of drawing red in any draw."],
-      "answer": 0.625
+      "answer": 0.7
     },
     {
       "id": 310,
-      "questionString": "Two cards are drawn from a deck without replacement. Given that the first card is an ace, what is the probability that the second card is also an ace? Write upto 4 decimal places.",
+      "questionString": "Two cards are drawn from a deck without replacement. Given that the first card is an ace, what is the probability that the second card is also an ace? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Second ace given first ace",
@@ -2572,7 +2349,7 @@
     },
     {
       "id": 311,
-      "questionString": "A bag contains 4 white and 6 black balls. One ball is drawn. Given that it is white, what is the probability that another white ball is drawn without replacement? Write upto 4 decimal places.",
+      "questionString": "A bag contains 4 white and 6 black balls. One ball is drawn. Given that it is white, what is the probability that another white ball is drawn without replacement? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Second white given first white",
@@ -2615,7 +2392,7 @@
     },
     {
       "id": 315,
-      "questionString": "Two cards are drawn from a deck. Given that at least one is an ace, what is the probability that both are aces? Write upto 4 decimal places.",
+      "questionString": "Two cards are drawn from a deck. Given that at least one is an ace, what is the probability that both are aces? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Hard",
       "simplifiedQuestionString": "Both aces given at least one ace",
@@ -2644,7 +2421,7 @@
       "simplifiedQuestionString": "First red given second green",
       "formulaNeeded": "P(A|B) = P(A ∩ B)/P(B)",
       "hints": ["Use cases: first red then green vs first green then green."],
-      "answer": 0.6
+      "answer": 0.75
     },
     {
       "id": 318,
@@ -2671,7 +2448,7 @@
     },
     {
       "id": 320,
-      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. Given that the first is red, what is the probability that the second is blue? Write upto 4 decimal places.",
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. Given that the first is red, what is the probability that the second is blue? Round up to 4 decimal places.",
       "type": "Conditional_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Second blue given first red",

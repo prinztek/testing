@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BadgeManager : MonoBehaviour
@@ -8,6 +10,9 @@ public class BadgeManager : MonoBehaviour
     [SerializeField] private Transform badgeCanvas;        // assign in inspector
 
     private JSONSaveData saveData; // Your save data
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip onBadgeUnlockedClip;
 
     public void Initialize(JSONSaveData data)
     {
@@ -46,10 +51,26 @@ public class BadgeManager : MonoBehaviour
         // Show UI
         if (badgeUIPrefab != null)
         {
-            GameObject badgeUI = Instantiate(badgeUIPrefab, badgeCanvas);
-            badgeUI.GetComponent<Badge>().Setup(badgeData);
-            Destroy(badgeUI, 3f); // auto-destroy after 3 seconds
+            // GameObject badgeUI = Instantiate(badgeUIPrefab, badgeCanvas);
+            // badgeUI.GetComponent<Badge>().Setup(badgeData);
+            // Destroy(badgeUI, 3f); // auto-destroy after 3 seconds
+
+            StartCoroutine(ShowBadgeRoutine(badgeData));
         }
+    }
+
+    private IEnumerator ShowBadgeRoutine(BadgeData badgeData)
+    {
+        // Play drag sound
+        if (onBadgeUnlockedClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onBadgeUnlockedClip, transform, 0.3f);
+        }
+
+        GameObject badgeUI = Instantiate(badgeUIPrefab, badgeCanvas);
+        badgeUI.GetComponent<Badge>().Setup(badgeData);
+        yield return new WaitForSeconds(3f);
+        Destroy(badgeUI);
     }
 
     // =========================

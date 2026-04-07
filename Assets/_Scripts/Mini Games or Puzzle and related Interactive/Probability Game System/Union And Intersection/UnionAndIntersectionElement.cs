@@ -14,6 +14,8 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
     public bool isFromPool = true; // to track whether this element is a copy from the pool or an original prefab in the bank
 
     // public bool canOnlyBeUsedOnce = true; // if true, the player can't place the same element twice (like how you can't have two of the same item in a set)
+    public Vector3 dragScale = new Vector3(1.2f, 1.2f, 1.2f); // scale when dragging
+    private Vector3 originalScale;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip onDragSoundClip;
@@ -25,6 +27,7 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
         elementPoolParent = transform.parent; // fixed, permanent
+        originalScale = rectTransform.localScale; // save original size
     }
 
     // public void OnBeginDrag(PointerEventData eventData)
@@ -76,6 +79,9 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
         transform.SetParent(canvas.transform);
         canvasGroup.blocksRaycasts = false;
 
+        // Increase size
+        rectTransform.localScale = dragScale;
+
         if (onDragSoundClip != null)
         {
             SoundFXManager.Instance.playOneShotSoundFXClilp(onDragSoundClip, transform, 0.2f);
@@ -96,6 +102,9 @@ public class UnionAndIntersectionElement : MonoBehaviour, IBeginDragHandler, IDr
         }
 
         canvasGroup.blocksRaycasts = true;
+
+        // Reset size
+        rectTransform.localScale = originalScale;
 
         // If no slot took us, destroy since this is a copy from the pool
         if (CurrentSlot == null)

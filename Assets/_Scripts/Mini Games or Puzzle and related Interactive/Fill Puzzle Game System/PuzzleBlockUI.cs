@@ -10,6 +10,9 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     CanvasGroup canvasGroup;
     Transform puzzleBlockPoolParent;
 
+    public Vector3 dragScale = new Vector3(1.4f, 1.4f, 1.4f); // scale when dragging
+    private Vector3 originalScale;
+
     [Header("Audio Clips")]
     [SerializeField] private AudioClip onDragSoundClip;
     [SerializeField] private AudioClip onDropSoundClip;
@@ -20,6 +23,7 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = GetComponentInParent<Canvas>();
         puzzleBlockPoolParent = transform.parent; // fixed, permanent
+        originalScale = rectTransform.localScale; // save original size
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -32,6 +36,15 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         transform.SetParent(canvas.transform);
         canvasGroup.blocksRaycasts = false;
+
+        // Increase size
+        rectTransform.localScale = dragScale;
+
+        // Play drag sound
+        if (onDragSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onDragSoundClip, transform, 0.3f);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -43,11 +56,20 @@ public class PuzzleBlockUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         canvasGroup.blocksRaycasts = true;
 
+        // Reset size
+        rectTransform.localScale = originalScale;
+
         // If no slot took us, return to pool
         if (CurrentSlot == null)
         {
             transform.SetParent(puzzleBlockPoolParent);
             transform.localPosition = Vector3.zero;
+        }
+
+        // Play drop sound
+        if (onDropSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onDropSoundClip, transform, 0.3f);
         }
     }
 }
