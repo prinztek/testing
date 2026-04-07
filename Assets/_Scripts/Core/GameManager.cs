@@ -63,8 +63,7 @@ public class GameManager : MonoBehaviour
     // Level Stage 
     [SerializeField] public AudioClip levelStageMusic;
     [SerializeField] public AudioClip mainMenuMusic;
-
-
+    public bool IsLoading { get; private set; }
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -327,6 +326,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(int chapterIndex, int levelIndex)
     {
+        if (IsLoading) return;
+
+        IsLoading = true;
+
         string sceneName = $"Level{chapterIndex + 1}_{levelIndex + 1}"; // Example: your level scenes could be named "Level_1_1", "Level_1_2", etc.
         // StartCoroutine(LoadLevelAsync(sceneName)); // commented out for async/await version to add loading screen
         StartCoroutine(LoadLevelAsyncWithLoader(sceneName));
@@ -392,6 +395,8 @@ public class GameManager : MonoBehaviour
 
         // Fade black → gameplay
         yield return uiFade.FadeIn();
+
+        IsLoading = false;
     }
 
     private void SpawnPlayer()

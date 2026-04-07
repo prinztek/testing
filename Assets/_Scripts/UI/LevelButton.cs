@@ -58,6 +58,9 @@ public class LevelButton : MonoBehaviour
         // Show locked mark if level is locked
         if (lockedMark != null)
             lockedMark.SetActive(!data.isUnlocked);
+
+        // Register this button with the manager for global control
+        LevelButtonManager.Instance.RegisterButton(this);
     }
 
     /// <summary>
@@ -65,9 +68,23 @@ public class LevelButton : MonoBehaviour
     /// </summary>
     private void OnClick()
     {
-        if (button.interactable)
-        {
-            GameManager.Instance.LoadLevel(chapterIndex, levelIndex);
-        }
+        if (!button.interactable || GameManager.Instance.IsLoading)
+            return;
+
+        // Disable all buttons immediately
+        LevelButtonManager.Instance.DisableAllButtons();
+
+        // Start loading
+        GameManager.Instance.LoadLevel(chapterIndex, levelIndex);
+        Debug.Log("LevelButton Clicked!!!");
+    }
+
+    public void SetInteractable(bool value)
+    {
+        if (button != null)
+            button.interactable = value;
+
+        if (lockedMark != null)
+            lockedMark.SetActive(!value);
     }
 }
