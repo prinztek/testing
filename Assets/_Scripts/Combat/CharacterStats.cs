@@ -19,6 +19,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] public AnimationHandler animationHandler;
     public BuffUIManager buffUIManager;
     [SerializeField] private Hurt hurt;
+    [SerializeField] private Attack attack;
     [SerializeField] private AudioClip hurtSoundClip;
     [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
     [SerializeField] private ShieldVFX shieldVfxPrefab;
@@ -78,6 +79,7 @@ public class CharacterStats : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth);         // Immediately fire health change event so UI gets correct starting value
         buffUIManager = UnityEngine.Object.FindFirstObjectByType<BuffUIManager>();
         hurt = GetComponent<Hurt>();
+        attack = GetComponent<Attack>();
     }
     private void Start()
     {
@@ -137,11 +139,13 @@ public class CharacterStats : MonoBehaviour
         {
             currentAttackMode = AttackMode.Ranged;
             Debug.Log("Switched to Ranged mode");
+            attack.CancelAttack();
         }
         else
         {
             currentAttackMode = AttackMode.Melee;
             Debug.Log("Switched to Melee mode");
+            attack.CancelAttack();
         }
     }
 

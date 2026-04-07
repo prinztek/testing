@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
@@ -14,6 +15,16 @@ public class Attack : MonoBehaviour
     [SerializeField] private float fistComboWindow = 0.2f;
     [SerializeField] private float swordComboWindow = 0.35f;
     [SerializeField] private float airSwordComboWindow = 0.35f;
+
+    [Header("Attack Combo Cooldowns")]
+    [SerializeField] private float attackComboCooldown = 0.5f;
+    [SerializeField] private float attackRangedComboCooldown = 5f;
+    [SerializeField] private bool isInMeleeComboCooldown = false;
+    [SerializeField] private bool isInRangedComboCooldown = false;
+    [SerializeField] private int maxRangedBeforeCooldown = 3;
+    [SerializeField] private float rangedChainWindow = 1.0f; // time allowed between shots
+    private int rangedAttackCount = 0;
+    private float lastRangedAttackTime = -999f;
 
     [Header("Input Buffering")]
     [SerializeField, Range(0f, 0.5f)] private float inputBufferDuration = 0.2f;
@@ -76,6 +87,15 @@ public class Attack : MonoBehaviour
         if (!inputReady || input == null || isInPostCooldown) return;
         if (hurt != null && (hurt.IsHurt())) return;
         // if (hurt != null && (hurt.IsHurt() || hurt.IsInvincible())) return;
+
+        if (stats.currentAttackMode == CharacterStats.AttackMode.Ranged)
+        {
+            if (isInRangedComboCooldown) return;
+        }
+        else
+        {
+            if (isInMeleeComboCooldown) return;
+        }
 
         if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for fist
 
@@ -150,10 +170,14 @@ public class Attack : MonoBehaviour
 
         if (phase == GetMaxComboPhase())
         {
+            // normal attacks
             canCombo = false;
             Invoke(nameof(ResetCombo), duration + postComboCooldown);
             isInPostCooldown = true;
             Invoke(nameof(ResetPostCooldown), duration + postComboCooldown);
+
+            // enter combo cooldown AFTER animation finishes
+            StartCoroutine(ComboCooldownAfterDelay(duration));
         }
         else
         {
@@ -218,6 +242,17 @@ public class Attack : MonoBehaviour
     }
     private void PerformRangedAttack()
     {
+        float now = Time.time;
+
+        if (now - lastRangedAttackTime > rangedChainWindow)
+        {
+            rangedAttackCount = 0;
+        }
+
+        // Count arrow shot
+        rangedAttackCount++;
+        lastRangedAttackTime = now;
+
         float duration = animationHandler.GetAttackAnimationLength(1, "bow");
         duration /= stats.attackSpeedMultiplier;
 
@@ -228,6 +263,12 @@ public class Attack : MonoBehaviour
 
         SoundFXManager.Instance.playSoundFXClilpRandomPitch(bowAttackClip, transform, 0.2f);
 
+        // Trigger cooldown if max range attacks reached
+        if (rangedAttackCount >= maxRangedBeforeCooldown)
+        {
+            rangedAttackCount = 0;
+            StartCoroutine(EnterRangedAttackComboCooldown());
+        }
     }
     private void ResetPostCooldown()
     {
@@ -246,8 +287,10 @@ public class Attack : MonoBehaviour
 
     public void CancelAttack()
     {
+        Debug.Log("Attack cancelled");
         lockedUntil = 0f;
         ResetCombo();
+        rangedAttackCount = 0;
     }
 
     public int GetBaseAttack()
@@ -304,4 +347,37 @@ public class Attack : MonoBehaviour
         return IsSwordEquipped() ? (_ground.OnGround ? swordComboWindow : airSwordComboWindow) : fistComboWindow;
     }
 
+    // Combo Attack Cooldown
+    private IEnumerator EnterAttackComboCooldown()
+    {
+        isInMeleeComboCooldown = true;
+
+        yield return new WaitForSeconds(attackComboCooldown);
+
+        isInMeleeComboCooldown = false;
+    }
+
+    private IEnumerator EnterRangedAttackComboCooldown()
+    {
+        isInRangedComboCooldown = true;
+
+        yield return new WaitForSeconds(attackRangedComboCooldown);
+
+        isInRangedComboCooldown = false;
+    }
+
+    private IEnumerator ComboCooldownAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        StartCoroutine(EnterAttackComboCooldown());
+    }
 }
+
+
+// Notes:
+// Add an attack cooldown after the last attack in the combo to prevent spamming and allow for better timing. Done via attackComboCooldown and isInAttackComboCooldown.
+// Enter attack combo cooldown
+// fist or punches 2 hit combo
+// sword 3 hit combo on ground, 1 hit in air
+// bow and arrow single attack enter cooldown after 3 repeated attacks (can be done by tracking number of consecutive ranged attacks and then applying cooldown)

@@ -5270,6 +5270,12 @@ MonoBehaviour:
   fistComboWindow: 0.2
   swordComboWindow: 0.6
   airSwordComboWindow: 0.35
+  attackComboCooldown: 0.2
+  attackRangedComboCooldown: 1
+  isInMeleeComboCooldown: 0
+  isInRangedComboCooldown: 0
+  maxRangedBeforeCooldown: 3
+  rangedChainWindow: 1
   inputBufferDuration: 0.2
   postComboCooldown: 0.03
   baseAttack: 1
@@ -5324,6 +5330,7 @@ MonoBehaviour:
   animationHandler: {fileID: 8431338681835252906}
   buffUIManager: {fileID: 0}
   hurt: {fileID: 0}
+  attack: {fileID: 0}
   hurtSoundClip: {fileID: 8300000, guid: bd3344f4566e47b44a263627a308df91, type: 3}
   buffAcquireVfxPrefab: {fileID: 1212733191487505664, guid: ab7d12be9dd0dbb4897662d7d4676447, type: 3}
   shieldVfxPrefab: {fileID: 8375617944552790943, guid: e9f7634b3b887a645883e43a09c8f235, type: 3}
