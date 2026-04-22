@@ -27,7 +27,7 @@ public class CombinationCalculatorUI : MonoBehaviour
     [Header("Cost")]
     [SerializeField] private int calculationCost = 20;
 
-    private const int MAX_N = 20; // extended limit
+    private const int MAX_N = 15; // extended limit
     private bool wasLocked = true;
 
     private enum SelectedInput { None, N, R }

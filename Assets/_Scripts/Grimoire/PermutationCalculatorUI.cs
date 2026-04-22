@@ -27,7 +27,7 @@ public class PermutationCalculatorUI : MonoBehaviour
     [Header("Cost")]
     public int calculationCost = 20;
 
-    private const int MAX_N = 20; // Extended to 20
+    private const int MAX_N = 15; // Extended to 20
     private bool wasLocked = true;
 
     private enum SelectedInput { None, N, R }

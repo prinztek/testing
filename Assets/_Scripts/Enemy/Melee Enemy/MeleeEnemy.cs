@@ -34,7 +34,7 @@ public class MeleeEnemy : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private int maxHealth = 50;
     [SerializeField] private int damage = 15;
-    private float knockbackForce = 0.5f; // how far the enemy is knocked back
+    private float knockbackForce = 10f; // how far the enemy is knocked back
     private int currentHealth;
     private bool isDead;
 
@@ -129,12 +129,19 @@ public class MeleeEnemy : MonoBehaviour
                 ChangeState(State.Stunned);
         }
 
-        if (enemyStats.isHurt == true)
+        if (currentState == State.Hurt)
         {
-            if (currentState != State.Hurt)
+            stateTimer += Time.deltaTime;
+
+            if (stateTimer >= hurtDuration)
             {
-                ChangeState(State.Hurt);
+                enemyStats.isHurt = false;
+
+                if (PlayerDetected()) ChangeState(State.Chase);
+                else ChangeState(State.Patrol);
             }
+
+            return; // IMPORTANT: stop other logic
         }
 
         stateTimer += Time.deltaTime;
@@ -221,10 +228,10 @@ public class MeleeEnemy : MonoBehaviour
                 if (stateTimer >= hurtDuration)
                 {
                     enemyStats.isHurt = false;
-                    // zero out knockback
-                    Vector2 linearVelocity = rb.linearVelocity;
-                    linearVelocity.x = 0f;
-                    rb.linearVelocity = linearVelocity;
+                    // // zero out knockback
+                    // Vector2 linearVelocity = rb.linearVelocity;
+                    // linearVelocity.x = 0f;
+                    // rb.linearVelocity = linearVelocity;
                     // Return to combat after stun
                     if (PlayerDetected())
                     {
@@ -312,13 +319,17 @@ public class MeleeEnemy : MonoBehaviour
 
             case State.Hurt:
                 // rb.linearVelocity = Vector2.zero;
-                PlayAnimation(IdleHash);
+                // PlayAnimation(IdleHash);
                 // rb.linearVelocity = Vector2.zero;
 
                 // Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
-                // // float knockbackStrength = 5f;
-
+                // // float knockbackStrength = 0.5f;
                 // rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, rb.linearVelocity.y);
+                PlayAnimation(IdleHash);
+
+                Vector2 hitDir = enemyStats.GetLastHitDirection().normalized;
+
+                ApplyKnockback(hitDir, knockbackForce, 2f); // tune these
                 break;
 
             case State.Stunned:
@@ -507,5 +518,16 @@ public class MeleeEnemy : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawLine(origin, origin + Vector3.down * enemyStats.groundCheckY);
         }
+    }
+
+    private void ApplyKnockback(Vector2 hitDir, float forceX, float forceY)
+    {
+        Debug.Log($"Applying knockback with direction {hitDir}, forceX {forceX}, forceY {forceY}");
+        // Reset current velocity so knockback is consistent
+        rb.linearVelocity = Vector2.zero;
+
+        Vector2 force = new Vector2(hitDir.x * forceX, forceY);
+
+        rb.AddForce(force, ForceMode2D.Impulse);
     }
 }

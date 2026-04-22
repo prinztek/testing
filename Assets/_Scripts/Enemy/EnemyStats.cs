@@ -113,7 +113,7 @@ public class EnemyStats : MonoBehaviour
         else
         {
             statusQueue.Enqueue(status);
-            Debug.Log($"🕓 Queued status: {status.statusName}");
+            // Debug.Log($" Queued status: {status.statusName}");
         }
     }
 
@@ -121,7 +121,7 @@ public class EnemyStats : MonoBehaviour
     {
         activeStatus = status;
         status.Assign(this);
-        Debug.Log($"Applied status: {status.statusName}");
+        // Debug.Log($"Applied status: {status.statusName}");
     }
 
 
@@ -139,7 +139,7 @@ public class EnemyStats : MonoBehaviour
         isHurt = true;
         lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
 
-        Debug.Log("Taken Damage: " + rawDamage);
+        // Debug.Log("Taken Damage: " + rawDamage);
 
         int finalDamage = Mathf.Max(rawDamage - defense, 1);
         CurrentHealth -= finalDamage;
@@ -195,7 +195,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsDead) return;
 
-        Debug.Log("Enemy Died");
+        // Debug.Log("Enemy Died");
 
         IsDead = true;
         CurrentHealth = 0;

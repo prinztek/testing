@@ -69,7 +69,7 @@ public class BadgeManager : MonoBehaviour
 
         GameObject badgeUI = Instantiate(badgeUIPrefab, badgeCanvas);
         badgeUI.GetComponent<Badge>().Setup(badgeData);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSecondsRealtime(3f);
         Destroy(badgeUI);
     }
 
@@ -104,9 +104,9 @@ public class BadgeManager : MonoBehaviour
     {
         switch (chapterIndex)
         {
-            case 0: UnlockBadge("PERM_START"); break;
-            case 1: UnlockBadge("COMBO_START"); break;
-            case 2: UnlockBadge("PROB_START"); break;
+            case 0: UnlockBadge("PERMUTATION_START"); break;
+            case 1: UnlockBadge("COMBINATION_START"); break;
+            case 2: UnlockBadge("PROBABILITY_START"); break;
         }
     }
 
@@ -114,9 +114,9 @@ public class BadgeManager : MonoBehaviour
     {
         switch (chapterIndex)
         {
-            case 0: UnlockBadge("PERM_MASTER"); break;
-            case 1: UnlockBadge("COMBO_MASTER"); break;
-            case 2: UnlockBadge("PROB_MASTER"); break;
+            case 0: UnlockBadge("PERMUTATION_MASTER"); break;
+            case 1: UnlockBadge("COMBINATION_MASTER"); break;
+            case 2: UnlockBadge("PROBABILITY_MASTER"); break;
         }
 
         CheckGameComplete();
@@ -124,9 +124,9 @@ public class BadgeManager : MonoBehaviour
 
     void CheckGameComplete()
     {
-        bool c1 = IsUnlocked("PERM_MASTER");
-        bool c2 = IsUnlocked("COMBO_MASTER");
-        bool c3 = IsUnlocked("PROB_MASTER");
+        bool c1 = IsUnlocked("PERMUTATION_MASTER");
+        bool c2 = IsUnlocked("COMBINATION_MASTER");
+        bool c3 = IsUnlocked("PROBABILITY_MASTER");
 
         if (c1 && c2 && c3)
         {
