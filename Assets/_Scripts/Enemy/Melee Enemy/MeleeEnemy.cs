@@ -100,10 +100,17 @@ public class MeleeEnemy : MonoBehaviour
     private bool facingRight = true;
 
     private Transform player;
+    // ========================================
+    // HURT DATA
+    // ========================================
+    private Vector2 pendingHitDir;
+    private float pendingForceX;
+    private float pendingForceY;
 
     // ========================================
     // UNITY
     // ========================================
+
     private void Awake()
     {
         enemyStats ??= GetComponent<EnemyStats>();
@@ -113,9 +120,21 @@ public class MeleeEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
-
         // Start randomly between Idle and Patrol
         ChangeState(State.Idle);
+
+
+    }
+
+    private void HandleHurt(Vector2 dir, float fx, float fy)
+    {
+        if (currentState == State.Death) return;
+
+        pendingHitDir = dir;
+        pendingForceX = fx;
+        pendingForceY = fy;
+
+        ChangeState(State.Hurt);
     }
 
     private void Update()
@@ -141,7 +160,7 @@ public class MeleeEnemy : MonoBehaviour
                 else ChangeState(State.Patrol);
             }
 
-            return; // IMPORTANT: stop other logic
+            return; // stop other logic
         }
 
         stateTimer += Time.deltaTime;
@@ -228,11 +247,7 @@ public class MeleeEnemy : MonoBehaviour
                 if (stateTimer >= hurtDuration)
                 {
                     enemyStats.isHurt = false;
-                    // // zero out knockback
-                    // Vector2 linearVelocity = rb.linearVelocity;
-                    // linearVelocity.x = 0f;
-                    // rb.linearVelocity = linearVelocity;
-                    // Return to combat after stun
+
                     if (PlayerDetected())
                     {
                         ChangeState(State.Chase);
@@ -261,18 +276,6 @@ public class MeleeEnemy : MonoBehaviour
                 break;
 
         }
-    }
-
-    private void FixedUpdate()
-    {
-        // if (currentState == State.Attack && !attackNudgeApplied)
-        // {
-        //     if (enemyStats.IsStunned() == false) return;
-
-        //     int dir = facingRight == true ? 1 : -1;
-        //     rb.AddForce(Vector2.right * dir * attackNudgeForce, ForceMode2D.Impulse);
-        //     attackNudgeApplied = true;
-        // }
     }
 
     // ========================================
@@ -318,18 +321,11 @@ public class MeleeEnemy : MonoBehaviour
                 break;
 
             case State.Hurt:
-                // rb.linearVelocity = Vector2.zero;
-                // PlayAnimation(IdleHash);
-                // rb.linearVelocity = Vector2.zero;
-
-                // Vector2 knockbackDir = (enemyStats.GetLastHitDirection() + Vector2.up * 0.2f).normalized;
-                // // float knockbackStrength = 0.5f;
-                // rb.linearVelocity = new Vector2(knockbackDir.x * knockbackForce, rb.linearVelocity.y);
                 PlayAnimation(IdleHash);
 
-                Vector2 hitDir = enemyStats.GetLastHitDirection().normalized;
+                // Vector2 hitDir = enemyStats.GetLastHitDirection().normalized;
 
-                ApplyKnockback(hitDir, knockbackForce, 2f); // tune these
+                ApplyKnockback(pendingHitDir, pendingForceX, pendingForceY);
                 break;
 
             case State.Stunned:
@@ -478,11 +474,15 @@ public class MeleeEnemy : MonoBehaviour
         {
             HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
         }
+
+        enemyStats.OnHurt += HandleHurt;
+
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        enemyStats.OnHurt -= HandleHurt;
     }
 
     private void HandlePlayerSpawned(GameObject playerObj)

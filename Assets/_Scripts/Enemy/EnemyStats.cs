@@ -54,6 +54,9 @@ public class EnemyStats : MonoBehaviour
     public event Action<EnemyStats> OnDeath;
     public event Action<int> OnDamageTaken;
 
+    public System.Action<Vector2, float, float> OnHurt;
+    // (direction, forceX, forceY)
+
     [Header("Status Effect and Buff Related")]
     public StatusEffect activeStatus = null;
     private Queue<StatusEffect> statusQueue = new Queue<StatusEffect>();
@@ -127,7 +130,7 @@ public class EnemyStats : MonoBehaviour
 
     #region Take Damage
 
-    public void TakeDamage(int rawDamage, Vector2 attackerPosition, bool doScreenShake = true, bool statusDamage = false)
+    public void TakeDamage(int rawDamage, Vector2 attackerPosition, bool doScreenShake = true, bool statusDamage = false, float forceX = 0.5f, float forceY = 0f)
     {
         if (IsDead) return;
 
@@ -138,6 +141,7 @@ public class EnemyStats : MonoBehaviour
 
         isHurt = true;
         lastHitDirection = ((Vector2)transform.position - attackerPosition).normalized;
+        OnHurt?.Invoke(lastHitDirection, forceX, forceY);
 
         // Debug.Log("Taken Damage: " + rawDamage);
 

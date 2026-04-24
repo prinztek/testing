@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 public class AttackHitbox : MonoBehaviour
 {
@@ -43,6 +44,35 @@ public class AttackHitbox : MonoBehaviour
         int damage = playerStats.GetDamage();
         Vector3 hitPosition = transform.root.position;
 
+        // Identiy if the character attacked with melee or ranged weapon
+        // and what weapon if melee
+
+        float forceX = 0.5f;
+        float forceY = 0f;
+
+        if (playerStats.currentAttackMode == CharacterStats.AttackMode.Melee)
+        {
+            if (playerStats.equippedMeleeWeapon.itemName == "Sword")
+            {
+                forceX = 1.8f;
+                forceY = 1.8f;
+            }
+            else if (playerStats.equippedMeleeWeapon.itemName == null) // Fist
+            {
+                forceX = 0.5f;
+                forceY = 0f;
+            }
+        }
+        else if (playerStats.currentAttackMode == CharacterStats.AttackMode.Ranged)
+        {
+            if (playerStats.equippedRangedWeapon.itemName == "Bow")
+            {
+                forceX = 5f;
+                forceY = 0f;
+            }
+        }
+
+
         // Apply damage to enemy
         if (enemy != null)
         {
@@ -54,7 +84,7 @@ public class AttackHitbox : MonoBehaviour
         // Apply damage to enemy
         if (enemyStats != null)
         {
-            enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true, statusDamage: false);
+            enemyStats.TakeDamage(damage, hitPosition, doScreenShake: true, statusDamage: false, forceX: forceX, forceY: forceY);
             // 5% chance to stun
             // if (Random.value < 0.05f)
             //     enemyStats.AddStatus(new StunStatus(1.5f)); // can only apply to enemystats
@@ -62,22 +92,6 @@ public class AttackHitbox : MonoBehaviour
             playerStats.TriggerAttackHit(enemyStats.gameObject); // enemy stats new way of applying dot
             alreadyHit.Add(enemyStats);
         }
-
-        // Apply damage to Boss2
-        // if (boss != null)
-        // {
-        //     boss.TakeDamage(damage, hitPosition, doScreenShake: true);
-        //     playerStats.TriggerAttackHit(boss.gameObject);
-        //     alreadyHit.Add(boss);
-        // }
-
-        // Apply damage to AncientBoss
-        // if (ancientBoss != null)
-        // {
-        //     ancientBoss.TakeDamage(damage, hitPosition, doScreenShake: true);
-        //     playerStats.TriggerAttackHit(enemy.gameObject);
-        //     alreadyHit.Add(ancientBoss);
-        // }
 
         if (destroyableBlock != null)
         {
