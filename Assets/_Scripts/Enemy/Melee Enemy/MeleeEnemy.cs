@@ -120,10 +120,8 @@ public class MeleeEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
-        // Start randomly between Idle and Patrol
+        // Start Idle
         ChangeState(State.Idle);
-
-
     }
 
     private void HandleHurt(Vector2 dir, float fx, float fy)

@@ -240,6 +240,12 @@ public class EnemyStats : MonoBehaviour
             InstantiateLoot(dropItem);
         }
 
+        // badge unlock trigger (if not already unlocked)
+        if (!GameManager.Instance.currentData.firstKillDone)
+        {
+            GameManager.Instance.badgeManager.FirstKill();
+        }
+
         // Notify LevelManager
         if (isSummon != true)
         {
@@ -264,7 +270,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Modifiers (Optional Extension)
+    #region Modifiers
 
     public void ModifyAttack(int amount)
     {
@@ -347,15 +353,6 @@ public class EnemyStats : MonoBehaviour
             groundCheckY,
             whatIsGround
         );
-
-        // if (hit.collider != null)
-        // {
-        //     Debug.Log($"[HasGroundAhead] Hit: {hit.collider.name}");
-        // }
-        // else
-        // {
-        //     Debug.Log("[HasGroundAhead] No hit");
-        // }
 
         return hit.collider;
     }

@@ -12,6 +12,7 @@ public class ArcherEnemy : MonoBehaviour
         Retreat,        // Player too close, back away
         Attack,         // Aim and shoot
         Recovery,       // After shooting
+        Hurt,           // Just got hit, apply knockback
         Stunned,        // Hit by stun effect
         Death
     }
@@ -43,6 +44,11 @@ public class ArcherEnemy : MonoBehaviour
     // ========================================
     [Header("Patrol")]
     [SerializeField] private float patrolSpeed = 1.0f;
+    // ========================================
+    // HURT
+    // ========================================
+    [Header("Hurt")]
+    [SerializeField] private float hurtDuration = 0.333f;
 
     // ========================================
     // COMBAT RANGES
@@ -56,7 +62,9 @@ public class ArcherEnemy : MonoBehaviour
     // MOVEMENT
     // ========================================
     [Header("Movement")]
-    [SerializeField] private float retreatSpeed = 3f;
+    [SerializeField] private float retreatSpeed = 5f;
+    [SerializeField] private float retreatCooldownTimer;
+    [SerializeField] private float retreatCooldownDuration = 1.5f;
 
     // ========================================
     // COMBAT TIMING
@@ -91,15 +99,25 @@ public class ArcherEnemy : MonoBehaviour
     private bool shouldFlipAfterIdle = false;  // Track if we should flip when idle ends
 
     // ========================================
+    // HURT DATA
+    // ========================================
+    private Vector2 pendingHitDir;
+    private float pendingForceX;
+    private float pendingForceY;
+    // ========================================
+    // RETREAT DATA
+    // ========================================
+    [SerializeField] private float retreatDistance = 3f;
+    private float retreatStartX;
+    private int retreatDirection;
+
+    // ========================================
     // UNITY
     // ========================================
     private void HandleOnDeath(EnemyStats enemyStats)
     {
         // ignore the parameter
         Debug.Log("Archer Enemy died, dropping loot and playing death effects.");
-        // Play death effects
-        // ChangeState(State.Death);
-        // Destroy(gameObject);  // Delay to allow death animation/effects to play
     }
 
     private void Awake()
@@ -119,6 +137,12 @@ public class ArcherEnemy : MonoBehaviour
         if (isDead) return;
 
         stateTimer += Time.deltaTime;
+
+        // Cooldown countdown
+        if (retreatCooldownTimer > 0f)
+        {
+            retreatCooldownTimer -= Time.deltaTime;
+        }
 
         switch (currentState)
         {
@@ -148,8 +172,9 @@ public class ArcherEnemy : MonoBehaviour
             case State.Retreat:
                 RetreatFromPlayer();
 
-                // If successfully retreated enough, attack
-                if (!PlayerTooClose())
+                float distanceMoved = Mathf.Abs(transform.position.x - retreatStartX);
+
+                if (distanceMoved >= retreatDistance)
                 {
                     ChangeState(State.Attack);
                 }
@@ -171,6 +196,15 @@ public class ArcherEnemy : MonoBehaviour
                 }
                 break;
 
+            case State.Hurt:
+                if (stateTimer >= hurtDuration)
+                {
+                    enemyStats.isHurt = false;
+                    ChangeState(State.Idle);
+                }
+
+                break;
+
             case State.Stunned:
                 // Just wait out the stun
                 if (enemyStats.IsStunned() == false)
@@ -180,6 +214,17 @@ public class ArcherEnemy : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void HandleHurt(Vector2 dir, float fx, float fy)
+    {
+        if (currentState == State.Death) return;
+
+        pendingHitDir = dir;
+        pendingForceX = fx;
+        pendingForceY = fy;
+
+        ChangeState(State.Hurt);
     }
 
     // ========================================
@@ -204,6 +249,16 @@ public class ArcherEnemy : MonoBehaviour
 
             case State.Retreat:
                 PlayAnimation(MoveHash);
+                retreatCooldownTimer = retreatCooldownDuration; // start retreat cooldown
+
+                retreatStartX = transform.position.x;
+
+                if (player != null)
+                {
+                    int dirToPlayer = player.position.x < transform.position.x ? -1 : 1;
+                    retreatDirection = -dirToPlayer;
+                }
+
                 break;
 
             case State.Attack:
@@ -215,6 +270,13 @@ public class ArcherEnemy : MonoBehaviour
             case State.Recovery:
                 rb.linearVelocity = Vector2.zero;
                 PlayAnimation(IdleHash);
+                break;
+            case State.Hurt:
+                PlayAnimation(IdleHash);
+
+                // Vector2 hitDir = enemyStats.GetLastHitDirection().normalized;
+
+                ApplyKnockback(pendingHitDir, pendingForceX, pendingForceY);
                 break;
 
             case State.Stunned:
@@ -295,7 +357,7 @@ public class ArcherEnemy : MonoBehaviour
 
         // Can retreat - back away from player
         FacePlayer();
-        rb.linearVelocity = new Vector2(retreatDir * retreatSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(retreatDirection * retreatSpeed, rb.linearVelocity.y);
     }
 
     private void DecideNextAction()
@@ -306,7 +368,7 @@ public class ArcherEnemy : MonoBehaviour
             return;
         }
 
-        // KEY FIX: If cornered, don't try to retreat again - just attack!
+        // If cornered, don't try to retreat again - just attack!
         if (isCornered)
         {
             ChangeState(State.Attack);
@@ -316,7 +378,16 @@ public class ArcherEnemy : MonoBehaviour
         // Normal behavior: retreat if too close, otherwise attack
         if (PlayerTooClose())
         {
-            ChangeState(State.Retreat);
+            if (retreatCooldownTimer <= 0f)
+            {
+                ChangeState(State.Retreat);
+            }
+            else
+            {
+                Debug.Log("Retreat on cooldown, can't retreat yet.");
+                // Can't retreat yet - forced to attack
+                ChangeState(State.Attack);
+            }
         }
         else
         {
@@ -418,11 +489,18 @@ public class ArcherEnemy : MonoBehaviour
     {
         GameManager.OnPlayerSpawned += HandlePlayerSpawned;
         enemyStats.OnDeath += HandleOnDeath;
+        if (GameManager.Instance != null && GameManager.Instance.CurrentPlayer != null)
+        {
+            HandlePlayerSpawned(GameManager.Instance.CurrentPlayer);
+        }
+
+        enemyStats.OnHurt += HandleHurt;
     }
 
     private void OnDisable()
     {
         GameManager.OnPlayerSpawned -= HandlePlayerSpawned;
+        enemyStats.OnHurt -= HandleHurt;
         enemyStats.OnDeath -= HandleOnDeath;
     }
 
@@ -471,5 +549,16 @@ public class ArcherEnemy : MonoBehaviour
                 Gizmos.DrawRay(shootPoint.position, direction * 3f);
             }
         }
+    }
+
+    private void ApplyKnockback(Vector2 hitDir, float forceX, float forceY)
+    {
+        Debug.Log($"Applying knockback with direction {hitDir}, forceX {forceX}, forceY {forceY}");
+        // Reset current velocity so knockback is consistent
+        rb.linearVelocity = Vector2.zero;
+
+        Vector2 force = new Vector2(hitDir.x * forceX, forceY);
+
+        rb.AddForce(force, ForceMode2D.Impulse);
     }
 }
