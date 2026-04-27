@@ -16,7 +16,6 @@ public class MeleeEnemy : MonoBehaviour
         Stunned,        // Hit reaction (optional)
         Hurt,           // the player gets hit (pushed back a bit or stop moving forward)
         Death,
-        Edge,
     }
 
     // ========================================
@@ -58,10 +57,12 @@ public class MeleeEnemy : MonoBehaviour
     // ========================================
     [Header("Combat")]
     [SerializeField] private float detectionRange = 6f;     // How far skeleton can see
-    [SerializeField] private float detectionHeightTolerance = 1.2f; // vertical window
+    [SerializeField] private float detectionHeightTolerance = 1.2f; // vertical window for detection (e.g. can detect player on a platform above/below)
+    [SerializeField] private float attackHeightTolerance = 1.2f; // allow attacking slightly above/below
     [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
+    [SerializeField] private bool gavUpChase = false;
 
     // ========================================
     // TIMING
@@ -167,6 +168,7 @@ public class MeleeEnemy : MonoBehaviour
         {
             case State.Idle:
                 rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                gavUpChase = false; // reset give up flag when returning to idle
 
                 if (PlayerDetected())
                 {
@@ -181,7 +183,9 @@ public class MeleeEnemy : MonoBehaviour
             case State.Patrol:
                 Patrol();
 
-                if (PlayerDetected())
+                if (PlayerTooFar()) gavUpChase = false;
+                if (InAttackRange()) gavUpChase = false; // player is right there, re-engage (attack it)
+                if (!gavUpChase && PlayerDetected())
                 {
                     ChangeState(State.Detect);
                 }
@@ -257,32 +261,6 @@ public class MeleeEnemy : MonoBehaviour
                 }
 
                 break;
-            case State.Edge:
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-
-                int dir = facingRight ? 1 : -1;
-
-                FacePlayer(); // keep looking at player initially
-
-                if (!PlayerDetected())
-                {
-                    ChangeState(State.Patrol);
-                    return;
-                }
-
-                if (InAttackRange())
-                {
-                    ChangeState(State.Attack);
-                    return;
-                }
-
-                if (stateTimer > 1.0f)
-                {
-                    Debug.Log("Flipping at edge");
-                    FaceDirection(-dir);   // flip away from edge
-                    ChangeState(State.Patrol);
-                }
-                break;
 
             case State.Stunned:
                 if (enemyStats.IsStunned() == false)
@@ -329,6 +307,7 @@ public class MeleeEnemy : MonoBehaviour
                 break;
 
             case State.Chase:
+                Debug.Log("Chasing player");
                 PlayAnimation(MoveHash);
                 break;
 
@@ -350,10 +329,6 @@ public class MeleeEnemy : MonoBehaviour
                 // Vector2 hitDir = enemyStats.GetLastHitDirection().normalized;
 
                 ApplyKnockback(pendingHitDir, pendingForceX, pendingForceY);
-                break;
-            case State.Edge:
-                rb.linearVelocity = Vector2.zero;
-                PlayAnimation(IdleHash);
                 break;
 
             case State.Stunned:
@@ -402,7 +377,6 @@ public class MeleeEnemy : MonoBehaviour
 
         rb.linearVelocity = new Vector2(dir * enemyStats.GetMoveSpeed(), rb.linearVelocity.y);
     }
-
     private void ChasePlayer()
     {
         if (player == null) return;
@@ -416,12 +390,11 @@ public class MeleeEnemy : MonoBehaviour
 
         int dir = player.position.x < transform.position.x ? -1 : 1;
 
-        // Check for ground ahead (unless can fall off ledges)
         if (!canFallOffLedges && !enemyStats.HasGroundAhead(dir))
         {
-            // Can't continue chase, stop at edge
-            // rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            ChangeState(State.Edge);
+            gavUpChase = true;
+            FaceDirection(-dir);
+            ChangeState(State.Patrol);
             return;
         }
 
@@ -437,6 +410,7 @@ public class MeleeEnemy : MonoBehaviour
         if (player == null) return false;
         float dx = Mathf.Abs(player.position.x - transform.position.x);
         float dy = Mathf.Abs(player.position.y - transform.position.y);
+        Debug.Log(dy);
         return dx <= detectionRange && dy <= detectionHeightTolerance;
     }
 

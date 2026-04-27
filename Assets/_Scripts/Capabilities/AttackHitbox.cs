@@ -52,20 +52,21 @@ public class AttackHitbox : MonoBehaviour
 
         if (playerStats.currentAttackMode == CharacterStats.AttackMode.Melee)
         {
-            if (playerStats.equippedMeleeWeapon.itemName == "Sword")
-            {
-                forceX = 1f;
-                forceY = 0.5f;
-            }
-            else if (playerStats.equippedMeleeWeapon.itemName == null) // Fist
+            if (playerStats.equippedMeleeWeapon == null) // Fist
             {
                 forceX = 0.3f;
                 forceY = 0f;
             }
+            else
+            {
+                forceX = 1f;
+                forceY = 0.5f;
+            }
         }
         else if (playerStats.currentAttackMode == CharacterStats.AttackMode.Ranged)
         {
-            if (playerStats.equippedRangedWeapon.itemName == "Bow")
+            if (playerStats.equippedRangedWeapon != null &&
+                playerStats.equippedRangedWeapon.itemName == "Bow")
             {
                 forceX = 0.5f;
                 forceY = 0f;

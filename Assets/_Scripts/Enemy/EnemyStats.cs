@@ -386,16 +386,6 @@ public class EnemyStats : MonoBehaviour
             || Physics2D.Raycast(groundCheckPoint.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, whatIsGround);
     }
 
-    // public bool HasGroundAhead(int direction)
-    // {
-    //     if (groundCheckPoint == null) return false;
-
-    //     Vector3 origin = groundCheckPoint.position
-    //                    + Vector3.right * direction * groundCheckX;
-
-    //     return Physics2D.Raycast(origin, Vector2.down, groundCheckY, whatIsGround);
-    // }
-
     public bool HasGroundAhead(int direction)
     {
         if (groundCheckPoint == null) return false;
@@ -421,22 +411,22 @@ public class EnemyStats : MonoBehaviour
 
         Gizmos.color = Color.green;
 
-        // // Center ground check
-        // Gizmos.DrawLine(
-        //     groundCheckPoint.position,
-        //     groundCheckPoint.position + Vector3.down * groundCheckY
-        // );
+        // Center ground check
+        Gizmos.DrawLine(
+            groundCheckPoint.position,
+            groundCheckPoint.position + Vector3.down * groundCheckY
+        );
 
-        // // Right ground check
-        // Gizmos.DrawLine(
-        //     groundCheckPoint.position + Vector3.right * groundCheckX,
-        //     groundCheckPoint.position + Vector3.right * groundCheckX + Vector3.down * groundCheckY
-        // );
+        // Right ground check
+        Gizmos.DrawLine(
+            groundCheckPoint.position + Vector3.right * groundCheckX,
+            groundCheckPoint.position + Vector3.right * groundCheckX + Vector3.down * groundCheckY
+        );
 
-        // // Left ground check
-        // Gizmos.DrawLine(
-        //     groundCheckPoint.position + Vector3.left * groundCheckX,
-        //     groundCheckPoint.position + Vector3.left * groundCheckX + Vector3.down * groundCheckY
-        // );
+        // Left ground check
+        Gizmos.DrawLine(
+            groundCheckPoint.position + Vector3.left * groundCheckX,
+            groundCheckPoint.position + Vector3.left * groundCheckX + Vector3.down * groundCheckY
+        );
     }
 }
