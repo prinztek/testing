@@ -5270,11 +5270,11 @@ MonoBehaviour:
   fistComboWindow: 0.2
   swordComboWindow: 0.6
   airSwordComboWindow: 0.35
-  attackComboCooldown: 0.2
-  attackRangedComboCooldown: 1
+  attackComboCooldown: 0.3
+  attackRangedComboCooldown: 1.1
   isInMeleeComboCooldown: 0
   isInRangedComboCooldown: 0
-  maxRangedBeforeCooldown: 3
+  maxRangedBeforeCooldown: 2
   rangedChainWindow: 1
   inputBufferDuration: 0.2
   postComboCooldown: 0.03
@@ -5335,6 +5335,9 @@ MonoBehaviour:
   buffAcquireVfxPrefab: {fileID: 1212733191487505664, guid: ab7d12be9dd0dbb4897662d7d4676447, type: 3}
   shieldVfxPrefab: {fileID: 8375617944552790943, guid: e9f7634b3b887a645883e43a09c8f235, type: 3}
   buffAcquirePopupTextPrefab: {fileID: 2699513903985537067, guid: 272d70161e4de2746b0ed2ee93ca9a0d, type: 3}
+  shieldPrefab: {fileID: 4495921187580545753, guid: 2a2c024140411bf479fc1f7a02f93dac, type: 3}
+  heightOffset: 0.8
+  blockedSoundClip: {fileID: 8300000, guid: 05c45d7800943d24c9938c3b8a229979, type: 3}
   maxHealth: 50
   currentHealth: 0
   baseDamage: 1
@@ -5344,8 +5347,8 @@ MonoBehaviour:
   attackSpeedMultiplier: 1
   guaranteedCrits: 0
   animationSpeedMultiplier: 1
-  equippedMeleeWeapon: {fileID: 11400000, guid: 77eb47fdcfad85847a326efd2966d6ef, type: 2}
-  equippedRangedWeapon: {fileID: 11400000, guid: feb8a922bd6231248992f82dde5f4a8b, type: 2}
+  equippedMeleeWeapon: {fileID: 0}
+  equippedRangedWeapon: {fileID: 0}
 --- !u!114 &6945633715500797709
 MonoBehaviour:
   m_ObjectHideFlags: 0

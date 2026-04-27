@@ -15,8 +15,8 @@ public class RatArcherEnemyAnimationEventRelay : MonoBehaviour
         // ExecuteScreenShakeForCrystalBarrage();
     }
 
-    // public void ExecuteScreenShakeForCrystalBarrage()
-    // {
-    //     ancientBoss?.StartScreenshakeForAttacking();
-    // }
+    public void OnBurstFinished()
+    {
+        archerEnemy?.OnBurstFinished();
+    }
 }

@@ -1,11 +1,13 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    [SerializeField] public GameObject hitEffectPrefab; // Effect to spawn on hit
     private Vector2 velocity;
 
     public int damage = 3;
-    public float lifetime = 3f;
+    public float lifetime = 3f; // Time in seconds before projectile is automatically destroyed
 
     private float timer = 0f;
     private GameObject source; // Enemy who fired this projectile
@@ -19,7 +21,7 @@ public class EnemyProjectile : MonoBehaviour
         // Rotate the projectile to face the direction it's moving
         // float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
         // transform.rotation = Quaternion.Euler(0, 0, angle);
-        Debug.Log($"Projectile launched with velocity: {velocity}");
+        // Debug.Log($"Projectile launched with velocity: {velocity}");
     }
 
 
@@ -49,10 +51,16 @@ public class EnemyProjectile : MonoBehaviour
         if (other.name.Contains("CameraBounds"))
             return;
 
+        Debug.Log($"Projectile hit: {other}");
+
+        var player = other.GetComponentInParent<CharacterStats>();
+        var parent = other.GetComponentInParent<Transform>();
+        int layer = other.gameObject.layer;
+
         // Only hit player hurtbox
-        if (other.CompareTag("Hurtbox"))
+        if (other.CompareTag("Hurtbox") && player != null)
         {
-            CharacterStats player = other.GetComponentInParent<CharacterStats>();
+
             if (player != null)
             {
                 player.TakeDamage(damage, transform.position);
@@ -66,7 +74,27 @@ public class EnemyProjectile : MonoBehaviour
                 //         enemyStats.TriggerAttackHit(player.gameObject);
                 //     }
                 // }
+
+                // Spawn hit effect
+                GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+
+                // Destroy effect after some seconds
+                Destroy(effect, 0.417f);
+
+                Destroy(gameObject);
             }
+        }
+
+        // if ground layer is hit
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || parent.CompareTag("OneWayPlatform"))
+        {
+            // Spawn hit effect
+            GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+
+            // Destroy effect after some seconds
+            Destroy(effect, 0.417f);
+
+            Destroy(gameObject);
         }
 
         // // Destroy the object if it hits the ground layer
@@ -77,7 +105,14 @@ public class EnemyProjectile : MonoBehaviour
         // }
 
         // Destroy projectile on any hit
-        Destroy(gameObject);
+
+        // Spawn hit effect
+        // GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+
+        // // Destroy effect after 2 seconds (adjust as needed)
+        // Destroy(effect, 0.417f);
+
+        // Destroy(gameObject);
     }
 }
 

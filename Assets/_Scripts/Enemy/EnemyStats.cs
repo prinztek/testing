@@ -11,7 +11,11 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private CinemachineImpulseSource impulseSource;
     [SerializeField] private GameObject deathFXPrefab;
     [SerializeField] private OnHitFlashVFX onHitFlashVFX;
+    [SerializeField] private GameObject hitImpactPrefab;
     [SerializeField] private AudioClip hurtSoundClip;
+    [SerializeField] public GameObject shieldPrefab;
+    [SerializeField] public float heightOffset = 1.5f;
+    [SerializeField] private AudioClip blockedSoundClip;
     [SerializeField] private Rigidbody2D rb; // assign in inspector or via GetComponent
     // only for bosses
     [SerializeField] private GameObject bossHUD;
@@ -29,6 +33,12 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private int attackDamage = 10;
     [SerializeField] private int defense = 0;
     [SerializeField] private float moveSpeed = 2f;
+
+    // DEFELCT ATTACK
+    [SerializeField] private bool blocksFirstHit = false;
+    [SerializeField] private float blockRecoveryTime = 5.0f;
+    private bool hasBlocked = false;
+    private bool isRecovering = false;
 
     [Header("Stats Modifiers")]
     public float damageMultiplier = 1f;
@@ -134,6 +144,12 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsDead) return;
 
+        if (CanBlock())
+        {
+            BlockHit();
+            return;
+        }
+
         if (bossHUD != null && bossHUD.activeSelf == false)
         {
             bossHUD.SetActive(true);
@@ -158,6 +174,13 @@ public class EnemyStats : MonoBehaviour
         if (DamageTextSpawner.Instance != null)
         {
             DamageTextSpawner.Instance.ShowDamage(transform.position, finalDamage, Color.red);
+        }
+
+        // VFX hit impact animations
+        if (hitImpactPrefab != null)
+        {
+            GameObject impact = Instantiate(hitImpactPrefab, transform.position, Quaternion.identity, transform);
+            Destroy(impact, 0.417f); // clean up after
         }
 
         if (activeStatus is BurnStatus && statusDamage == true)
@@ -186,6 +209,40 @@ public class EnemyStats : MonoBehaviour
             Die();
         }
     }
+
+    public bool CanBlock()
+    {
+        return blocksFirstHit && !hasBlocked && !isRecovering;
+    }
+
+    public void BlockHit()
+    {
+        Debug.Log("Blocked Hit!");
+        hasBlocked = true;
+        isRecovering = true;
+
+        // negate damage and play block effect
+        // PlayBlockEffect();
+        if (blockedSoundClip != null)
+        {
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(blockedSoundClip, transform, 0.5f);
+        }
+
+        if (shieldPrefab != null)
+        {
+            GameObject shield = Instantiate(shieldPrefab, transform.position + Vector3.up * heightOffset, Quaternion.identity, transform);
+            Destroy(shield, 0.5f); // clean up after
+        }
+
+        StartCoroutine(BlockRecovery());
+    }
+
+    public IEnumerator BlockRecovery()
+    {
+        yield return new WaitForSeconds(blockRecoveryTime);
+        isRecovering = false;
+    }
+
 
     public void Heal(int amount)
     {

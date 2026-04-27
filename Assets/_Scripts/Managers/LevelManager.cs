@@ -133,7 +133,7 @@ public class LevelManager : MonoBehaviour
         totalEnemies = FindObjectsByType<EnemyStatsNew>(FindObjectsSortMode.None).Length +
                        FindObjectsByType<EnemyStats>(FindObjectsSortMode.None).Length;
         defeatedEnemies = 0;
-        Debug.Log($"LevelManager initialized. Found {totalEnemies} enemies.");
+        // Debug.Log($"LevelManager initialized. Found {totalEnemies} enemies.");
     }
 
     // Called when an enemy dies

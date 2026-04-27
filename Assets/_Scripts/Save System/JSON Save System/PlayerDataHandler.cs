@@ -49,7 +49,7 @@ public class PlayerDataHandler : MonoBehaviour
                 characterStats.UnlockSkill(skill);
         }
 
-        // Debug.Log("✅ Player loaded from data. UI events automatically fired.");
+        // Debug.Log("Player loaded from data. UI events automatically fired.");
     }
 
     // From Game to JSON file
@@ -80,7 +80,7 @@ public class PlayerDataHandler : MonoBehaviour
                 data.unlockedSkills.Add(skill.ToString());
         }
 
-        // Debug.Log("💾 Player saved to data.");
+        // Debug.Log("Player saved to data.");
     }
     private void DebugPrintDict(string title, Dictionary<string, int> dict)
     {

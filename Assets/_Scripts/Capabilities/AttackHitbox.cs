@@ -47,19 +47,19 @@ public class AttackHitbox : MonoBehaviour
         // Identiy if the character attacked with melee or ranged weapon
         // and what weapon if melee
 
-        float forceX = 0.5f;
+        float forceX = 0.3f;
         float forceY = 0f;
 
         if (playerStats.currentAttackMode == CharacterStats.AttackMode.Melee)
         {
             if (playerStats.equippedMeleeWeapon.itemName == "Sword")
             {
-                forceX = 1.8f;
-                forceY = 1.8f;
+                forceX = 1f;
+                forceY = 0.5f;
             }
             else if (playerStats.equippedMeleeWeapon.itemName == null) // Fist
             {
-                forceX = 0.5f;
+                forceX = 0.3f;
                 forceY = 0f;
             }
         }
@@ -67,7 +67,7 @@ public class AttackHitbox : MonoBehaviour
         {
             if (playerStats.equippedRangedWeapon.itemName == "Bow")
             {
-                forceX = 5f;
+                forceX = 0.5f;
                 forceY = 0f;
             }
         }

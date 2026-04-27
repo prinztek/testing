@@ -24,6 +24,10 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private BuffAcquireVFX buffAcquireVfxPrefab;
     [SerializeField] private ShieldVFX shieldVfxPrefab;
     [SerializeField] private PopupText buffAcquirePopupTextPrefab;
+    [SerializeField] public GameObject shieldPrefab;
+    [SerializeField] public float heightOffset = 1.5f;
+    [SerializeField] private AudioClip blockedSoundClip;
+
     [Header("Health")]
     public int maxHealth = 25;
     [SerializeField] private int currentHealth;
@@ -138,13 +142,13 @@ public class CharacterStats : MonoBehaviour
         if (currentAttackMode == AttackMode.Melee && equippedRangedWeapon != null)
         {
             currentAttackMode = AttackMode.Ranged;
-            Debug.Log("Switched to Ranged mode");
+            // Debug.Log("Switched to Ranged mode");
             attack.CancelAttack();
         }
         else
         {
             currentAttackMode = AttackMode.Melee;
-            Debug.Log("Switched to Melee mode");
+            // Debug.Log("Switched to Melee mode");
             attack.CancelAttack();
         }
     }
@@ -152,7 +156,7 @@ public class CharacterStats : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        Debug.Log($" Healed for {amount}, current HP: {currentHealth}");
+        // Debug.Log($" Healed for {amount}, current HP: {currentHealth}");
         OnHealthChanged?.Invoke(currentHealth); // Trigger health change event after healing
     }
 
@@ -230,7 +234,7 @@ public class CharacterStats : MonoBehaviour
         else
         {
             buffQueue.Enqueue(buff);
-            Debug.Log($"🕓 Queued buff: {buff.GetType().Name}");
+            // Debug.Log($"Queued buff: {buff.GetType().Name}");
         }
     }
 
@@ -299,7 +303,7 @@ public class CharacterStats : MonoBehaviour
         activeBuff = buff;
         buff.Assign(this);
         buffUIManager?.AddBuffUI(buff);
-        Debug.Log($"Applied buff: {buff.GetType().Name}");
+        // Debug.Log($"Applied buff: {buff.GetType().Name}");
     }
 
 
@@ -323,7 +327,18 @@ public class CharacterStats : MonoBehaviour
         if (shieldHitsRemaining > 0)
         {
             shieldHitsRemaining--;
-            Debug.Log("Shield absorbed the hit! Hits left: " + shieldHitsRemaining);
+            // Debug.Log("Shield absorbed the hit! Hits left: " + shieldHitsRemaining);
+            if (shieldPrefab != null)
+            {
+                GameObject shield = Instantiate(shieldPrefab, transform.position + Vector3.up * heightOffset, Quaternion.identity, transform);
+                Destroy(shield, 0.5f); // clean up after
+            }
+
+            if (blockedSoundClip != null)
+            {
+                SoundFXManager.Instance.playSoundFXClilpRandomPitch(blockedSoundClip, transform, 0.5f);
+            }
+
             return;
 
             // play deflection vfx
@@ -369,7 +384,7 @@ public class CharacterStats : MonoBehaviour
         isDead = true;
 
         animationHandler.PlayDeadAnimation(animationHandler.GetDeathAnimationLength());
-        Debug.Log("Character died.");
+        // Debug.Log("Character died.");
 
         OnDeathStarted?.Invoke();
 

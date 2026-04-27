@@ -26,7 +26,7 @@ public class ScreenShakeManager : MonoBehaviour
     public void SetShakeMultiplier(float value)
     {
         shakeMultiplier = Mathf.Clamp01(value); // 0–1
-        Debug.Log("ScreenShakeManager: shakeMultiplier = " + shakeMultiplier);
+        // Debug.Log("ScreenShakeManager: shakeMultiplier = " + shakeMultiplier);
     }
     private float CurrentShakeForce => baseShakeForce * shakeMultiplier;
 

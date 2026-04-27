@@ -186,16 +186,16 @@ public class Attack : MonoBehaviour
 
         if (animWeapon == "Sword" && phase == 1)
         {
-            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack1Clip, transform, 0.2f);
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack1Clip, transform, 0.1f);
         }
         else if (animWeapon == "Sword" && phase == 2)
         {
-            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack2Clip, transform, 0.2f);
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack2Clip, transform, 0.1f);
 
         }
         else if (animWeapon == "Sword" && phase == 3)
         {
-            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack3Clip, transform, 0.2f);
+            SoundFXManager.Instance.playSoundFXClilpRandomPitch(swordAttack3Clip, transform, 0.1f);
 
         }
 

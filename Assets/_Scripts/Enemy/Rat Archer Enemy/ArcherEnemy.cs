@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ArcherEnemy : MonoBehaviour
@@ -57,6 +58,8 @@ public class ArcherEnemy : MonoBehaviour
     [SerializeField] private float detectionRange = 8f;
     [SerializeField] private float retreatRange = 2.5f;      // If player closer, try to retreat
     [SerializeField] private float maxShootRange = 7f;
+    [SerializeField] private bool canBurstFire = false;
+    [SerializeField] private bool isBurstFiring = false;
 
     // ========================================
     // MOVEMENT
@@ -71,7 +74,8 @@ public class ArcherEnemy : MonoBehaviour
     // ========================================
     [Header("Combat Timing")]
     [SerializeField] private float idleDuration = 1.5f;      // Time to pause at walls/ledges
-    [SerializeField] private float attackDuration = 1.0f;
+    [SerializeField] private float attackDuration = 0.917f;
+    [SerializeField] private float attack2Duration = 1.25f;
     [SerializeField] private float recoveryTime = 1.0f;
     [SerializeField] private float stunDuration = 2.0f;      // How long stun lasts
 
@@ -87,6 +91,7 @@ public class ArcherEnemy : MonoBehaviour
     private static readonly int IdleHash = Animator.StringToHash("enemyidle");
     private static readonly int MoveHash = Animator.StringToHash("enemyrunning");
     private static readonly int AttackHash = Animator.StringToHash("enemyattack1");
+    private static readonly int Attack2Hash = Animator.StringToHash("enemyattack2");
 
     // ========================================
     // STATE DATA
@@ -183,9 +188,19 @@ public class ArcherEnemy : MonoBehaviour
             case State.Attack:
                 FacePlayer();
 
-                if (stateTimer >= attackDuration)
+                if (canBurstFire && isBurstFiring)
                 {
-                    ChangeState(State.Recovery);
+                    if (stateTimer >= attack2Duration)
+                    {
+                        ChangeState(State.Recovery);
+                    }
+                }
+                else
+                {
+                    if (stateTimer >= attackDuration)
+                    {
+                        ChangeState(State.Recovery);
+                    }
                 }
                 break;
 
@@ -264,7 +279,15 @@ public class ArcherEnemy : MonoBehaviour
             case State.Attack:
                 rb.linearVelocity = Vector2.zero;
                 FacePlayer();
-                PlayAnimation(AttackHash);
+
+                if (canBurstFire && !isBurstFiring) // If burst fire enabled, shoot 2 arrows in quick succession
+                {
+                    StartBurst(); // Shoot 2 arrows in burst
+                }
+                else
+                {
+                    PlayAnimation(AttackHash); // Normal single shot
+                }
                 break;
 
             case State.Recovery:
@@ -432,7 +455,18 @@ public class ArcherEnemy : MonoBehaviour
         float angle = dir.x > 0 ? 0 : 180;
         proj.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
+    public void StartBurst()
+    {
+        Debug.Log("Starting burst fire");
+        isBurstFiring = true;
+        PlayAnimation(Attack2Hash);
+    }
 
+    public void OnBurstFinished()
+    {
+        isBurstFiring = false;
+        Debug.Log("Burst finished");
+    }
     // ========================================
     // DIRECTION
     // ========================================
@@ -464,6 +498,22 @@ public class ArcherEnemy : MonoBehaviour
     public int GetDamage()
     {
         return damage;
+    }
+
+    // ========================================
+    // ATTACKS - burst fire - shoot 2 arrows in quick succession 
+    // ========================================
+    public IEnumerator BurstFire(int burstCount)
+    {
+        isBurstFiring = true;
+
+        for (int i = 0; i < burstCount; i++)
+        {
+            PlayAnimation(AttackHash); // triggers animator
+            yield return null; // just wait 1 frame to avoid same-frame override
+        }
+
+        isBurstFiring = false;
     }
 
     // ========================================

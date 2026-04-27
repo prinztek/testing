@@ -15,7 +15,8 @@ public class MeleeEnemy : MonoBehaviour
         Recovery,       // After attack cooldown
         Stunned,        // Hit reaction (optional)
         Hurt,           // the player gets hit (pushed back a bit or stop moving forward)
-        Death
+        Death,
+        Edge,
     }
 
     // ========================================
@@ -61,7 +62,6 @@ public class MeleeEnemy : MonoBehaviour
     [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
-    [SerializeField] private LayerMask playerLayer;         // What counts as player
 
     // ========================================
     // TIMING
@@ -257,6 +257,32 @@ public class MeleeEnemy : MonoBehaviour
                 }
 
                 break;
+            case State.Edge:
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+                int dir = facingRight ? 1 : -1;
+
+                FacePlayer(); // keep looking at player initially
+
+                if (!PlayerDetected())
+                {
+                    ChangeState(State.Patrol);
+                    return;
+                }
+
+                if (InAttackRange())
+                {
+                    ChangeState(State.Attack);
+                    return;
+                }
+
+                if (stateTimer > 1.0f)
+                {
+                    Debug.Log("Flipping at edge");
+                    FaceDirection(-dir);   // flip away from edge
+                    ChangeState(State.Patrol);
+                }
+                break;
 
             case State.Stunned:
                 if (enemyStats.IsStunned() == false)
@@ -325,6 +351,10 @@ public class MeleeEnemy : MonoBehaviour
 
                 ApplyKnockback(pendingHitDir, pendingForceX, pendingForceY);
                 break;
+            case State.Edge:
+                rb.linearVelocity = Vector2.zero;
+                PlayAnimation(IdleHash);
+                break;
 
             case State.Stunned:
                 rb.linearVelocity = Vector2.zero;
@@ -390,7 +420,8 @@ public class MeleeEnemy : MonoBehaviour
         if (!canFallOffLedges && !enemyStats.HasGroundAhead(dir))
         {
             // Can't continue chase, stop at edge
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            // rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            ChangeState(State.Edge);
             return;
         }
 
@@ -520,7 +551,7 @@ public class MeleeEnemy : MonoBehaviour
 
     private void ApplyKnockback(Vector2 hitDir, float forceX, float forceY)
     {
-        Debug.Log($"Applying knockback with direction {hitDir}, forceX {forceX}, forceY {forceY}");
+        // Debug.Log($"Applying knockback with direction {hitDir}, forceX {forceX}, forceY {forceY}");
         // Reset current velocity so knockback is consistent
         rb.linearVelocity = Vector2.zero;
 

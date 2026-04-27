@@ -34,7 +34,6 @@ public class ChargerEnemy : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private int maxHealth = 50;
     [SerializeField] private int damage = 15;
-    private float knockbackForce = 10f; // how far the enemy is knocked back
     private int currentHealth;
     private bool isDead;
 
@@ -61,7 +60,7 @@ public class ChargerEnemy : MonoBehaviour
     [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
-    [SerializeField] private LayerMask playerLayer;         // What counts as player
+    // [SerializeField] private LayerMask playerLayer;         // What counts as player
 
     // ========================================
     // TIMING

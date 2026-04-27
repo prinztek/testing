@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
         {
             UpdateGameState(GameState.Paused);
             // InputGate.BlockInput();
-            Debug.Log("Paused");
+            // Debug.Log("Paused");
         }
         else
         {
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
         playerData = gameData.player ?? new JSONPlayerData();
         usedMathQuestionData = gameData.questions ?? new JSONUsedMathQuestionData();
 
-        Debug.Log("Combined GameData loaded.");
+        // Debug.Log("Combined GameData loaded.");
     }
 
     public void SaveGame2()
@@ -306,7 +306,7 @@ public class GameManager : MonoBehaviour
 
         JSONSaveSystem.SaveSlot(gameData, selectedProfileID);
 
-        Debug.Log("Combined GameData saved.");
+        // Debug.Log("Combined GameData saved.");
     }
 
     // Example helper function to complete a level and save progress
