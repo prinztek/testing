@@ -454,38 +454,38 @@ public class GameManager : MonoBehaviour
     {
         // ------------------ LEVEL LOADING TESTING ------------------
         //  CHAPTER 1
-        // if (Input.GetKeyDown(KeyCode.Alpha1))
-        // {
-        //     LoadLevel(0, 0);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha2))
-        // {
-        //     LoadLevel(0, 1);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha3))
-        // {
-        //     LoadLevel(0, 2);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha4))
-        // {
-        //     LoadLevel(0, 3);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha5))
-        // {
-        //     LoadLevel(0, 4);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha6))
-        // {
-        //     LoadLevel(0, 5);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha7))
-        // {
-        //     LoadLevel(0, 6);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Alpha8))
-        // {
-        //     LoadLevel(0, 7);
-        // }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            LoadLevel(0, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            LoadLevel(0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            LoadLevel(0, 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            LoadLevel(0, 3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            LoadLevel(0, 4);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            LoadLevel(0, 5);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            LoadLevel(0, 6);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            LoadLevel(0, 7);
+        }
 
 
         // CHAPTER 2
@@ -524,43 +524,43 @@ public class GameManager : MonoBehaviour
 
 
         // CHAPTER 3
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            LoadLevel(2, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            LoadLevel(2, 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            LoadLevel(2, 2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            LoadLevel(2, 3);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            LoadLevel(2, 4);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            LoadLevel(2, 5);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            LoadLevel(2, 6);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            LoadLevel(2, 7);
-        }
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     LoadLevel(2, 0);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     LoadLevel(2, 1);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     LoadLevel(2, 2);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha4))
+        // {
+        //     LoadLevel(2, 3);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha5))
+        // {
+        //     LoadLevel(2, 4);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha6))
+        // {
+        //     LoadLevel(2, 5);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha7))
+        // {
+        //     LoadLevel(2, 6);
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Alpha8))
+        // {
+        //     LoadLevel(2, 7);
+        // }
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            LoadTutorialLevel();
-        }
+        // if (Input.GetKeyDown(KeyCode.Alpha0))
+        // {
+        //     LoadTutorialLevel();
+        // }
     }
 
     public void ResetSave()

@@ -7,6 +7,10 @@ public class CraftingUI : MonoBehaviour
 {
     public PlayerInventory playerInventory;
 
+    [Header("Confirmation Dialog")]
+    [SerializeField] private ConfirmationUI confirmationUI;
+
+
     [Header("Crafting Items")]
     public Transform itemListParent;
     public GameObject craftingItemButtonPrefab;
@@ -199,11 +203,30 @@ public class CraftingUI : MonoBehaviour
 
         Debug.Log($"Crafted: {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold.");
 
-        playerInventory.DeductGold(selectedItem.costInGold);
-        playerInventory.AddItem(selectedItem.itemData);
+        // before every transaction, show a confirmation dialog
+        // if yes - proceed with crafting
+        // if no - return to crafting menu without doing anything
+        confirmationUI.Show(
+            title: "Confirm Crafting",
+            description: $"Are you sure you want to craft {selectedItem.itemData.itemName} for {selectedItem.costInGold} gold?",
+            cost: $"{selectedItem.costInGold} Gold",
+            currentGold: $"You have: {playerInventory.Gold} Gold",
+            confirmAction: () =>
+            {
+                // Deduct gold and add item to inventory
+                playerInventory.DeductGold(selectedItem.costInGold);
+                playerInventory.AddItem(selectedItem.itemData);
 
-        // Refresh to update button states (affordability) while keeping selection
-        RefreshCraftingList();
+                // Refresh to update button states (affordability) while keeping selection
+                RefreshCraftingList();
+            }
+        );
+
+        // playerInventory.DeductGold(selectedItem.costInGold);
+        // playerInventory.AddItem(selectedItem.itemData);
+
+        // // Refresh to update button states (affordability) while keeping selection
+        // RefreshCraftingList();
     }
 
     private void ClearDetails()

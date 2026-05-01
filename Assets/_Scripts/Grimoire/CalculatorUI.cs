@@ -4,6 +4,8 @@ using TMPro;
 public class CalculatorUI : MonoBehaviour
 {
     public PlayerInventory playerInventory;
+    [Header("Confirmation Dialog")]
+    [SerializeField] private ConfirmationUI confirmationUI;
 
     [Header("Display")]
     [SerializeField] private TMP_InputField displayText;
@@ -100,7 +102,21 @@ public class CalculatorUI : MonoBehaviour
             return;
         }
 
+        confirmationUI.Show(
+            title: "Confirm Calculation",
+            description: $"Are you sure you want to calculate {a} {op} {b} for {calculationCost} gold?",
+            cost: $"{calculationCost} Gold",
+            currentGold: $"You have: {playerInventory.Gold} Gold",
+            confirmAction: () =>
+            {
+                PerformCalculation(a, b, op);
+            }
+        );
 
+    }
+
+    private void PerformCalculation(float a, float b, char op)
+    {
         float result;
 
         switch (op)
