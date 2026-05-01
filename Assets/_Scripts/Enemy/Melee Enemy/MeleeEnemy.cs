@@ -410,7 +410,7 @@ public class MeleeEnemy : MonoBehaviour
         if (player == null) return false;
         float dx = Mathf.Abs(player.position.x - transform.position.x);
         float dy = Mathf.Abs(player.position.y - transform.position.y);
-        Debug.Log(dy);
+        // Debug.Log(dy);
         return dx <= detectionRange && dy <= detectionHeightTolerance;
     }
 

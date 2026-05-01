@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] public GameObject hitEffectPrefab; // Effect to spawn on hit
+
     private Vector2 velocity;
     public int damage = 3;               // Damage dealt by the projectile
     public float lifetime = 3f;           // How long before the arrow self-destructs
@@ -96,9 +98,18 @@ public class Projectile : MonoBehaviour
             {
                 destroyableBlock.TakeDamage(damage, transform.root.position);
             }
+
         }
 
+        // calculate whether it is facing left or right based on velocity for hit effect rotation
+        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+        Quaternion rot = Quaternion.Euler(0f, 0f, angle);
+        // Spawn hit effect on any collision (except ignored ones)
+        GameObject effect = Instantiate(hitEffectPrefab, transform.position, rot);
 
+
+        // Destroy effect after some seconds
+        Destroy(effect, 0.417f);
         // Destroy projectile on any hit
         Destroy(gameObject);
     }

@@ -12,7 +12,8 @@ public class OutcomeItem : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private SimpleProbabilityManager manager;
     [SerializeField] private ProbabilityTwoEventsManager twoEventManager;
-
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip onSelectSoundClip;
     private RectTransform rectTransform;
     public Vector3 dragScale = new Vector3(1.1f, 1.1f, 1.1f); // scale when dragging
     private Vector3 originalScale;
@@ -48,7 +49,13 @@ public class OutcomeItem : MonoBehaviour
             Debug.LogWarning("No probability manager assigned to " + gameObject.name);
         }
 
-        StartCoroutine(ClickAnimation());
+        // StartCoroutine(ClickAnimation());
+
+        // Play drag sound
+        if (onSelectSoundClip != null)
+        {
+            SoundFXManager.Instance.playOneShotSoundFXClilp(onSelectSoundClip, transform, 0.3f);
+        }
     }
 
     private IEnumerator ClickAnimation()

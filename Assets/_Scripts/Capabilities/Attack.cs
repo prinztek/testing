@@ -46,6 +46,10 @@ public class Attack : MonoBehaviour
     private bool isAirAttacking = false;
     private bool wasGrounded = true;
 
+    [Header("Air Attack Settings")]
+    [SerializeField] private float minAirTimeBeforeAirAttack = 0.12f;
+    private float timeLeftGround = -999f;
+
     [Header("Attack Sound Clips")]
     [SerializeField] private AudioClip fistAttackClip;
     [SerializeField] private AudioClip swordAttack1Clip;
@@ -97,7 +101,9 @@ public class Attack : MonoBehaviour
             if (isInMeleeComboCooldown) return;
         }
 
-        if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for fist
+        // if (!_ground.OnGround && stats.equippedMeleeWeapon == null) return; // Only allow attacks on ground for fist
+        if (!_ground.OnGround && !IsSwordEquipped() && stats.currentAttackMode == CharacterStats.AttackMode.Melee)
+            return;
 
         if (input.RetrieveAttackInput())
         {
@@ -136,7 +142,11 @@ public class Attack : MonoBehaviour
                 lastBufferedInputTime = -1f;
             }
 
-            if (!_ground.OnGround && !hasAirAttacked && !isAirAttacking && IsSwordEquipped() && CharacterStats.AttackMode.Melee == stats.currentAttackMode && hasBufferedInput)
+            bool hasBeenInAirLongEnough = (Time.time - timeLeftGround) >= minAirTimeBeforeAirAttack;
+
+            if (!_ground.OnGround && !hasAirAttacked && !isAirAttacking && IsSwordEquipped()
+                && CharacterStats.AttackMode.Melee == stats.currentAttackMode
+                && hasBufferedInput && hasBeenInAirLongEnough)
             {
                 StartAirAttack();
                 lastBufferedInputTime = -1f;
@@ -147,12 +157,22 @@ public class Attack : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!wasGrounded && _ground.OnGround)
+        bool isGroundedNow = _ground.OnGround;
+
+        if (!wasGrounded && isGroundedNow)
         {
+            // Just landed
             hasAirAttacked = false;
+            isAirAttacking = false;
         }
 
-        wasGrounded = _ground.OnGround;
+        if (wasGrounded && !isGroundedNow)
+        {
+            // Just left the ground — record the time
+            timeLeftGround = Time.time;
+        }
+
+        wasGrounded = isGroundedNow;
     }
 
     private void StartAttack(int phase)

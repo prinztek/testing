@@ -276,6 +276,12 @@ public class CharacterStats : MonoBehaviour
 
 
     }
+
+    // Is there an active buff? If so, don't allow the player to answer a math question
+    public bool CanAnswerMathQuestion()
+    {
+        return activeBuff == null;
+    }
     public void EnableShieldVFX()
     {
         ShieldVFX shieldVfx = Instantiate(

@@ -298,7 +298,7 @@ public class EnemyStats : MonoBehaviour
         }
 
         // badge unlock trigger (if not already unlocked)
-        if (!GameManager.Instance.currentData.firstKillDone)
+        if (!GameManager.Instance.currentData.firstKillDone && TutorialLevelManager.Instance != null && TutorialLevelManager.Instance.IsInTutorial)
         {
             GameManager.Instance.badgeManager.FirstKill();
         }

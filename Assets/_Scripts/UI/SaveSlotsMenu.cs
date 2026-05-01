@@ -65,7 +65,7 @@ public class SaveSlotsMenu : MonoBehaviour
             if (selectedSlot.HasData())
             {
                 overwriteSavePanel.Show(
-                    $"Slot {selectedSlot.GetProfileId()} already has a save.\nOverwrite it?",
+                    $"Slot {selectedSlot.GetProfileIdPlayerName()} already has a save.\nOverwrite it?",
                     () => enterNamePanel.Open(OnNameEntered),
                     () => { }
                 );

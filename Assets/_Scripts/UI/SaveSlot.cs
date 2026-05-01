@@ -8,6 +8,7 @@ public class SaveSlot : MonoBehaviour
 {
     [Header("Profile")]
     [SerializeField] private string profileId = "";
+    private string playerName = "";
 
     [Header("Content")]
     [SerializeField] private GameObject noDataContent;
@@ -42,6 +43,7 @@ public class SaveSlot : MonoBehaviour
             hasDataContent.SetActive(true);
 
             profileIdText.text = data.playerName;
+            playerName = data.playerName;
             // find latest unlocked chapter/level
             int latestChapter = 0;
             int latestLevel = 0;
@@ -66,6 +68,12 @@ public class SaveSlot : MonoBehaviour
     {
         Debug.Log("GetProfileId: " + profileId);
         return profileId;
+    }
+
+    public string GetProfileIdPlayerName()
+    {
+        Debug.Log("GetProfileId (playerName): " + playerName);
+        return playerName;
     }
 
     public void SetInteractable(bool interactable)

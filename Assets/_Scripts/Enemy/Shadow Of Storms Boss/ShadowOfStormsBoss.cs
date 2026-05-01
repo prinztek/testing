@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class ShadowOfStormsBoss : MonoBehaviour
@@ -450,5 +451,13 @@ public class ShadowOfStormsBoss : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(center, center + Vector3.right * farRange);
         Gizmos.DrawLine(center, center + Vector3.left * farRange);
+    }
+    [SerializeField] private CinemachineImpulseSource impulseSource;
+
+    // Screen shake method called from animation event
+    public void TriggerScreenShake()
+    {
+        if (impulseSource != null)
+            ScreenShakeManager.Instance.ScreenShake(impulseSource);
     }
 }

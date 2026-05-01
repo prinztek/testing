@@ -7,6 +7,7 @@ using System.Collections;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    public event Action OnGrimoireOpened; // Event for when the grimoire is opened, used to trigger tutorial steps
 
     [Header("Global UI Prefabs")]
     public GameObject grimoirePrefab;
@@ -109,7 +110,7 @@ public class UIManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        bool isGameplayScene = scene.name.StartsWith("Level");
+        bool isGameplayScene = scene.name.StartsWith("Level") || scene.name.StartsWith("Tutorial");
 
         // Show HUD only in gameplay scenes
         if (playerHUDInstance != null)
@@ -173,7 +174,33 @@ public class UIManager : MonoBehaviour
     public void ToggleBook(bool show)
     {
         if (grimoirePanel == null) return;
-        if (show) ShowModal(grimoirePanel);
+
+        if (show)
+        {
+            ShowModal(grimoirePanel);
+            OnGrimoireOpened?.Invoke();
+        }
+
+        // // if this is called from a tutorial level, we want to enter a tutorial controller
+        // if (TutorialLevelManager.Instance != null && TutorialLevelManager.Instance.IsInTutorial)
+        // {
+        //     GrimoireManager grimoire = GrimoireManager.Instance;
+
+        //     if (grimoire == null)
+        //     {
+        //         Debug.LogError("GrimoireManager is NULL");
+        //         return;
+        //     }
+
+        //     if (GrimoireTutorialController.Instance == null)
+        //     {
+        //         Debug.LogError("GrimoireTutorialController is NULL");
+        //         return;
+        //     }
+
+        //     GrimoireTutorialController.Instance.Initialize(grimoire);
+        // }
+
         else ClosePanel(grimoirePanel);
     }
 

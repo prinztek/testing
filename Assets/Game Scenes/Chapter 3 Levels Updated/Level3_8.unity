@@ -488,7 +488,11 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
+  hitImpactPrefab: {fileID: 0}
   hurtSoundClip: {fileID: 0}
+  shieldPrefab: {fileID: 0}
+  heightOffset: 1.5
+  blockedSoundClip: {fileID: 0}
   rb: {fileID: 0}
   bossHUD: {fileID: 0}
   groundCheckPoint: {fileID: 0}
@@ -502,6 +506,8 @@ MonoBehaviour:
   attackDamage: 10
   defense: 0
   moveSpeed: 2
+  blocksFirstHit: 0
+  blockRecoveryTime: 5
   damageMultiplier: 1
   shieldHitsRemaining: 0
   moveSpeedMultiplier: 1
@@ -1962,6 +1968,7 @@ MonoBehaviour:
   closeRange: 1.2
   midRange: 2.5
   farRange: 5
+  impulseSource: {fileID: 0}
 --- !u!114 &393782516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1977,7 +1984,11 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
+  hitImpactPrefab: {fileID: 0}
   hurtSoundClip: {fileID: 0}
+  shieldPrefab: {fileID: 0}
+  heightOffset: 1.5
+  blockedSoundClip: {fileID: 0}
   rb: {fileID: 0}
   bossHUD: {fileID: 0}
   groundCheckPoint: {fileID: 0}
@@ -1991,6 +2002,8 @@ MonoBehaviour:
   attackDamage: 10
   defense: 0
   moveSpeed: 4
+  blocksFirstHit: 0
+  blockRecoveryTime: 5
   damageMultiplier: 1
   shieldHitsRemaining: 0
   moveSpeedMultiplier: 1
@@ -2917,7 +2930,7 @@ Transform:
   m_GameObject: {fileID: 542937936}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.9999995, y: 3.375, z: -10}
+  m_LocalPosition: {x: -2, y: 3.375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2939,7 +2952,7 @@ MonoBehaviour:
   m_AssetsPPU: 16
   m_RefResolutionX: 320
   m_RefResolutionY: 180
-  m_CropFrame: 1
+  m_CropFrame: 0
   m_GridSnapping: 0
   m_FilterMode: 0
   m_UpscaleRT: 0
@@ -3058,15 +3071,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.11166253
+    x: 0.10297766
     y: 0
-    width: 0.19851117
-    height: 0.48055556
+    width: 0.7940447
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 5.40625
+  orthographic size: 5.625
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -10877,6 +10890,7 @@ MonoBehaviour:
   closeRange: 2
   midRange: 3
   farRange: 8
+  impulseSource: {fileID: 1398186107}
 --- !u!114 &1398186106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10892,7 +10906,11 @@ MonoBehaviour:
   impulseSource: {fileID: 1398186107}
   deathFXPrefab: {fileID: 0}
   onHitFlashVFX: {fileID: 0}
+  hitImpactPrefab: {fileID: 0}
   hurtSoundClip: {fileID: 8300000, guid: c5b821d8b796a014a94cbda3d02fbdd4, type: 3}
+  shieldPrefab: {fileID: 0}
+  heightOffset: 1.5
+  blockedSoundClip: {fileID: 0}
   rb: {fileID: 0}
   bossHUD: {fileID: 901246920}
   groundCheckPoint: {fileID: 0}
@@ -10906,6 +10924,8 @@ MonoBehaviour:
   attackDamage: 10
   defense: 0
   moveSpeed: 4
+  blocksFirstHit: 0
+  blockRecoveryTime: 5
   damageMultiplier: 1
   shieldHitsRemaining: 0
   moveSpeedMultiplier: 1

@@ -60,7 +60,8 @@ public class ChargerEnemy : MonoBehaviour
     [SerializeField] private float chaseSpeed;         // Speed when chasing player
     [SerializeField] private float attackRange = 1.5f;      // Melee attack range
     [SerializeField] private float attackRadius = 1.2f;     // Attack hitbox radius
-    // [SerializeField] private LayerMask playerLayer;         // What counts as player
+    [SerializeField] private bool gavUpChase = false;
+
 
     // ========================================
     // TIMING
@@ -171,6 +172,7 @@ public class ChargerEnemy : MonoBehaviour
         {
             case State.Idle:
                 rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                gavUpChase = false; // reset give up flag when returning to idle
 
                 if (PlayerDetected())
                 {
@@ -185,7 +187,9 @@ public class ChargerEnemy : MonoBehaviour
             case State.Patrol:
                 Patrol();
 
-                if (PlayerDetected())
+                if (PlayerTooFar()) gavUpChase = false;
+                if (InAttackRange()) gavUpChase = false; // player is right there, re-engage (attack it)
+                if (!gavUpChase && PlayerDetected())
                 {
                     ChangeState(State.Detect);
                 }
@@ -390,11 +394,11 @@ public class ChargerEnemy : MonoBehaviour
 
         int dir = player.position.x < transform.position.x ? -1 : 1;
 
-        // Check for ground ahead (unless can fall off ledges)
         if (!canFallOffLedges && !enemyStats.HasGroundAhead(dir))
         {
-            // Can't continue chase, stop at edge
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            gavUpChase = true;
+            FaceDirection(-dir);
+            ChangeState(State.Patrol);
             return;
         }
 
@@ -419,6 +423,15 @@ public class ChargerEnemy : MonoBehaviour
 
         float distance = Mathf.Abs(player.position.x - transform.position.x);
         return distance <= attackRange;
+    }
+
+    // dont lunge forward if player is already close, just hit them with the attack
+    private bool IsCloseEnough()
+    {
+        if (player == null) return false;
+
+        float distance = Mathf.Abs(player.position.x - transform.position.x);
+        return distance <= attackRange * 0.5f; // half range
     }
 
     private bool PlayerTooFar()
@@ -535,6 +548,11 @@ public class ChargerEnemy : MonoBehaviour
 
     public void ApplyForwardForce()
     {
+        // if the player is close enough, do not apply forward force, just hit them with the attack
+        if (IsCloseEnough())
+        {
+            return;
+        }
         // Reset current velocity so force is consistent
         rb.linearVelocity = Vector2.zero;
         int dir = facingRight ? 1 : -1;

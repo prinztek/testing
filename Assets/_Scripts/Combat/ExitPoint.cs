@@ -26,6 +26,7 @@ public class ExitPoint : MonoBehaviour
         {
             Debug.Log("Level Complete!");
             LevelManager.Instance.OnLevelCompleted();
+            TutorialLevelManager.Instance.OnLevelCompleted();
         }
     }
 

@@ -37,4 +37,9 @@ public class ShadowOfStormsBossAnimationEventRelay : MonoBehaviour
     {
         shadowOfStormsBoss?.GenerateBeam();
     }
+
+    public void TriggerScreenShake()
+    {
+        shadowOfStormsBoss?.TriggerScreenShake();
+    }
 }

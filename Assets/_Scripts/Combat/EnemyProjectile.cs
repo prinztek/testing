@@ -76,8 +76,11 @@ public class EnemyProjectile : MonoBehaviour
                 // }
 
                 // Spawn hit effect
-                GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-
+                GameObject effect = Instantiate(
+                    hitEffectPrefab,
+                    transform.position,
+                    transform.rotation
+                );
                 // Destroy effect after some seconds
                 Destroy(effect, 0.417f);
 
@@ -89,8 +92,25 @@ public class EnemyProjectile : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || parent.CompareTag("OneWayPlatform"))
         {
             // Spawn hit effect
-            GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(
+                hitEffectPrefab,
+                transform.position,
+                transform.rotation
+            );
+            // Destroy effect after some seconds
+            Destroy(effect, 0.417f);
 
+            Destroy(gameObject);
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        {
+            // Spawn hit effect
+            GameObject effect = Instantiate(
+                hitEffectPrefab,
+                transform.position,
+                transform.rotation
+            );
             // Destroy effect after some seconds
             Destroy(effect, 0.417f);
 
