@@ -335,9 +335,7 @@ public class TutorialLevelManager : MonoBehaviour
 
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
-        GameManager.Instance.LoadLevel(0, 1);
-
-        yield return GameManager.Instance.uiFade.FastFadeIn();
+        GameManager.Instance.LoadLevel(0, 0);
     }
 
     // PANELS

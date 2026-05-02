@@ -7,7 +7,7 @@ public class TabGroupButton : MonoBehaviour
     public TabGroup tabGroup;   // Reference to the TabGroup
     public Button button;       // Reference to the Button component
     private TextMeshProUGUI buttonText;    // Reference to the TextMeshProUGUI component inside the button
-
+    public GameObject glow; // assign in Inspector (child Image)
     void Awake()
     {
         // Ensure button is assigned via the inspector or by GetComponent if needed
@@ -26,6 +26,8 @@ public class TabGroupButton : MonoBehaviour
             Debug.LogError("Button component is missing on the GameObject.");
         }
 
+        // Auto-find Glow child by name
+        glow = transform.Find("Glow")?.gameObject;
         // Set default colors
         // selectedColor = new Color32(238, 225, 211, 255);
         // deselectedColor = new Color32(231, 139, 80, 255);
@@ -63,27 +65,27 @@ public class TabGroupButton : MonoBehaviour
 
     public void Select()
     {
-        // Ensure buttonText exists before trying to change color
+        if (glow != null)
+            glow.SetActive(true);
+
         if (buttonText != null)
         {
-            // buttonText.color = Color.black;  // Set the TMP text color to violetRed
-        }
-        else
-        {
-            Debug.LogWarning("Button Text (TMP) is missing. Make sure the button has a TMP Text component.");
+            // optional styling
+            // buttonText.color = Color.black;
         }
     }
 
     public void Deselect()
     {
-        // Set the button's text to a default color (for deselected state)
-        // buttonText.color = new Color32(238, 225, 211, 255);
-        // Light Beige / Off-white color for deselected state
-        // Alternatively, you could use gray or transparent color:
-        // buttonText.color = Color.gray; // Or a semi-transparent color
-        // buttonText.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent white
-    }
+        if (glow != null)
+            glow.SetActive(false);
 
+        if (buttonText != null)
+        {
+            // optional styling
+            // buttonText.color = new Color32(238, 225, 211, 255);
+        }
+    }
 
     private void OnClick()
     {

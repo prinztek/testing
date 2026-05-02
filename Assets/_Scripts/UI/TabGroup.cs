@@ -55,6 +55,7 @@ public class TabGroup : MonoBehaviour
         }
     }
 
-
+    // Every tab button has a child object images that we want to toggle on/off for selection feedback
+    // named Glow
 
 }

@@ -25,8 +25,17 @@ public class ExitPoint : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Level Complete!");
-            LevelManager.Instance.OnLevelCompleted();
-            TutorialLevelManager.Instance.OnLevelCompleted();
+            // LevelManager.Instance.OnLevelCompleted();
+
+            // check if we're in a tutorial level and trigger tutorial completion if so
+            if (TutorialLevelManager.Instance != null)
+            {
+                TutorialLevelManager.Instance.OnLevelCompleted();
+            }
+            else
+            {
+                LevelManager.Instance.OnLevelCompleted();
+            }
         }
     }
 

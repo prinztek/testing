@@ -363,29 +363,6 @@ public class LevelManager : MonoBehaviour
 
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
-        UIManager.Instance.ShowLevelComplete(true);
-
-        if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
-        {
-            // if this is the first time completing a level
-            if (chapterIndex == 0 && levelIndex == 0)
-            {
-                GameManager.Instance.badgeManager.FirstLevelComplete();
-            }
-
-            if (GameManager.Instance.badgeManager.IsUnlocked("PERM_MASTER") && chapterIndex == 0 && levelIndex == 7)
-            {
-                GameManager.Instance.badgeManager.ChapterComplete(0);
-            }
-            else if (GameManager.Instance.badgeManager.IsUnlocked("COMBO_MASTER") && chapterIndex == 1 && levelIndex == 7)
-            {
-                GameManager.Instance.badgeManager.ChapterComplete(1);
-            }
-            else if (GameManager.Instance.badgeManager.IsUnlocked("PROB_MASTER") && chapterIndex == 2 && levelIndex == 7)
-            {
-                GameManager.Instance.badgeManager.ChapterComplete(2);
-            }
-        }
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
