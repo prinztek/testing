@@ -35,6 +35,8 @@ public static class MathTables
 
 public class FactorialCalculatorUI : MonoBehaviour
 {
+    [Header("Confirmation Dialog")]
+    [SerializeField] private ConfirmationUI confirmationUI;
     public PlayerInventory playerInventory;
     public CharacterStats characterStats;
 
@@ -128,6 +130,20 @@ public class FactorialCalculatorUI : MonoBehaviour
             return;
         }
 
+        confirmationUI.Show(
+            title: "Confirm Calculation",
+            description: $"Are you sure you want to calculate the factorial of {input.text}?",
+            cost: $"Cost: {calculationCost} Gold",
+            currentGold: $"You have: {playerInventory.Gold} Gold",
+            confirmAction: () =>
+            {
+                GetFactorial();
+            }
+        );
+    }
+
+    public void GetFactorial()
+    {
         if (int.TryParse(input.text, out int number) && number >= 0)
         {
             long factorial = MathTables.Factorial(number);

@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class CombinationCalculatorUI : MonoBehaviour
 {
+    [Header("Confirmation Dialog")]
+    [SerializeField] private ConfirmationUI confirmationUI;
     public PlayerInventory playerInventory;
     public CharacterStats characterStats;
 
@@ -150,9 +152,22 @@ public class CombinationCalculatorUI : MonoBehaviour
             return;
         }
 
-        long result = MathTables.Factorial(n) / (MathTables.Factorial(r) * MathTables.Factorial(n - r));
-        playerInventory.DeductGold(calculationCost);
-        resultText.text = $"Result: {result}";
+        confirmationUI.Show(
+            title: "Confirm Calculation",
+            description: $"Are you sure you want to calculate C({n}, {r})?",
+            cost: $"Cost: {calculationCost} Gold",
+            currentGold: $"You have: {playerInventory.Gold} Gold",
+            confirmAction: () =>
+            {
+                long result = MathTables.Factorial(n) / (MathTables.Factorial(r) * MathTables.Factorial(n - r));
+                playerInventory.DeductGold(calculationCost);
+                resultText.text = $"Result: {result}";
+            }
+        );
+
+        // long result = MathTables.Factorial(n) / (MathTables.Factorial(r) * MathTables.Factorial(n - r));
+        // playerInventory.DeductGold(calculationCost);
+        // resultText.text = $"Result: {result}";
     }
 
     // ==========================

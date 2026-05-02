@@ -1,9 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProbabilityCalculatorUI : MonoBehaviour
 {
+    [Header("Confirmation Dialog")]
+    [SerializeField] private ConfirmationUI confirmationUI;
     public PlayerInventory playerInventory;
     public CharacterStats characterStats;
 
@@ -175,12 +178,33 @@ public class ProbabilityCalculatorUI : MonoBehaviour
             return;
         }
 
+        confirmationUI.Show(
+            title: "Confirm Calculation",
+            description: $"Are you sure you want to calculate the probability of {favorable} favorable outcomes out of {total} total outcomes?",
+            cost: $"Cost: {calculationCost} Gold",
+            currentGold: $"You have: {playerInventory.Gold} Gold",
+            confirmAction: () =>
+            {
+                GetProbability(favorable, total);
+            }
+        );
+
+        // float probability = (float)favorable / total;
+        // probability = (float)Math.Round(probability, 4);
+
+        // playerInventory.DeductGold(calculationCost);
+
+        // // resultText.text = $"Result: {probability:0.###} ({probability * 100f:0.##}%)";
+        // resultText.text =
+        // $"Result: {probability:0.####} ({probability * 100f:0.##}%)";
+    }
+
+    public void GetProbability(int favorable, int total)
+    {
         float probability = (float)favorable / total;
+        probability = (float)Math.Round(probability, 4);
 
-        playerInventory.DeductGold(calculationCost);
-
-        resultText.text =
-            $"Result: {probability:0.###} ({probability * 100f:0.##}%)";
+        resultText.text = $"Result: {probability:0.####} ({probability * 100f:0.##}%)";
     }
 
     // ==========================
