@@ -9,7 +9,8 @@ public class CraftingUI : MonoBehaviour
 
     [Header("Confirmation Dialog")]
     [SerializeField] private ConfirmationUI confirmationUI;
-
+    [Header("Crafting Notification")]
+    [SerializeField] private GrimoireCraftNotification craftingNotification;
 
     [Header("Crafting Items")]
     public Transform itemListParent;
@@ -219,6 +220,9 @@ public class CraftingUI : MonoBehaviour
 
                 // Refresh to update button states (affordability) while keeping selection
                 RefreshCraftingList();
+
+                // Show crafting notification
+                craftingNotification.Show(title: $"You have crafted {selectedItem.itemData.itemName}!", desc: $"It has been added to your inventory.");
             }
         );
 

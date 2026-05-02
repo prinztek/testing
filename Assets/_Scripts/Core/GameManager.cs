@@ -557,10 +557,10 @@ public class GameManager : MonoBehaviour
         //     LoadLevel(2, 7);
         // }
 
-        // if (Input.GetKeyDown(KeyCode.Alpha0))
-        // {
-        //     LoadTutorialLevel();
-        // }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            LoadTutorialLevel();
+        }
     }
 
     public void ResetSave()
