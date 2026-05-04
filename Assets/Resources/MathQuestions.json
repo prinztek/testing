@@ -100,8 +100,11 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "Arrange 6 people in a circle",
       "formulaNeeded": "(n-1)!",
-      "hints": ["(6-1)!"],
-      "answer": 120
+      "hints": [
+        "(6 - 1)! / ?",
+        "Since clockwise and counterclockwise arrangements are the same, divide by 2."
+      ],
+      "answer": 60
     },
     {
       "id": 10,
@@ -2455,6 +2458,1945 @@
       "formulaNeeded": "P(B|A) = P(A ∩ B)/P(A)",
       "hints": ["After first red drawn, 5 blue left out of 9 remaining balls."],
       "answer": 0.5556
+    },
+    {
+      "id": 321,
+      "questionString": "5!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "5 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["5! = 5 x 4 x 3 x 2 x 1"],
+      "answer": 120
+    },
+    {
+      "id": 322,
+      "questionString": "3!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "3 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["3! = 3 x 2 x 1"],
+      "answer": 6
+    },
+    {
+      "id": 333,
+      "questionString": "4!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "4 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["4! = 4 x 3 x 2 x 1"],
+      "answer": 24
+    },
+    {
+      "id": 334,
+      "questionString": "2!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "2 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["2! = 2 x 1"],
+      "answer": 2
+    },
+    {
+      "id": 335,
+      "questionString": "6!",
+      "type": "Factorials",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "6 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["6! = 6 x 5 x 4 x 3 x 2 x 1"],
+      "answer": 720
+    },
+    {
+      "id": 336,
+      "questionString": "//frac{4!}{2!}",
+      "type": "Factorials",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "4 factorial over 2 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["4! = 4 x 3 x 2 x 1", "2! = 2 x 1"],
+      "answer": 12
+    },
+    {
+      "id": 337,
+      "questionString": "//frac{7!}{5!}",
+      "type": "Factorials",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "7 factorial over 5 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["7! = 7 x 6 x 5 x 4 x 3 x 2 x 1", "5! = 5 x 4 x 3 x 2 x 1"],
+      "answer": 42
+    },
+    {
+      "id": 338,
+      "questionString": "//frac{6!}{3! x 2!}",
+      "type": "Factorials",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "6 factorial over 3 factorial times 2 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["6! = 6 x 5 x 4 x 3 x 2 x 1", "3! = 3 x 2 x 1", "2! = 2 x 1"],
+      "answer": 60
+    },
+    {
+      "id": 338,
+      "questionString": "x! = 120",
+      "type": "Factorials",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "x factorial equals 120",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": ["6! = 6 x 5 x 4 x 3 x 2 x 1", "3! = 3 x 2 x 1", "2! = 2 x 1"],
+      "answer": 5
+    },
+    {
+      "id": 338,
+      "questionString": "//frac{(n + 1)!}{n!} = 9",
+      "type": "Factorials",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "6 factorial over 3 factorial times 2 factorial",
+      "formulaNeeded": "n! = n x (n-1) x (n-2) x ... x 1",
+      "hints": [
+        "You can rewrite this as: (n + 1)! = (n + 1) ⋅ n!",
+        "Rewrite the numerator so it includes n!",
+        "Cancel the common factor n!"
+      ],
+      "answer": 60
+    },
+    {
+      "id": 339,
+      "questionString": "P(5, 2)",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Permutation of 5 items taken 2 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(5, 2) = 5! / (5 - 2)!"],
+      "answer": 20
+    },
+    {
+      "id": 340,
+      "questionString": "P(4, 2)",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Permutation of 4 items taken 2 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(4, 2) = 4! / (4 - 2)!"],
+      "answer": 12
+    },
+    {
+      "id": 341,
+      "questionString": "P(6, 1)",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Permutation of 6 items taken 1 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(6, 1) = 6! / (6 - 1)!"],
+      "answer": 6
+    },
+    {
+      "id": 342,
+      "questionString": "P(3, 3)",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Permutation of 3 items taken 3 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(3, 3) = 3! / (3 - 3)!"],
+      "answer": 6
+    },
+    {
+      "id": 343,
+      "questionString": "P(7, 0)",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "Permutation of 7 items taken 0 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(7, 0) = 7! / (7 - 0)!"],
+      "answer": 1
+    },
+    {
+      "id": 344,
+      "questionString": "P(6, 3)",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Permutation of 6 items taken 3 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(6, 3) = 6! / (6 - 3)!"],
+      "answer": 120
+    },
+    {
+      "id": 345,
+      "questionString": "Out of 5 friends, 3 play with different roles. How many lineups can you form?",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Permutation of 5 items taken 3 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(5, 3) = 5! / (5 - 3)!"],
+      "answer": 60
+    },
+    {
+      "id": 346,
+      "questionString": "P(8, 2)",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "Permutation of 8 items taken 2 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(8, 2) = 8! / (8 - 2)!"],
+      "answer": 56
+    },
+    {
+      "id": 347,
+      "questionString": "You're creating a 4-character username using 7 different letters, and each letter can only be used once. How many unique usernames can you make?",
+      "type": "Permutation_Formula",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "Permutation of 7 items taken 4 at a time",
+      "formulaNeeded": "P(n, r) = n! / (n - r)!",
+      "hints": ["P(7, 4) = 7! / (7 - 4)!"],
+      "answer": 840
+    },
+    {
+      "id": 348,
+      "questionString": "P(n, 2) = 20",
+      "type": "Permutation_Formula",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Rewrite the numerator as n x (n - 1) x (n - 2)! using the expanded notation of factorials.",
+        "Set up the equation n x (n - 1) = 20 and rewrite it into a standard quadratic form",
+        "Look for two numbers that multiply to the constant term and combine to the middle coefficient"
+      ],
+      "answer": 5
+    },
+    {
+      "id": 349,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 350,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 351,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 352,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 353,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 354,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 355,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 356,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 357,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 358,
+      "questionString": "",
+      "type": "Permutation_and_Its_Conditions",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 359,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 360,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 361,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 362,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 363,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 364,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 365,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 366,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 367,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 368,
+      "questionString": "",
+      "type": "Permutation_Formula",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 369,
+      "questionString": "How many distinct arrangements can be made from the word EEL?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["Count repeated letters", "'E' repeats twice"],
+      "answer": 3
+    },
+    {
+      "id": 370,
+      "questionString": "How many distinct arrangements can be made from the word TOO?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["Count repeated letters", "'O' repeats twice"],
+      "answer": 3
+    },
+    {
+      "id": 371,
+      "questionString": "How many distinct arrangements can be made from the word SEES?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["Count repeated letters", "'S' repeats twice"],
+      "answer": 6
+    },
+    {
+      "id": 372,
+      "questionString": "",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 373,
+      "questionString": "",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 374,
+      "questionString": "How many distinct arrangements can be made from the word LETTER?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["Count repeated letters", "'T' and 'E' each repeat twice"],
+      "answer": 180
+    },
+    {
+      "id": 375,
+      "questionString": "",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 376,
+      "questionString": "",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 377,
+      "questionString": "How many distinct arrangements of BANANA are there if all A's are together?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Treat all A's as a single unit",
+        "Count the units: B, N, and the A-block"
+      ],
+      "answer": 12
+    },
+    {
+      "id": 378,
+      "questionString": "How many distinct arrangements of SUCCESS are possible if all S's are together?",
+      "type": "Distinguishable_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Treat all S's as a single unit",
+        "Count the units: B, N, and the S-block"
+      ],
+      "answer": 60
+    },
+    {
+      "id": 379,
+      "questionString": "Four knights arrive at King Arthur's round table and take their seats for a council meeting. In how many different ways can the knights be seated?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(4 - 1)!"],
+      "answer": 6
+    },
+    {
+      "id": 380,
+      "questionString": "How many ways can 5 people sit around a round table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(5 - 1)!"],
+      "answer": 24
+    },
+    {
+      "id": 381,
+      "questionString": "How many ways can 6 people sit around a circular table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(6 - 1)!"],
+      "answer": 120
+    },
+    {
+      "id": 382,
+      "questionString": "How many ways can 7 people sit around a circular table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(7 - 1)!"],
+      "answer": 720
+    },
+    {
+      "id": 383,
+      "questionString": "How many ways can 3 people sit around a circular table?",
+      "type": "Circular_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(n - 1)!"],
+      "answer": 2
+    },
+    {
+      "id": 384,
+      "questionString": "How many ways can 6 people sit around a table if two specific people must sit together?",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "(n - 1)!",
+        "Treat the two people as a block",
+        "Arrange the block and the remaining people around the table",
+        "Account for internal arrangement of the block"
+      ],
+      "answer": 48
+    },
+    {
+      "id": 385,
+      "questionString": "How many ways can 8 people sit around a table if one person's position is fixed?",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["(n - 1)!", "Fix one person's position and arrange the rest"],
+      "answer": 5040
+    },
+    {
+      "id": 386,
+      "questionString": "How many ways can 5 people sit around a table if two people must NOT sit together?",
+      "type": "Circular_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Count the total arrangements and subtract the arrangements where the two people sit together"
+      ],
+      "answer": 12
+    },
+    {
+      "id": 387,
+      "questionString": "An ancient bracelet is decorated with eight magical beads. Two of the beads are enchanted by rival dragon spirits and must always stay next to each other. How many distinct bracelet designs are possible?",
+      "type": "Circular_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Treat the two special beads as a single unit when placing them",
+        "Arrange the units around a circle by fixing one position and ordering the rest",
+        "Account for flipping the bracelet and the possible swap within the pair"
+      ],
+      "answer": 720
+    },
+    {
+      "id": 388,
+      "questionString": "Six beads are arranged on a circular bracelet. Two specific beads are glued together and must always stay next to each other as the bracelet is worn, and the bracelet can be flipped over or rotated. How many distinct arrangements of the beads are possible?",
+      "type": "Circular_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Treat the two glued beads as a single unit",
+        "Arrange the units around a circle by fixing one position and ordering the rest",
+        "Account for flipping the bracelet"
+      ],
+      "answer": 12
+    },
+    {
+      "id": 389,
+      "questionString": "How many different 3-digit numbers can be formed using the digits 1, 2, 3 with NO repetition?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 6
+    },
+    {
+      "id": 390,
+      "questionString": "In how many ways can 4 students be arranged in a line?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 24
+    },
+    {
+      "id": 391,
+      "questionString": "How many ways can you arrange 3 letters from the word HOME?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 24
+    },
+    {
+      "id": 392,
+      "questionString": "How many 2-letter arrangements can be made from A, B, C, D?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 12
+    },
+    {
+      "id": 393,
+      "questionString": "In how many ways can 5 people sit in 5 chairs in a row?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 120
+    },
+    {
+      "id": 394,
+      "questionString": "How many 4-digit numbers can be formed using digits 1-6 without repetition?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 360
+    },
+    {
+      "id": 395,
+      "questionString": "In how many ways can 5 students be arranged if A specific person must NOT be at the first position?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Calculate for the total arrangements",
+        "subtract the arrangements where the specific person is at the first position"
+      ],
+      "answer": 96
+    },
+    {
+      "id": 396,
+      "questionString": "How many ways can 5 students be selected and arranged from 10 students?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["nPr = n! / (n-r)!"],
+      "answer": 30240
+    },
+    {
+      "id": 397,
+      "questionString": "How many 5-digit numbers can be formed using digits 1-7 if the last number must be even? Repetition allowed.",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Each of the first 4 positions can be any of the 7 digits",
+        "Multiply the result by the number of choices for the last position (which must be even)"
+      ],
+      "answer": 7203
+    },
+    {
+      "id": 398,
+      "questionString": "A 4-digit password is formed using digits 0-6 without repetition. How many passwords are possible if the first digit cannot be 0?",
+      "type": "Problem_Solving_on_Permutation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [
+        "Count the choices for the first digit, making sure it follows the restriction.",
+        "Use permutations for the remaining digits since repetition is not allowed.",
+        "Combine the results from each step to get the final answer."
+      ],
+      "answer": 720
+    },
+    {
+      "id": 399,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 400,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 401,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 402,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 403,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 404,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 405,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 406,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 407,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 408,
+      "questionString": "",
+      "type": "Illustrates_the_Combination_of_an_Objects",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 409,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 410,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 411,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 412,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 413,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 414,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 415,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 416,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 417,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 418,
+      "questionString": "",
+      "type": "Permutation_vs_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 419,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 420,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 421,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 422,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 423,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 424,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 425,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 426,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 427,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 428,
+      "questionString": "",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 429,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 430,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 431,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 432,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 433,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 434,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 435,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 436,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 437,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 438,
+      "questionString": "",
+      "type": "Evaluating_Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 439,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 440,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 441,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 442,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 443,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 444,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 445,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 446,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 447,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 448,
+      "questionString": "",
+      "type": "Problem_Solving_on_Permutation_and_Combination",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 449,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 450,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 451,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 452,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 453,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 454,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 455,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 456,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 457,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 458,
+      "questionString": "",
+      "type": "Union_and_Intersection_of_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 459,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 460,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 461,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 462,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 463,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 464,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 465,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 466,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 467,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 468,
+      "questionString": "",
+      "type": "Simple_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 469,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 470,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 471,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 472,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 473,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 474,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 475,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 476,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 477,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 478,
+      "questionString": "",
+      "type": "Probability_of_Two_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 479,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 480,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 481,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 482,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 483,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 484,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 485,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 486,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 487,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 488,
+      "questionString": "",
+      "type": "Mutually_Exclusive_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 489,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 490,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 491,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 492,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 493,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 494,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 495,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 496,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 497,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 498,
+      "questionString": "",
+      "type": "Probability_Using_Permutations_and_Combinations",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 499,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 500,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 501,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 502,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 503,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 504,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 505,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 506,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 507,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 508,
+      "questionString": "",
+      "type": "Probability_of_Independent_and_Dependent_Events",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 509,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 510,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 511,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 512,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 513,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Easy",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 514,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 515,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 516,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Medium",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 517,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
+    },
+    {
+      "id": 518,
+      "questionString": "",
+      "type": "Conditional_Probability",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": [],
+      "answer": 0
     }
   ]
 }
