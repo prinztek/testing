@@ -1255,14 +1255,14 @@
     },
     {
       "id": 111,
-      "questionString": "Given: Q = {x: x is an odd number, x <10} and T = {x: x is a multiple of 3, x < 15}. Find Q \\cap T. Enter answer as n.n.n (e.g., 1.2.3)",
+      "questionString": "Given: Q = \\{x: x is an odd number, x <10\\} and T = \\{x: x is a multiple of 3, x < 15\\}. Find Q \\cap T. Enter answer as n.n.n (e.g., 1.2.3)",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
       "hints": [
-        "Q = odd numbers less than 10 → {1, 3, 5, 7, 9}",
-        "T = multiples of 3 less than 15 → {3, 6, 9, 12}"
+        "Q = odd numbers less than 10: {1, 3, 5, 7, 9}",
+        "T = multiples of 3 less than 15: {3, 6, 9, 12}"
       ],
       "answers": [3, 9]
     },
@@ -1282,7 +1282,7 @@
     },
     {
       "id": 113,
-      "questionString": "Given: Q = {x: x is an odd number, x <10} and T = {x: x is a multiple of 3, x < 15}. Find Q \\cup T. Enter answer as n.n.n (e.g., 1.2.3)",
+      "questionString": "Given: Q = (x: x is an odd number, x <10) and T = \\{x: x is a multiple of 3, x < 15\\}. Find Q \\cup T. Enter answer as n.n.n (e.g., 1.2.3)",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
@@ -1295,7 +1295,7 @@
     },
     {
       "id": 114,
-      "questionString": "A die is thrown once and the number obtained is recorded. The sample space S = {1, 2, 3, 4, 5, 6}. Let A = {1, 2, 3}, B = {3, 6}. Find A'. Enter answer as n.n.n (e.g., 1.2.3)",
+      "questionString": "A die is thrown once and the number obtained is recorded. The sample space S = \\{1, 2, 3, 4, 5, 6\\}. Let A = {1, 2, 3}, B = {3, 6}. Find A'. Enter answer as n.n.n (e.g., 1.2.3)",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "Find the complement of event A.",
@@ -1309,7 +1309,7 @@
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Events are mutually exclusive.",
-      "formulaNeeded": "P(A ∪ B) = P(A) + P(B)",
+      "formulaNeeded": "P(A \\cup B) = P(A) + P(B)",
       "hints": [
         "Start by adding the sizes of all three sets",
         "Fix the overcounting by subtracting the overlaps",
@@ -1453,7 +1453,7 @@
       "type": "Simple_Probability",
       "difficulty": "Medium",
       "simplifiedQuestionString": "Two tails in two flips",
-      "formulaNeeded": "P(A and B) = P(A) × P(B)",
+      "formulaNeeded": "P(A and B) = P(A) x P(B)",
       "hints": [
         "Each coin toss has a probability 1/2 for tails.",
         "Multiply probabilities for two independent events."
@@ -2669,203 +2669,234 @@
     },
     {
       "id": 349,
-      "questionString": "",
+      "questionString": "How many ways can the letters P, Q, R be arranged?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Find the arrangements by listing them;",
+        "Or by using factorials"
+      ],
+      "answer": 6
     },
     {
       "id": 350,
-      "questionString": "",
+      "questionString": "How many different three-letter arrangements can be formed using the letters B, O, X if the first letter must be B?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of B, O, X",
+        "Identify which arrangements have B in the first position."
+      ],
+      "answer": 4
     },
     {
       "id": 351,
-      "questionString": "",
+      "questionString": "How many arrangements of the letters L, M, N can be made if N cannot be the first letter?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of L, M, N",
+        "Identify which arrangements have N in the first position."
+      ],
+      "answer": 4
     },
     {
       "id": 352,
-      "questionString": "",
+      "questionString": "In how many ways can 3 books be arranged on a shelf?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["Find the arrangements by listing them."],
+      "answer": 6
     },
     {
       "id": 353,
-      "questionString": "",
+      "questionString": "How many ways can the letters in the word 'GAME' be arranged?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Find the arrangements by listing them;",
+        "Or by using factorials"
+      ],
+      "answer": 24
     },
     {
       "id": 354,
-      "questionString": "",
+      "questionString": "How many three-letter arrangements of the word 'DEN' can be formed if D must come first?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of D, E, N",
+        "Identify which arrangements have D in the first position."
+      ],
+      "answer": 2
     },
     {
       "id": 355,
-      "questionString": "",
+      "questionString": "How many distinct arrangements can be formed using the letters of the word 'TOP' if T must be the middle letter?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of T, O, P",
+        "Identify which arrangements have T in the middle position."
+      ],
+      "answer": 2
     },
     {
       "id": 356,
-      "questionString": "",
+      "questionString": "How many three-letter arrangements can be formed from the letters S, T, U if U cannot be the last letter?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of S, T, U",
+        "Identify which arrangements have U in the last position."
+      ],
+      "answer": 4
     },
     {
       "id": 357,
-      "questionString": "",
+      "questionString": "How many ways can the letters J, K, L be arranged if J and K must stay together?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of J, K, L",
+        "Identify which arrangements have J and K together."
+      ],
+      "answer": 4
     },
     {
       "id": 358,
-      "questionString": "",
+      "questionString": "How many different arrangements of the letters C, A, R can be formed if A must appear before R?",
       "type": "Permutation_and_Its_Conditions",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Start by listing all arrangements of C, A, R",
+        "Identify which arrangements have A before R."
+      ],
+      "answer": 3
     },
     {
       "id": 359,
-      "questionString": "",
+      "questionString": "Permutation of 4 items taken 3 at a time",
       "type": "Permutation_Formula",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 24
     },
     {
       "id": 360,
-      "questionString": "",
+      "questionString": "P(6, 1)",
       "type": "Permutation_Formula",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 6
     },
     {
       "id": 361,
-      "questionString": "",
+      "questionString": "P(3, 3)",
       "type": "Permutation_Formula",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 6
     },
     {
       "id": 362,
-      "questionString": "",
+      "questionString": "P(7, 0)",
       "type": "Permutation_Formula",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 1
     },
     {
       "id": 363,
-      "questionString": "",
+      "questionString": "P(6, 3)",
       "type": "Permutation_Formula",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 120
     },
     {
       "id": 364,
-      "questionString": "",
+      "questionString": "P(9, 4)",
       "type": "Permutation_Formula",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 3024
     },
     {
       "id": 365,
-      "questionString": "",
+      "questionString": "Out of 5 friends, 3 play with different roles. How many lineups can you form?",
       "type": "Permutation_Formula",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!", "P(5, 3) = 5! / (5 - 3)!"],
+      "answer": 60
     },
     {
       "id": 366,
-      "questionString": "",
+      "questionString": "P(8, 2)",
       "type": "Permutation_Formula",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 56
     },
     {
       "id": 367,
-      "questionString": "",
+      "questionString": "You're creating a 4-character username using 7 different letters, and each letter can only be used once. How many unique usernames can you make?",
       "type": "Permutation_Formula",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["P(n, r) = n! / (n - r)!"],
+      "answer": 840
     },
     {
       "id": 368,
-      "questionString": "",
+      "questionString": "P(n, 2) = 20",
       "type": "Permutation_Formula",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "Rewrite the numerator as n x (n - 1) x (n - 2)! using the expanded notation of factorials.",
+        "Set up the equation n x (n - 1) = 20 and rewrite it into a standard quadratic form",
+        "Look for two numbers that multiply to the constant term and combine to the middle coefficient"
+      ],
+      "answer": 5
     },
     {
       "id": 369,
@@ -3200,102 +3231,102 @@
     },
     {
       "id": 399,
-      "questionString": "",
+      "questionString": "Choosing 3 classmates to represent the section in a quiz bee. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["Does the order of choosing the classmates matter?"],
+      "answer": 1
     },
     {
       "id": 400,
-      "questionString": "",
+      "questionString": "Creating a 4-digit phone PIN using the digits 1, 2, 3, and 4 without repetition. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Will changing the order create a different PIN?"],
       "answer": 0
     },
     {
       "id": 401,
-      "questionString": "",
+      "questionString": "Choosing 2 games to download from a list of 8 games. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["Does the order of selection matter?"],
+      "answer": 1
     },
     {
       "id": 402,
-      "questionString": "",
+      "questionString": "Arranging 5 favorite books on a study table. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Does changing the order make a new arrangement?"],
       "answer": 0
     },
     {
       "id": 403,
-      "questionString": "",
+      "questionString": "Choosing 3 toppings for milk tea from 10 available toppings. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Are the toppings arranged in order?"],
       "answer": 0
     },
     {
       "id": 404,
-      "questionString": "",
+      "questionString": "Assigning first, second, and third place winners in a Mobile Legends tournament. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Do the rankings matter?"],
       "answer": 0
     },
     {
       "id": 405,
-      "questionString": "",
+      "questionString": "Choosing 5 songs from a playlist for a school program. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": ["Does the order of the chosen songs matter?"],
+      "answer": 1
     },
     {
       "id": 406,
-      "questionString": "",
+      "questionString": "Creating different usernames using the letters A, B, C, and D without repetition. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Will changing the order create a different username?"],
       "answer": 0
     },
     {
       "id": 407,
-      "questionString": "",
+      "questionString": "Selecting 4 students for the school dance team and assigning them as captain, assistant captain, leader, and choreographer. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Do the assigned roles matter?"],
       "answer": 0
     },
     {
       "id": 408,
-      "questionString": "",
+      "questionString": "Arranging 6 friends in a row for a group selfie. (1 for True or 0 for False) Is this a combination problem?",
       "type": "Illustrates_the_Combination_of_an_Objects",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["Does changing the positions create a different arrangement?"],
       "answer": 0
     },
     {
@@ -3400,102 +3431,102 @@
     },
     {
       "id": 419,
-      "questionString": "C(5, 2)",
+      "questionString": "A school esports team has 12 players. In how many ways can 5 players be selected? Using combination notation, what is the value of n?",
       "type": "Combination_Notation",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 10
+      "hints": ["n represents the total number of available players."],
+      "answer": 12
     },
     {
       "id": 420,
-      "questionString": "C(6, 1)",
+      "questionString": "A class has 18 students. In how many ways can 3 students be chosen for a presentation? Using combination notation, what is the value of r?",
       "type": "Combination_Notation",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 6
+      "hints": ["r represents the number of students being selected."],
+      "answer": 3
     },
     {
       "id": 421,
-      "questionString": "(7, 0)",
+      "questionString": "A playlist contains 15 songs. In how many ways can 4 songs be selected for a performance? Using combination notation, what is the value of n?",
       "type": "Combination_Notation",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 1
+      "hints": ["n represents the total number of available songs."],
+      "answer": 15
     },
     {
       "id": 422,
-      "questionString": "C(4, 4)",
+      "questionString": "A basketball coach wants to choose 5 starters from 10 players. Using combination notation, what is the value of r?",
       "type": "Combination_Notation",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 1
+      "hints": ["r represents the number of players being selected."],
+      "answer": 5
     },
     {
       "id": 423,
-      "questionString": "C(6, 5)",
+      "questionString": "A student can choose 2 snacks from 8 available snacks in the cafeteria. Using combination notation, what is the value of n?",
       "type": "Combination_Notation",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 6
+      "hints": ["n represents the total number of available snacks."],
+      "answer": 8
     },
     {
       "id": 424,
-      "questionString": "C(8, 3)",
+      "questionString": "A dance club has 20 members. In how many ways can 6 members be selected for a competition? Using combination notation, what is the value of r?",
       "type": "Combination_Notation",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 56
+      "hints": ["r is the number of members selected."],
+      "answer": 6
     },
     {
       "id": 425,
-      "questionString": "C(9, 2)",
+      "questionString": "A teacher prepared 14 science experiments. Students must choose 5 experiments. Using combination notation, what is the value of n?",
       "type": "Combination_Notation",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 36
+      "hints": ["n is the total number of experiments available."],
+      "answer": 14
     },
     {
       "id": 426,
-      "questionString": "C(10, 3) + C(10, 2)",
+      "questionString": "A music club has 9 guitarists and 7 singers. A band of 4 members will be formed with 2 guitarists and 2 singers. Using combination notation, what is the value of r for the guitarists?",
       "type": "Combination_Notation",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 165
-    },
-    {
-      "id": 427,
-      "questionString": "C(8, 3) / C(8, 2)",
-      "type": "Combination_Notation",
-      "difficulty": "Hard",
-      "simplifiedQuestionString": "",
-      "formulaNeeded": "",
-      "hints": [],
+      "hints": ["r is the number of guitarists being selected."],
       "answer": 2
     },
     {
-      "id": 428,
-      "questionString": "C (n, 2) = 15",
+      "id": 427,
+      "questionString": "A bag contains 5 blue pens, 4 black pens, and 6 red pens. One pen of each color is selected. Using combination notation, what is the value of n for the red pens?",
       "type": "Combination_Notation",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["n is the total number of red pens available."],
+      "answer": 6
+    },
+    {
+      "id": 428,
+      "questionString": "A class forms project groups of at least 4 students and at most 6 students from 16 students. If the maximum group size is chosen, using combination notation, what is the value of r?",
+      "type": "Combination_Notation",
+      "difficulty": "Hard",
+      "simplifiedQuestionString": "",
+      "formulaNeeded": "",
+      "hints": ["r is the number of students selected for the group."],
       "answer": 6
     },
     {
@@ -3505,7 +3536,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 10
     },
     {
@@ -3515,7 +3546,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 15
     },
     {
@@ -3525,7 +3556,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 7
     },
     {
@@ -3535,7 +3566,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 1
     },
     {
@@ -3545,7 +3576,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 9
     },
     {
@@ -3555,7 +3586,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 210
     },
     {
@@ -3565,7 +3596,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 66
     },
     {
@@ -3575,7 +3606,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 165
     },
     {
@@ -3585,7 +3616,7 @@
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 2.3333
     },
     {
@@ -3595,7 +3626,10 @@
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "nCr = n! / (r!(n-r)!)",
+        "Solve for n when r = 3 and the result is 35"
+      ],
       "answer": 7
     },
     {
@@ -3605,7 +3639,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nPr = n! / (n-r)!"],
       "answer": 60
     },
     {
@@ -3615,7 +3649,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 10
     },
     {
@@ -3625,7 +3659,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nPr = n! / (n-r)!"],
       "answer": 12
     },
     {
@@ -3635,7 +3669,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nCr = n! / (r!(n-r)!)"],
       "answer": 20
     },
     {
@@ -3645,7 +3679,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nPr = n! / (n-r)!"],
       "answer": 24
     },
     {
@@ -3655,7 +3689,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["nPr = n! / (n-r)!"],
       "answer": 840
     },
     {
@@ -3665,7 +3699,10 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "nCr = n! / (r!(n-r)!)",
+        "Include the particular student and choose the remaining members from the rest of the students."
+      ],
       "answer": 21
     },
     {
@@ -3675,17 +3712,25 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "nPr = n! / (n-r)!",
+        "Treat the two specific people as a single unit",
+        "Arrange the units and account for internal arrangement of the pair"
+      ],
       "answer": 48
     },
     {
       "id": 447,
-      "questionString": "How many 5 digit numbers can be formed from digits 0 - 7 without repetition if the first digit cannot be 0?",
+      "questionString": "How many 5 digit numbers can be formed from digits 0-7 without repetition if the first digit cannot be 0?",
       "type": "Problem_Solving_on_Permutation_and_Combination",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Count the choices for the first digit, making sure it follows the restriction.",
+        "Use permutations for the remaining digits since repetition is not allowed.",
+        "Combine the results from each step to get the final answer."
+      ],
       "answer": 5880
     },
     {
@@ -3703,103 +3748,107 @@
     },
     {
       "id": 449,
-      "questionString": "A die is rolled. What is the probability of getting an even number?",
+      "questionString": "A class survey: A = {students who play Mobile Legends} = {1,2,3,4,5,6,7} and B = {students who play Valorant} = {5,6,7,8,9}. Find A \\cap B. Enter answer as n.n.n (e.g., 1.2.3)",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.5
+      "hints": [
+        "A = {1,2,3,4,5,6,7}",
+        "B = {5,6,7,8,9}",
+        "Intersection means common elements"
+      ],
+      "answers": [5, 6, 7]
     },
     {
       "id": 450,
-      "questionString": "A card is drawn from a deck. What is the probability of getting a heart?",
+      "questionString": "A school survey: A = {students who watch YouTube} = {1,2,3,4,5,6} and B = {students who use TikTok} = {4,5,6,7,8}. Find A \\cup B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.25
+      "hints": ["Combine all numbers from both sets", "Remove duplicates"],
+      "answers": [1, 2, 3, 4, 5, 6, 7, 8]
     },
     {
       "id": 451,
-      "questionString": "A die is rolled. What is the probability of getting a number greater than 4?",
+      "questionString": "A class activity: A = {students who own bikes} = {1,2,3,4,5,6,7,8} and B = {students who own skateboards} = {2,4,6,8,10}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.3333
+      "hints": ["Look for common numbers in both sets"],
+      "answers": [2, 4, 6, 8]
     },
     {
       "id": 452,
-      "questionString": "A die is rolled. What is the probability of getting an odd number?",
+      "questionString": "A survey: A = {students who eat pizza} = {1,2,3,4,5,6,7,8,9} and B = {students who eat burger} = {3,6,9,12,15}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Easy",
+      "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.5
+      "hints": ["Find numbers that appear in both sets"],
+      "answers": [3, 6, 9]
     },
     {
       "id": 453,
-      "questionString": "A card is drawn. What is the probability of getting a spade?",
+      "questionString": "A gaming survey: A = {players of Game A} = {1,3,5,7,9,11} and B = {players of Game B} = {2,3,5,7,10,11}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Easy",
+      "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.25
+      "hints": ["Identify common elements"],
+      "answers": [3, 5, 7, 11]
     },
     {
       "id": 454,
-      "questionString": "A die is rolled. What is the probability of getting an even number OR a number greater than 3?",
+      "questionString": "A class survey: A = {students who use Android} = {1,2,3,4,5,6,7,8,9,10} and B = {students who use iPhone} = {2,4,6,8,10,12}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.6667
+      "hints": ["Find numbers appearing in both sets"],
+      "answers": [2, 4, 6, 8, 10]
     },
     {
       "id": 455,
-      "questionString": "A card is drawn. What is the probability of getting a king OR a heart?",
+      "questionString": "A school activity: A = {students in choir} = {1,2,3,4,5,6,7} and B = {students in dance group} = {4,5,6,7,8,9}. Find A \\cup B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.3077
+      "hints": ["Combine all numbers from both sets"],
+      "answers": [1, 2, 3, 4, 5, 6, 7, 8, 9]
     },
     {
       "id": 456,
-      "questionString": "A die is rolled. What is the probability of getting a number less than 3 OR an odd number?",
+      "questionString": "A survey: A = {students who play basketball} = {1,2,3,4,5,6,7,8} and B = {students who play volleyball} = {6,7,8,9,10,11}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
-      "difficulty": "Medium",
+      "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.6667
+      "hints": ["Find overlapping numbers"],
+      "answers": [6, 7, 8]
     },
     {
       "id": 457,
-      "questionString": "In a class of 30 students, 18 like Math, 12 like Science, and 5 like both. What is the probability that a randomly chosen student likes Math OR Science?",
+      "questionString": "A tech class: A = {students who use laptop} = {1,2,3,4,5,6,7,8,9} and B = {students who use tablet} = {3,5,7,9,11,13}. Find A \\cap B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.8333
+      "hints": ["Check common elements"],
+      "answers": [3, 5, 7, 9]
     },
     {
       "id": 458,
-      "questionString": "From a deck of cards, what is the probability of drawing a red card OR a face card?",
+      "questionString": "A school event: A = {students in cosplay club} = {1,2,3,4,5,6,7,8} and B = {students in art club} = {5,6,7,8,9,10,11}. Find A \\cup B. Enter answer as n.n.n",
       "type": "Union_and_Intersection_of_Events",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.6154
+      "hints": ["Combine all numbers and remove duplicates"],
+      "answers": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     },
     {
       "id": 459,
@@ -3808,7 +3857,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A coin has 2 sides, and only 1 of them is heads"],
       "answer": 0.5
     },
     {
@@ -3818,7 +3867,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A die has 6 faces, and only 1 of them is a 3"],
       "answer": 0.1666
     },
     {
@@ -3828,7 +3877,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A die has 6 faces, and 4 of them are less than 5"],
       "answer": 0.6667
     },
     {
@@ -3838,7 +3887,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A standard deck has 52 cards, and 4 of them are aces"],
       "answer": 0.0769
     },
     {
@@ -3848,7 +3897,7 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A bag has a total of 5 balls, and 3 of them are red"],
       "answer": 0.6
     },
     {
@@ -3858,7 +3907,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A bag has a total of 10 balls, and 3 of them are yellow"],
       "answer": 0.3
     },
     {
@@ -3868,7 +3917,7 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A die has 6 faces, and 3 of them are multiples of 2"],
       "answer": 0.5
     },
     {
@@ -3878,7 +3927,9 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "A standard deck has 52 cards, and 36 of them are number cards (2-10)"
+      ],
       "answer": 0.6923
     },
     {
@@ -3888,8 +3939,10 @@
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0
+      "hints": [
+        "A box has a total of 10 balls, and 4 of them are blue. The probability of picking a ball that is NOT blue is the complement of picking a blue ball."
+      ],
+      "answer": 0.6
     },
     {
       "id": 468,
@@ -3898,7 +3951,7 @@
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": ["A die has 6 faces, and 3 of them are prime numbers (2, 3, 5)"],
       "answer": 0.5
     },
     {
@@ -3908,7 +3961,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Since the coins are independent, the probability of getting heads on each coin is multiplied together."
+      ],
       "answer": 0.25
     },
     {
@@ -3918,7 +3973,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Since the rolls are independent, the probability of getting a 6 on each roll is multiplied together."
+      ],
       "answer": 0.0278
     },
     {
@@ -3928,7 +3985,9 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Since the card is replaced, the probability of drawing an ace remains the same for both draws."
+      ],
       "answer": 0.0059
     },
     {
@@ -3938,17 +3997,22 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Since the balls are replaced, the probability of drawing a red ball remains the same for both draws."
+      ],
       "answer": 0.36
     },
     {
       "id": 473,
-      "questionString": "A die is rolled. What is the probability of getting an even number AND a number less than 5?",
+      "questionString": "A die is rolled. What is the probability of getting an even number AND a number less than 5? Round to 4 decimal places.",
       "type": "Probability_of_Two_Events",
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Identify the even numbers less than 5 on a die.",
+        "Calculate the probability of each event and multiply them."
+      ],
       "answer": 0.3333
     },
     {
@@ -3958,47 +4022,66 @@
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Find P(ace on first draw)",
+        "Find P(ace on second draw given first was ace)",
+        "Multiply both probabilities"
+      ],
       "answer": 0.0045
     },
     {
       "id": 475,
-      "questionString": "A bag contains 4 red and 6 blue balls. Two balls are drawn without replacement. What is the probability both are blue?",
+      "questionString": "A bag contains 4 red and 6 blue balls. Two balls are drawn without replacement. What is the probability both are blue? Round to 4 decimal places.",
       "type": "Probability_of_Two_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Find P(blue on first draw)",
+        "Find P(blue on second draw given first was blue)",
+        "Multiply both probabilities"
+      ],
       "answer": 0.3333
     },
     {
-      "id": 476,
-      "questionString": "A die is rolled twice. What is the probability of getting a 4 OR a 5 on a single roll? ",
+      "questionString": "A die is rolled twice. What is the probability of getting a 4 on the first roll AND a 5 on the second roll? Round to 4 decimal places.",
       "type": "Probability_of_Two_Events",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.3333
+      "hints": [
+        "Find P(4 on first roll)",
+        "Find P(5 on second roll)",
+        "Multiply both probabilities"
+      ],
+      "answer": 0.0278
     },
     {
       "id": 477,
-      "questionString": "Two cards are drawn without replacement. What is the probability that one is a king AND the other is a queen (in any order)?",
+      "questionString": "Two cards are drawn without replacement. What is the probability that one is a king AND the other is a queen (in any order)? Round up to 4 decimal places.",
       "type": "Probability_of_Two_Events",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
-      "answer": 0.012
+      "hints": [
+        "Case 1: P(king then queen)",
+        "Case 2: P(queen then king)",
+        "Final: Add both probabilities"
+      ],
+      "answer": 0.0121
     },
     {
       "id": 478,
-      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. What is the probability of getting one red and one blue?",
+      "questionString": "A bag contains 5 red and 5 blue balls. Two balls are drawn without replacement. What is the probability of getting one red and one blue? Round up to 4 decimal places.",
       "type": "Probability_of_Two_Events",
       "difficulty": "Hard",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Case 1: P(red then blue)",
+        "Case 2: P(blue then red)",
+        "Final: Add both probabilities"
+      ],
       "answer": 0.5556
     },
     {
@@ -4127,7 +4210,10 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Total ways to choose 2 from 5: C(5, 2)",
+        "Favorable ways to choose 2 with specific student: C(4, 1)"
+      ],
       "answer": 0.4
     },
     {
@@ -4137,7 +4223,10 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Total ways to choose 3 from 6: C(6, 3)",
+        "Favorable ways to choose 3 without specific student: C(5, 3)"
+      ],
       "answer": 0.5
     },
     {
@@ -4147,7 +4236,10 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Total ways to choose 3 from 5: C(5, 3)",
+        "Favorable ways to choose 3 from the subgroup of 4: C(4, 3)"
+      ],
       "answer": 0.4
     },
     {
@@ -4157,7 +4249,12 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Even digits: 2, 4",
+        "Total digits: 1, 2, 3, 4, 5",
+        "Total 2-digit numbers without repetition: P(5, 2)",
+        "Favorable cases: last digit = even number (2 choices), first digit = remaining digits"
+      ],
       "answer": 0.4
     },
     {
@@ -4167,17 +4264,25 @@
       "difficulty": "Easy",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Face cards: Jack, Queen, King (12 cards)",
+        "Kings: 4 cards",
+        "Total cards: 52"
+      ],
       "answer": 0.2308
     },
     {
       "id": 494,
-      "questionString": "From 8 students, a group of 4 is chosen. What is the probability that at least 2 specific students are included?",
+      "questionString": "From 8 students, a group of 4 is chosen. What is the probability that at least one of two specific students are included?",
       "type": "Probability_Using_Permutations_and_Combinations",
       "difficulty": "Medium",
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
-      "hints": [],
+      "hints": [
+        "Total: C(8, 4)",
+        "Case 1: neither student included C(6, 4)",
+        "P(at least one included) = 1 - C(6, 4) / C(8, 4)"
+      ],
       "answer": 0.7857
     },
     {
@@ -4376,7 +4481,7 @@
       "simplifiedQuestionString": "",
       "formulaNeeded": "",
       "hints": ["Red cards: 26", "Favorable: 13 hearts"],
-      "answers": 0.5
+      "answer": 0.5
     },
     {
       "id": 513,

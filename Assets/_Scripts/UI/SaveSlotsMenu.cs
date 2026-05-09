@@ -109,6 +109,14 @@ public class SaveSlotsMenu : MonoBehaviour
         GameManager.Instance.LoadGame();
         // go to chapter select instead of loading directly into gameplay
         chapterSelectScreen.SetActive(true);
+
+        ChapterSelectUI chapterUI =
+        chapterSelectScreen.GetComponent<ChapterSelectUI>();
+
+        if (chapterUI != null)
+        {
+            chapterUI.Refresh();
+        }
     }
 
     public void ActivateMenu(bool isLoadingGame)

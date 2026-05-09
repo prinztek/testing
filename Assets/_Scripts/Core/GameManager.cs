@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
 
         // -------------------------------- FOR TESTING --------------------------------
         LoadGame2();
-        SaveGame2();
+        // SaveGame2();
     }
 
     public void NewGame(string name)

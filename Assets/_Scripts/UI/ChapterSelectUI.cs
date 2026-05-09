@@ -18,11 +18,14 @@ public class ChapterSelectUI : MonoBehaviour
     [SerializeField] private Sprite[] chapterTitleSprites; // Sprites for each chapter
 
     private int currentChapterIndex;
-
-    private void Start()
+    private void OnEnable()
     {
         ShowChapterButtons();
     }
+    // private void Start()
+    // {
+    //     ShowChapterButtons();
+    // }
 
     /// <summary>
     /// Shows all chapter buttons and sets their interactability based on save data.
@@ -104,6 +107,11 @@ public class ChapterSelectUI : MonoBehaviour
         levelSelectPanel.SetActive(false);
         chapterSelectPanel.SetActive(true);
 
+        ShowChapterButtons();
+    }
+
+    public void Refresh()
+    {
         ShowChapterButtons();
     }
 }
