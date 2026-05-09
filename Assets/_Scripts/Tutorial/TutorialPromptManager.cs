@@ -52,6 +52,7 @@ public class TutorialPromptManager : MonoBehaviour
 
     public void SkipTutorial()
     {
+        UIManager.Instance.ClosePanel(tutorialPromptCanvas);
         if (GameManager.Instance != null)
         {
             GameManager.Instance.LoadLevel(0, 0);

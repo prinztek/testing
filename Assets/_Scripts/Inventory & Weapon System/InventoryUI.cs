@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
     [Header("References")]
     public PlayerInventory playerInventory;
     public CharacterStats characterStats;
+    [SerializeField] private GrimoireCraftNotification craftingNotification;
 
     [Header("UI Prefabs")]
     public GameObject itemButtonPrefab;
@@ -29,6 +30,7 @@ public class InventoryUI : MonoBehaviour
     public Color selectedColor = new Color(1f, 0.9f, 0.5f, 1f); // Light yellow/gold
 
     private GameItem selectedItem;
+
     private Button selectedButton;
     private Dictionary<GameItem, Button> itemButtonMap = new Dictionary<GameItem, Button>();
 
@@ -264,7 +266,8 @@ public class InventoryUI : MonoBehaviour
             //  If this is a heath potion, return if the player is already at full health to prevent waste
             if (selectedItem.healAmount > 0 && characterStats.CurrentHealth >= characterStats.maxHealth)
             {
-                Debug.Log("Health is already full. Cannot use health potion.");
+                Debug.Log("Cannot use health potion.");
+                craftingNotification.Show(title: $"Health is already full.", desc: $"Cannot use {selectedItem.itemName}.");
                 return;
             }
 

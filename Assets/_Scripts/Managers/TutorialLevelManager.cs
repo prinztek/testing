@@ -198,6 +198,8 @@ public class TutorialLevelManager : MonoBehaviour
         }
         else
             Debug.LogWarning("UIManager.Instance not found — cannot show level complete screen.");
+
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);
     }
 
 
@@ -332,7 +334,6 @@ public class TutorialLevelManager : MonoBehaviour
 
     private IEnumerator LevelCompleteSequence()
     {
-
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
         GameManager.Instance.LoadLevel(0, 0);

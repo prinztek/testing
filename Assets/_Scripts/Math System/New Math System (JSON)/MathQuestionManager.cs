@@ -232,7 +232,7 @@ public class MathQuestionManager : MonoBehaviour
 
     public void HandleCorrect()
     {
-        SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.3f);
+        SoundFXManager.Instance.playOneShotSoundFXClilp(correctAnswerSoundClip, transform, 0.2f);
         Debug.Log($"Player typed: '{answerInput.text}'");
         Debug.Log($"Correct answer: '{currentQuestion.answer}'");
 
@@ -258,7 +258,7 @@ public class MathQuestionManager : MonoBehaviour
     }
     public void HandleWrong()
     {
-        SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.2f);
+        SoundFXManager.Instance.playOneShotSoundFXClilp(wrongAnswerSoundClip, transform, 0.15f);
         TriggerError();
         // Debug.Log($"Player typed: '{answerInput.text}'");
 

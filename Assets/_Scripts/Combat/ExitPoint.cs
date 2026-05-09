@@ -10,6 +10,7 @@ public class ExitPoint : MonoBehaviour
     [SerializeField] private Color unlockedColor = Color.green;
     private bool unlocked = false;
     private bool canExit = true;
+    [SerializeField] private bool isTutorialLevel = false;
     private void Awake()
     {
         if (!visual)
@@ -24,16 +25,20 @@ public class ExitPoint : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Level Complete!");
             // LevelManager.Instance.OnLevelCompleted();
 
             // check if we're in a tutorial level and trigger tutorial completion if so
-            if (TutorialLevelManager.Instance != null)
+            if (TutorialLevelManager.Instance != null && isTutorialLevel == true)
             {
+                Debug.Log("Level completed! EXIT POINT TUTORIAL LEVEL MANAGER");
+
                 TutorialLevelManager.Instance.OnLevelCompleted();
             }
-            else
+
+            if (isTutorialLevel == false)
             {
+                Debug.Log("Level completed! EXIT POINT TUTORIAL MANAGER");
+
                 LevelManager.Instance.OnLevelCompleted();
             }
         }

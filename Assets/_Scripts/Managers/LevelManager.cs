@@ -146,6 +146,8 @@ public class LevelManager : MonoBehaviour
         if (defeatedEnemies >= totalEnemies)
         {
             UnlockExit();
+            // inform the math question manager that all enemies are defeated
+            // it should prevent the player from answering more questions and show a message that all enemies are defeated and they can exit now
             Debug.Log("Exit unlocked!");
         }
     }
@@ -164,31 +166,30 @@ public class LevelManager : MonoBehaviour
 
     public void OnLevelCompleted()
     {
-        // Debug.Log("Level completed!");
+        Debug.Log("Level completed! LEVEL MANAGER");
 
         string sceneName = SceneManager.GetActiveScene().name;
-
 
         if (TryParseSceneName(sceneName, out int chapterIndex, out int levelIndex))
         {
             // if this is the first time completing a level
-            // if (chapterIndex == 0 && levelIndex == 0)
-            // {
-            //     GameManager.Instance.badgeManager.FirstLevelComplete();
-            // }
+            if (chapterIndex == 0 && levelIndex == 0)
+            {
+                GameManager.Instance.badgeManager.FirstLevelComplete();
+            }
 
-            // if (GameManager.Instance.badgeManager.IsUnlocked("PERM_MASTER") && chapterIndex == 0 && levelIndex == 7)
-            // {
-            //     GameManager.Instance.badgeManager.ChapterComplete(0);
-            // }
-            // else if (GameManager.Instance.badgeManager.IsUnlocked("COMBO_MASTER") && chapterIndex == 1 && levelIndex == 7)
-            // {
-            //     GameManager.Instance.badgeManager.ChapterComplete(1);
-            // }
-            // else if (GameManager.Instance.badgeManager.IsUnlocked("PROB_MASTER") && chapterIndex == 2 && levelIndex == 7)
-            // {
-            //     GameManager.Instance.badgeManager.ChapterComplete(2);
-            // }
+            if (GameManager.Instance.badgeManager.IsUnlocked("PERM_MASTER") && chapterIndex == 0 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(0);
+            }
+            else if (GameManager.Instance.badgeManager.IsUnlocked("COMBO_MASTER") && chapterIndex == 1 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(1);
+            }
+            else if (GameManager.Instance.badgeManager.IsUnlocked("PROB_MASTER") && chapterIndex == 2 && levelIndex == 7)
+            {
+                GameManager.Instance.badgeManager.ChapterComplete(2);
+            }
 
             // Debug.Log($"Parsed scene name '{sceneName}' as Chapter {chapterIndex + 1}, Level {levelIndex + 1}.");
             if (GameManager.Instance != null)
@@ -359,10 +360,9 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LevelCompleteSequence()
     {
-        string sceneName = SceneManager.GetActiveScene().name;
-
         yield return GameManager.Instance.uiFade.FastFadeOut();
 
+        UIManager.Instance.ShowLevelComplete(true);
 
         yield return GameManager.Instance.uiFade.FastFadeIn();
     }
